@@ -33,6 +33,6 @@ public class DummyClassTest extends TestCase {
      */
     public void testApp()
     {
-        assertTrue( testedClass.sayHello().equals("Hello World!!") );
+        assertTrue( testedClass.sayHello().equals("Hello World!!!") );
     }
 }
