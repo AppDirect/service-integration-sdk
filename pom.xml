@@ -9,6 +9,6 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>service-integration-sdk-parent</module>
+		<module>service-integration-sdk-core</module>
 	</modules>
 </project>
