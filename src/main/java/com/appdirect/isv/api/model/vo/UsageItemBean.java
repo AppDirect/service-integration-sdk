@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Builder;
+import lombok.Builder;
 
 import com.appdirect.isv.api.model.type.PricingUnit;
 
