@@ -1,4 +1,4 @@
-package com.appdirect.isv.service.oauth;
+package com.appdirect.web.oauth;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

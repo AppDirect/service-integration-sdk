@@ -1,4 +1,4 @@
-package com.appdirect.isv.rest;
+package com.appdirect.web;
 
 import lombok.extern.slf4j.Slf4j;
 

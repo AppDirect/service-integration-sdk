@@ -1,4 +1,4 @@
-package com.appdirect.service;
+package com.appdirect.domain;
 
 import java.util.List;
 import java.util.Set;
