@@ -1,0 +1,26 @@
+package com.appdirect.isv.exception;
+
+import lombok.Getter;
+import lombok.ToString;
+
+import com.appdirect.isv.api.model.vo.APIResult;
+import com.appdirect.isv.api.model.vo.ErrorCode;
+
+@Getter
+@ToString
+public class IsvServiceException extends RuntimeException {
+	private static final long serialVersionUID = 6079855456255852065L;
+
+	private final APIResult result;
+
+	public IsvServiceException(String message) {
+		super(message);
+		this.result = new APIResult(false, message);
+	}
+
+	public IsvServiceException(ErrorCode errorCode, String message) {
+		super(message);
+		this.result = new APIResult(false, message);
+		this.result.setErrorCode(errorCode);
+	}
+}
