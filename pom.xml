@@ -52,6 +52,12 @@
             <artifactId>signpost-core</artifactId>
             <version>1.2.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
