@@ -11,20 +11,20 @@ public interface DomainService {
 	/**
 	 * Read some domain suggestions for provided string.
 	 */
-	List<DomainModel> readSuggestions(String query, int limit, String currency, Set<String> tlds, String tenantId);
+	List<DomainModel> readSuggestions(String query, int limit, String currency, Set<String> tlds);
 
 	/**
 	 * Read domain pricing
 	 */
-	DomainModel readDomainPricing(String domain, String currency, String tenantId);
+	DomainModel readDomainPricing(String domain, String currency);
 
 	/**
 	 * Sets a dns record on a domain
 	 */
-	void setDnsRecord(String domain, String type, String tenantId, DnsRecordModel model);
+	void setDnsRecord(String domain, String type, DnsRecordModel model);
 
 	/**
 	 * Read Legal Terms for given domains.
 	 */
-	List<LegalTermsModel> readLegalTerms(String tenantId, String domain, boolean privacy);
+	List<LegalTermsModel> readLegalTerms(String domain, boolean privacy);
 }

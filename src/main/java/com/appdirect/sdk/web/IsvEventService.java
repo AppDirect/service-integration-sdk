@@ -37,39 +37,39 @@ public class IsvEventService {
         this.credentialsSupplier = credentialsSupplier;
     }
 
-    public APIResult processEvent(String url, String tenantId) {
-        log.debug("processing event for url = {}, tenantId = {}", url, tenantId);
+    public APIResult processEvent(String url) {
+        log.debug("processing event for url = {}", url);
         try {
             String baseUrl = extractBaseMarketplaceUrl(url);
-            EventInfo event = fetchEvent(url, tenantId);
+            EventInfo event = fetchEvent(url);
             if (event.getFlag() == EventFlag.STATELESS) {
                 return new APIResult(true, "success response to stateless event.");
             }
-            return process(event, baseUrl, tenantId);
+            return process(event, baseUrl);
         } catch (IsvServiceException e) {
             // this is a business error bubble up it is handled elsewhere.
-            log.error("Service returned an error for url = {}, tenant = {}, result = {}", url, tenantId, e.getResult());
+            log.error("Service returned an error for url = {}, result = {}", url, e.getResult());
             throw e;
         } catch (RuntimeException e) {
-            log.error("Exception while attempting to process an event. url = {}, tenant = {}", url, tenantId, e);
-            throw new IsvServiceException(ErrorCode.UNKNOWN_ERROR, String.format("Failed to process event. url = %s, tenant = %s", url, tenantId));
+            log.error("Exception while attempting to process an event. url = {}", url, e);
+            throw new IsvServiceException(ErrorCode.UNKNOWN_ERROR, String.format("Failed to process event. url = %s", url));
         }
     }
 
-    public EventInfo fetchEvent(String url, String tenantId) {
+    public EventInfo fetchEvent(String url) {
         IsvSpecificMarketplaceCredentials credentials = credentialsSupplier.get();
         EventInfo event = isvEventFetcher.fetchEvent(url, credentials.getIsvKey(), credentials.getIsvSecret());
         log.debug("Successfully retrieved event: {}", event);
         return event;
     }
 
-    public APIResult process(EventInfo event, String baseMarketplaceUrl, String tenantId) {
-        log.debug("Processing event = {}, for tenantId = {}", event, tenantId);
+    public APIResult process(EventInfo event, String baseMarketplaceUrl) {
+        log.debug("Processing event = {}", event);
         IsvSpecificMarketplaceCredentials credentials = credentialsSupplier.get();
 
-        IsvEventProcessor processor = eventProcessorRegistry.get(null, event.getType()); // TODO: remove tenant from processor
+        IsvEventProcessor processor = eventProcessorRegistry.get(event.getType());
 
-        return processor.process(event, baseMarketplaceUrl, null); // TODO: remove tenant from processor
+        return processor.process(event, baseMarketplaceUrl);
     }
 
     protected String extractBaseMarketplaceUrl(String eventUrl) {

@@ -16,17 +16,16 @@ import com.appdirect.sdk.isv.api.model.vo.APIResult;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/tenant/{tenantId}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class IsvController {
 	@Autowired
 	private IsvEventService isvEventService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/integration/processEvent")
 	public ResponseEntity<APIResult> processEvent(
-			@PathVariable("tenantId") String tenantId,
 			@RequestParam("eventUrl") String eventUrl) {
-		log.debug("tenantId = {}, eventUrl = {}", tenantId, eventUrl);
-		APIResult result = isvEventService.processEvent(eventUrl, tenantId);
+		log.debug("eventUrl = {}", eventUrl);
+		APIResult result = isvEventService.processEvent(eventUrl);
 		log.debug("Returning result: {}", result);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}

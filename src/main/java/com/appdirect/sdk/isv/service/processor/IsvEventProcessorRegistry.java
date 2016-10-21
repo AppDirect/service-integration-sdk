@@ -11,23 +11,21 @@ import org.springframework.stereotype.Component;
 
 import com.appdirect.sdk.isv.api.model.type.EventType;
 import com.appdirect.sdk.isv.exception.IsvServiceException;
-import com.appdirect.sdk.tenant.model.Tenant;
-import com.appdirect.sdk.tenant.model.vo.TenantBean;
 
 @Component
 @Slf4j
 public class IsvEventProcessorRegistry {
     @Autowired
-    private Set<IsvEventProcessor<? extends TenantBean>> isvEventProcessors = new HashSet<>();
+    private Set<IsvEventProcessor> isvEventProcessors = new HashSet<>();
 
-    private Optional<IsvEventProcessor<? extends TenantBean>> find(Tenant tenant, EventType eventType) {
+    private Optional<IsvEventProcessor> find(EventType eventType) {
         return isvEventProcessors.stream()
-            .filter(p -> p.supports(tenant, eventType))
+            .filter(p -> p.supports(eventType))
             .findFirst();
     }
 
-    public IsvEventProcessor get(Tenant tenant, EventType eventType) {
-        return find(tenant, eventType).orElseThrow(() ->
+    public IsvEventProcessor get(EventType eventType) {
+        return find(eventType).orElseThrow(() ->
             new IsvServiceException(String.format("EventType = %s is not supported.", eventType.toString()))
         );
     }

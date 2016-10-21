@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // fixme Core module will expose an API to register secured URLs
         http
-            .antMatcher("/api/v1/tenant/**")
+            .antMatcher("/api/v1/**")
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
