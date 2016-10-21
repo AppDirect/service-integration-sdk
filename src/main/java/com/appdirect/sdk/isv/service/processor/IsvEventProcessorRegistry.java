@@ -1,10 +1,7 @@
 package com.appdirect.sdk.isv.service.processor;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,10 +10,13 @@ import com.appdirect.sdk.isv.api.model.type.EventType;
 import com.appdirect.sdk.isv.exception.IsvServiceException;
 
 @Component
-@Slf4j
 public class IsvEventProcessorRegistry {
+    private final Set<IsvEventProcessor> isvEventProcessors;
+
     @Autowired
-    private Set<IsvEventProcessor> isvEventProcessors = new HashSet<>();
+    public IsvEventProcessorRegistry(Set<IsvEventProcessor> isvEventProcessors) {
+        this.isvEventProcessors = isvEventProcessors;
+    }
 
     private Optional<IsvEventProcessor> find(EventType eventType) {
         return isvEventProcessors.stream()
