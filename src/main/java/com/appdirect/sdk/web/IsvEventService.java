@@ -22,13 +22,11 @@ import com.appdirect.sdk.isv.service.processor.IsvEventProcessor;
 import com.appdirect.sdk.isv.service.processor.IsvEventProcessorRegistry;
 
 @Slf4j
-@Service
 public class IsvEventService {
     private final IsvEventFetcher isvEventFetcher;
     private final IsvEventProcessorRegistry eventProcessorRegistry;
     private final Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier;
-
-    @Autowired
+    
     public IsvEventService(IsvEventFetcher isvEventFetcher,
                            IsvEventProcessorRegistry eventProcessorRegistry,
                            IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {

@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component;
 import com.appdirect.sdk.isv.api.model.type.EventType;
 import com.appdirect.sdk.isv.exception.IsvServiceException;
 
-@Component
 public class IsvEventProcessorRegistry {
     private final Set<IsvEventProcessor> isvEventProcessors;
 
-    @Autowired
     public IsvEventProcessorRegistry(Set<IsvEventProcessor> isvEventProcessors) {
         this.isvEventProcessors = isvEventProcessors;
     }

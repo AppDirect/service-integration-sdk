@@ -12,10 +12,13 @@ import com.appdirect.sdk.isv.service.exception.IsvEventConsumerExceptionHandler;
 import com.appdirect.sdk.web.oauth.TwoLeggedOAuthClientHttpRequestFactory;
 
 @Slf4j
-@Service
 public class IsvEventFetcher {
-    @Autowired
-    private IsvEventConsumerExceptionHandler errorHandler;
+
+    private final IsvEventConsumerExceptionHandler errorHandler;
+
+    public IsvEventFetcher(IsvEventConsumerExceptionHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
 
     private RestOperations restOperations(String key, String secret) {
         RestTemplate restTemplate = new RestTemplate(new TwoLeggedOAuthClientHttpRequestFactory(key, secret));
