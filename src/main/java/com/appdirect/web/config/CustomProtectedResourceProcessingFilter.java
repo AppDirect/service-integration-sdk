@@ -1,4 +1,4 @@
-package com.appdirect.core.config;
+package com.appdirect.web.config;
 
 import javax.servlet.Filter;
 

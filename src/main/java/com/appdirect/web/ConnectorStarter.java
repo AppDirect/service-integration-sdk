@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.appdirect.core.oauth.IsvSpecificMarketplaceCredentialsConsumerDetailsService;
+import com.appdirect.web.oauth.IsvSpecificMarketplaceCredentialsConsumerDetailsService;
 import com.appdirect.isv.IsvSpecificMarketplaceCredentials;
 import com.appdirect.isv.service.processor.IsvEventProcessor;
 import com.appdirect.isv.service.processor.IsvEventProcessorRegistry;

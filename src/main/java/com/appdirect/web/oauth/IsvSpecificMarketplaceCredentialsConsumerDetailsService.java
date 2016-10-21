@@ -1,4 +1,4 @@
-package com.appdirect.core.oauth;
+package com.appdirect.web.oauth;
 
 import java.util.function.Supplier;
 
