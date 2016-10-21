@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.function.Supplier;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.http.HttpHost;
@@ -32,11 +33,9 @@ public class IsvEventService {
 
     @Autowired
     public IsvEventService(IsvEventFetcher isvEventFetcher,
-                           IsvEventProcessorRegistry eventProcessorRegistry,
-                           IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
+                           IsvEventProcessorRegistry eventProcessorRegistry) {
         this.isvEventFetcher = isvEventFetcher;
         this.eventProcessorRegistry = eventProcessorRegistry;
-        this.credentialsSupplier = credentialsSupplier;
     }
 
     public APIResult processEvent(String url, String tenantId) {
@@ -82,5 +81,9 @@ public class IsvEventService {
             log.error("Cannot parse event url", e);
             throw new IsvServiceException(String.format("Cannot parse event url = %s", eventUrl));
         }
+    }
+
+    public void setCredentialsSupplier(Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier) {
+        this.credentialsSupplier = credentialsSupplier;
     }
 }

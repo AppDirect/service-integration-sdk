@@ -1,28 +1,26 @@
 package com.appdirect.isv.service.processor;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.appdirect.isv.api.model.type.EventType;
 import com.appdirect.isv.exception.IsvServiceException;
 import com.appdirect.tenant.model.Tenant;
+import com.appdirect.tenant.model.vo.TenantBean;
 
 @Component
 @Slf4j
 public class IsvEventProcessorRegistry {
-    private Set<IsvEventProcessor> isvEventProcessors;
+    @Setter
+    private Set<IsvEventProcessor<? extends TenantBean>> isvEventProcessors = new HashSet<>();
 
-    @Autowired
-    public IsvEventProcessorRegistry(Set<IsvEventProcessor> isvEventProcessors) {
-        this.isvEventProcessors = isvEventProcessors;
-    }
-
-    public Optional<IsvEventProcessor> find(Tenant tenant, EventType eventType) {
+    private Optional<IsvEventProcessor<? extends TenantBean>> find(Tenant tenant, EventType eventType) {
         return isvEventProcessors.stream()
                 .filter(p -> p.supports(tenant, eventType))
                 .findFirst();
