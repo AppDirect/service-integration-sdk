@@ -2,8 +2,6 @@ package com.appdirect.web.oauth;
 
 import java.util.function.Supplier;
 
-import org.springframework.security.oauth.common.signature.SharedConsumerSecretImpl;
-import org.springframework.security.oauth.provider.BaseConsumerDetails;
 import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 
@@ -19,11 +17,8 @@ public class IsvSpecificMarketplaceCredentialsConsumerDetailsService implements 
         return consumerDetailsFrom(credentials);
     }
 
-    private BaseConsumerDetails consumerDetailsFrom(IsvSpecificMarketplaceCredentials credentials) {
-        BaseConsumerDetails consumerDetails = new BaseConsumerDetails();
-        consumerDetails.setConsumerKey(credentials.getIsvKey());
-        consumerDetails.setSignatureSecret(new SharedConsumerSecretImpl(credentials.getIsvSecret()));
-        return consumerDetails;
+    private ConsumerDetails consumerDetailsFrom(IsvSpecificMarketplaceCredentials credentials) {
+        return new ConnectorConsumerDetails(credentials.getIsvKey(), credentials.getIsvSecret());
     }
 
     public void setCredentialsSupplier(Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier) {
