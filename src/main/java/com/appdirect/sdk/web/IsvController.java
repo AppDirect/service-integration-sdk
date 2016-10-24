@@ -24,8 +24,7 @@ public class IsvController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/integration/processEvent")
-	public ResponseEntity<APIResult> processEvent(
-		@RequestParam("eventUrl") String eventUrl) {
+	public ResponseEntity<APIResult> processEvent(@RequestParam("eventUrl") String eventUrl) {
 		log.debug("eventUrl={}", eventUrl);
 		APIResult result = isvEventService.processEvent(eventUrl);
 		log.debug("Returning result: {}", result);
