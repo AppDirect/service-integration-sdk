@@ -12,19 +12,14 @@ import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.exception.OAuthException;
 
 @Slf4j
-public class TwoLeggedOAuthClientHttpRequestFactory extends SimpleClientHttpRequestFactory {
+public class SignpostOAuthClientHttpRequestFactory extends SimpleClientHttpRequestFactory {
 	private static final int DEFAULT_CONNECT_TIMEOUT = 10000;
 	private static final int DEFAULT_READ_TIMEOUT = 60000;
 
-	protected final OAuthConsumer consumer;
+	private final OAuthConsumer consumer;
 
-	public TwoLeggedOAuthClientHttpRequestFactory(String consumerKey, String consumerSecret) {
-		this(new DefaultOAuthConsumer(consumerKey, consumerSecret));
-	}
-
-	public TwoLeggedOAuthClientHttpRequestFactory(OAuthConsumer consumer) {
-		super();
-		this.consumer = consumer;
+	public SignpostOAuthClientHttpRequestFactory(String consumerKey, String consumerSecret) {
+		this.consumer = new DefaultOAuthConsumer(consumerKey, consumerSecret);
 		setConnectTimeout(DEFAULT_CONNECT_TIMEOUT);
 		setReadTimeout(DEFAULT_READ_TIMEOUT);
 	}

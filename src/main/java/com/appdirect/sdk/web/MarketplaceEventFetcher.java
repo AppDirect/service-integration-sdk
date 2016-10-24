@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.isv.api.model.vo.EventInfo;
 import com.appdirect.sdk.isv.service.exception.IsvEventConsumerExceptionHandler;
-import com.appdirect.sdk.web.oauth.TwoLeggedOAuthClientHttpRequestFactory;
+import com.appdirect.sdk.web.oauth.SignpostOAuthClientHttpRequestFactory;
 
 @Slf4j
 public class MarketplaceEventFetcher {
@@ -19,7 +19,7 @@ public class MarketplaceEventFetcher {
 	}
 
 	private RestOperations restOperations(String key, String secret) {
-		RestTemplate restTemplate = new RestTemplate(new TwoLeggedOAuthClientHttpRequestFactory(key, secret));
+		RestTemplate restTemplate = new RestTemplate(new SignpostOAuthClientHttpRequestFactory(key, secret));
 		restTemplate.setErrorHandler(errorHandler);
 		return restTemplate;
 	}
