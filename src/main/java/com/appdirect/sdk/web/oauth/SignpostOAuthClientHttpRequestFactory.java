@@ -19,7 +19,11 @@ public class SignpostOAuthClientHttpRequestFactory extends SimpleClientHttpReque
 	private final OAuthConsumer consumer;
 
 	public SignpostOAuthClientHttpRequestFactory(String consumerKey, String consumerSecret) {
-		this.consumer = new DefaultOAuthConsumer(consumerKey, consumerSecret);
+		this(new DefaultOAuthConsumer(consumerKey, consumerSecret));
+	}
+
+	SignpostOAuthClientHttpRequestFactory(OAuthConsumer consumer) {
+		this.consumer = consumer;
 		setConnectTimeout(DEFAULT_CONNECT_TIMEOUT);
 		setReadTimeout(DEFAULT_READ_TIMEOUT);
 	}
@@ -29,9 +33,10 @@ public class SignpostOAuthClientHttpRequestFactory extends SimpleClientHttpReque
 		super.prepareConnection(connection, httpMethod);
 		try {
 			consumer.sign(connection);
-			log.debug(String.format("Signed request to %s", connection.getURL()));
+			log.debug("Signed request to {}", connection.getURL());
 		} catch (OAuthException e) {
-			log.error("Error while signing request", e);
+			log.error("Could not sign request to {}", connection.getURL(), e);
+			throw new IOException("Could not sign request to " + connection.getURL(), e);
 		}
 	}
 }
