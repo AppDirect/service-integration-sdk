@@ -16,7 +16,7 @@ import com.appdirect.sdk.isv.exception.IsvServiceException;
 public class IsvExceptionHandler {
 	@ResponseBody
 	@ResponseStatus(value= HttpStatus.OK)
-	@ExceptionHandler(IsvServiceException.class)
+	@ExceptionHandler
 	public APIResult handleIsvServiceException(IsvServiceException e) {
 		APIResult result = e.getResult();
 		log.debug("Handling IsvServiceException. APIResult = {}", result);
