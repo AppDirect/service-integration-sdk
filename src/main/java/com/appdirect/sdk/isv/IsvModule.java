@@ -1,6 +1,5 @@
 package com.appdirect.sdk.isv;
 
-
 /**
  * Spring package discovery marker
  */
