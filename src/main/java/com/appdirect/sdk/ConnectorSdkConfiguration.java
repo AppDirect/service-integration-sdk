@@ -36,11 +36,11 @@ public class ConnectorSdkConfiguration {
     }
 
     @Bean
-    public IsvEventService isvEventService(IsvEventProcessorRegistry isvEventProcessorRegistry, 
+    public IsvEventService isvEventService(IsvEventProcessorRegistry isvEventProcessorRegistry,
                                            IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
         return new IsvEventService(isvEventFetcher(), isvEventProcessorRegistry, credentialsSupplier);
     }
-    
+
     @Bean
     public IsvController isvController(IsvEventService isvEventService) {
         return new IsvController(isvEventService);

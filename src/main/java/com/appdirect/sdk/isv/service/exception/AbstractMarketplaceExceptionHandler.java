@@ -10,9 +10,9 @@ import org.springframework.web.client.ResponseErrorHandler;
 import com.appdirect.sdk.isv.api.model.vo.ErrorCode;
 import com.appdirect.sdk.isv.exception.IsvServiceException;
 
-public class AbstractMarketplaceExceptionHandler implements ResponseErrorHandler {
-	protected String action;
-	protected Logger log;
+public abstract class AbstractMarketplaceExceptionHandler implements ResponseErrorHandler {
+	private final String action;
+	private final Logger log;
 
 	protected AbstractMarketplaceExceptionHandler(String action, Logger log) {
 		this.log = log;

@@ -3,9 +3,6 @@ package com.appdirect.sdk.isv.service.processor;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.appdirect.sdk.isv.api.model.type.EventType;
 import com.appdirect.sdk.isv.exception.IsvServiceException;
 

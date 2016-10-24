@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentials;
 import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentialsSupplier;
@@ -26,7 +24,7 @@ public class IsvEventService {
     private final IsvEventFetcher isvEventFetcher;
     private final IsvEventProcessorRegistry eventProcessorRegistry;
     private final Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier;
-    
+
     public IsvEventService(IsvEventFetcher isvEventFetcher,
                            IsvEventProcessorRegistry eventProcessorRegistry,
                            IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
@@ -63,7 +61,6 @@ public class IsvEventService {
 
     public APIResult process(EventInfo event, String baseMarketplaceUrl) {
         log.debug("Processing event = {}", event);
-        IsvSpecificMarketplaceCredentials credentials = credentialsSupplier.get();
 
         IsvEventProcessor processor = eventProcessorRegistry.get(event.getType());
 
