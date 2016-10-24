@@ -11,7 +11,7 @@ import com.appdirect.sdk.isv.service.exception.IsvEventConsumerExceptionHandler;
 import com.appdirect.sdk.isv.service.processor.IsvEventProcessor;
 import com.appdirect.sdk.isv.service.processor.IsvEventProcessorRegistry;
 import com.appdirect.sdk.web.IsvController;
-import com.appdirect.sdk.web.IsvEventFetcher;
+import com.appdirect.sdk.web.MarketplaceEventFetcher;
 import com.appdirect.sdk.web.IsvEventService;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.SecurityConfiguration;
@@ -31,8 +31,8 @@ public class ConnectorSdkConfiguration {
     }
 
     @Bean
-    public IsvEventFetcher isvEventFetcher() {
-        return new IsvEventFetcher(isvEventConsumerExceptionHandler());
+    public MarketplaceEventFetcher isvEventFetcher() {
+        return new MarketplaceEventFetcher(isvEventConsumerExceptionHandler());
     }
 
     @Bean

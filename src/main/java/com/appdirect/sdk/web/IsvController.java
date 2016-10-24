@@ -19,14 +19,14 @@ public class IsvController {
 
 	private final IsvEventService isvEventService;
 
-    public IsvController(IsvEventService isvEventService) {
-        this.isvEventService = isvEventService;
-    }
+	public IsvController(IsvEventService isvEventService) {
+		this.isvEventService = isvEventService;
+	}
 
-    @RequestMapping(method = RequestMethod.GET, value = "/integration/processEvent")
+	@RequestMapping(method = RequestMethod.GET, value = "/integration/processEvent")
 	public ResponseEntity<APIResult> processEvent(
-			@RequestParam("eventUrl") String eventUrl) {
-		log.debug("eventUrl = {}", eventUrl);
+		@RequestParam("eventUrl") String eventUrl) {
+		log.debug("eventUrl={}", eventUrl);
 		APIResult result = isvEventService.processEvent(eventUrl);
 		log.debug("Returning result: {}", result);
 		return new ResponseEntity<>(result, HttpStatus.OK);

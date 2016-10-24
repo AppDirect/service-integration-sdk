@@ -21,20 +21,20 @@ import com.appdirect.sdk.isv.service.processor.IsvEventProcessorRegistry;
 
 @Slf4j
 public class IsvEventService {
-    private final IsvEventFetcher isvEventFetcher;
+    private final MarketplaceEventFetcher marketplaceEventFetcher;
     private final IsvEventProcessorRegistry eventProcessorRegistry;
     private final Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier;
 
-    public IsvEventService(IsvEventFetcher isvEventFetcher,
+    public IsvEventService(MarketplaceEventFetcher marketplaceEventFetcher,
                            IsvEventProcessorRegistry eventProcessorRegistry,
                            IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
-        this.isvEventFetcher = isvEventFetcher;
+        this.marketplaceEventFetcher = marketplaceEventFetcher;
         this.eventProcessorRegistry = eventProcessorRegistry;
         this.credentialsSupplier = credentialsSupplier;
     }
 
     public APIResult processEvent(String url) {
-        log.debug("processing event for url = {}", url);
+        log.info("processing event for eventUrl={}", url);
         try {
             String baseUrl = extractBaseMarketplaceUrl(url);
             EventInfo event = fetchEvent(url);
@@ -44,23 +44,23 @@ public class IsvEventService {
             return process(event, baseUrl);
         } catch (IsvServiceException e) {
             // this is a business error bubble up it is handled elsewhere.
-            log.error("Service returned an error for url = {}, result = {}", url, e.getResult());
+            log.error("Service returned an error for url={}, result={}", url, e.getResult());
             throw e;
         } catch (RuntimeException e) {
-            log.error("Exception while attempting to process an event. url = {}", url, e);
-            throw new IsvServiceException(ErrorCode.UNKNOWN_ERROR, String.format("Failed to process event. url = %s", url));
+            log.error("Exception while attempting to process an event. eventUrl={}", url, e);
+            throw new IsvServiceException(ErrorCode.UNKNOWN_ERROR, String.format("Failed to process event. url=%s", url));
         }
     }
 
     public EventInfo fetchEvent(String url) {
         IsvSpecificMarketplaceCredentials credentials = credentialsSupplier.get();
-        EventInfo event = isvEventFetcher.fetchEvent(url, credentials.getIsvKey(), credentials.getIsvSecret());
-        log.debug("Successfully retrieved event: {}", event);
+        EventInfo event = marketplaceEventFetcher.fetchEvent(url, credentials.getIsvKey(), credentials.getIsvSecret());
+        log.info("Successfully retrieved event={}", event);
         return event;
     }
 
     public APIResult process(EventInfo event, String baseMarketplaceUrl) {
-        log.debug("Processing event = {}", event);
+        log.info("Processing event={}", event);
 
         IsvEventProcessor processor = eventProcessorRegistry.get(event.getType());
 
@@ -73,7 +73,7 @@ public class IsvEventService {
             return httpHost.toURI();
         } catch (URISyntaxException e) {
             log.error("Cannot parse event url", e);
-            throw new IsvServiceException(String.format("Cannot parse event url = %s", eventUrl));
+            throw new IsvServiceException(String.format("Cannot parse event url=%s", eventUrl));
         }
     }
 }

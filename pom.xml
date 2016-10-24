@@ -51,6 +51,7 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.16.10</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -67,7 +68,6 @@
       <artifactId>httpasyncclient</artifactId>
       <version>4.1.2</version>
     </dependency>
-
   </dependencies>
 
   <build>
