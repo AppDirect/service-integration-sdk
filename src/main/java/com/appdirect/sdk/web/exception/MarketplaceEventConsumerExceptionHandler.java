@@ -17,7 +17,7 @@ import com.appdirect.sdk.exception.IsvServiceException;
 public class MarketplaceEventConsumerExceptionHandler implements ResponseErrorHandler {
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
-		log.error("Response error: code = {} text = {}", response.getStatusCode(), response.getStatusText());
+		log.error("Response error: code={} text={}", response.getStatusCode(), response.getStatusText());
 		if (HttpStatus.NOT_FOUND == response.getStatusCode()) {
 			throw new IsvServiceException(NOT_FOUND, errorMessage(response.getStatusText()));
 		} else {
