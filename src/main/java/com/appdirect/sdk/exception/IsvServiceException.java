@@ -20,7 +20,6 @@ public class IsvServiceException extends RuntimeException {
 
 	public IsvServiceException(ErrorCode errorCode, String message) {
 		super(message);
-		this.result = new APIResult(false, message);
-		this.result.setErrorCode(errorCode);
+		this.result = new APIResult(errorCode, message);
 	}
 }
