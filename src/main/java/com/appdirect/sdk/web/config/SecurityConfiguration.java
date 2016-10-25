@@ -42,8 +42,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CustomProtectedResourceProcessingFilter customProtectedResourceFilter() {
-        CustomProtectedResourceProcessingFilter filter = new CustomProtectedResourceProcessingFilter();
+    public OAuthSignatureCheckingFilter customProtectedResourceFilter() {
+        OAuthSignatureCheckingFilter filter = new OAuthSignatureCheckingFilter();
         filter.setConsumerDetailsService(consumerDetailsService());
         filter.setTokenServices(oauthProviderTokenServices());
         filter.setAuthenticationEntryPoint(oAuthProcessingFilterEntryPoint());
