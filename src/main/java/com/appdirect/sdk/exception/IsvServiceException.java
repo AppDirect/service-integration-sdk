@@ -1,4 +1,4 @@
-package com.appdirect.sdk.web.exception;
+package com.appdirect.sdk.exception;
 
 import lombok.Getter;
 import lombok.ToString;

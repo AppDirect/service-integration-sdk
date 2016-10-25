@@ -9,8 +9,8 @@ import static org.mockito.internal.util.collections.Sets.newSet;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.appdirect.sdk.exception.IsvServiceException;
 import com.appdirect.sdk.marketplace.api.type.EventType;
-import com.appdirect.sdk.web.exception.IsvServiceException;
 
 public class MarketplaceEventProcessorRegistryTest {
 	private MarketplaceEventProcessor theSoleProcessorInTheRegistry;

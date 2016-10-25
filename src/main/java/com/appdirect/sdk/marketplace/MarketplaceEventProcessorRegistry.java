@@ -3,8 +3,8 @@ package com.appdirect.sdk.marketplace;
 import java.util.Optional;
 import java.util.Set;
 
+import com.appdirect.sdk.exception.IsvServiceException;
 import com.appdirect.sdk.marketplace.api.type.EventType;
-import com.appdirect.sdk.web.exception.IsvServiceException;
 
 public class MarketplaceEventProcessorRegistry {
     private final Set<MarketplaceEventProcessor> marketplaceEventProcessors;

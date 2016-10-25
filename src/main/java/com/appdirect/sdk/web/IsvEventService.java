@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
 
+import com.appdirect.sdk.exception.IsvServiceException;
 import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentials;
 import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
 import com.appdirect.sdk.marketplace.MarketplaceEventProcessor;
@@ -17,7 +18,6 @@ import com.appdirect.sdk.marketplace.api.vo.APIResult;
 import com.appdirect.sdk.marketplace.api.vo.ErrorCode;
 import com.appdirect.sdk.marketplace.api.vo.EventFlag;
 import com.appdirect.sdk.marketplace.api.vo.EventInfo;
-import com.appdirect.sdk.web.exception.IsvServiceException;
 
 @Slf4j
 public class IsvEventService {

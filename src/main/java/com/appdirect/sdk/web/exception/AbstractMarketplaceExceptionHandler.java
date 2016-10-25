@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
+import com.appdirect.sdk.exception.IsvServiceException;
 import com.appdirect.sdk.marketplace.api.vo.ErrorCode;
 
 public abstract class AbstractMarketplaceExceptionHandler implements ResponseErrorHandler {
