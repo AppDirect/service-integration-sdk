@@ -19,14 +19,12 @@ public class APIResult implements Serializable {
 	private String id;
 
 	public APIResult(ErrorCode errorCode, String message) {
-		super();
 		setSuccess(false);
 		setErrorCode(errorCode);
 		setMessage(message);
 	}
 
 	public APIResult(boolean success, String message) {
-		super();
 		setSuccess(success);
 		setMessage(message);
 	}
