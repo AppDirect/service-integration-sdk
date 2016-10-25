@@ -1,11 +1,12 @@
 package com.appdirect.sdk.web.config;
 
+import static com.appdirect.sdk.utils.StringUtils.isEmpty;
+
 import javax.servlet.Filter;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth.common.OAuthException;
@@ -56,7 +57,7 @@ public class OAuthSignatureCheckingFilter extends ProtectedResourceProcessingFil
 	private OAuthProviderToken getToken(ConsumerCredentials credentials) {
 		String token = credentials.getToken();
 		OAuthProviderToken authToken = null;
-		if (StringUtils.isNotBlank(token)) {
+		if (isEmpty(token)) {
 			authToken = this.getTokenServices().getToken(token);
 		}
 		return authToken;
