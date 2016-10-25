@@ -25,7 +25,7 @@ public class MarketplaceEventFetcher {
 	}
 
 	public EventInfo fetchEvent(String url, String key, String secret) {
-		log.debug("Consuming event from = {}", url);
+		log.debug("Consuming event from url={}", url);
 		return restOperations(key, secret).getForObject(url, EventInfo.class);
 	}
 }

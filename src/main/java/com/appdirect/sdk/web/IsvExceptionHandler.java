@@ -19,7 +19,7 @@ public class IsvExceptionHandler {
 	@ExceptionHandler
 	public APIResult handleIsvServiceException(IsvServiceException e) {
 		APIResult result = e.getResult();
-		log.debug("Handling IsvServiceException. APIResult = {}", result);
+		log.debug("Handling IsvServiceException. APIResult={}", result);
 		return result;
 	}
 }
