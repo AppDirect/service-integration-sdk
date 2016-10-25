@@ -9,24 +9,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
 
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentials;
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentialsSupplier;
-import com.appdirect.sdk.isv.api.model.vo.APIResult;
-import com.appdirect.sdk.isv.api.model.vo.ErrorCode;
-import com.appdirect.sdk.isv.api.model.vo.EventFlag;
-import com.appdirect.sdk.isv.api.model.vo.EventInfo;
-import com.appdirect.sdk.isv.exception.IsvServiceException;
-import com.appdirect.sdk.isv.service.processor.IsvEventProcessor;
-import com.appdirect.sdk.isv.service.processor.IsvEventProcessorRegistry;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentials;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
+import com.appdirect.sdk.marketplace.MarketplaceEventProcessor;
+import com.appdirect.sdk.marketplace.MarketplaceEventProcessorRegistry;
+import com.appdirect.sdk.marketplace.api.vo.APIResult;
+import com.appdirect.sdk.marketplace.api.vo.ErrorCode;
+import com.appdirect.sdk.marketplace.api.vo.EventFlag;
+import com.appdirect.sdk.marketplace.api.vo.EventInfo;
+import com.appdirect.sdk.web.exception.IsvServiceException;
 
 @Slf4j
 public class IsvEventService {
     private final MarketplaceEventFetcher marketplaceEventFetcher;
-    private final IsvEventProcessorRegistry eventProcessorRegistry;
+    private final MarketplaceEventProcessorRegistry eventProcessorRegistry;
     private final Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier;
 
     public IsvEventService(MarketplaceEventFetcher marketplaceEventFetcher,
-                           IsvEventProcessorRegistry eventProcessorRegistry,
+                           MarketplaceEventProcessorRegistry eventProcessorRegistry,
                            IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
         this.marketplaceEventFetcher = marketplaceEventFetcher;
         this.eventProcessorRegistry = eventProcessorRegistry;
@@ -62,7 +62,7 @@ public class IsvEventService {
     public APIResult process(EventInfo event, String baseMarketplaceUrl) {
         log.info("Processing event={}", event);
 
-        IsvEventProcessor processor = eventProcessorRegistry.get(event.getType());
+        MarketplaceEventProcessor processor = eventProcessorRegistry.get(event.getType());
 
         return processor.process(event, baseMarketplaceUrl);
     }

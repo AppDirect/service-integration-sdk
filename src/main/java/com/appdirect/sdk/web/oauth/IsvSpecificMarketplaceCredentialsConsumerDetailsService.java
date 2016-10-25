@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentials;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentials;
 
 public class IsvSpecificMarketplaceCredentialsConsumerDetailsService implements ConsumerDetailsService {
     private final Supplier<IsvSpecificMarketplaceCredentials> credentialsSupplier;

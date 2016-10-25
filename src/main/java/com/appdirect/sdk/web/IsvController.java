@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appdirect.sdk.isv.api.model.vo.APIResult;
+import com.appdirect.sdk.marketplace.api.vo.APIResult;
 
 @Slf4j
 @RestController

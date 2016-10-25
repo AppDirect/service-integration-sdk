@@ -10,8 +10,8 @@ import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentials;
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentialsSupplier;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentials;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
 
 public class IsvSpecificMarketplaceCredentialsConsumerDetailsServiceTest {
 

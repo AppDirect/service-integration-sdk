@@ -6,28 +6,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentialsSupplier;
-import com.appdirect.sdk.isv.service.exception.IsvEventConsumerExceptionHandler;
-import com.appdirect.sdk.isv.service.processor.IsvEventProcessor;
-import com.appdirect.sdk.isv.service.processor.IsvEventProcessorRegistry;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
+import com.appdirect.sdk.marketplace.MarketplaceEventProcessor;
+import com.appdirect.sdk.marketplace.MarketplaceEventProcessorRegistry;
 import com.appdirect.sdk.web.IsvController;
-import com.appdirect.sdk.web.MarketplaceEventFetcher;
 import com.appdirect.sdk.web.IsvEventService;
+import com.appdirect.sdk.web.MarketplaceEventFetcher;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.SecurityConfiguration;
+import com.appdirect.sdk.web.exception.MarketplaceEventConsumerExceptionHandler;
 
 @Configuration
 @Import({JacksonConfiguration.class, SecurityConfiguration.class})
 public class ConnectorSdkConfiguration {
 
     @Bean
-    public IsvEventConsumerExceptionHandler isvEventConsumerExceptionHandler() {
-        return new IsvEventConsumerExceptionHandler();
+    public MarketplaceEventConsumerExceptionHandler isvEventConsumerExceptionHandler() {
+        return new MarketplaceEventConsumerExceptionHandler();
     }
 
     @Bean
-    public IsvEventProcessorRegistry isvEventProcessorRegistry(Set<IsvEventProcessor> processors) {
-        return new IsvEventProcessorRegistry(processors);
+    public MarketplaceEventProcessorRegistry isvEventProcessorRegistry(Set<MarketplaceEventProcessor> processors) {
+        return new MarketplaceEventProcessorRegistry(processors);
     }
 
     @Bean
@@ -36,9 +36,9 @@ public class ConnectorSdkConfiguration {
     }
 
     @Bean
-    public IsvEventService isvEventService(IsvEventProcessorRegistry isvEventProcessorRegistry,
+    public IsvEventService isvEventService(MarketplaceEventProcessorRegistry marketplaceEventProcessorRegistry,
                                            IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
-        return new IsvEventService(isvEventFetcher(), isvEventProcessorRegistry, credentialsSupplier);
+        return new IsvEventService(isvEventFetcher(), marketplaceEventProcessorRegistry, credentialsSupplier);
     }
 
     @Bean

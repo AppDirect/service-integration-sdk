@@ -17,7 +17,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.appdirect.sdk.isv.IsvSpecificMarketplaceCredentialsSupplier;
+import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.IsvSpecificMarketplaceCredentialsConsumerDetailsService;
 
 @Configuration

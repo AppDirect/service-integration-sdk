@@ -5,16 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.isv.api.model.vo.EventInfo;
-import com.appdirect.sdk.isv.service.exception.IsvEventConsumerExceptionHandler;
+import com.appdirect.sdk.marketplace.api.vo.EventInfo;
+import com.appdirect.sdk.web.exception.MarketplaceEventConsumerExceptionHandler;
 import com.appdirect.sdk.web.oauth.SignpostOAuthClientHttpRequestFactory;
 
 @Slf4j
 public class MarketplaceEventFetcher {
 
-	private final IsvEventConsumerExceptionHandler errorHandler;
+	private final MarketplaceEventConsumerExceptionHandler errorHandler;
 
-	public MarketplaceEventFetcher(IsvEventConsumerExceptionHandler errorHandler) {
+	public MarketplaceEventFetcher(MarketplaceEventConsumerExceptionHandler errorHandler) {
 		this.errorHandler = errorHandler;
 	}
 

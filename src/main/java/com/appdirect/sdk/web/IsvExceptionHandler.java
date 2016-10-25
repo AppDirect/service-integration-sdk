@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.appdirect.sdk.isv.api.model.vo.APIResult;
-import com.appdirect.sdk.isv.exception.IsvServiceException;
+import com.appdirect.sdk.marketplace.api.vo.APIResult;
+import com.appdirect.sdk.web.exception.IsvServiceException;
 
 @Slf4j
 @ControllerAdvice

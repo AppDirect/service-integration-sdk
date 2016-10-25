@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.appdirect.sdk.isv.api.model.vo.APIResult;
+import com.appdirect.sdk.marketplace.api.vo.APIResult;
 
 public class IsvControllerTest {
 
