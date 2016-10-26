@@ -56,6 +56,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>oauth.signpost</groupId>
+      <artifactId>signpost-core</artifactId>
+      <version>1.2.1.2</version>
+      <scope></scope>
+    </dependency>
   </dependencies>
 
   <build>

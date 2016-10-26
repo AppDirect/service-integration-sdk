@@ -23,57 +23,57 @@ import com.appdirect.sdk.web.oauth.IsvSpecificAppmarketCredentialsConsumerDetail
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private IsvSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	@Autowired
+	private IsvSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
-    @Bean
-    public ConsumerDetailsService consumerDetailsService() {
-        return new IsvSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
-    }
+	@Bean
+	public ConsumerDetailsService consumerDetailsService() {
+		return new IsvSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+	}
 
-    @Bean
-    public OAuthProviderTokenServices oauthProviderTokenServices() {
-        return new InMemorySelfCleaningProviderTokenServices();
-    }
+	@Bean
+	public OAuthProviderTokenServices oauthProviderTokenServices() {
+		return new InMemorySelfCleaningProviderTokenServices();
+	}
 
-    @Bean
-    public OAuthProcessingFilterEntryPoint oAuthProcessingFilterEntryPoint() {
-        return new OAuthProcessingFilterEntryPoint();
-    }
+	@Bean
+	public OAuthProcessingFilterEntryPoint oAuthProcessingFilterEntryPoint() {
+		return new OAuthProcessingFilterEntryPoint();
+	}
 
-    @Bean
-    public OAuthSignatureCheckingFilter customProtectedResourceFilter() {
-        OAuthSignatureCheckingFilter filter = new OAuthSignatureCheckingFilter();
-        filter.setConsumerDetailsService(consumerDetailsService());
-        filter.setTokenServices(oauthProviderTokenServices());
-        filter.setAuthenticationEntryPoint(oAuthProcessingFilterEntryPoint());
-        return filter;
-    }
+	@Bean
+	public OAuthSignatureCheckingFilter oAuthSignatureCheckingFilter() {
+		OAuthSignatureCheckingFilter filter = new OAuthSignatureCheckingFilter();
+		filter.setConsumerDetailsService(consumerDetailsService());
+		filter.setTokenServices(oauthProviderTokenServices());
+		filter.setAuthenticationEntryPoint(oAuthProcessingFilterEntryPoint());
+		return filter;
+	}
 
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new Http403ForbiddenEntryPoint();
-    }
+	@Bean
+	public AuthenticationEntryPoint authenticationEntryPoint() {
+		return new Http403ForbiddenEntryPoint();
+	}
 
-    @Bean
-    public SecurityContextHolderStrategy securityContextHolderStrategy() {
-        return SecurityContextHolder.getContextHolderStrategy();
-    }
+	@Bean
+	public SecurityContextHolderStrategy securityContextHolderStrategy() {
+		return SecurityContextHolder.getContextHolderStrategy();
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .antMatcher("/api/v1/**")
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .csrf().disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(authenticationEntryPoint())
-            .and()
-            .authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .addFilterBefore(customProtectedResourceFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.antMatcher("/api/v1/**")
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.csrf().disable()
+				.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint())
+				.and()
+				.authorizeRequests()
+				.anyRequest().authenticated()
+				.and()
+				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class);
+	}
 }
