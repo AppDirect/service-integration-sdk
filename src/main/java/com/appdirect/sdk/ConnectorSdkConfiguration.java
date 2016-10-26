@@ -12,6 +12,7 @@ import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.AppmarketEventController;
 import com.appdirect.sdk.web.AppmarketEventFetcher;
 import com.appdirect.sdk.web.AppmarketEventService;
+import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.SecurityConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
@@ -31,8 +32,12 @@ public class ConnectorSdkConfiguration {
 	}
 
 	@Bean
+	public RestOperationsFactory restOperationsFactory() {
+		return new RestOperationsFactory(appmarketEventConsumerExceptionHandler());
+	}
+	@Bean
 	public AppmarketEventFetcher appmarketEventFetcher() {
-		return new AppmarketEventFetcher(appmarketEventConsumerExceptionHandler());
+		return new AppmarketEventFetcher(restOperationsFactory());
 	}
 
 	@Bean
