@@ -24,15 +24,19 @@ import oauth.signpost.exception.OAuthMessageSignerException;
 
 public class FakeAppmarket {
 	private final HttpServer server;
+	private final String isvKey;
+	private final String isvSecret;
 	private String lastRequestPath;
 
-	public static FakeAppmarket create(int port) throws IOException {
+	public static FakeAppmarket create(int port, String isvKey, String isvSecret) throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-		return new FakeAppmarket(server);
+		return new FakeAppmarket(server, isvKey, isvSecret);
 	}
 
-	private FakeAppmarket(HttpServer server) {
+	private FakeAppmarket(HttpServer server, String isvKey, String isvSecret) {
 		this.server = server;
+		this.isvKey = isvKey;
+		this.isvSecret = isvSecret;
 	}
 
 	public FakeAppmarket start() {
@@ -64,7 +68,7 @@ public class FakeAppmarket {
 	}
 
 	private void oauthSign(HttpGet request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
-		OAuthConsumer consumer = new CommonsHttpOAuthConsumer("isv-key", "isv-secret");
+		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(isvKey, isvSecret);
 		consumer.sign(request);
 	}
 
@@ -80,7 +84,7 @@ public class FakeAppmarket {
 			lastRequestPath = t.getRequestURI().toString();
 
 			String authorization = t.getRequestHeaders().getFirst("Authorization");
-			if (authorization == null || !authorization.startsWith("OAuth oauth_consumer_key")) {
+			if (authorization == null || !authorization.startsWith("OAuth oauth_consumer_key=\"" + isvKey + "\",")) {
 				sendResponse(t, 401, "UNAUTHORIZED! Use OAUTH!".getBytes(UTF_8));
 				return;
 			}

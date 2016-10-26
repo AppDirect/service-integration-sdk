@@ -24,7 +24,7 @@ public class CanDispatchSubscriptionOrderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		fakeAppmarket = FakeAppmarket.create(localConnectorPort + 1).start();
+		fakeAppmarket = FakeAppmarket.create(localConnectorPort + 1, "isv-key", "isv-secret").start();
 	}
 
 	@After
@@ -33,7 +33,7 @@ public class CanDispatchSubscriptionOrderTest {
 	}
 
 	@Test
-	public void subscriptionOrderTestIsProcessedSuccessfully() throws Exception {
+	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-order");
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-order");
