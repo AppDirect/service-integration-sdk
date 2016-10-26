@@ -67,7 +67,7 @@ public class AppmarketEventService {
 		try {
 			HttpHost httpHost = URIUtils.extractHost(new URI(eventUrl));
 			return httpHost.toURI();
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			log.error("Cannot parse event url", e);
 			throw new IsvServiceException(format("Cannot parse event url=%s", eventUrl));
 		}

@@ -1,5 +1,8 @@
 package com.appdirect.sdk.appmarket;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class IsvSpecificAppmarketCredentials {
     private final String isvKey;
     private final String isvSecret;
