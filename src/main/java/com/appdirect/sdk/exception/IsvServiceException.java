@@ -3,8 +3,8 @@ package com.appdirect.sdk.exception;
 import lombok.Getter;
 import lombok.ToString;
 
-import com.appdirect.sdk.marketplace.api.vo.APIResult;
-import com.appdirect.sdk.marketplace.api.vo.ErrorCode;
+import com.appdirect.sdk.appmarket.api.vo.APIResult;
+import com.appdirect.sdk.appmarket.api.vo.ErrorCode;
 
 @Getter
 @ToString

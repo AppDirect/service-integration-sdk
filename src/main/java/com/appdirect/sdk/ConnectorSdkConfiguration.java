@@ -6,43 +6,43 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
-import com.appdirect.sdk.marketplace.MarketplaceEventProcessor;
-import com.appdirect.sdk.marketplace.MarketplaceEventProcessorRegistry;
-import com.appdirect.sdk.web.IsvController;
-import com.appdirect.sdk.web.IsvEventService;
-import com.appdirect.sdk.web.MarketplaceEventFetcher;
+import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
+import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
+import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.web.AppmarketEventController;
+import com.appdirect.sdk.web.AppmarketEventFetcher;
+import com.appdirect.sdk.web.AppmarketEventService;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.SecurityConfiguration;
-import com.appdirect.sdk.web.exception.MarketplaceEventConsumerExceptionHandler;
+import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 
 @Configuration
 @Import({JacksonConfiguration.class, SecurityConfiguration.class})
 public class ConnectorSdkConfiguration {
 
-    @Bean
-    public MarketplaceEventConsumerExceptionHandler isvEventConsumerExceptionHandler() {
-        return new MarketplaceEventConsumerExceptionHandler();
-    }
+	@Bean
+	public AppmarketEventConsumerExceptionHandler appmarketEventConsumerExceptionHandler() {
+		return new AppmarketEventConsumerExceptionHandler();
+	}
 
-    @Bean
-    public MarketplaceEventProcessorRegistry isvEventProcessorRegistry(Set<MarketplaceEventProcessor> processors) {
-        return new MarketplaceEventProcessorRegistry(processors);
-    }
+	@Bean
+	public AppmarketEventProcessorRegistry appmarketEventProcessorRegistry(Set<AppmarketEventProcessor> processors) {
+		return new AppmarketEventProcessorRegistry(processors);
+	}
 
-    @Bean
-    public MarketplaceEventFetcher isvEventFetcher() {
-        return new MarketplaceEventFetcher(isvEventConsumerExceptionHandler());
-    }
+	@Bean
+	public AppmarketEventFetcher appmarketEventFetcher() {
+		return new AppmarketEventFetcher(appmarketEventConsumerExceptionHandler());
+	}
 
-    @Bean
-    public IsvEventService isvEventService(MarketplaceEventProcessorRegistry marketplaceEventProcessorRegistry,
-                                           IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier) {
-        return new IsvEventService(isvEventFetcher(), marketplaceEventProcessorRegistry, credentialsSupplier);
-    }
+	@Bean
+	public AppmarketEventService appmarketEventService(AppmarketEventProcessorRegistry appmarketEventProcessorRegistry,
+													   IsvSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		return new AppmarketEventService(appmarketEventFetcher(), appmarketEventProcessorRegistry, credentialsSupplier);
+	}
 
-    @Bean
-    public IsvController isvController(IsvEventService isvEventService) {
-        return new IsvController(isvEventService);
-    }
+	@Bean
+	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService) {
+		return new AppmarketEventController(appmarketEventService);
+	}
 }

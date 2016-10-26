@@ -17,18 +17,18 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.appdirect.sdk.marketplace.IsvSpecificMarketplaceCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.IsvSpecificMarketplaceCredentialsConsumerDetailsService;
+import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.web.oauth.IsvSpecificAppmarketCredentialsConsumerDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
-    private IsvSpecificMarketplaceCredentialsSupplier credentialsSupplier;
+    private IsvSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
     @Bean
     public ConsumerDetailsService consumerDetailsService() {
-        return new IsvSpecificMarketplaceCredentialsConsumerDetailsService(credentialsSupplier);
+        return new IsvSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
     }
 
     @Bean
