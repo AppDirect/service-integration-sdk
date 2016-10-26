@@ -6,8 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.collections.Sets.newSet;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.appdirect.sdk.appmarket.api.type.EventType;
 import com.appdirect.sdk.exception.IsvServiceException;
@@ -16,7 +16,7 @@ public class AppmarketEventProcessorRegistryTest {
 	private AppmarketEventProcessor theSoleProcessorInTheRegistry;
 	private AppmarketEventProcessorRegistry registry;
 
-	@BeforeMethod
+	@Before
 	public void setUp() throws Exception {
 		theSoleProcessorInTheRegistry = mock(AppmarketEventProcessor.class);
 		registry = new AppmarketEventProcessorRegistry(newSet(theSoleProcessorInTheRegistry));

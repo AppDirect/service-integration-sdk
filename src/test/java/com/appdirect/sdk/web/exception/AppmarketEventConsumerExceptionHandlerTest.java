@@ -8,10 +8,10 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.appdirect.sdk.exception.IsvServiceException;
 
@@ -19,7 +19,7 @@ public class AppmarketEventConsumerExceptionHandlerTest {
 
 	private AppmarketEventConsumerExceptionHandler handler;
 
-	@BeforeMethod
+	@Before
 	public void setup() throws Exception {
 		handler = new AppmarketEventConsumerExceptionHandler();
 	}

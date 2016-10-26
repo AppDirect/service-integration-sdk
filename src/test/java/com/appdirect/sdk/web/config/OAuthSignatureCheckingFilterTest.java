@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.security.oauth.common.OAuthException;
 import org.springframework.security.oauth.common.signature.OAuthSignatureMethod;
 import org.springframework.security.oauth.common.signature.OAuthSignatureMethodFactory;
@@ -21,8 +23,6 @@ import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth.provider.token.OAuthProviderToken;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenImpl;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.appdirect.sdk.web.oauth.ConnectorConsumerDetails;
 
@@ -32,7 +32,7 @@ public class OAuthSignatureCheckingFilterTest {
 	private OAuthProviderTokenServices tokenServices;
 	private OAuthSignatureMethodFactory methodFactory;
 
-	@BeforeMethod
+	@Before
 	public void setup() throws Exception {
 		tokenServices = mock(OAuthProviderTokenServices.class);
 		methodFactory = mock(OAuthSignatureMethodFactory.class);

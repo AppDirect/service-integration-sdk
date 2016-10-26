@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.exception.OAuthMessageSignerException;
@@ -21,7 +21,7 @@ import oauth.signpost.exception.OAuthMessageSignerException;
 public class OAuthSignedClientHttpRequestFactoryTest {
 	private OAuthSignedClientHttpRequestFactory requestFactory;
 
-	@BeforeMethod
+	@Before
 	public void setup() throws Exception {
 		requestFactory = new OAuthSignedClientHttpRequestFactory("some-key", "some-secret");
 	}

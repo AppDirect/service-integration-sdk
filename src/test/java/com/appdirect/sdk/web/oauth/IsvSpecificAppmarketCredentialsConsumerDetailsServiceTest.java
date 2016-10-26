@@ -6,9 +6,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.function.Supplier;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.security.oauth.provider.ConsumerDetails;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
@@ -18,7 +18,7 @@ public class IsvSpecificAppmarketCredentialsConsumerDetailsServiceTest {
 	private Supplier<IsvSpecificAppmarketCredentials> credentialsSupplier;
 	private IsvSpecificAppmarketCredentialsConsumerDetailsService service;
 
-	@BeforeMethod
+	@Before
 	public void setup() throws Exception {
 		credentialsSupplier = mock(IsvSpecificAppmarketCredentialsSupplier.class);
 

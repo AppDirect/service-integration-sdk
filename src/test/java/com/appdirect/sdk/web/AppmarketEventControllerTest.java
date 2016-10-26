@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.http.ResponseEntity;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.appdirect.sdk.appmarket.api.vo.APIResult;
 
@@ -16,7 +16,7 @@ public class AppmarketEventControllerTest {
 	private AppmarketEventService service;
 	private AppmarketEventController controller;
 
-	@BeforeMethod
+	@Before
 	public void setup() throws Exception {
 		service = mock(AppmarketEventService.class);
 

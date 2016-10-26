@@ -2,15 +2,15 @@ package com.appdirect.sdk.web.oauth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.security.oauth.common.signature.SharedConsumerSecretImpl;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 public class ConnectorConsumerDetailsTest {
 
 	private ConnectorConsumerDetails consumerDetails;
 
-	@BeforeMethod
+	@Before
 	public void theConsumerDetails() {
 		consumerDetails = new ConnectorConsumerDetails("some-key", "some-secret");
 	}

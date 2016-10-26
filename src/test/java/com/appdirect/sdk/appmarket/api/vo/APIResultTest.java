@@ -2,7 +2,7 @@ package com.appdirect.sdk.appmarket.api.vo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class APIResultTest {
 

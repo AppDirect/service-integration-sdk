@@ -3,7 +3,7 @@ package com.appdirect.sdk.utils;
 import static com.appdirect.sdk.utils.StringUtils.isEmpty;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class StringUtilsTest {
 
