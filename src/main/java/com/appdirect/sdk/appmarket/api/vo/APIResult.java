@@ -5,8 +5,11 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class APIResult implements Serializable {
 	private static final long serialVersionUID = -5781176648994756885L;
 
@@ -17,6 +20,10 @@ public class APIResult implements Serializable {
 	private String accountIdentifier;
 	private String userIdentifier;
 	private String id;
+
+	public static APIResult success(String message) {
+		return new APIResult(true, message);
+	}
 
 	public APIResult(ErrorCode errorCode, String message) {
 		setSuccess(false);
