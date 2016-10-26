@@ -57,7 +57,7 @@ public class OAuthSignatureCheckingFilter extends ProtectedResourceProcessingFil
 	private OAuthProviderToken getToken(ConsumerCredentials credentials) {
 		String token = credentials.getToken();
 		OAuthProviderToken authToken = null;
-		if (isEmpty(token)) {
+		if (!isEmpty(token)) {
 			authToken = this.getTokenServices().getToken(token);
 		}
 		return authToken;
