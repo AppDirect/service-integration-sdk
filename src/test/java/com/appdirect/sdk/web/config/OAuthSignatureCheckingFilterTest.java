@@ -40,6 +40,8 @@ public class OAuthSignatureCheckingFilterTest {
 		filter = new OAuthSignatureCheckingFilter();
 		filter.setTokenServices(tokenServices);
 		filter.setSignatureMethodFactory(methodFactory);
+
+		when(tokenServices.getToken(null)).thenThrow(new NullPointerException("no token, should not call me!"));
 	}
 
 	@Test
