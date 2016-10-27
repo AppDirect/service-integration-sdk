@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class APIResult {

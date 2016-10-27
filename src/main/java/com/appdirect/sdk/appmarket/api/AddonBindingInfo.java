@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 public class AddonBindingInfo {
 	private String id;
