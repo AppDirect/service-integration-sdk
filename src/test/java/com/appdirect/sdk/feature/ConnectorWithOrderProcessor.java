@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Import;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventType;
@@ -18,8 +18,8 @@ import com.appdirect.sdk.appmarket.api.EventType;
 @Import(ConnectorSdkConfiguration.class)
 public class ConnectorWithOrderProcessor {
 	@Bean
-	public IsvSpecificAppmarketCredentialsSupplier credentialsSupplier() {
-		return () -> new IsvSpecificAppmarketCredentials("isv-key", "isv-secret");
+	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
+		return () -> new DeveloperSpecificAppmarketCredentials("isv-key", "isv-secret");
 	}
 
 	@Bean

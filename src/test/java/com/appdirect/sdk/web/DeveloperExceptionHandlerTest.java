@@ -6,15 +6,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import com.appdirect.sdk.appmarket.api.APIResult;
-import com.appdirect.sdk.exception.IsvServiceException;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
-public class IsvExceptionHandlerTest {
+public class DeveloperExceptionHandlerTest {
 
 	@Test
 	public void handleIsvServiceException_returnsTheApiResultInIt() throws Exception {
-		IsvServiceException someException = new IsvServiceException(UNAUTHORIZED, "no no no");
+		DeveloperServiceException someException = new DeveloperServiceException(UNAUTHORIZED, "no no no");
 
-		APIResult result = new IsvExceptionHandler().handleIsvServiceException(someException);
+		APIResult result = new DeveloperExceptionHandler().handleDeveloperServiceException(someException);
 
 		assertThat(result).isEqualTo(unauthorized("no no no"));
 	}

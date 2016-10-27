@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
-import com.appdirect.sdk.exception.IsvServiceException;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j
 public class AppmarketEventConsumerExceptionHandler implements ResponseErrorHandler {
@@ -19,9 +19,9 @@ public class AppmarketEventConsumerExceptionHandler implements ResponseErrorHand
 	public void handleError(ClientHttpResponse response) throws IOException {
 		log.error("Response error: code={} text={}", response.getStatusCode(), response.getStatusText());
 		if (HttpStatus.NOT_FOUND == response.getStatusCode()) {
-			throw new IsvServiceException(NOT_FOUND, errorMessage(response.getStatusText()));
+			throw new DeveloperServiceException(NOT_FOUND, errorMessage(response.getStatusText()));
 		} else {
-			throw new IsvServiceException(errorMessage(response.getStatusText()));
+			throw new DeveloperServiceException(errorMessage(response.getStatusText()));
 		}
 	}
 

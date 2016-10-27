@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.appdirect.sdk.appmarket.api.EventType;
-import com.appdirect.sdk.exception.IsvServiceException;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 public class AppmarketEventProcessorRegistry {
     private final Set<AppmarketEventProcessor> appmarketEventProcessors;
@@ -21,7 +21,7 @@ public class AppmarketEventProcessorRegistry {
 
     public AppmarketEventProcessor get(EventType eventType) {
         return find(eventType).orElseThrow(() ->
-            new IsvServiceException(String.format("EventType = %s is not supported.", eventType.toString()))
+            new DeveloperServiceException(String.format("EventType = %s is not supported.", eventType.toString()))
         );
     }
 }

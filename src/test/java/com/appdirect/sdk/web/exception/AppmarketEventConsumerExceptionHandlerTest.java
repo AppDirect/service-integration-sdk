@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 
-import com.appdirect.sdk.exception.IsvServiceException;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 public class AppmarketEventConsumerExceptionHandlerTest {
 
@@ -37,7 +37,7 @@ public class AppmarketEventConsumerExceptionHandlerTest {
 	@Test
 	public void notFoundResponse_throwsNotFoundException() throws Exception {
 		assertThatThrownBy(() -> handler.handleError(notFoundResponse()))
-				.isInstanceOf(IsvServiceException.class)
+				.isInstanceOf(DeveloperServiceException.class)
 				.hasMessage("Failed to fetch event: Not Found")
 				.hasFieldOrPropertyWithValue("result.errorCode", NOT_FOUND);
 	}
@@ -45,7 +45,7 @@ public class AppmarketEventConsumerExceptionHandlerTest {
 	@Test
 	public void noContentResponse_throwsGenericException() throws Exception {
 		assertThatThrownBy(() -> handler.handleError(noContentResponse()))
-				.isInstanceOf(IsvServiceException.class)
+				.isInstanceOf(DeveloperServiceException.class)
 				.hasMessage("Failed to fetch event: No Content")
 				.hasFieldOrPropertyWithValue("result.errorCode", null);
 	}

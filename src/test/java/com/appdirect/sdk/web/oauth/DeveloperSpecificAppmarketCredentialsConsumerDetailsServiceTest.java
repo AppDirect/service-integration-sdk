@@ -10,24 +10,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.oauth.provider.ConsumerDetails;
 
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 
-public class IsvSpecificAppmarketCredentialsConsumerDetailsServiceTest {
+public class DeveloperSpecificAppmarketCredentialsConsumerDetailsServiceTest {
 
-	private Supplier<IsvSpecificAppmarketCredentials> credentialsSupplier;
-	private IsvSpecificAppmarketCredentialsConsumerDetailsService service;
+	private Supplier<DeveloperSpecificAppmarketCredentials> credentialsSupplier;
+	private DeveloperSpecificAppmarketCredentialsConsumerDetailsService service;
 
 	@Before
 	public void setup() throws Exception {
-		credentialsSupplier = mock(IsvSpecificAppmarketCredentialsSupplier.class);
+		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
 
-		service = new IsvSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+		service = new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
 	}
 
 	@Test
 	public void loadConsumerByConsumerKey_buildsConsumerDetails_fromCredentials() throws Exception {
-		IsvSpecificAppmarketCredentials credentials = new IsvSpecificAppmarketCredentials("some-key", "some-secret");
+		DeveloperSpecificAppmarketCredentials credentials = new DeveloperSpecificAppmarketCredentials("some-key", "some-secret");
 		when(credentialsSupplier.get()).thenReturn(credentials);
 
 		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("some-key");
@@ -38,7 +38,7 @@ public class IsvSpecificAppmarketCredentialsConsumerDetailsServiceTest {
 
 	@Test
 	public void loadConsumerByConsumerKey_ignores_consumerKey() throws Exception {
-		IsvSpecificAppmarketCredentials credentials = new IsvSpecificAppmarketCredentials("some-key", "some-secret");
+		DeveloperSpecificAppmarketCredentials credentials = new DeveloperSpecificAppmarketCredentials("some-key", "some-secret");
 		when(credentialsSupplier.get()).thenReturn(credentials);
 
 		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("This value will be ignored");

@@ -3,20 +3,20 @@ package com.appdirect.sdk.appmarket;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class IsvSpecificAppmarketCredentials {
+public class DeveloperSpecificAppmarketCredentials {
     private final String isvKey;
     private final String isvSecret;
 
-    public IsvSpecificAppmarketCredentials(String isvKey, String isvSecret) {
+    public DeveloperSpecificAppmarketCredentials(String isvKey, String isvSecret) {
         this.isvKey = isvKey;
         this.isvSecret = isvSecret;
     }
 
-    public String getIsvKey() {
+    public String getDeveloperKey() {
         return isvKey;
     }
 
-    public String getIsvSecret() {
+    public String getDeveloperSecret() {
         return isvSecret;
     }
 }

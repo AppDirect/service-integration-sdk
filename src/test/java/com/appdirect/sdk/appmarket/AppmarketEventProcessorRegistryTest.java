@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.appdirect.sdk.appmarket.api.EventType;
-import com.appdirect.sdk.exception.IsvServiceException;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 public class AppmarketEventProcessorRegistryTest {
 	private AppmarketEventProcessor theSoleProcessorInTheRegistry;
@@ -35,6 +35,6 @@ public class AppmarketEventProcessorRegistryTest {
 	public void whenGetIsCalledAndNoProcessorsSupportTheTenantIsvServiceExceptionIsThrown() {
 		when(theSoleProcessorInTheRegistry.supports(EventType.SUBSCRIPTION_ORDER)).thenReturn(false);
 
-		assertThatThrownBy(() -> registry.get(EventType.SUBSCRIPTION_ORDER)).isInstanceOf(IsvServiceException.class);
+		assertThatThrownBy(() -> registry.get(EventType.SUBSCRIPTION_ORDER)).isInstanceOf(DeveloperServiceException.class);
 	}
 }

@@ -8,17 +8,17 @@ import com.appdirect.sdk.appmarket.api.ErrorCode;
 
 @Getter
 @ToString
-public class IsvServiceException extends RuntimeException {
+public class DeveloperServiceException extends RuntimeException {
 	private static final long serialVersionUID = 6079855456255852065L;
 
 	private final APIResult result;
 
-	public IsvServiceException(String message) {
+	public DeveloperServiceException(String message) {
 		super(message);
 		this.result = new APIResult(false, message);
 	}
 
-	public IsvServiceException(ErrorCode errorCode, String message) {
+	public DeveloperServiceException(ErrorCode errorCode, String message) {
 		super(message);
 		this.result = new APIResult(errorCode, message);
 	}

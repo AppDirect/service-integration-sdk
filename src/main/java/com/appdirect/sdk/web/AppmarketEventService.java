@@ -12,22 +12,22 @@ import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
 
 import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventFlag;
 import com.appdirect.sdk.appmarket.api.EventInfo;
-import com.appdirect.sdk.exception.IsvServiceException;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j
 public class AppmarketEventService {
 	private final AppmarketEventFetcher appmarketEventFetcher;
 	private final AppmarketEventProcessorRegistry eventProcessorRegistry;
-	private final Supplier<IsvSpecificAppmarketCredentials> credentialsSupplier;
+	private final Supplier<DeveloperSpecificAppmarketCredentials> credentialsSupplier;
 
 	public AppmarketEventService(AppmarketEventFetcher appmarketEventFetcher,
 								 AppmarketEventProcessorRegistry eventProcessorRegistry,
-								 IsvSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+								 DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
 		this.appmarketEventFetcher = appmarketEventFetcher;
 		this.eventProcessorRegistry = eventProcessorRegistry;
 		this.credentialsSupplier = credentialsSupplier;
@@ -42,18 +42,18 @@ public class AppmarketEventService {
 				return new APIResult(true, "success response to stateless event.");
 			}
 			return process(event, baseUrl);
-		} catch (IsvServiceException e) { // this is a business error, bubble it up: it's handled elsewhere.
+		} catch (DeveloperServiceException e) { // this is a business error, bubble it up: it's handled elsewhere.
 			log.error("Service returned an error for url={}, result={}", url, e.getResult());
 			throw e;
 		} catch (RuntimeException e) {
 			log.error("Exception while attempting to process an event. eventUrl={}", url, e);
-			throw new IsvServiceException(UNKNOWN_ERROR, format("Failed to process event. url=%s", url));
+			throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. url=%s", url));
 		}
 	}
 
 	private EventInfo fetchEvent(String url) {
-		IsvSpecificAppmarketCredentials credentials = credentialsSupplier.get();
-		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.getIsvKey(), credentials.getIsvSecret());
+		DeveloperSpecificAppmarketCredentials credentials = credentialsSupplier.get();
+		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.getDeveloperKey(), credentials.getDeveloperSecret());
 		log.info("Successfully retrieved event={}", event);
 		return event;
 	}
@@ -68,7 +68,7 @@ public class AppmarketEventService {
 			return httpHost.toURI();
 		} catch (Exception e) {
 			log.error("Cannot parse event url", e);
-			throw new IsvServiceException(format("Cannot parse event url=%s", eventUrl));
+			throw new DeveloperServiceException(format("Cannot parse event url=%s", eventUrl));
 		}
 	}
 }

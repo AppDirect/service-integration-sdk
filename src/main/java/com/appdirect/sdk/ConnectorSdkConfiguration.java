@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 
 import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
-import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.AppmarketEventController;
 import com.appdirect.sdk.web.AppmarketEventFetcher;
 import com.appdirect.sdk.web.AppmarketEventService;
@@ -42,7 +42,7 @@ public class ConnectorSdkConfiguration {
 
 	@Bean
 	public AppmarketEventService appmarketEventService(AppmarketEventProcessorRegistry appmarketEventProcessorRegistry,
-													   IsvSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+													   DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
 		return new AppmarketEventService(appmarketEventFetcher(), appmarketEventProcessorRegistry, credentialsSupplier);
 	}
 
