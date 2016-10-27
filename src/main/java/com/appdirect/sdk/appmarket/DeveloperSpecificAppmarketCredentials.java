@@ -2,21 +2,24 @@ package com.appdirect.sdk.appmarket;
 
 import lombok.EqualsAndHashCode;
 
+/**
+ * Represents the credentials needed to authenticate with the AppMarket
+ */
 @EqualsAndHashCode
 public class DeveloperSpecificAppmarketCredentials {
-    private final String isvKey;
-    private final String isvSecret;
+	private final String developerKey;
+	private final String developerSecret;
 
-    public DeveloperSpecificAppmarketCredentials(String isvKey, String isvSecret) {
-        this.isvKey = isvKey;
-        this.isvSecret = isvSecret;
-    }
+	public DeveloperSpecificAppmarketCredentials(String developerKey, String developerSecret) {
+		this.developerKey = developerKey;
+		this.developerSecret = developerSecret;
+	}
 
-    public String getDeveloperKey() {
-        return isvKey;
-    }
+	public String getDeveloperKey() {
+		return developerKey;
+	}
 
-    public String getDeveloperSecret() {
-        return isvSecret;
-    }
+	public String getDeveloperSecret() {
+		return developerSecret;
+	}
 }
