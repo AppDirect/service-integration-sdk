@@ -1,0 +1,44 @@
+{
+  "type": "SUBSCRIPTION_ORDER",
+  "marketplace": {
+    "partner": "gabrielspub-test",
+    "baseUrl": "https://gabrielspub-test.byappdirect.com"
+  },
+  "applicationUuid": null,
+  "flag": "DEVELOPMENT",
+  "creator": {
+    "uuid": "dac5f67b-7da7-4603-bb1b-3fd507509081",
+    "openId": "https://gabrielspub-test.byappdirect.com/openid/id/dac5f67b-7da7-4603-bb1b-3fd507509081",
+    "email": "gabriel.x@gmail.com",
+    "firstName": "Gabriel",
+    "lastName": "SomeLastName",
+    "language": "en",
+    "address": null,
+    "attributes": null
+  },
+  "payload": {
+    "user": null,
+    "company": {
+      "uuid": "6c9832df-a5f2-40dc-9fe6-823ac2c4f143",
+      "externalId": null,
+      "name": "Gabriel's Company",
+      "email": null,
+      "phoneNumber": null,
+      "website": null,
+      "country": "US"
+    },
+    "account": null,
+    "addonInstance": null,
+    "addonBinding": null,
+    "order": {
+      "editionCode": "BASIC",
+      "addonOfferingCode": null,
+      "pricingDuration": "MONTHLY",
+      "items": []
+    },
+    "notice": null,
+    "configuration": {}
+  },
+  "returnUrl": null,
+  "links": []
+}
