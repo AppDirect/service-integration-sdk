@@ -57,6 +57,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.5.2</version>
+    </dependency>
+    <dependency>
       <groupId>oauth.signpost</groupId>
       <artifactId>signpost-commonshttp4</artifactId>
       <version>1.2.1.2</version>

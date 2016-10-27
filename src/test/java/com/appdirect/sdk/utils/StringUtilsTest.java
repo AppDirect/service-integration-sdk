@@ -5,7 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
+import com.appdirect.sdk.support.UtilityClassesAreWellDefined;
+
 public class StringUtilsTest {
+	@Test
+	public void stringUtils_isWellDefinedUtilityClass() throws Exception {
+		UtilityClassesAreWellDefined.verify(StringUtils.class);
+	}
 
 	@Test
 	public void isEmpty_nullString_isEmpty() throws Exception {
