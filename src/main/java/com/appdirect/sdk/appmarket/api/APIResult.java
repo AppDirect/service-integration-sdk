@@ -21,10 +21,6 @@ public class APIResult implements Serializable {
 	private String userIdentifier;
 	private String id;
 
-	public static APIResult success(String message) {
-		return new APIResult(true, message);
-	}
-
 	public APIResult(ErrorCode errorCode, String message) {
 		setSuccess(false);
 		setErrorCode(errorCode);
@@ -34,5 +30,9 @@ public class APIResult implements Serializable {
 	public APIResult(boolean success, String message) {
 		setSuccess(success);
 		setMessage(message);
+	}
+
+	public static APIResult success(String message) {
+		return new APIResult(true, message);
 	}
 }

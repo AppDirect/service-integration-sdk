@@ -10,18 +10,18 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Configuration
 @ConditionalOnClass(ObjectMapper.class)
-public class JacksonConfiguration {
+public class JacksonConfiguration { // NOSONAR: squid:S1118 - "Add a private constructor to hide the implicit public one" - not an utility class, no one will derive from it.
 
-    @Configuration
-    @ConditionalOnClass({ObjectMapper.class, Jackson2ObjectMapperBuilder.class})
-    static class JacksonObjectMapperConfiguration {
+	@Configuration
+	@ConditionalOnClass({ObjectMapper.class, Jackson2ObjectMapperBuilder.class})
+	static class JacksonObjectMapperConfiguration {
 
-        @Bean
-        public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-            return builder
-                .createXmlMapper(false)
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .build();
-        }
-    }
+		@Bean
+		public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+			return builder
+					.createXmlMapper(false)
+					.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+					.build();
+		}
+	}
 }
