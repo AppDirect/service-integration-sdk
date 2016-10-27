@@ -1,16 +1,14 @@
 package com.appdirect.sdk.appmarket.api;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
-@NoArgsConstructor
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class AddonInstanceInfo implements Serializable {
-	private static final long serialVersionUID = -136626854920013207L;
-
+public class AddonInstanceInfo {
 	private String id;
 }

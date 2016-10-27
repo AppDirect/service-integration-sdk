@@ -1,8 +1,10 @@
 package com.appdirect.sdk.appmarket.api;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,13 +13,9 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class EventPayload {
-	private UserInfo user;
-	private CompanyInfo company;
+@Builder
+public class Usage {
 	private AccountInfo account;
 	private AddonInstanceInfo addonInstance;
-	private AddonBindingInfo addonBinding;
-	private OrderInfo order;
-	private NoticeInfo notice;
-	private HashMap<String, String> configuration = new HashMap<>();
+	private List<UsageItem> items = new ArrayList<>();
 }

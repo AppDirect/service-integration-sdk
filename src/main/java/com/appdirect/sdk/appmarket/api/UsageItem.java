@@ -1,22 +1,19 @@
 package com.appdirect.sdk.appmarket.api;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-@Builder
 @Getter
-@Setter
-@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class UsageItemBean implements Serializable {
-	private static final long serialVersionUID = 4836137752602987252L;
-
+@Builder
+public class UsageItem {
 	private PricingUnit unit;
 	private BigDecimal quantity;
 	private BigDecimal price;

@@ -1,23 +1,17 @@
 package com.appdirect.sdk.appmarket.api;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@Builder
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class EventInfo implements Serializable {
-	private static final long serialVersionUID = -7191601292455522677L;
-
+@EqualsAndHashCode
+@AllArgsConstructor
+@Builder
+public class EventInfo {
 	private EventType type;
 	private MarketInfo marketplace;
 	private String applicationUuid;

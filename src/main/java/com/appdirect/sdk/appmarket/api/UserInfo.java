@@ -1,24 +1,19 @@
 package com.appdirect.sdk.appmarket.api;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@Builder
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class UserInfo implements Serializable {
-	private static final long serialVersionUID = -4844899619664634913L;
-
+@EqualsAndHashCode
+@AllArgsConstructor
+@Builder
+public class UserInfo {
 	private String uuid;
 	private String openId;
 	private String email;
