@@ -10,13 +10,18 @@ Spring Boot applications.
 
 ##Getting started
 
-* Include a dependency on the sdk in your pom.xml 
+* Include a dependency on the sdk in your pom.xml
 ```
 <dependency>
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
-    <version>[latest-version-of-SDK-goes-here]</version>
+    <version>1.0-SNAPSHOT</version>
 </dependency>
+```
+* Ensure that your connector's application context imports the ConnectorSdkConfiguration
+class; Use the import annotation
+```
+@Import(ConnectorSdkConfiguration.class)
 ```
 
 * Ensure that your application context includes a bean implementing
