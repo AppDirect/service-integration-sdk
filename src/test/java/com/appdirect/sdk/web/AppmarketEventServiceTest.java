@@ -1,12 +1,11 @@
 package com.appdirect.sdk.web;
 
-import static com.appdirect.sdk.appmarket.api.vo.ErrorCode.UNKNOWN_ERROR;
+import static com.appdirect.sdk.appmarket.api.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -19,11 +18,11 @@ import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.api.type.EventType;
-import com.appdirect.sdk.appmarket.api.vo.APIResult;
-import com.appdirect.sdk.appmarket.api.vo.ErrorCode;
-import com.appdirect.sdk.appmarket.api.vo.EventFlag;
-import com.appdirect.sdk.appmarket.api.vo.EventInfo;
+import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.ErrorCode;
+import com.appdirect.sdk.appmarket.api.EventFlag;
+import com.appdirect.sdk.appmarket.api.EventInfo;
+import com.appdirect.sdk.appmarket.api.EventType;
 import com.appdirect.sdk.exception.IsvServiceException;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
-import com.appdirect.sdk.appmarket.api.vo.APIResult;
+import com.appdirect.sdk.appmarket.api.APIResult;
 
 public class AppmarketEventControllerTest {
 

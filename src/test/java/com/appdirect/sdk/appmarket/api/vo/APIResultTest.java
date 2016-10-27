@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
+import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.ErrorCode;
+
 public class APIResultTest {
 
 	@Test

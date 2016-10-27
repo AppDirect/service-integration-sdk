@@ -1,8 +1,8 @@
 package com.appdirect.sdk.appmarket;
 
-import com.appdirect.sdk.appmarket.api.type.EventType;
-import com.appdirect.sdk.appmarket.api.vo.APIResult;
-import com.appdirect.sdk.appmarket.api.vo.EventInfo;
+import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.EventInfo;
+import com.appdirect.sdk.appmarket.api.EventType;
 
 public interface AppmarketEventProcessor {
 	/**

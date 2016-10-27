@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.api.vo;
+package com.appdirect.sdk.appmarket.api;
 
 public enum EventFlag {
 	STATELESS, DEVELOPMENT

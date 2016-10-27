@@ -1,6 +1,6 @@
 package com.appdirect.sdk.feature;
 
-import static com.appdirect.sdk.appmarket.api.type.EventType.SUBSCRIPTION_ORDER;
+import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_ORDER;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -10,9 +10,9 @@ import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.api.type.EventType;
-import com.appdirect.sdk.appmarket.api.vo.APIResult;
-import com.appdirect.sdk.appmarket.api.vo.EventInfo;
+import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.EventInfo;
+import com.appdirect.sdk.appmarket.api.EventType;
 
 @SpringBootApplication
 @Import(ConnectorSdkConfiguration.class)

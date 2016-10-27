@@ -1,12 +1,10 @@
-package com.appdirect.sdk.appmarket.api.vo;
+package com.appdirect.sdk.appmarket.api;
 
 import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.appdirect.sdk.appmarket.api.type.PricingUnit;
 
 @Getter
 @Setter

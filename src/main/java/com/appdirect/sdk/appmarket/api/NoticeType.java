@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.api.type;
+package com.appdirect.sdk.appmarket.api;
 
 public enum NoticeType {
 	REACTIVATED, DEACTIVATED, CLOSED, UPCOMING_INVOICE

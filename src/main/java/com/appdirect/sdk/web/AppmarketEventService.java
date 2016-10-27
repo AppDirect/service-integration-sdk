@@ -1,10 +1,9 @@
 package com.appdirect.sdk.web;
 
-import static com.appdirect.sdk.appmarket.api.vo.ErrorCode.UNKNOWN_ERROR;
+import static com.appdirect.sdk.appmarket.api.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.function.Supplier;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +14,9 @@ import org.apache.http.client.utils.URIUtils;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.IsvSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.api.vo.APIResult;
-import com.appdirect.sdk.appmarket.api.vo.EventFlag;
-import com.appdirect.sdk.appmarket.api.vo.EventInfo;
+import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.EventFlag;
+import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.exception.IsvServiceException;
 
 @Slf4j

@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.api.vo;
+package com.appdirect.sdk.appmarket.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.appdirect.sdk.appmarket.api.type.PricingDuration;
 
 @Builder
 @Getter

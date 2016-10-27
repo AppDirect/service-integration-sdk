@@ -3,7 +3,7 @@ package com.appdirect.sdk.appmarket;
 import java.util.Optional;
 import java.util.Set;
 
-import com.appdirect.sdk.appmarket.api.type.EventType;
+import com.appdirect.sdk.appmarket.api.EventType;
 import com.appdirect.sdk.exception.IsvServiceException;
 
 public class AppmarketEventProcessorRegistry {

@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.api.vo;
+package com.appdirect.sdk.appmarket.api;
 
 import java.io.Serializable;
 import java.util.HashMap;

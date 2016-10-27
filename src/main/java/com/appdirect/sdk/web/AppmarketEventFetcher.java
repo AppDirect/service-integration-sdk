@@ -2,7 +2,7 @@ package com.appdirect.sdk.web;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.appdirect.sdk.appmarket.api.vo.EventInfo;
+import com.appdirect.sdk.appmarket.api.EventInfo;
 
 @Slf4j
 public class AppmarketEventFetcher {

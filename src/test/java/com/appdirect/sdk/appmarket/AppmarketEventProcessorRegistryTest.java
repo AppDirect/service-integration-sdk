@@ -9,7 +9,7 @@ import static org.mockito.internal.util.collections.Sets.newSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.appdirect.sdk.appmarket.api.type.EventType;
+import com.appdirect.sdk.appmarket.api.EventType;
 import com.appdirect.sdk.exception.IsvServiceException;
 
 public class AppmarketEventProcessorRegistryTest {
