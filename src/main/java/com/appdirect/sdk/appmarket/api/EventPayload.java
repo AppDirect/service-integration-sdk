@@ -3,7 +3,6 @@ package com.appdirect.sdk.appmarket.api;
 import java.util.HashMap;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
