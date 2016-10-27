@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 public class MarketInfo {
 	private String partner;

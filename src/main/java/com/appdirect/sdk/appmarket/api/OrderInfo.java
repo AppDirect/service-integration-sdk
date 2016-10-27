@@ -11,7 +11,6 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 @Builder
 public class OrderInfo {

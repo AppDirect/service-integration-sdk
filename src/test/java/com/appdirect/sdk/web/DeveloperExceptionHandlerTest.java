@@ -16,10 +16,7 @@ public class DeveloperExceptionHandlerTest {
 
 		APIResult result = new DeveloperExceptionHandler().handleDeveloperServiceException(someException);
 
-		assertThat(result).isEqualTo(unauthorized("no no no"));
-	}
-
-	private APIResult unauthorized(String message) {
-		return new APIResult(UNAUTHORIZED, message);
+		assertThat(result).hasFieldOrPropertyWithValue("errorCode", UNAUTHORIZED)
+				.hasFieldOrPropertyWithValue("message", "no no no");
 	}
 }
