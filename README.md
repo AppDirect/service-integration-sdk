@@ -11,29 +11,28 @@ Spring Boot applications.
 ##Getting started
 
 * Include a dependency on the sdk in your pom.xml
-```
-<dependency>
-    <groupId>com.appdirect</groupId>
-    <artifactId>service-integration-sdk</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
-```
+    ```
+    <dependency>
+        <groupId>com.appdirect</groupId>
+        <artifactId>service-integration-sdk</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+    ```
 * Ensure that your connector's application context imports the ConnectorSdkConfiguration
-class; Use the import annotation
-```
-@Import(ConnectorSdkConfiguration.class)
-```
+  class; Use the import annotation `@Import(ConnectorSdkConfiguration.class)`.
 
 * Ensure that your application context includes a bean implementing
- the 
- ```
- DeveloperSpecificAppmarketCredentialsSupplier
-```
-class that returns a pair of valid marketplace credentials
+  the `DeveloperSpecificAppmarketCredentialsSupplier` class that returns 
+  a pair of valid marketplace credentials.
 
-* Ensure that your application context includes a bean implementing
-```
-AppmarketEventProcessor
-```
-for every type of market event that you would like your connector to handle.
+* Ensure that your application context includes a bean implementing 
+  `AppmarketEventProcessor` for every type of market event that you 
+  would like your connector to handle.
 
+## Exposed endpoints
+
+* `GET /health`
+  Returns a 200 (Success) HTTP code. Used to verify that the server is up
+
+* `GET /api/v1/integration/processEvent?eventUrl=[insert-event-callback-url-here]`
+  That is the endpoint where the appmarket sends event notifications 
