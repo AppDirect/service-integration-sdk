@@ -12,6 +12,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.web.AppmarketEventController;
 import com.appdirect.sdk.web.AppmarketEventFetcher;
 import com.appdirect.sdk.web.AppmarketEventService;
+import com.appdirect.sdk.web.HealthController;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.SecurityConfiguration;
@@ -20,6 +21,11 @@ import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 @Configuration
 @Import({JacksonConfiguration.class, SecurityConfiguration.class})
 public class ConnectorSdkConfiguration {
+
+	@Bean
+	public HealthController healthController() {
+		return new HealthController();
+	}
 
 	@Bean
 	public AppmarketEventConsumerExceptionHandler appmarketEventConsumerExceptionHandler() {
