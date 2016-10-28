@@ -15,7 +15,6 @@ import com.appdirect.sdk.appmarket.api.APIResult;
 
 @Slf4j
 @RestController
-@RequestMapping()
 public class AppmarketEventController {
 
 	private final AppmarketEventService appmarketEventService;

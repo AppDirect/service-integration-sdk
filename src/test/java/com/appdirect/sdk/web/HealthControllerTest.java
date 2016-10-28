@@ -13,13 +13,8 @@ public class HealthControllerTest {
 
 	private HealthController healthController = new HealthController();
 
-	@Before
-	public void setUp() throws Exception {
-
-	}
-
 	@Test
-	public void healthPing() throws Exception {
+	public void testHealthPing_whenServerUp_returnSuccess() throws Exception {
 		//When
 		ResponseEntity<APIResult> apiResultResponseEntity = healthController.healthPing();
 

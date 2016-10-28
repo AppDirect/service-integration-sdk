@@ -12,7 +12,6 @@ import com.appdirect.sdk.appmarket.api.APIResult;
 
 @Slf4j
 @RestController
-@RequestMapping
 public class HealthController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/health")
