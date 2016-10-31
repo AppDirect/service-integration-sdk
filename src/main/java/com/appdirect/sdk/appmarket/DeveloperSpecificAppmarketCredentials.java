@@ -1,11 +1,8 @@
 package com.appdirect.sdk.appmarket;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * Represents the credentials needed to authenticate with the AppMarket
  */
-@EqualsAndHashCode
 public class DeveloperSpecificAppmarketCredentials {
 	private final String developerKey;
 	private final String developerSecret;
