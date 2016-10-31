@@ -3,12 +3,14 @@ package com.appdirect.sdk.appmarket.api;
 import java.util.HashMap;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
 @AllArgsConstructor
+@Builder
 public class EventPayload {
 	private UserInfo user;
 	private CompanyInfo company;
