@@ -11,12 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
 
+import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.Event;
 import com.appdirect.sdk.appmarket.api.EventFlag;
 import com.appdirect.sdk.appmarket.api.EventInfo;
+import com.appdirect.sdk.appmarket.api.EventType;
+import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j
@@ -59,7 +63,18 @@ public class AppmarketEventService {
 	}
 
 	private APIResult process(EventInfo event, String baseAppmarketUrl) {
-		return eventProcessorRegistry.get(event.getType()).process(event, baseAppmarketUrl);
+		Class<? extends Event> eventClass = inferEventClassFromType(event.getType());
+
+		if (eventClass == SubscriptionOrder.class) {
+			AppmarketEventProcessor<SubscriptionOrder> eventProcessor = eventProcessorRegistry.get(event.getType(), SubscriptionOrder.class);
+			SubscriptionOrder richEvent = getRichEvent(event, SubscriptionOrder.class);
+			return eventProcessor.process(richEvent, baseAppmarketUrl);
+		}
+		throw new DeveloperServiceException(format("EventType = %s is not supported.", event.getType().toString()));
+	}
+
+	private <T> T getRichEvent(EventInfo rawEvent, Class<T> eventClass) {
+		return null; // TODO: the rich event, i.e. from a factory or something...
 	}
 
 	private String extractBaseAppmarketUrl(String eventUrl) {
@@ -70,5 +85,9 @@ public class AppmarketEventService {
 			log.error("Cannot parse event url", e);
 			throw new DeveloperServiceException(format("Cannot parse event url=%s", eventUrl));
 		}
+	}
+
+	private Class<? extends Event> inferEventClassFromType(EventType type) {
+		return SubscriptionOrder.class; // TODO: extract to another class.
 	}
 }

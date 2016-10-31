@@ -11,8 +11,8 @@ import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.APIResult;
-import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventType;
+import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 
 @SpringBootApplication
 @Import(ConnectorSdkConfiguration.class)
@@ -23,15 +23,15 @@ public class ConnectorWithOrderProcessor {
 	}
 
 	@Bean
-	public AppmarketEventProcessor subscriptionOrderProcessor() {
-		return new AppmarketEventProcessor() {
+	public AppmarketEventProcessor<SubscriptionOrder> subscriptionOrderProcessor() {
+		return new AppmarketEventProcessor<SubscriptionOrder>() {
 			@Override
 			public boolean supports(EventType eventType) {
 				return eventType == SUBSCRIPTION_ORDER;
 			}
 
 			@Override
-			public APIResult process(EventInfo event, String baseAppmarketUrl) {
+			public APIResult process(SubscriptionOrder event, String baseAppmarketUrl) {
 				return APIResult.success("SUB_ORDER has been processed, trust me.");
 			}
 		};

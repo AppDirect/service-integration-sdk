@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -22,6 +21,7 @@ import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventFlag;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventType;
+import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,6 +33,9 @@ public class AppmarketEventServiceTest {
 	private AppmarketEventProcessorRegistry eventProcessorRegistry;
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+
+	@Mock
+	AppmarketEventProcessor<SubscriptionOrder> mockProcessor;
 
 	private AppmarketEventService testedService;
 
@@ -52,7 +55,6 @@ public class AppmarketEventServiceTest {
 		EventInfo testEvent = EventInfo.builder()
 				.type(testEventType)
 				.build();
-		AppmarketEventProcessor mockProcessor = mock(AppmarketEventProcessor.class);
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
 
 		when(credentialsSupplier.get())
@@ -61,10 +63,10 @@ public class AppmarketEventServiceTest {
 		when(appmarketEventFetcher.fetchEvent(testUrl, testKey, testSecret))
 				.thenReturn(testEvent);
 
-		when(eventProcessorRegistry.get(testEventType))
+		when(eventProcessorRegistry.get(testEventType, SubscriptionOrder.class))
 				.thenReturn(mockProcessor);
 
-		when(mockProcessor.process(testEvent, testUrl))
+		when(mockProcessor.process(toRichEvent(testEvent), testUrl))
 				.thenReturn(expectedProcessingResult);
 
 		//When
@@ -72,6 +74,10 @@ public class AppmarketEventServiceTest {
 
 		//Then
 		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
+	}
+
+	private SubscriptionOrder toRichEvent(EventInfo testEvent) {
+		throw new IllegalArgumentException("TODO: CREATE ME (or refactor to make the test pass)!!!");
 	}
 
 	@Test
