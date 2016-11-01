@@ -19,17 +19,23 @@ Spring Boot applications.
 </dependency>
 ```
 
-* Ensure that your connector's application context imports the `ConnectorSdkConfiguration`
-  class; Use the import annotation `@Import(ConnectorSdkConfiguration.class)`.
+* Ensure your application context imports the `ConnectorSdkConfiguration`
+  class; Use the import annotation `@Import(ConnectorSdkConfiguration.class)`. i.e.
+```
+@SpringBootApplication
+@Import(ConnectorSdkConfiguration.class)
+public class MinimalConnector {
+    // your code...
+}
+```
 
-* Ensure that your application context includes a bean implementing
-  the `DeveloperSpecificAppmarketCredentialsSupplier` class that returns
-  a pair of valid marketplace credentials.
+* Ensure your application context includes a `DeveloperSpecificAppmarketCredentialsSupplier` bean
+  that returns valid appmarket credentials.
 
-* Ensure that your application context includes a bean implementing
-  `AppmarketEventHandler<T>` for every type of market event that you
-  would like your connector to handle.
-  * Not providing handler for a mandatory event type will lead to a `Spring Context` failure.
+* Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of
+  market event your connector handles.
+  * Not providing handler for a mandatory event types will lead to an application context failure.
+  * Current mandatory events are `SubscriptionOrder` & `SubscriptionCancel`
 
 ## Exposed endpoints
 * `GET /health`
