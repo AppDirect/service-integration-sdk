@@ -1,0 +1,35 @@
+{
+  "type": "SUBSCRIPTION_CANCEL",
+  "marketplace": {
+    "partner": "gabrielspub-test",
+    "baseUrl": "https://gabrielspub-test.byappdirect.com"
+  },
+  "applicationUuid": null,
+  "flag": "DEVELOPMENT",
+  "creator": {
+    "uuid": "dac5f67b-7da7-4603-bb1b-3fd507509081",
+    "openId": "https://gabrielspub-test.byappdirect.com/openid/id/dac5f67b-7da7-4603-bb1b-3fd507509081",
+    "email": "gabriel.x@gmail.com",
+    "firstName": "Gabriel",
+    "lastName": "SomeName",
+    "language": "en",
+    "address": null,
+    "attributes": null
+  },
+  "payload": {
+    "user": null,
+    "company": null,
+    "account": {
+      "accountIdentifier": "{{account-id}}",
+      "status": "ACTIVE",
+      "parentAccountIdentifier": null
+    },
+    "addonInstance": null,
+    "addonBinding": null,
+    "order": null,
+    "notice": null,
+    "configuration": {}
+  },
+  "returnUrl": null,
+  "links": []
+}
