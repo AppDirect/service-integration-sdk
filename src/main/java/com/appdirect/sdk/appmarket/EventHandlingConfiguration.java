@@ -47,10 +47,10 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
-		return new AppmarketEventDispatcher(allProcessors());
+		return new AppmarketEventDispatcher(allHandlers());
 	}
 
-	private Map<EventType, SDKEventHandler<?>> allProcessors() {
+	private Map<EventType, SDKEventHandler<?>> allHandlers() {
 		Map<EventType, SDKEventHandler<?>> allProcessors = new HashMap<>();
 		allProcessors.put(SUBSCRIPTION_ORDER, subscriptionOrderSdkHandler());
 		allProcessors.put(SUBSCRIPTION_CANCEL, subscriptionCancelSdkHandler());
