@@ -1,4 +1,9 @@
 package com.appdirect.sdk.appmarket.api;
 
-public class SubscriptionCancel implements Event {
+import lombok.Value;
+
+@Value
+public class SubscriptionCancel {
+	String accountIdentifier;
+	MarketInfo marketplace;
 }
