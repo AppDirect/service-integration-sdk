@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.alt;
+package com.appdirect.sdk.appmarket;
 
 import static java.lang.String.format;
 
@@ -6,13 +6,14 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 
+import com.appdirect.sdk.appmarket.alt.SDKEventHandler;
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.ErrorCode;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventType;
 
 @RequiredArgsConstructor
-public class EventDispatcher {
+public class AppmarketEventDispatcher {
 	Map<EventType, SDKEventHandler<?>> processors;
 
 	public APIResult dispatchAndHandle(EventInfo eventInfo) {

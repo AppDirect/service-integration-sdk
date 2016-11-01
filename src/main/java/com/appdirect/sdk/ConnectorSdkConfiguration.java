@@ -1,16 +1,12 @@
 package com.appdirect.sdk;
 
-import java.util.Set;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
-import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
+import com.appdirect.sdk.appmarket.AppmarketEventDispatcher;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.alt.EventHandlingConfiguration;
-import com.appdirect.sdk.appmarket.api.Event;
 import com.appdirect.sdk.web.AppmarketEventController;
 import com.appdirect.sdk.web.AppmarketEventFetcher;
 import com.appdirect.sdk.web.AppmarketEventService;
@@ -35,28 +31,22 @@ public class ConnectorSdkConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventProcessorRegistry appmarketEventProcessorRegistry(Set<AppmarketEventProcessor<? extends Event>> processors) {
-		return new AppmarketEventProcessorRegistry(processors);
-	}
-
-	@Bean
 	public RestOperationsFactory restOperationsFactory() {
 		return new RestOperationsFactory(appmarketEventConsumerExceptionHandler());
 	}
+
 	@Bean
 	public AppmarketEventFetcher appmarketEventFetcher() {
 		return new AppmarketEventFetcher(restOperationsFactory());
 	}
 
 	@Bean
-	public AppmarketEventService appmarketEventService(AppmarketEventProcessorRegistry appmarketEventProcessorRegistry,
-													   DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new AppmarketEventService(appmarketEventFetcher(), appmarketEventProcessorRegistry, credentialsSupplier);
+	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, AppmarketEventDispatcher eventDispatcher) {
+		return new AppmarketEventService(appmarketEventFetcher(), credentialsSupplier, eventDispatcher);
 	}
 
 	@Bean
 	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService) {
 		return new AppmarketEventController(appmarketEventService);
 	}
-
 }
