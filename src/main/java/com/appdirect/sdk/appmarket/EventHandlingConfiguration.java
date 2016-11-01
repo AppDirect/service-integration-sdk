@@ -16,18 +16,18 @@ import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 
 @Configuration
 public class EventHandlingConfiguration {
-	private final DeveloperEventHandler<SubscriptionOrder> subscriptionOrderDevHandler;
-	private final DeveloperEventHandler<SubscriptionCancel> subscriptionCancelDevHandler;
+	private final AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
+	private final AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
 
 	@Autowired
-	public EventHandlingConfiguration(DeveloperEventHandler<SubscriptionOrder> subscriptionOrderDevHandler, DeveloperEventHandler<SubscriptionCancel> subscriptionCancelDevHandler) {
-		this.subscriptionOrderDevHandler = subscriptionOrderDevHandler;
-		this.subscriptionCancelDevHandler = subscriptionCancelDevHandler;
+	public EventHandlingConfiguration(AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler, AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler) {
+		this.subscriptionOrderHandler = subscriptionOrderHandler;
+		this.subscriptionCancelHandler = subscriptionCancelHandler;
 	}
 
 	@Bean
 	public SDKEventHandler<SubscriptionOrder> subscriptionOrderSdkHandler() {
-		return new DeveloperEventHandlerWrapper<>(subscriptionOrderParser(), subscriptionOrderDevHandler);
+		return new ParseAndHandleWrapper<>(subscriptionOrderParser(), subscriptionOrderHandler);
 	}
 
 	@Bean
@@ -42,7 +42,7 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public SDKEventHandler<SubscriptionCancel> subscriptionCancelSdkHandler() {
-		return new DeveloperEventHandlerWrapper<>(subscriptionCancelParser(), subscriptionCancelDevHandler);
+		return new ParseAndHandleWrapper<>(subscriptionCancelParser(), subscriptionCancelHandler);
 	}
 
 	@Bean

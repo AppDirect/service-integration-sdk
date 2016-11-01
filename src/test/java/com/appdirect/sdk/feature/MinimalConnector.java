@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
-import com.appdirect.sdk.appmarket.DeveloperEventHandler;
+import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
@@ -22,12 +22,12 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public DeveloperEventHandler<SubscriptionOrder> subscriptionOrderHandler() {
+	public AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler() {
 		return event -> success("SUB_ORDER has been processed, trust me.");
 	}
 
 	@Bean
-	public DeveloperEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
+	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
 		return event -> success("SUB_CANCEL has been processed, for real.");
 	}
 }
