@@ -4,6 +4,6 @@ import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 
 @FunctionalInterface
-interface SDKEventHandler<T> {
+interface SDKEventHandler {
 	APIResult handle(EventInfo event);
 }

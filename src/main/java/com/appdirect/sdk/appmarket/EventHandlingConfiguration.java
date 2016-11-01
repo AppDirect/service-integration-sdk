@@ -3,7 +3,8 @@ package com.appdirect.sdk.appmarket;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CANCEL;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_ORDER;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public SDKEventHandler<SubscriptionOrder> subscriptionOrderSdkHandler() {
+	public SDKEventHandler subscriptionOrderSdkHandler() {
 		return new ParseAndHandleWrapper<>(subscriptionOrderParser(), subscriptionOrderHandler);
 	}
 
@@ -41,7 +42,7 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public SDKEventHandler<SubscriptionCancel> subscriptionCancelSdkHandler() {
+	public SDKEventHandler subscriptionCancelSdkHandler() {
 		return new ParseAndHandleWrapper<>(subscriptionCancelParser(), subscriptionCancelHandler);
 	}
 
@@ -51,11 +52,11 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public Map<EventType, SDKEventHandler<?>> allHandlers() {
-		Map<EventType, SDKEventHandler<?>> allProcessors = new HashMap<>();
+	public Map<EventType, SDKEventHandler> allHandlers() {
+		Map<EventType, SDKEventHandler> allProcessors = new EnumMap<>(EventType.class);
 		allProcessors.put(SUBSCRIPTION_ORDER, subscriptionOrderSdkHandler());
 		allProcessors.put(SUBSCRIPTION_CANCEL, subscriptionCancelSdkHandler());
 
-		return allProcessors;
+		return Collections.unmodifiableMap(allProcessors);
 	}
 }

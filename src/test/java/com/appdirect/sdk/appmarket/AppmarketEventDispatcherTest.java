@@ -31,7 +31,7 @@ public class AppmarketEventDispatcherTest {
 
 	@Test
 	public void testDispatchAndHandle_sendsEventToProperHandler() throws Exception {
-		HashMap<EventType, SDKEventHandler<?>> handlers = new HashMap<>();
+		HashMap<EventType, SDKEventHandler> handlers = new HashMap<>();
 		handlers.put(SUBSCRIPTION_ORDER, event -> failure(INVALID_RESPONSE, "OH NO! I FAILED!"));
 		handlers.put(SUBSCRIPTION_CANCEL, event -> success("AH AH! I SUCCEEDED!"));
 

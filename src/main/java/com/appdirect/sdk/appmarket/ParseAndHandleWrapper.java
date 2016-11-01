@@ -8,7 +8,7 @@ import com.appdirect.sdk.appmarket.api.EventInfo;
  *
  * @param <T> the type of the rich event the parser and handler support
  */
-class ParseAndHandleWrapper<T> implements SDKEventHandler<T> {
+class ParseAndHandleWrapper<T> implements SDKEventHandler {
 	private final EventParser<T> parser;
 	private final AppmarketEventHandler<T> eventHandler;
 
