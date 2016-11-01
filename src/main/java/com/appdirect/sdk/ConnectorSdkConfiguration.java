@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessor;
 import com.appdirect.sdk.appmarket.AppmarketEventProcessorRegistry;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.alt.HandlerConfig;
+import com.appdirect.sdk.appmarket.alt.EventHandlingConfiguration;
 import com.appdirect.sdk.appmarket.api.Event;
 import com.appdirect.sdk.web.AppmarketEventController;
 import com.appdirect.sdk.web.AppmarketEventFetcher;
@@ -21,7 +21,7 @@ import com.appdirect.sdk.web.config.SecurityConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 
 @Configuration
-@Import({JacksonConfiguration.class, SecurityConfiguration.class, HandlerConfig.class})
+@Import({JacksonConfiguration.class, SecurityConfiguration.class, EventHandlingConfiguration.class})
 public class ConnectorSdkConfiguration {
 
 	@Bean

@@ -1,36 +1,26 @@
 package com.appdirect.sdk.appmarket.alt;
 
+import static java.lang.String.format;
+
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 
-import com.appdirect.sdk.appmarket.alt.events.EventA;
-import com.appdirect.sdk.appmarket.alt.events.EventB;
-import com.appdirect.sdk.appmarket.alt.events.EventC;
 import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.api.ErrorCode;
 import com.appdirect.sdk.appmarket.api.EventInfo;
+import com.appdirect.sdk.appmarket.api.EventType;
 
 @RequiredArgsConstructor
 public class EventDispatcher {
-	//NOTE: instead of having the deps explicitly, we can have a bean that is a Map<String, SDKEventHandler<?>> to store them
-	//NOTE2: Here the parsing is done in the (SDK internal) SDKEventHandler, but it could just as well be done here and
-	//		 have the DevelopperEventProcessor be called directly 
-	private final SDKEventHandler<EventA> eventADeveloperEventProcessor;
-	private final SDKEventHandler<EventB> eventBDeveloperEventProcessor;
-	private final SDKEventHandler<EventC> eventCDeveloperEventProcessor;
-	private final Map<String, String> saf;
-	
-	public APIResult dispatchAndHandle(EventInfo eventInfo) {
+	Map<EventType, SDKEventHandler<?>> processors;
 
-		switch (eventInfo.getType()) {
-			case SUBSCRIPTION_CANCEL:
-				return eventADeveloperEventProcessor.handle(eventInfo);
-			case SUBSCRIPTION_ORDER:
-				eventBDeveloperEventProcessor.handle(eventInfo);
-			case SUBSCRIPTION_CHANGE:
-				eventCDeveloperEventProcessor.handle(eventInfo);
-			default:
-				throw new RuntimeException();
-		}
+	public APIResult dispatchAndHandle(EventInfo eventInfo) {
+		SDKEventHandler<?> developerEventHandlerWrapper = processors.getOrDefault(eventInfo.getType(), unknownEventHandler());
+		return developerEventHandlerWrapper.handle(eventInfo);
+	}
+
+	private SDKEventHandler<Object> unknownEventHandler() {
+		return (e) -> new APIResult(ErrorCode.CONFIGURATION_ERROR, format("Unsupported event type %s", "d"));
 	}
 }
