@@ -22,6 +22,6 @@ public class AppmarketEventDispatcher {
 	}
 
 	private SDKEventHandler<Object> unknownEventHandler() {
-		return (e) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", e.getType()));
+		return event -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
 	}
 }
