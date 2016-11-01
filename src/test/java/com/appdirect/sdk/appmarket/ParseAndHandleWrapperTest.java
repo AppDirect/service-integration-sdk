@@ -4,16 +4,18 @@ import static com.appdirect.sdk.appmarket.api.APIResult.success;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ParseAndHandleWrapperTest {
 	@Mock
 	private EventParser<SubscriptionOrder> parser;
@@ -23,8 +25,6 @@ public class ParseAndHandleWrapperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		initMocks(this);
-
 		wrapper = new ParseAndHandleWrapper<>(parser, handler);
 	}
 

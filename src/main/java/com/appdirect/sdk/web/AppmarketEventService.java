@@ -22,7 +22,8 @@ public class AppmarketEventService {
 	private final AppmarketEventDispatcher dispatcher;
 
 	public AppmarketEventService(AppmarketEventFetcher appmarketEventFetcher,
-								 DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, AppmarketEventDispatcher dispatcher) {
+								 DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+								 AppmarketEventDispatcher dispatcher) {
 		this.appmarketEventFetcher = appmarketEventFetcher;
 		this.credentialsSupplier = credentialsSupplier;
 		this.dispatcher = dispatcher;

@@ -32,12 +32,12 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public EventParser<SubscriptionOrder> subscriptionOrderParser() {
-		return e -> new SubscriptionOrder(); // TODO: add actual parser here
+		return e -> new SubscriptionOrder();
 	}
 
 	@Bean
 	public EventParser<SubscriptionCancel> subscriptionCancelParser() {
-		return e -> new SubscriptionCancel(); // TODO: add actual parser here
+		return e -> new SubscriptionCancel();
 	}
 
 	@Bean
