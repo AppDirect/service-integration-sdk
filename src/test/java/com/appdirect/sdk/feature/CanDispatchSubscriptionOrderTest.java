@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.appdirect.sdk.support.FakeAppmarket;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ConnectorWithOrderProcessor.class, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = MinimalConnector.class, webEnvironment = RANDOM_PORT)
 public class CanDispatchSubscriptionOrderTest {
 	@LocalServerPort
 	private int localConnectorPort;

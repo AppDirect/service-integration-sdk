@@ -1,12 +1,14 @@
-package com.appdirect.sdk.appmarket.alt;
+package com.appdirect.sdk.appmarket;
 
 import lombok.RequiredArgsConstructor;
 
+import com.appdirect.sdk.appmarket.alt.DeveloperEventHandler;
+import com.appdirect.sdk.appmarket.alt.SDKEventHandler;
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 
 @RequiredArgsConstructor
-public class DeveloperEventHandlerWrapper<T> implements SDKEventHandler<T> {
+class DeveloperEventHandlerWrapper<T> implements SDKEventHandler<T> {
 	private final EventParser<T> parser;
 	private final DeveloperEventHandler<T> eventHandler;
 

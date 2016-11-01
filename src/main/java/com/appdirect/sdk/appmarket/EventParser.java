@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.alt;
+package com.appdirect.sdk.appmarket;
 
 import com.appdirect.sdk.appmarket.api.EventInfo;
 /**
@@ -6,7 +6,7 @@ import com.appdirect.sdk.appmarket.api.EventInfo;
  * @param <T>
  */
 @FunctionalInterface
-public interface EventParser<T>{
+interface EventParser<T>{
 	
 	T parse(EventInfo e);
 }
