@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.alt;
+package com.appdirect.sdk.appmarket;
 
 import com.appdirect.sdk.appmarket.api.APIResult;
 

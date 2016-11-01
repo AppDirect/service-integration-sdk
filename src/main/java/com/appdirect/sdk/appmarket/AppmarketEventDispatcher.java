@@ -4,7 +4,6 @@ import static java.lang.String.format;
 
 import java.util.Map;
 
-import com.appdirect.sdk.appmarket.alt.SDKEventHandler;
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.ErrorCode;
 import com.appdirect.sdk.appmarket.api.EventInfo;

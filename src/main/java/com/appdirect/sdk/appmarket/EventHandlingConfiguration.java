@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.appdirect.sdk.appmarket.alt.DeveloperEventHandler;
-import com.appdirect.sdk.appmarket.alt.SDKEventHandler;
 import com.appdirect.sdk.appmarket.api.EventType;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
