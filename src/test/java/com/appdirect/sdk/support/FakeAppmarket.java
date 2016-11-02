@@ -41,6 +41,7 @@ public class FakeAppmarket {
 
 	public FakeAppmarket start() {
 		server.createContext("/v1/events/dev-order", new OauthSecuredJson("events/subscription-order-development.json"));
+		server.createContext("/v1/events/dev-cancel", new OauthSecuredJson("events/subscription-cancel-development.json"));
 
 		server.start();
 		return this;

@@ -35,4 +35,8 @@ public class APIResult {
 	public static APIResult success(String message) {
 		return new APIResult(true, message);
 	}
+
+	public static APIResult failure(ErrorCode errorCode, String message) {
+		return new APIResult(errorCode, message);
+	}
 }

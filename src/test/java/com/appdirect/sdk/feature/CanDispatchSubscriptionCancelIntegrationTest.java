@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.appdirect.sdk.support.FakeAppmarket;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ConnectorWithOrderProcessor.class, webEnvironment = RANDOM_PORT)
-public class CanDispatchSubscriptionOrderTest {
+@SpringBootTest(classes = MinimalConnector.class, webEnvironment = RANDOM_PORT)
+public class CanDispatchSubscriptionCancelIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
 	private FakeAppmarket fakeAppmarket;
@@ -33,12 +33,12 @@ public class CanDispatchSubscriptionOrderTest {
 	}
 
 	@Test
-	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-order");
+	public void subscriptionCancelIsProcessedSuccessfully() throws Exception {
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-cancel");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-order");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-cancel");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CANCEL has been processed, for real.\"}");
 	}
 
 	private String connectorEventEndpoint() {

@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.appdirect.sdk.support.HttpClientHelper;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ConnectorWithOrderProcessor.class, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = MinimalConnector.class, webEnvironment = RANDOM_PORT)
 public class HealthCheckTest {
 	@LocalServerPort
 	private int localConnectorPort;
