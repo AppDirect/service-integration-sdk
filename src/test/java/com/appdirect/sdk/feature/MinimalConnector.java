@@ -1,6 +1,7 @@
 package com.appdirect.sdk.feature;
 
 import static com.appdirect.sdk.appmarket.api.APIResult.success;
+import static java.lang.String.format;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,8 @@ public class MinimalConnector {
 
 	@Bean
 	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
-		return event -> success("SUB_CANCEL has been processed, for real.");
+		return event -> success(
+			format("SUB_CANCEL %s has been processed, for real.", event.getAccountIdentifier())
+		);
 	}
 }

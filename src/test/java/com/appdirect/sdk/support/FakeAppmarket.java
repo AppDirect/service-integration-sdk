@@ -1,6 +1,7 @@
 package com.appdirect.sdk.support;
 
 import static com.appdirect.sdk.support.ContentOf.resourceAsBytes;
+import static com.appdirect.sdk.support.ContentOf.resourceAsString;
 import static com.appdirect.sdk.support.HttpClientHelper.anAppmarketHttpClient;
 import static com.appdirect.sdk.support.HttpClientHelper.get;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -8,6 +9,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.URI;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -89,10 +91,10 @@ public class FakeAppmarket {
 				sendResponse(t, 401, "UNAUTHORIZED! Use OAUTH!".getBytes(UTF_8));
 				return;
 			}
-
 			t.getResponseHeaders().add("Content-Type", "application/json");
 
-			byte[] response = resourceAsBytes(jsonResource);
+			String accountId = getOptionalAccountIdParam(t.getRequestURI());
+			byte[] response = accountId == null ? resourceAsBytes(jsonResource) : resourceAsString(jsonResource).replace("{{account-id}}", accountId).getBytes(UTF_8);
 
 			sendResponse(t, 200, response);
 		}
@@ -103,6 +105,14 @@ public class FakeAppmarket {
 			OutputStream os = t.getResponseBody();
 			os.write(response);
 			os.close();
+		}
+
+		private String getOptionalAccountIdParam(URI requestURI) {
+			String query = requestURI.getQuery();
+			if (query == null || !query.startsWith("account-id")) {
+				return null;
+			}
+			return query.split("=")[1];
 		}
 	}
 }
