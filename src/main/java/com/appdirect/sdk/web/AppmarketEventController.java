@@ -25,9 +25,9 @@ public class AppmarketEventController {
 
 	@RequestMapping(method = GET, value = "/api/v1/integration/processEvent", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<APIResult> processEvent(@RequestParam("eventUrl") String eventUrl) {
-		log.debug("eventUrl={}", eventUrl);
+		log.info("eventUrl={}", eventUrl);
 		APIResult result = appmarketEventService.processEvent(eventUrl);
-		log.debug("Returning result: {}", result);
+		log.info("apiResult={}", result);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

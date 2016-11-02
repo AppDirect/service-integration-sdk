@@ -1,5 +1,6 @@
 package com.appdirect.sdk.feature;
 
+import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -34,11 +35,19 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 
 	@Test
 	public void subscriptionCancelIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-cancel");
+		String expectedAccountId = "123";
+		HttpResponse response = fakeAppmarket.sendEventTo(
+			connectorEventEndpoint(), 
+			format("v1/events/dev-cancel?account-id=%s", expectedAccountId)
+		);
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-cancel");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo(
+			format("/v1/events/dev-cancel?account-id=%s", expectedAccountId)
+		);
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CANCEL has been processed, for real.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo(
+			format("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CANCEL %s has been processed, for real.\"}", expectedAccountId)
+		);
 	}
 
 	private String connectorEventEndpoint() {

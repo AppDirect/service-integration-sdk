@@ -39,8 +39,7 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public EventParser<SubscriptionCancel> subscriptionCancelParser() {
-		//Dummy parser
-		return eventInfo -> new SubscriptionCancel();
+		return new SubscriptionCancelEventParser();
 	}
 
 	@Bean
