@@ -14,10 +14,10 @@ import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 @RunWith(MockitoJUnitRunner.class)
 public class SubscriptionCancelEventParserTest {
 
-	private SubscriptionCancelEventParser testedSubscriptionEventParser = new SubscriptionCancelEventParser();
+	private SubscriptionCancelEventParser testedParser = new SubscriptionCancelEventParser();
 
 	@Test
-	public void testParse_whenParsingEventInfo_thenTheMarketplaceCreatorAndAccountIdShouldBeExtracted() throws Exception {
+	public void testParse_whenParsingEventInfo_thenTheAccountIdShouldBeExtracted() throws Exception {
 		//Given
 		String testAccountIdentifier = "testAccountIdentifier";
 		EventInfo testEventInfo = EventInfo.builder()
@@ -33,7 +33,7 @@ public class SubscriptionCancelEventParserTest {
 			.build();
 
 		//When
-		SubscriptionCancel parsedEvent = testedSubscriptionEventParser.parse(testEventInfo);
+		SubscriptionCancel parsedEvent = testedParser.parse(testEventInfo);
 
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())
