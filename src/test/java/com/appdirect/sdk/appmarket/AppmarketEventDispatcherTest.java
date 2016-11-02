@@ -34,7 +34,6 @@ public class AppmarketEventDispatcherTest {
 		HashMap<EventType, SDKEventHandler> handlers = new HashMap<>();
 		handlers.put(SUBSCRIPTION_ORDER, event -> failure(INVALID_RESPONSE, "OH NO! I FAILED!"));
 		handlers.put(SUBSCRIPTION_CANCEL, event -> success("AH AH! I SUCCEEDED!"));
-
 		eventDispatcher = new AppmarketEventDispatcher(handlers);
 
 		APIResult results = eventDispatcher.dispatchAndHandle(someSubCancelEvent());

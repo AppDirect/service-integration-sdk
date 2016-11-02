@@ -33,12 +33,14 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public EventParser<SubscriptionOrder> subscriptionOrderParser() {
-		return e -> new SubscriptionOrder();
+		//Dummy parser
+		return eventInfo -> new SubscriptionOrder();
 	}
 
 	@Bean
 	public EventParser<SubscriptionCancel> subscriptionCancelParser() {
-		return e -> new SubscriptionCancel();
+		//Dummy parser
+		return eventInfo -> new SubscriptionCancel();
 	}
 
 	@Bean
