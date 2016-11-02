@@ -4,5 +4,5 @@ import lombok.Value;
 
 @Value
 public class SubscriptionCancel {
-	String accountIdentifier;
+	private final String accountIdentifier;
 }

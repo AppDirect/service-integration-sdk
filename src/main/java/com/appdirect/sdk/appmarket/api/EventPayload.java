@@ -1,6 +1,7 @@
 package com.appdirect.sdk.appmarket.api;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,5 +20,5 @@ public class EventPayload {
 	private AddonBindingInfo addonBinding;
 	private OrderInfo order;
 	private NoticeInfo notice;
-	private HashMap<String, String> configuration = new HashMap<>();
+	private Map<String, String> configuration = new HashMap<>();
 }
