@@ -9,7 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.appdirect.sdk.appmarket.api.AccountInfo;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventPayload;
-import com.appdirect.sdk.appmarket.api.MarketInfo;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -18,10 +17,9 @@ public class SubscriptionCancelEventParserTest {
 	private SubscriptionCancelEventParser testedSubscriptionEventParser = new SubscriptionCancelEventParser();
 
 	@Test
-	public void testParse_whenParsingEventIngo_thenTheMarketplaceCreatorAndAccountIdShouldBeExtracted() throws Exception {
+	public void testParse_whenParsingEventInfo_thenTheMarketplaceCreatorAndAccountIdShouldBeExtracted() throws Exception {
 		//Given
 		String testAccountIdentifier = "testAccountIdentifier";
-		MarketInfo expectedMarketplace = new MarketInfo("APPDIRECT", "www.example.com");
 		EventInfo testEventInfo = EventInfo.builder()
 			.payload(
 				EventPayload.builder()
@@ -32,7 +30,6 @@ public class SubscriptionCancelEventParserTest {
 					)
 				.build()
 			)
-			.marketplace(expectedMarketplace)
 			.build();
 
 		//When
@@ -41,9 +38,6 @@ public class SubscriptionCancelEventParserTest {
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())
 			.isEqualTo(testEventInfo.getPayload().getAccount().getAccountIdentifier());
-
-		assertThat(parsedEvent.getMarketplace())
-			.isEqualTo(testEventInfo.getMarketplace());
 	}
 
 }
