@@ -33,8 +33,7 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public EventParser<SubscriptionOrder> subscriptionOrderParser() {
-		//Dummy parser
-		return eventInfo -> new SubscriptionOrder();
+		return new SubscriptionOrderEventParser();
 	}
 
 	@Bean
