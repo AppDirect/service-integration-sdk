@@ -7,20 +7,18 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SubscriptionOrder implements Event {
-	private final Map<String, String> configuration;
 	private final EventFlag flag;
 	private final UserInfo purchaser;
+	private final Map<String, String> configuration;
 	private final CompanyInfo company;
+	private final OrderInfo orderInfo;
 
-	public SubscriptionOrder(Map<String, String> configuration, EventFlag flag, UserInfo purchaser, CompanyInfo company) {
-		this.configuration = configuration;
+	public SubscriptionOrder(EventFlag flag, UserInfo purchaser, Map<String, String> configuration, CompanyInfo company, OrderInfo orderInfo) {
 		this.flag = flag;
 		this.purchaser = purchaser;
+		this.configuration = configuration;
 		this.company = company;
-	}
-
-	public Map<String, String> getConfiguration() {
-		return new HashMap<>(configuration);
+		this.orderInfo = orderInfo;
 	}
 
 	public Optional<EventFlag> getFlag() {
@@ -31,7 +29,15 @@ public class SubscriptionOrder implements Event {
 		return purchaser;
 	}
 
+	public Map<String, String> getConfiguration() {
+		return new HashMap<>(configuration);
+	}
+
 	public CompanyInfo getCompany() {
 		return company;
+	}
+
+	public OrderInfo getOrderInfo() {
+		return orderInfo;
 	}
 }

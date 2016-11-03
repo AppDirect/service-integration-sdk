@@ -15,6 +15,7 @@ import com.appdirect.sdk.appmarket.api.CompanyInfo;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventInfo.EventInfoBuilder;
 import com.appdirect.sdk.appmarket.api.EventPayload;
+import com.appdirect.sdk.appmarket.api.OrderInfo;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 import com.appdirect.sdk.appmarket.api.UserInfo;
 
@@ -28,7 +29,7 @@ public class SubscriptionOrderEventParserTest {
 
 	@Test
 	public void parse_setsTheCompany_fromThePayload() throws Exception {
-		EventInfo rawEventWithCompany = eventWithCompany().build();
+		EventInfo rawEventWithCompany = eventWithCompany("Big Boxes").build();
 
 		SubscriptionOrder parsedEvent = parser.parse(rawEventWithCompany);
 
@@ -37,17 +38,16 @@ public class SubscriptionOrderEventParserTest {
 
 	@Test
 	public void parse_setsTheConfiguration_fromThePayload() throws Exception {
-		EventInfo rawEventWithConfig = eventWithConfigAndCompany(config("one", "apple", "two", "apples")).build();
+		EventInfo rawEventWithConfig = eventWithConfig(config("one", "apple", "two", "apples")).build();
 
 		SubscriptionOrder parsedEvent = parser.parse(rawEventWithConfig);
 
-		assertThat(parsedEvent.getConfiguration())
-				.contains(entry("one", "apple"), entry("two", "apples"));
+		assertThat(parsedEvent.getConfiguration()).contains(entry("one", "apple"), entry("two", "apples"));
 	}
 
 	@Test
 	public void parse_setsTheDevelopmentFlag() throws Exception {
-		EventInfo rawDevEvent = eventWithCompany().flag(DEVELOPMENT).build();
+		EventInfo rawDevEvent = eventWithCompany("Big Boxes").flag(DEVELOPMENT).build();
 
 		SubscriptionOrder parsedEvent = parser.parse(rawDevEvent);
 
@@ -56,7 +56,7 @@ public class SubscriptionOrderEventParserTest {
 
 	@Test
 	public void parse_setsThePurchaser_fromTheCreator() throws Exception {
-		EventInfo rawEventWithCreator = eventWithCompany().creator(UserInfo.builder().firstName("Joe").lastName("Blo").build()).build();
+		EventInfo rawEventWithCreator = eventWithCompany("Big Boxes").creator(UserInfo.builder().firstName("Joe").lastName("Blo").build()).build();
 
 		SubscriptionOrder parsedEvent = parser.parse(rawEventWithCreator);
 
@@ -66,19 +66,23 @@ public class SubscriptionOrderEventParserTest {
 
 	@Test
 	public void parse_setsTheOrderInfo_fromThePayload() throws Exception {
-		// TODO!
+		EventInfo rawEventWithOrderInfo = eventWithOrderInfo("COOLEST_EDITION").build();
+
+		SubscriptionOrder parsedEvent = parser.parse(rawEventWithOrderInfo);
+
+		assertThat(parsedEvent.getOrderInfo().getEditionCode()).isEqualTo("COOLEST_EDITION");
 	}
 
-	private EventInfoBuilder eventWithConfigAndCompany(Map<String, String> config) {
-		return EventInfo.builder().payload(EventPayload.builder().company(aCompany("Big Boxes")).configuration(config).build());
+	private EventInfoBuilder eventWithOrderInfo(String editionCode) {
+		return EventInfo.builder().payload(EventPayload.builder().order(OrderInfo.builder().editionCode(editionCode).build()).build());
 	}
 
-	private EventInfoBuilder eventWithCompany() {
-		return EventInfo.builder().payload(EventPayload.builder().company(aCompany("Big Boxes")).build());
+	private EventInfoBuilder eventWithConfig(Map<String, String> config) {
+		return EventInfo.builder().payload(EventPayload.builder().configuration(config).build());
 	}
 
-	private CompanyInfo aCompany(String name) {
-		return CompanyInfo.builder().name(name).build();
+	private EventInfoBuilder eventWithCompany(String companyName) {
+		return EventInfo.builder().payload(EventPayload.builder().company(CompanyInfo.builder().name(companyName).build()).build());
 	}
 
 	private Map<String, String> config(String... keyValues) {
