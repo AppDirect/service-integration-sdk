@@ -8,16 +8,16 @@ import java.util.Optional;
 
 public class SubscriptionOrder implements Event {
 	private final EventFlag flag;
-	private final UserInfo purchaser;
+	private final UserInfo purchaserInfo;
 	private final Map<String, String> configuration;
-	private final CompanyInfo company;
+	private final CompanyInfo companyInfo;
 	private final OrderInfo orderInfo;
 
-	public SubscriptionOrder(EventFlag flag, UserInfo purchaser, Map<String, String> configuration, CompanyInfo company, OrderInfo orderInfo) {
+	public SubscriptionOrder(EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo) {
 		this.flag = flag;
-		this.purchaser = purchaser;
+		this.purchaserInfo = purchaserInfo;
 		this.configuration = configuration;
-		this.company = company;
+		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
 	}
 
@@ -25,16 +25,16 @@ public class SubscriptionOrder implements Event {
 		return ofNullable(flag);
 	}
 
-	public UserInfo getPurchaser() {
-		return purchaser;
+	public UserInfo getPurchaserInfo() {
+		return purchaserInfo;
 	}
 
 	public Map<String, String> getConfiguration() {
 		return new HashMap<>(configuration);
 	}
 
-	public CompanyInfo getCompany() {
-		return company;
+	public CompanyInfo getCompanyInfo() {
+		return companyInfo;
 	}
 
 	public OrderInfo getOrderInfo() {

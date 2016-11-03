@@ -28,12 +28,12 @@ public class SubscriptionOrderEventParserTest {
 	}
 
 	@Test
-	public void parse_setsTheCompany_fromThePayload() throws Exception {
-		EventInfo rawEventWithCompany = eventWithCompany("Big Boxes").build();
+	public void parse_setsTheCompanyInfo_fromThePayload() throws Exception {
+		EventInfo rawEventWithCompanyInfo = eventWithCompanyInfo("Big Boxes").build();
 
-		SubscriptionOrder parsedEvent = parser.parse(rawEventWithCompany);
+		SubscriptionOrder parsedEvent = parser.parse(rawEventWithCompanyInfo);
 
-		assertThat(parsedEvent.getCompany().getName()).isEqualTo("Big Boxes");
+		assertThat(parsedEvent.getCompanyInfo().getName()).isEqualTo("Big Boxes");
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class SubscriptionOrderEventParserTest {
 
 	@Test
 	public void parse_setsTheDevelopmentFlag() throws Exception {
-		EventInfo rawDevEvent = eventWithCompany("Big Boxes").flag(DEVELOPMENT).build();
+		EventInfo rawDevEvent = eventWithCompanyInfo("Big Boxes").flag(DEVELOPMENT).build();
 
 		SubscriptionOrder parsedEvent = parser.parse(rawDevEvent);
 
@@ -55,13 +55,13 @@ public class SubscriptionOrderEventParserTest {
 	}
 
 	@Test
-	public void parse_setsThePurchaser_fromTheCreator() throws Exception {
-		EventInfo rawEventWithCreator = eventWithCompany("Big Boxes").creator(UserInfo.builder().firstName("Joe").lastName("Blo").build()).build();
+	public void parse_setsThePurchaserInfo_fromTheCreator() throws Exception {
+		EventInfo rawEventWithCreator = eventWithCompanyInfo("Big Boxes").creator(UserInfo.builder().firstName("Joe").lastName("Blo").build()).build();
 
 		SubscriptionOrder parsedEvent = parser.parse(rawEventWithCreator);
 
-		assertThat(parsedEvent.getPurchaser().getFirstName()).isEqualTo("Joe");
-		assertThat(parsedEvent.getPurchaser().getLastName()).isEqualTo("Blo");
+		assertThat(parsedEvent.getPurchaserInfo().getFirstName()).isEqualTo("Joe");
+		assertThat(parsedEvent.getPurchaserInfo().getLastName()).isEqualTo("Blo");
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class SubscriptionOrderEventParserTest {
 		return EventInfo.builder().payload(EventPayload.builder().configuration(config).build());
 	}
 
-	private EventInfoBuilder eventWithCompany(String companyName) {
+	private EventInfoBuilder eventWithCompanyInfo(String companyName) {
 		return EventInfo.builder().payload(EventPayload.builder().company(CompanyInfo.builder().name(companyName).build()).build());
 	}
 
