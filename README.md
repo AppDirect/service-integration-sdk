@@ -41,8 +41,29 @@ public class MinimalConnector {
 * `GET /health`
   Returns a 200 (Success) HTTP code. Used to verify that the server is up
 
+* `GET /info`
+  Returns information about the deployed application. The information returned varies
+  according to the configuration of the client application. Currently we've 
+  confirmed that if there is a `git.properties` file in the classpath, generated
+  by the [git commit id maven plugin](https://github.com/ktoso/maven-git-commit-id-plugin),
+  you'll get output like:
+  ```
+  {
+  	"git": {
+  		"commit": {
+  			"time": "2016-11-07T18:05:22.000+0000",
+  			"id": "2940352"
+  		},
+  		"branch": "bugfix/HTTPSigInConnector"
+  	}
+  }
+  ```
 * `GET /api/v1/integration/processEvent?eventUrl=[insert-event-callback-url-here]`
   That is the endpoint where the appmarket sends event notifications
+
+Note that the SDK includes the `spring-boot-starter-actuator`, which 
+means several more endpoints are exposed automatically by Spring.
+For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/htmlsingle/#production-ready-endpoints)
 
 ## Building
 * `mvn clean javadoc:jar source:jar install`
