@@ -45,7 +45,7 @@ public class MinimalConnector {
   Returns information about the deployed application. The information returned varies
   according to the configuration of the client application. Currently we've 
   confirmed that if there is a `git.properties` file in the classpath, generated
-  by the [git commit id maven plugin](https://github.com/ktoso/maven-git-commit-id-plugin)
+  by the [git commit id maven plugin](https://github.com/ktoso/maven-git-commit-id-plugin),
   you'll get output like:
   ```
   {
@@ -63,7 +63,7 @@ public class MinimalConnector {
 
 Note that the SDK includes the `spring-boot-starter-actuator`, which 
 means several more endpoints are exposed automatically by Spring.
-For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-endpoints)
+For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/htmlsingle/#production-ready-endpoints)
 
 ## Building
 * `mvn clean javadoc:jar source:jar install`
