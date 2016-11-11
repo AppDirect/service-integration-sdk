@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.appdirect.sdk.appmarket.AppmarketEventDispatcher;
+import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.APIResult;
@@ -144,6 +145,6 @@ public class AppmarketEventServiceTest {
 	}
 
 	private DeveloperSpecificAppmarketCredentials someCredentials(String key, String secret) {
-		return new DeveloperSpecificAppmarketCredentials(key, secret);
+		return new DeveloperSpecificAppmarketCredentials(new Credentials(key, secret));
 	}
 }

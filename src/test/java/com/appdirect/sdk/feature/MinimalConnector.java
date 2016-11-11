@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
+import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
@@ -20,7 +21,7 @@ import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 public class MinimalConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
-		return () -> new DeveloperSpecificAppmarketCredentials("isv-key", "isv-secret");
+		return () -> new DeveloperSpecificAppmarketCredentials(new Credentials("isv-key", "isv-secret"));
 	}
 
 	@Bean
@@ -31,7 +32,7 @@ public class MinimalConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
 		return event -> success(
-			format("SUB_CANCEL %s has been processed, for real.", event.getAccountIdentifier())
+				format("SUB_CANCEL %s has been processed, for real.", event.getAccountIdentifier())
 		);
 	}
 

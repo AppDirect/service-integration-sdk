@@ -48,7 +48,7 @@ public class AppmarketEventService {
 
 	private EventInfo fetchEvent(String url) {
 		DeveloperSpecificAppmarketCredentials credentials = credentialsSupplier.get();
-		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.getDeveloperKey(), credentials.getDeveloperSecret());
+		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.getMainProductCredentials().developerKey, credentials.getMainProductCredentials().developerSecret);
 		log.info("Successfully retrieved event={}", event);
 		return event;
 	}
