@@ -13,8 +13,6 @@ import org.springframework.security.oauth.provider.ConsumerDetailsService;
 import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
@@ -52,11 +50,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint() {
-		return new Http403ForbiddenEntryPoint();
-	}
-
-	@Bean
 	public SecurityContextHolderStrategy securityContextHolderStrategy() {
 		return SecurityContextHolder.getContextHolderStrategy();
 	}
@@ -70,7 +63,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				.csrf().disable()
 				.exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint())
 				.and()
 				.authorizeRequests()
 				.anyRequest().authenticated()
