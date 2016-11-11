@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificAppmarketCredentialsConsumerDetailsService;
+import com.appdirect.sdk.web.oauth.OAuthSignatureCheckingFilter;
 
 @Configuration
 @EnableWebSecurity

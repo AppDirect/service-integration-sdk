@@ -1,4 +1,4 @@
-package com.appdirect.sdk.web.config;
+package com.appdirect.sdk.web.oauth;
 
 import static com.appdirect.sdk.utils.StringUtils.isEmpty;
 
