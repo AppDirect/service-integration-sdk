@@ -3,14 +3,10 @@ package com.appdirect.sdk.appmarket.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Value;
 
-@Getter
-@ToString
-@AllArgsConstructor
+@Value
 @Builder
 public class OrderInfo {
 	private String editionCode;

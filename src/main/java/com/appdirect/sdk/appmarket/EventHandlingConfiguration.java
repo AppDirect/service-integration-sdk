@@ -13,22 +13,39 @@ import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.api.EventType;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
+import com.appdirect.sdk.appmarket.api.SubscriptionChange;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 
 @Configuration
 public class EventHandlingConfiguration {
 	private final AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
 	private final AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
+	private final AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
 
 	@Autowired
-	public EventHandlingConfiguration(AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler, AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler) {
+	public EventHandlingConfiguration(
+		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler, 
+		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
+		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler) {
+
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
+		this.subscriptionChangeHandler = subscriptionChangeHandler;
 	}
 
 	@Bean
 	public SDKEventHandler subscriptionOrderSdkHandler() {
 		return new ParseAndHandleWrapper<>(subscriptionOrderParser(), subscriptionOrderHandler);
+	}
+
+	@Bean
+	public SDKEventHandler subscriptionCancelSdkHandler() {
+		return new ParseAndHandleWrapper<>(subscriptionCancelParser(), subscriptionCancelHandler);
+	}
+
+	@Bean
+	public SDKEventHandler subscriptionChangeSdkHandler() {
+		return new ParseAndHandleWrapper<>(subscriptionChangeEventParser(), subscriptionChangeHandler);
 	}
 
 	@Bean
@@ -42,8 +59,8 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public SDKEventHandler subscriptionCancelSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionCancelParser(), subscriptionCancelHandler);
+	public EventParser<SubscriptionChange> subscriptionChangeEventParser() {
+		return new SubscriptionChangeEventParser();
 	}
 
 	@Bean

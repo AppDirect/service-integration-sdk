@@ -2,14 +2,10 @@ package com.appdirect.sdk.appmarket.api;
 
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Value;
 
-@Getter
-@ToString
-@AllArgsConstructor
+@Value
 @Builder
 public class UserInfo {
 	private String uuid;
