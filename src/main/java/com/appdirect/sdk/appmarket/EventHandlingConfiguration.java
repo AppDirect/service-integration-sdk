@@ -1,6 +1,7 @@
 package com.appdirect.sdk.appmarket;
 
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CANCEL;
+import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CHANGE;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_ORDER;
 
 import java.util.Collections;
@@ -73,6 +74,7 @@ public class EventHandlingConfiguration {
 		Map<EventType, SDKEventHandler> allProcessors = new EnumMap<>(EventType.class);
 		allProcessors.put(SUBSCRIPTION_ORDER, subscriptionOrderSdkHandler());
 		allProcessors.put(SUBSCRIPTION_CANCEL, subscriptionCancelSdkHandler());
+		allProcessors.put(SUBSCRIPTION_CHANGE, subscriptionChangeSdkHandler());
 
 		return Collections.unmodifiableMap(allProcessors);
 	}

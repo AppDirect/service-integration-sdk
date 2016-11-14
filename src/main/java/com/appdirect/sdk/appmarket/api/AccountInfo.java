@@ -1,11 +1,15 @@
 package com.appdirect.sdk.appmarket.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@Value
+@AllArgsConstructor
+@EqualsAndHashCode
 @Builder
+@Getter
 public class AccountInfo {
-	private String accountIdentifier;
-	private String status;
+	private final String accountIdentifier;
+	private final String status;
 }
