@@ -25,7 +25,7 @@ public class EventHandlingConfiguration {
 
 	@Autowired
 	public EventHandlingConfiguration(
-		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler, 
+		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
 		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
 		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler) {
 
