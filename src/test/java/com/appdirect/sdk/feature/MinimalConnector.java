@@ -29,7 +29,7 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public AppmarketEventHandler<SubscriptionCancel>subscriptionCancelHandler() {
+	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
 		return event -> success(
 			format("SUB_CANCEL %s has been processed, for real.", event.getAccountIdentifier())
 		);
