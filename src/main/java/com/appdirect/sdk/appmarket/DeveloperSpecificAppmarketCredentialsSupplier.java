@@ -13,7 +13,7 @@ public interface DeveloperSpecificAppmarketCredentialsSupplier extends Function<
 	 * Returns the credentials that applies to the given consumer key
 	 *
 	 * @param consumerKey the key used to make a request
-	 * @return the full credentials object associated with this key
+	 * @return the full credentials object associated with this key or <code>null</code> if not found
 	 */
 	@Override
 	Credentials apply(String consumerKey);
