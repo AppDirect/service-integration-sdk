@@ -7,7 +7,6 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -39,6 +38,8 @@ public class AppmarketEventServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		testedService = new AppmarketEventService(appmarketEventFetcher, credentialsSupplier, eventDispatcher);
+
+		when(credentialsSupplier.apply("testKey")).thenReturn(someCredentials("testKey", "testSecret"));
 	}
 
 	@Test
@@ -49,9 +50,6 @@ public class AppmarketEventServiceTest {
 				.build();
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
 
-		when(credentialsSupplier.apply(anyString()))
-				.thenReturn(someCredentials("testKey", "testSecret"));
-
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
@@ -59,7 +57,7 @@ public class AppmarketEventServiceTest {
 				.thenReturn(expectedProcessingResult);
 
 		//When
-		APIResult actualResponse = testedService.processEvent("http://test.url.org");
+		APIResult actualResponse = testedService.processEvent("http://test.url.org", "testKey");
 
 		//Then
 		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
@@ -70,28 +68,22 @@ public class AppmarketEventServiceTest {
 		//Given
 		DeveloperServiceException expectedException = new DeveloperServiceException("Bad stuff happened");
 
-		when(credentialsSupplier.apply(anyString()))
-				.thenReturn(someCredentials("testKey", "testSecret"));
-
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenThrow(expectedException);
 
 		//Then
-		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org"))
+		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org", "testKey"))
 				.isEqualTo(expectedException);
 	}
 
 	@Test
 	public void processEvent_whenUnknownExceptionThrown_thenBusinessLevelExceptionWithUnknownErrorCodeIsReturned() {
 		//Given
-		when(credentialsSupplier.apply(anyString()))
-				.thenReturn(someCredentials("testKey", "testSecret"));
-
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenThrow(new RuntimeException());
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org"));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org", "testKey"));
 
 		//Then
 		assertThat(exceptionCaught)
@@ -106,14 +98,11 @@ public class AppmarketEventServiceTest {
 				.flag(STATELESS)
 				.build();
 
-		when(credentialsSupplier.apply(anyString()))
-				.thenReturn(someCredentials("testKey", "testSecret"));
-
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
 		//When
-		APIResult actualResult = testedService.processEvent("http://test.url.org");
+		APIResult actualResult = testedService.processEvent("http://test.url.org", "testKey");
 
 		//Then
 		assertThat(actualResult.isSuccess())
@@ -128,10 +117,8 @@ public class AppmarketEventServiceTest {
 		String invalidUrl = "inVaLidUrl";
 		String expectedErrorMessage = format("Failed to process event. eventUrl=%s", invalidUrl);
 
-		when(credentialsSupplier.apply(anyString())).thenReturn(someCredentials("testKey", "testSecret"));
-
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, "testKey"));
 
 		//Then
 		assertThat(exceptionCaught)

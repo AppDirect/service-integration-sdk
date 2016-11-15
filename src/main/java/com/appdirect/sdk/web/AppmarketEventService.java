@@ -29,10 +29,10 @@ public class AppmarketEventService {
 		this.dispatcher = dispatcher;
 	}
 
-	APIResult processEvent(String eventUrl) {
+	APIResult processEvent(String eventUrl, String keyUsedToSignRequest) {
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
-			EventInfo event = fetchEvent(eventUrl);
+			EventInfo event = fetchEvent(eventUrl, keyUsedToSignRequest);
 			if (event.getFlag() == EventFlag.STATELESS) {
 				return new APIResult(true, "success response to stateless event.");
 			}
@@ -46,9 +46,8 @@ public class AppmarketEventService {
 		}
 	}
 
-	private EventInfo fetchEvent(String url) {
-		String keyUsedByTheRequest = null; // TODO: get the key used by this request
-		Credentials credentials = credentialsSupplier.apply(keyUsedByTheRequest);
+	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
+		Credentials credentials = credentialsSupplier.apply(keyUsedToSignRequest);
 		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.developerKey, credentials.developerSecret);
 		log.info("Successfully retrieved event={}", event);
 		return event;
