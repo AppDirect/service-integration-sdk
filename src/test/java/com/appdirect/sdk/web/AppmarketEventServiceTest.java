@@ -53,7 +53,7 @@ public class AppmarketEventServiceTest {
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
-		when(eventDispatcher.dispatchAndHandle(testEvent))
+		when(eventDispatcher.dispatchAndHandle("testKey", testEvent))
 				.thenReturn(expectedProcessingResult);
 
 		//When

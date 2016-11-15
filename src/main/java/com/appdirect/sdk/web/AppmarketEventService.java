@@ -36,7 +36,7 @@ public class AppmarketEventService {
 			if (event.getFlag() == EventFlag.STATELESS) {
 				return new APIResult(true, "success response to stateless event.");
 			}
-			return dispatcher.dispatchAndHandle(event);
+			return dispatcher.dispatchAndHandle(keyUsedToSignRequest, event);
 		} catch (DeveloperServiceException e) {
 			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
 			throw e;

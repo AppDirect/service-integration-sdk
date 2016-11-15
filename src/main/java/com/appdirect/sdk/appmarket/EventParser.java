@@ -9,5 +9,5 @@ import com.appdirect.sdk.appmarket.api.EventInfo;
  */
 @FunctionalInterface
 interface EventParser<T> {
-	T parse(EventInfo eventInfo);
+	T parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo);
 }

@@ -30,10 +30,11 @@ public class SubscriptionChangeEventParserTest {
 			.build();
 
 		//When
-		SubscriptionChange parsedEvent = testedParser.parse(testEventInfo);
+		SubscriptionChange parsedEvent = testedParser.parse("the-magic-key", testEventInfo);
 
 		//Then
 		assertThat(parsedEvent.getOwner()).isEqualTo(expectedCreatorDetails);
+		assertThat(parsedEvent.getConsumerKeyUsedByRequest()).isEqualTo("the-magic-key");
 	}
 
 }

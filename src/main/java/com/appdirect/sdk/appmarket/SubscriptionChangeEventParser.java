@@ -6,11 +6,12 @@ import com.appdirect.sdk.appmarket.api.SubscriptionChange;
 class SubscriptionChangeEventParser implements EventParser<SubscriptionChange> {
 
 	@Override
-	public SubscriptionChange parse(EventInfo eventInfo) {
+	public SubscriptionChange parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		return new SubscriptionChange(
-			eventInfo.getCreator(),
-			eventInfo.getPayload().getOrder(),
-			eventInfo.getPayload().getAccount()
+				consumerKeyUsedByTheRequest,
+				eventInfo.getCreator(),
+				eventInfo.getPayload().getOrder(),
+				eventInfo.getPayload().getAccount()
 		);
 	}
 }

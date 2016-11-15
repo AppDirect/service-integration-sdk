@@ -18,8 +18,8 @@ class ParseAndHandleWrapper<T> implements SDKEventHandler {
 	}
 
 	@Override
-	public APIResult handle(EventInfo event) {
-		T parsedEvent = parser.parse(event);
+	public APIResult handle(String consumerKeyUsedByTheRequest, EventInfo event) {
+		T parsedEvent = parser.parse(consumerKeyUsedByTheRequest, event);
 		return eventHandler.handle(parsedEvent);
 	}
 }

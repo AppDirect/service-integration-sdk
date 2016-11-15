@@ -4,7 +4,8 @@ import lombok.Value;
 
 @Value
 public class SubscriptionChange {
-	private UserInfo owner;
-	private OrderInfo order;
-	private AccountInfo account;
+	private final String consumerKeyUsedByRequest;
+	private final UserInfo owner;
+	private final OrderInfo order;
+	private final AccountInfo account;
 }

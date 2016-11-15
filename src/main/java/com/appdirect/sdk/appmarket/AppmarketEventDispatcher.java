@@ -16,12 +16,12 @@ public class AppmarketEventDispatcher {
 		this.handlers = handlers;
 	}
 
-	public APIResult dispatchAndHandle(EventInfo eventInfo) {
+	public APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		SDKEventHandler developerEventHandlerWrapper = handlers.getOrDefault(eventInfo.getType(), unknownEventHandler());
-		return developerEventHandlerWrapper.handle(eventInfo);
+		return developerEventHandlerWrapper.handle(consumerKeyUsedByTheRequest, eventInfo);
 	}
 
 	private SDKEventHandler unknownEventHandler() {
-		return event -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
+		return (consumerKeyUsedByTheRequest, event) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
 	}
 }
