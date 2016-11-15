@@ -20,7 +20,7 @@ import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 public class MinimalConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
-		return someKey -> new Credentials("isv-key", "isv-secret");
+		return someKey -> new Credentials(someKey, "isv-secret");
 	}
 
 	@Bean
