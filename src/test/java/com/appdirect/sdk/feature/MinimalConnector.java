@@ -12,6 +12,7 @@ import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
+import com.appdirect.sdk.appmarket.api.SubscriptionChange;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 
 @SpringBootApplication
@@ -31,6 +32,13 @@ public class MinimalConnector {
 	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
 		return event -> success(
 			format("SUB_CANCEL %s has been processed, for real.", event.getAccountIdentifier())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler() {
+		return event -> success(
+			format("SUB_CHANGE for accountId=%s has been processed, for real.", event.getAccount().getAccountIdentifier())
 		);
 	}
 }

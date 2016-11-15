@@ -4,12 +4,14 @@ import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
 @AllArgsConstructor
+@EqualsAndHashCode
 @Builder
 public class UserInfo {
 	private String uuid;
