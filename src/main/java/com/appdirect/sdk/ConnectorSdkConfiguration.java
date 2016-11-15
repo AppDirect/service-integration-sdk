@@ -47,12 +47,7 @@ public class ConnectorSdkConfiguration {
 	}
 
 	@Bean
-	public OAuthKeyExtractor oauthKeyExtractor() {
-		return new OAuthKeyExtractor();
-	}
-
-	@Bean
-	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService) {
-		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor());
+	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor) {
+		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor);
 	}
 }

@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificAppmarketCredentialsConsumerDetailsService;
+import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.OAuthSignatureCheckingFilter;
 
 @Configuration
@@ -38,6 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public OAuthProcessingFilterEntryPoint oAuthProcessingFilterEntryPoint() {
 		return new OAuthProcessingFilterEntryPoint();
+	}
+
+	@Bean
+	public OAuthKeyExtractor oauthKeyExtractor() {
+		return new OAuthKeyExtractor();
 	}
 
 	@Bean
