@@ -39,7 +39,7 @@ public class AppmarketEventServiceTest {
 	public void setUp() throws Exception {
 		testedService = new AppmarketEventService(appmarketEventFetcher, credentialsSupplier, eventDispatcher);
 
-		when(credentialsSupplier.apply("testKey")).thenReturn(someCredentials("testKey", "testSecret"));
+		when(credentialsSupplier.getConsumerCredentials("testKey")).thenReturn(someCredentials("testKey", "testSecret"));
 	}
 
 	@Test

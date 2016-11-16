@@ -3,8 +3,6 @@ package com.appdirect.sdk.web;
 import static com.appdirect.sdk.appmarket.api.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
-import java.util.function.Function;
-
 import lombok.extern.slf4j.Slf4j;
 
 import com.appdirect.sdk.appmarket.AppmarketEventDispatcher;
@@ -18,7 +16,7 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
 @Slf4j
 public class AppmarketEventService {
 	private final AppmarketEventFetcher appmarketEventFetcher;
-	private final Function<String, Credentials> credentialsSupplier;
+	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final AppmarketEventDispatcher dispatcher;
 
 	public AppmarketEventService(AppmarketEventFetcher appmarketEventFetcher,
@@ -47,7 +45,7 @@ public class AppmarketEventService {
 	}
 
 	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
-		Credentials credentials = credentialsSupplier.apply(keyUsedToSignRequest);
+		Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
 		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.developerKey, credentials.developerSecret);
 		log.info("Successfully retrieved event={}", event);
 		return event;

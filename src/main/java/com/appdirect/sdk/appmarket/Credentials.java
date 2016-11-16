@@ -8,4 +8,8 @@ public class Credentials {
 		this.developerKey = developerKey;
 		this.developerSecret = developerSecret;
 	}
+
+	public static Credentials invalidCredentials() {
+		return new Credentials("", "");
+	}
 }
