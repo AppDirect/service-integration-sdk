@@ -1,34 +1,32 @@
 package com.appdirect.sdk.web.oauth;
 
+import static com.appdirect.sdk.appmarket.Credentials.invalidCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.function.Function;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.springframework.security.oauth.provider.ConsumerDetails;
 
 import com.appdirect.sdk.appmarket.Credentials;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 
 public class DeveloperSpecificAppmarketCredentialsConsumerDetailsServiceTest {
 
-	@Mock
-	private Function<String, Credentials> credentialsSupplier;
+	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private DeveloperSpecificAppmarketCredentialsConsumerDetailsService service;
 
 	@Before
 	public void setup() throws Exception {
-		initMocks(this);
+		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
 
 		service = new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
 	}
 
 	@Test
 	public void loadConsumerByConsumerKey_buildsConsumerDetails_passesKeyToCredentialsSupplier() throws Exception {
-		when(credentialsSupplier.apply("zebra key")).thenReturn(someCredentials("zebra key", "s11"));
+		when(credentialsSupplier.getConsumerCredentials("zebra key")).thenReturn(someCredentials("zebra key", "s11"));
 
 		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("zebra key");
 
@@ -37,13 +35,13 @@ public class DeveloperSpecificAppmarketCredentialsConsumerDetailsServiceTest {
 	}
 
 	@Test
-	public void loadConsumerByConsumerKey_returnsEmptyConsumer_whenKeyIsNotFound() throws Exception {
-		when(credentialsSupplier.apply("peach key")).thenReturn(null);
+	public void loadConsumerByConsumerKey_buildsConsumerDetails_supplierReturnsInvalidCredentials_andItsFine() throws Exception {
+		when(credentialsSupplier.getConsumerCredentials("horse key")).thenReturn(invalidCredentials());
 
-		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("peach key");
+		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("horse key");
 
-		assertThat(consumerDetails.getConsumerKey()).isEqualTo("");
-		assertThat(consumerDetails.getSignatureSecret()).hasFieldOrPropertyWithValue("consumerSecret", "");
+		assertThat(consumerDetails.getConsumerKey()).isEqualTo("this key does not exist in the supplier");
+		assertThat(consumerDetails.getSignatureSecret()).hasFieldOrPropertyWithValue("consumerSecret", "this key does not exist in the supplier");
 	}
 
 	private Credentials someCredentials(String key, String secret) {
