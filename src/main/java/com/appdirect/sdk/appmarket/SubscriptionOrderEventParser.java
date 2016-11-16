@@ -8,12 +8,14 @@ import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
  */
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
-	public SubscriptionOrder parse(EventInfo event) {
+	public SubscriptionOrder parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		return new SubscriptionOrder(
-				event.getFlag(),
-				event.getCreator(),
-				event.getPayload().getConfiguration(),
-				event.getPayload().getCompany(),
-				event.getPayload().getOrder());
+				consumerKeyUsedByTheRequest,
+				eventInfo.getFlag(),
+				eventInfo.getCreator(),
+				eventInfo.getPayload().getConfiguration(),
+				eventInfo.getPayload().getCompany(),
+				eventInfo.getPayload().getOrder()
+		);
 	}
 }

@@ -1,4 +1,4 @@
-package com.appdirect.sdk.web.config;
+package com.appdirect.sdk.web.oauth;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.any;
@@ -23,8 +23,6 @@ import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth.provider.token.OAuthProviderToken;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenImpl;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
-
-import com.appdirect.sdk.web.oauth.ConnectorConsumerDetails;
 
 public class OAuthSignatureCheckingFilterTest {
 

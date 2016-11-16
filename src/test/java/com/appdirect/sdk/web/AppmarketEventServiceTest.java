@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.appdirect.sdk.appmarket.AppmarketEventDispatcher;
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
+import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventInfo;
@@ -38,28 +38,26 @@ public class AppmarketEventServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		testedService = new AppmarketEventService(appmarketEventFetcher, credentialsSupplier, eventDispatcher);
+
+		when(credentialsSupplier.apply("testKey")).thenReturn(someCredentials("testKey", "testSecret"));
 	}
 
 	@Test
 	public void processEvent_dispatcherIsCalled_andExpectedResultIsReturned() throws Exception {
 		//Given
-		DeveloperSpecificAppmarketCredentials testCredentials = someCredentials("testKey", "testSecret");
 		EventInfo testEvent = EventInfo.builder()
 				.type(ACCOUNT_UNSYNC)
 				.build();
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
 
-		when(credentialsSupplier.get())
-				.thenReturn(testCredentials);
-
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
-		when(eventDispatcher.dispatchAndHandle(testEvent))
+		when(eventDispatcher.dispatchAndHandle("testKey", testEvent))
 				.thenReturn(expectedProcessingResult);
 
 		//When
-		APIResult actualResponse = testedService.processEvent("http://test.url.org");
+		APIResult actualResponse = testedService.processEvent("http://test.url.org", "testKey");
 
 		//Then
 		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
@@ -68,33 +66,24 @@ public class AppmarketEventServiceTest {
 	@Test
 	public void processEvent_whenBusinessLevelExceptionThrown_thenItBubblesUp() {
 		//Given
-		DeveloperSpecificAppmarketCredentials testCredentials = someCredentials("testKey", "testSecret");
 		DeveloperServiceException expectedException = new DeveloperServiceException("Bad stuff happened");
-
-		when(credentialsSupplier.get())
-				.thenReturn(testCredentials);
 
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenThrow(expectedException);
 
 		//Then
-		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org"))
+		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org", "testKey"))
 				.isEqualTo(expectedException);
 	}
 
 	@Test
 	public void processEvent_whenUnknownExceptionThrown_thenBusinessLevelExceptionWithUnknownErrorCodeIsReturned() {
 		//Given
-		DeveloperSpecificAppmarketCredentials testCredentials = someCredentials("testKey", "testSecret");
-
-		when(credentialsSupplier.get())
-				.thenReturn(testCredentials);
-
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenThrow(new RuntimeException());
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org"));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org", "testKey"));
 
 		//Then
 		assertThat(exceptionCaught)
@@ -105,19 +94,15 @@ public class AppmarketEventServiceTest {
 	@Test
 	public void testProcessEvent_ifFetchedEventIsStateless_thenReturnSuccessAndDoNotDispatchIt() {
 		//Given
-		DeveloperSpecificAppmarketCredentials testCredentials = someCredentials("testKey", "testSecret");
 		EventInfo testEvent = EventInfo.builder()
 				.flag(STATELESS)
 				.build();
-
-		when(credentialsSupplier.get())
-				.thenReturn(testCredentials);
 
 		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
 		//When
-		APIResult actualResult = testedService.processEvent("http://test.url.org");
+		APIResult actualResult = testedService.processEvent("http://test.url.org", "testKey");
 
 		//Then
 		assertThat(actualResult.isSuccess())
@@ -130,12 +115,10 @@ public class AppmarketEventServiceTest {
 	public void testProcessEvent_ifTheEventUrlIsInvalid_thenABusinessLevelExceptionWithAppropriateMessageIsThrown() {
 		//Given
 		String invalidUrl = "inVaLidUrl";
-		String expectedErrorMessage = format("Failed to process event. url=%s", invalidUrl);
-
-		when(credentialsSupplier.get()).thenReturn(someCredentials("testKey", "testSecret"));
+		String expectedErrorMessage = format("Failed to process event. eventUrl=%s", invalidUrl);
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, "testKey"));
 
 		//Then
 		assertThat(exceptionCaught)
@@ -143,7 +126,7 @@ public class AppmarketEventServiceTest {
 				.hasFieldOrPropertyWithValue("result.message", expectedErrorMessage);
 	}
 
-	private DeveloperSpecificAppmarketCredentials someCredentials(String key, String secret) {
-		return new DeveloperSpecificAppmarketCredentials(key, secret);
+	private Credentials someCredentials(String key, String secret) {
+		return new Credentials(key, secret);
 	}
 }

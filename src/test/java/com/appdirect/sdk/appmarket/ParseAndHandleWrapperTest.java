@@ -32,10 +32,10 @@ public class ParseAndHandleWrapperTest {
 	public void testHandle_parsesEvent_sendsItToTheHandler_thenReturnResults() throws Exception {
 		EventInfo theEvent = EventInfo.builder().build();
 		SubscriptionOrder theRichEvent = mock(SubscriptionOrder.class);
-		when(parser.parse(theEvent)).thenReturn(theRichEvent);
+		when(parser.parse("oauth-key", theEvent)).thenReturn(theRichEvent);
 		when(handler.handle(theRichEvent)).thenReturn(success("All is good"));
 
-		APIResult result = wrapper.handle(theEvent);
+		APIResult result = wrapper.handle("oauth-key", theEvent);
 
 		assertThat(result.getMessage()).isEqualTo("All is good");
 	}

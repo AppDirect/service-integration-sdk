@@ -7,18 +7,24 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SubscriptionOrder implements Event {
+	private final String consumerKeyUsedByTheRequest;
 	private final EventFlag flag;
 	private final UserInfo purchaserInfo;
 	private final Map<String, String> configuration;
 	private final CompanyInfo companyInfo;
 	private final OrderInfo orderInfo;
 
-	public SubscriptionOrder(EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo) {
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo) {
+		this.consumerKeyUsedByTheRequest = consumerKeyUsedByTheRequest;
 		this.flag = flag;
 		this.purchaserInfo = purchaserInfo;
 		this.configuration = configuration;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
+	}
+
+	public String getConsumerKeyUsedByTheRequest() {
+		return consumerKeyUsedByTheRequest;
 	}
 
 	public Optional<EventFlag> getFlag() {

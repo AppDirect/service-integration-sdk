@@ -15,6 +15,7 @@ import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.SecurityConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
+import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 @Configuration
 @Import({JacksonConfiguration.class, SecurityConfiguration.class, EventHandlingConfiguration.class})
@@ -46,7 +47,7 @@ public class ConnectorSdkConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService) {
-		return new AppmarketEventController(appmarketEventService);
+	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor) {
+		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor);
 	}
 }

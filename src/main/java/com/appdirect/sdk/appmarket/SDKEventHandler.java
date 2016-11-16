@@ -5,5 +5,5 @@ import com.appdirect.sdk.appmarket.api.EventInfo;
 
 @FunctionalInterface
 interface SDKEventHandler {
-	APIResult handle(EventInfo event);
+	APIResult handle(String consumerKeyUsedByTheRequest, EventInfo event);
 }

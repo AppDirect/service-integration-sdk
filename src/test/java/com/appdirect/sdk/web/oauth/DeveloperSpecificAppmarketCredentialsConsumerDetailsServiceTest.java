@@ -1,48 +1,52 @@
 package com.appdirect.sdk.web.oauth;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.security.oauth.provider.ConsumerDetails;
 
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.Credentials;
 
 public class DeveloperSpecificAppmarketCredentialsConsumerDetailsServiceTest {
 
-	private Supplier<DeveloperSpecificAppmarketCredentials> credentialsSupplier;
+	@Mock
+	private Function<String, Credentials> credentialsSupplier;
 	private DeveloperSpecificAppmarketCredentialsConsumerDetailsService service;
 
 	@Before
 	public void setup() throws Exception {
-		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
+		initMocks(this);
 
 		service = new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
 	}
 
 	@Test
-	public void loadConsumerByConsumerKey_buildsConsumerDetails_fromCredentials() throws Exception {
-		DeveloperSpecificAppmarketCredentials credentials = new DeveloperSpecificAppmarketCredentials("some-key", "some-secret");
-		when(credentialsSupplier.get()).thenReturn(credentials);
+	public void loadConsumerByConsumerKey_buildsConsumerDetails_passesKeyToCredentialsSupplier() throws Exception {
+		when(credentialsSupplier.apply("zebra key")).thenReturn(someCredentials("zebra key", "s11"));
 
-		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("some-key");
+		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("zebra key");
 
-		assertThat(consumerDetails.getConsumerKey()).isEqualTo("some-key");
-		assertThat(consumerDetails.getSignatureSecret()).hasFieldOrPropertyWithValue("consumerSecret", "some-secret");
+		assertThat(consumerDetails.getConsumerKey()).isEqualTo("zebra key");
+		assertThat(consumerDetails.getSignatureSecret()).hasFieldOrPropertyWithValue("consumerSecret", "s11");
 	}
 
 	@Test
-	public void loadConsumerByConsumerKey_ignores_consumerKey() throws Exception {
-		DeveloperSpecificAppmarketCredentials credentials = new DeveloperSpecificAppmarketCredentials("some-key", "some-secret");
-		when(credentialsSupplier.get()).thenReturn(credentials);
+	public void loadConsumerByConsumerKey_returnsEmptyConsumer_whenKeyIsNotFound() throws Exception {
+		when(credentialsSupplier.apply("peach key")).thenReturn(null);
 
-		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("This value will be ignored");
+		ConsumerDetails consumerDetails = service.loadConsumerByConsumerKey("peach key");
 
-		assertThat(consumerDetails.getConsumerKey()).isEqualTo("some-key");
+		assertThat(consumerDetails.getConsumerKey()).isEqualTo("");
+		assertThat(consumerDetails.getSignatureSecret()).hasFieldOrPropertyWithValue("consumerSecret", "");
+	}
+
+	private Credentials someCredentials(String key, String secret) {
+		return new Credentials(key, secret);
 	}
 }

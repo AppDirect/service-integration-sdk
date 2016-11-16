@@ -1,27 +1,30 @@
 package com.appdirect.sdk.web.oauth;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentials;
+import com.appdirect.sdk.appmarket.Credentials;
 
 public class DeveloperSpecificAppmarketCredentialsConsumerDetailsService implements ConsumerDetailsService {
-    private final Supplier<DeveloperSpecificAppmarketCredentials> credentialsSupplier;
+	private final Function<String, Credentials> credentialsSupplier;
 
-    public DeveloperSpecificAppmarketCredentialsConsumerDetailsService(Supplier<DeveloperSpecificAppmarketCredentials> credentialsSupplier) {
-        this.credentialsSupplier = credentialsSupplier;
-    }
+	public DeveloperSpecificAppmarketCredentialsConsumerDetailsService(Function<String, Credentials> credentialsSupplier) {
+		this.credentialsSupplier = credentialsSupplier;
+	}
 
-    @Override
-    public ConsumerDetails loadConsumerByConsumerKey(String consumerKey) {
-        DeveloperSpecificAppmarketCredentials credentials = credentialsSupplier.get();
+	@Override
+	public ConsumerDetails loadConsumerByConsumerKey(String consumerKey) {
+		Credentials credentials = credentialsSupplier.apply(consumerKey);
+		return consumerDetailsFrom(credentials == null ? emptyCredentials() : credentials);
+	}
 
-        return consumerDetailsFrom(credentials);
-    }
+	private ConsumerDetails consumerDetailsFrom(Credentials credentials) {
+		return new ConnectorConsumerDetails(credentials.developerKey, credentials.developerSecret);
+	}
 
-    private ConsumerDetails consumerDetailsFrom(DeveloperSpecificAppmarketCredentials credentials) {
-        return new ConnectorConsumerDetails(credentials.getDeveloperKey(), credentials.getDeveloperSecret());
-    }
+	private Credentials emptyCredentials() {
+		return new Credentials("", "");
+	}
 }

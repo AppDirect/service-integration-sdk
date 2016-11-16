@@ -23,7 +23,7 @@ public class AppmarketEventDispatcherTest {
 	public void testDispatchAndHandle_defaultsToUnknownEventProcessor() throws Exception {
 		eventDispatcher = new AppmarketEventDispatcher(new HashMap<>());
 
-		APIResult results = eventDispatcher.dispatchAndHandle(someSubOrderEvent());
+		APIResult results = eventDispatcher.dispatchAndHandle("some-key", someSubOrderEvent());
 
 		assertThat(results.getMessage()).isEqualTo("Unsupported event type SUBSCRIPTION_ORDER");
 		assertThat(results.getErrorCode()).isEqualTo(CONFIGURATION_ERROR);
@@ -32,13 +32,13 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_sendsEventToProperHandler() throws Exception {
 		HashMap<EventType, SDKEventHandler> handlers = new HashMap<>();
-		handlers.put(SUBSCRIPTION_ORDER, event -> failure(INVALID_RESPONSE, "OH NO! I FAILED!"));
-		handlers.put(SUBSCRIPTION_CANCEL, event -> success("AH AH! I SUCCEEDED!"));
+		handlers.put(SUBSCRIPTION_ORDER, (key, event) -> failure(INVALID_RESPONSE, "OH NO! I FAILED!"));
+		handlers.put(SUBSCRIPTION_CANCEL, (key, event) -> success("AH AH! I SUCCEEDED! WITH KEY: " + key));
 		eventDispatcher = new AppmarketEventDispatcher(handlers);
 
-		APIResult results = eventDispatcher.dispatchAndHandle(someSubCancelEvent());
+		APIResult results = eventDispatcher.dispatchAndHandle("some-key", someSubCancelEvent());
 
-		assertThat(results.getMessage()).isEqualTo("AH AH! I SUCCEEDED!");
+		assertThat(results.getMessage()).isEqualTo("AH AH! I SUCCEEDED! WITH KEY: some-key");
 	}
 
 	private EventInfo someSubOrderEvent() {

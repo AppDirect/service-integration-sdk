@@ -7,18 +7,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
+import org.springframework.security.oauth.provider.OAuthProviderSupport;
+import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSupport;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificAppmarketCredentialsConsumerDetailsService;
+import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
+import com.appdirect.sdk.web.oauth.OAuthSignatureCheckingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -42,6 +42,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	public OAuthProviderSupport oauthProviderSupport() {
+		return new CoreOAuthProviderSupport();
+	}
+
+	@Bean
+	public OAuthKeyExtractor oauthKeyExtractor() {
+		return new OAuthKeyExtractor(oauthProviderSupport());
+	}
+
+	@Bean
 	public OAuthSignatureCheckingFilter oAuthSignatureCheckingFilter() {
 		OAuthSignatureCheckingFilter filter = new OAuthSignatureCheckingFilter();
 		filter.setConsumerDetailsService(consumerDetailsService());
@@ -50,29 +60,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return filter;
 	}
 
-	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint() {
-		return new Http403ForbiddenEntryPoint();
-	}
-
-	@Bean
-	public SecurityContextHolderStrategy securityContextHolderStrategy() {
-		return SecurityContextHolder.getContextHolderStrategy();
-	}
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.antMatcher("/api/v1/**")
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.csrf().disable()
-				.exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint())
-				.and()
-				.authorizeRequests()
-				.anyRequest().authenticated()
+				.authorizeRequests().anyRequest().authenticated()
 				.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

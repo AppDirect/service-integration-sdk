@@ -33,11 +33,12 @@ public class SubscriptionCancelEventParserTest {
 			.build();
 
 		//When
-		SubscriptionCancel parsedEvent = testedParser.parse(testEventInfo);
+		SubscriptionCancel parsedEvent = testedParser.parse("the-key", testEventInfo);
 
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())
 			.isEqualTo(testEventInfo.getPayload().getAccount().getAccountIdentifier());
+		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-key");
 	}
 
 }

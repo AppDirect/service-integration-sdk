@@ -5,9 +5,10 @@ import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 
 class SubscriptionCancelEventParser implements EventParser<SubscriptionCancel> {
 	@Override
-	public SubscriptionCancel parse(EventInfo event) {
+	public SubscriptionCancel parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		return new SubscriptionCancel(
-			event.getPayload().getAccount().getAccountIdentifier()
+				consumerKeyUsedByTheRequest,
+				eventInfo.getPayload().getAccount().getAccountIdentifier()
 		);
 	}
 }

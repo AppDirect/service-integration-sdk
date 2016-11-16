@@ -30,12 +30,12 @@ public class MinimalConnector {
 ```
 
 * Ensure your application context includes a `DeveloperSpecificAppmarketCredentialsSupplier` bean
-  that returns valid appmarket credentials.
+  that returns valid appmarket credentials given a consumer key.
 
 * Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of
   market event your connector handles.
   * Not providing handler for a mandatory event types will lead to an application context failure.
-  * Current mandatory events are `SubscriptionOrder` & `SubscriptionCancel`
+  * Current mandatory events are `SubscriptionOrder`, `SubscriptionCancel` & `SubscriptionChange`
 
 ## Exposed endpoints
 * `GET /health`
