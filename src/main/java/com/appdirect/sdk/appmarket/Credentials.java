@@ -10,6 +10,6 @@ public class Credentials {
 	}
 
 	public static Credentials invalidCredentials() {
-		return new Credentials("", "");
+		return new Credentials("this key does not exist in the supplier", "this key does not exist in the supplier");
 	}
 }
