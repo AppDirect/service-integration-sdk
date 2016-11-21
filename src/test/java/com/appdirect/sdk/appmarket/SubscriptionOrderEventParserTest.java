@@ -15,6 +15,7 @@ import com.appdirect.sdk.appmarket.api.CompanyInfo;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventInfo.EventInfoBuilder;
 import com.appdirect.sdk.appmarket.api.EventPayload;
+import com.appdirect.sdk.appmarket.api.MarketInfo;
 import com.appdirect.sdk.appmarket.api.OrderInfo;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
 import com.appdirect.sdk.appmarket.api.UserInfo;
@@ -82,16 +83,29 @@ public class SubscriptionOrderEventParserTest {
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-key");
 	}
 
+	@Test
+	public void parse_setsThePartnerName() throws Exception {
+		EventInfo rawEvent = eventWithCompanyInfo("Big Boxes").marketplace(new MarketInfo("Huge Partner", "some-url")).build();
+
+		SubscriptionOrder parsedEvent = parser.parse("some-key", rawEvent);
+
+		assertThat(parsedEvent.getPartner()).isEqualTo("Huge Partner");
+	}
+
 	private EventInfoBuilder eventWithOrderInfo(String editionCode) {
-		return EventInfo.builder().payload(EventPayload.builder().order(OrderInfo.builder().editionCode(editionCode).build()).build());
+		return someEvent().payload(EventPayload.builder().order(OrderInfo.builder().editionCode(editionCode).build()).build());
 	}
 
 	private EventInfoBuilder eventWithConfig(Map<String, String> config) {
-		return EventInfo.builder().payload(EventPayload.builder().configuration(config).build());
+		return someEvent().payload(EventPayload.builder().configuration(config).build());
 	}
 
 	private EventInfoBuilder eventWithCompanyInfo(String companyName) {
-		return EventInfo.builder().payload(EventPayload.builder().company(CompanyInfo.builder().name(companyName).build()).build());
+		return someEvent().payload(EventPayload.builder().company(CompanyInfo.builder().name(companyName).build()).build());
+	}
+
+	private EventInfoBuilder someEvent() {
+		return EventInfo.builder().marketplace(new MarketInfo("some-partner", "some-url"));
 	}
 
 	private Map<String, String> config(String... keyValues) {

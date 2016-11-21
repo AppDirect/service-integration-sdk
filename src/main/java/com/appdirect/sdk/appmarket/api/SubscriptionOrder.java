@@ -13,14 +13,16 @@ public class SubscriptionOrder implements Event {
 	private final Map<String, String> configuration;
 	private final CompanyInfo companyInfo;
 	private final OrderInfo orderInfo;
+	private final String partner;
 
-	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo) {
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner) {
 		this.consumerKeyUsedByTheRequest = consumerKeyUsedByTheRequest;
 		this.flag = flag;
 		this.purchaserInfo = purchaserInfo;
 		this.configuration = configuration;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
+		this.partner = partner;
 	}
 
 	public String getConsumerKeyUsedByTheRequest() {
@@ -45,5 +47,9 @@ public class SubscriptionOrder implements Event {
 
 	public OrderInfo getOrderInfo() {
 		return orderInfo;
+	}
+
+	public String getPartner() {
+		return partner;
 	}
 }
