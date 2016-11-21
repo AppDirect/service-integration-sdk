@@ -38,7 +38,7 @@ public class CanDispatchSubscriptionChangeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-change");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CHANGE for accountId=206123 has been processed, for real.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CHANGE for accountId=206123 has been processed, 25GB has been requested.\"}");
 	}
 
 	private String connectorEventEndpoint() {

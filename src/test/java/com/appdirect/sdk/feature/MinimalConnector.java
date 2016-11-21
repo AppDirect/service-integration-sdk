@@ -38,7 +38,7 @@ public class MinimalConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler() {
 		return event -> success(
-				format("SUB_CHANGE for accountId=%s has been processed, for real.", event.getAccount().getAccountIdentifier())
+				format("SUB_CHANGE for accountId=%s has been processed, %dGB has been requested.", event.getAccount().getAccountIdentifier(), event.getOrder().getItems().get(0).getQuantity())
 		);
 	}
 }
