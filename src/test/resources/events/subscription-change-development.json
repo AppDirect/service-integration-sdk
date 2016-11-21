@@ -31,10 +31,12 @@
     "order": {
       "editionCode": "DME",
       "pricingDuration": "DAILY",
-      "item": {
-        "quantity": "0",
-        "unit": "GIGABYTE"
-      }
+      "items": [
+        {
+          "quantity": "25",
+          "unit": "GIGABYTE"
+        }
+      ]
     }
   }
 }
