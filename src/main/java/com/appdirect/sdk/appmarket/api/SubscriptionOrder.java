@@ -14,8 +14,9 @@ public class SubscriptionOrder implements Event {
 	private final CompanyInfo companyInfo;
 	private final OrderInfo orderInfo;
 	private final String partner;
+	private final String applicationUuid;
 
-	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner) {
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String applicationUuid) {
 		this.consumerKeyUsedByTheRequest = consumerKeyUsedByTheRequest;
 		this.flag = flag;
 		this.purchaserInfo = purchaserInfo;
@@ -23,6 +24,7 @@ public class SubscriptionOrder implements Event {
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
 		this.partner = partner;
+		this.applicationUuid = applicationUuid;
 	}
 
 	public String getConsumerKeyUsedByTheRequest() {
@@ -51,5 +53,9 @@ public class SubscriptionOrder implements Event {
 
 	public String getPartner() {
 		return partner;
+	}
+
+	public Optional<String> getApplicationUuid() {
+		return Optional.ofNullable(applicationUuid);
 	}
 }

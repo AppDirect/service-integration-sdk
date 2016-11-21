@@ -85,11 +85,18 @@ public class SubscriptionOrderEventParserTest {
 
 	@Test
 	public void parse_setsThePartnerName() throws Exception {
-		EventInfo rawEvent = eventWithCompanyInfo("Big Boxes").marketplace(new MarketInfo("Huge Partner", "some-url")).build();
+		EventInfo rawEvent = someEvent().marketplace(new MarketInfo("Huge Partner", "some-url")).build();
 
 		SubscriptionOrder parsedEvent = parser.parse("some-key", rawEvent);
 
 		assertThat(parsedEvent.getPartner()).isEqualTo("Huge Partner");
+	}
+
+	@Test
+	public void parse_setsTheAppUuid() throws Exception {
+		SubscriptionOrder parsedEvent = parser.parse("some-key", someEvent().applicationUuid("the-app-uuid").build());
+
+		assertThat(parsedEvent.getApplicationUuid()).contains("the-app-uuid");
 	}
 
 	private EventInfoBuilder eventWithOrderInfo(String editionCode) {
@@ -105,7 +112,7 @@ public class SubscriptionOrderEventParserTest {
 	}
 
 	private EventInfoBuilder someEvent() {
-		return EventInfo.builder().marketplace(new MarketInfo("some-partner", "some-url"));
+		return EventInfo.builder().marketplace(new MarketInfo("some-partner", "some-url")).payload(EventPayload.builder().build());
 	}
 
 	private Map<String, String> config(String... keyValues) {
