@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket;
 
+import static com.appdirect.sdk.appmarket.api.ErrorCode.CONFIGURATION_ERROR;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CANCEL;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CHANGE;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_NOTICE;
@@ -19,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.appdirect.sdk.appmarket.api.APIResult;
-import com.appdirect.sdk.appmarket.api.ErrorCode;
 import com.appdirect.sdk.appmarket.api.EventInfo;
 import com.appdirect.sdk.appmarket.api.EventPayload;
 import com.appdirect.sdk.appmarket.api.EventType;
@@ -94,22 +94,22 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenEventTypeNotSupported_defaultsToUnknownEventProcessor() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = EventInfo.builder().type(EventType.USER_LINK).build();
+		EventInfo testEvent = EventInfo.builder().type(EventType.USER_LINK).build();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
-		assertThat(result.getErrorCode()).isEqualTo(ErrorCode.CONFIGURATION_ERROR);
+		assertThat(result.getErrorCode()).isEqualTo(CONFIGURATION_ERROR);
 	}
 
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionOrder_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = someSubOrderEvent();
+		EventInfo testEvent = someSubOrderEvent();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionOrderResponse);
@@ -118,10 +118,10 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionCancel_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = someSubCancelEvent();
+		EventInfo testEvent = someSubCancelEvent();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionCancelResponse);
@@ -130,10 +130,10 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionChange_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = someSubChange();
+		EventInfo testEvent = someSubChange();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionChangeResponse);
@@ -142,10 +142,10 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionDeactivate_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = subscriptionNoticeOfType(DEACTIVATED);
+		EventInfo testEvent = subscriptionNoticeOfType(DEACTIVATED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionDeactivatedResponse);
@@ -154,10 +154,10 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionReactivate_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = subscriptionNoticeOfType(REACTIVATED);
+		EventInfo testEvent = subscriptionNoticeOfType(REACTIVATED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionReactivatedResaponse);
@@ -166,10 +166,10 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionClose_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = subscriptionNoticeOfType(CLOSED);
+		EventInfo testEvent = subscriptionNoticeOfType(CLOSED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionClosedResponse);
@@ -178,10 +178,10 @@ public class AppmarketEventDispatcherTest {
 	@Test
 	public void testDispatchAndHandle_whenTheEventIsSusbscriptionUpcomingInvoice_thenInvokeAppropriateHandler() throws Exception {
 		//Given
-		EventInfo testSubscriptionOrderEvent = subscriptionNoticeOfType(UPCOMING_INVOICE);
+		EventInfo testEvent = subscriptionNoticeOfType(UPCOMING_INVOICE);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testSubscriptionOrderEvent);
+		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionUpcomingInvoiceResponse);
