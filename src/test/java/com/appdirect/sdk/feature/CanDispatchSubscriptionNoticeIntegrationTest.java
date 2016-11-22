@@ -38,7 +38,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-closed");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CLOSED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-deactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_DEACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
@@ -56,16 +56,16 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-reactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_REACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
-	public void subscriptionUpcomingNoticeIsProcessedSuccessfully() throws Exception {
+	public void subscriptionUpcomingInvoiceIsProcessedSuccessfully() throws Exception {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-upcoming-invoice");
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-upcoming-invoice");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_INVOICE a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	private String connectorEventEndpoint() {

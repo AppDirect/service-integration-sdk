@@ -1,18 +1,9 @@
 package com.appdirect.sdk.appmarket;
 
-import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CANCEL;
-import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CHANGE;
-import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_ORDER;
-
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.appdirect.sdk.appmarket.api.EventType;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.api.SubscriptionChange;
 import com.appdirect.sdk.appmarket.api.SubscriptionClosed;
@@ -81,7 +72,7 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public SDKEventHandler subscriptionUpcomingNoticeSdkHandler() {
+	public SDKEventHandler subscriptionUpcomingInvoiceSdkHandler() {
 		return new ParseAndHandleWrapper<>(subscriptionUpcomingInvoiceEventParser(), subscriptionUpcomingInvoiceHandler);
 	}
 
@@ -122,16 +113,14 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
-		return new AppmarketEventDispatcher(allHandlers());
-	}
-
-	@Bean
-	public Map<EventType, SDKEventHandler> allHandlers() {
-		Map<EventType, SDKEventHandler> allProcessors = new EnumMap<>(EventType.class);
-		allProcessors.put(SUBSCRIPTION_ORDER, subscriptionOrderSdkHandler());
-		allProcessors.put(SUBSCRIPTION_CANCEL, subscriptionCancelSdkHandler());
-		allProcessors.put(SUBSCRIPTION_CHANGE, subscriptionChangeSdkHandler());
-
-		return Collections.unmodifiableMap(allProcessors);
+		return new AppmarketEventDispatcher(
+			subscriptionOrderSdkHandler(), 
+			subscriptionCancelSdkHandler(), 
+			subscriptionChangeSdkHandler(), 
+			subscriptionDeactivatedSdkHandler(), 
+			subscriptionReactivatedSdkHandler(),
+			subscriptionClosedSdkHandler(), 
+			subscriptionUpcomingInvoiceSdkHandler()
+		);
 	}
 }
