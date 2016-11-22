@@ -36,9 +36,9 @@ public class EventHandlingConfiguration {
 		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
 		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
 		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
-		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler, 
-		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler, 
-		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler, 
+		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
+		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
+		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
 		AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
 
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
