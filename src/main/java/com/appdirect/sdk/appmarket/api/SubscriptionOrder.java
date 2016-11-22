@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class SubscriptionOrder implements Event {
 	private final String consumerKeyUsedByTheRequest;
 	private final EventFlag flag;
@@ -16,43 +21,12 @@ public class SubscriptionOrder implements Event {
 	private final String partner;
 	private final String applicationUuid;
 
-	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String applicationUuid) {
-		this.consumerKeyUsedByTheRequest = consumerKeyUsedByTheRequest;
-		this.flag = flag;
-		this.purchaserInfo = purchaserInfo;
-		this.configuration = configuration;
-		this.companyInfo = companyInfo;
-		this.orderInfo = orderInfo;
-		this.partner = partner;
-		this.applicationUuid = applicationUuid;
-	}
-
-	public String getConsumerKeyUsedByTheRequest() {
-		return consumerKeyUsedByTheRequest;
-	}
-
 	public Optional<EventFlag> getFlag() {
 		return ofNullable(flag);
 	}
 
-	public UserInfo getPurchaserInfo() {
-		return purchaserInfo;
-	}
-
 	public Map<String, String> getConfiguration() {
 		return new HashMap<>(configuration);
-	}
-
-	public CompanyInfo getCompanyInfo() {
-		return companyInfo;
-	}
-
-	public OrderInfo getOrderInfo() {
-		return orderInfo;
-	}
-
-	public String getPartner() {
-		return partner;
 	}
 
 	public Optional<String> getApplicationUuid() {
