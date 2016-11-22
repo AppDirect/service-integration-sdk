@@ -114,12 +114,12 @@ public class EventHandlingConfiguration {
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
 		return new AppmarketEventDispatcher(
-			subscriptionOrderSdkHandler(), 
-			subscriptionCancelSdkHandler(), 
-			subscriptionChangeSdkHandler(), 
-			subscriptionDeactivatedSdkHandler(), 
+			subscriptionOrderSdkHandler(),
+			subscriptionCancelSdkHandler(),
+			subscriptionChangeSdkHandler(),
+			subscriptionDeactivatedSdkHandler(),
 			subscriptionReactivatedSdkHandler(),
-			subscriptionClosedSdkHandler(), 
+			subscriptionClosedSdkHandler(),
 			subscriptionUpcomingInvoiceSdkHandler()
 		);
 	}
