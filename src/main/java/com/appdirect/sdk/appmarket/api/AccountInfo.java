@@ -11,5 +11,5 @@ import lombok.Getter;
 @Getter
 public class AccountInfo {
 	private final String accountIdentifier;
-	private final String status;
+	private final AccountStatus status;
 }

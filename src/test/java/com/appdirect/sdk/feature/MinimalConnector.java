@@ -13,7 +13,11 @@ import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.api.SubscriptionChange;
+import com.appdirect.sdk.appmarket.api.SubscriptionClosed;
+import com.appdirect.sdk.appmarket.api.SubscriptionDeactivated;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
+import com.appdirect.sdk.appmarket.api.SubscriptionReactivated;
+import com.appdirect.sdk.appmarket.api.SubscriptionUpcomingInvoice;
 
 @SpringBootApplication
 @Import(ConnectorSdkConfiguration.class)
@@ -39,6 +43,34 @@ public class MinimalConnector {
 	public AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler() {
 		return event -> success(
 				format("SUB_CHANGE for accountId=%s has been processed, %dGB has been requested.", event.getAccount().getAccountIdentifier(), event.getOrder().getItems().get(0).getQuantity())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler() {
+		return event -> success(
+			format("SUB_CLOSED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler() {
+		return event -> success(
+			format("SUB_DEACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler() {
+		return event -> success(
+			format("SUB_REACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingNoticeHandler() {
+		return event -> success(
+			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 }

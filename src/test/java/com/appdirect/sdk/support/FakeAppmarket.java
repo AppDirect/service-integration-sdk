@@ -45,6 +45,10 @@ public class FakeAppmarket {
 		server.createContext("/v1/events/dev-order", new OauthSecuredJson("events/subscription-order-development.json"));
 		server.createContext("/v1/events/dev-cancel", new OauthSecuredJson("events/subscription-cancel-development.json"));
 		server.createContext("/v1/events/dev-change", new OauthSecuredJson("events/subscription-change-development.json"));
+		server.createContext("/v1/events/dev-deactivated", new OauthSecuredJson("events/subscription-deactivated-development.json"));
+		server.createContext("/v1/events/dev-reactivated", new OauthSecuredJson("events/subscription-reactivated-development.json"));
+		server.createContext("/v1/events/dev-closed", new OauthSecuredJson("events/subscription-closed-development.json"));
+		server.createContext("/v1/events/dev-upcoming-invoice", new OauthSecuredJson("events/subscription-upcoming-invoice-development.json"));
 
 		server.start();
 		return this;
