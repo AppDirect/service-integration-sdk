@@ -34,9 +34,9 @@ public class CanDispatchSubscriptionChangeIntegrationTest {
 
 	@Test
 	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-change");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/change");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-change");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/change");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CHANGE for accountId=206123 has been processed, 25GB has been requested.\"}");
 	}

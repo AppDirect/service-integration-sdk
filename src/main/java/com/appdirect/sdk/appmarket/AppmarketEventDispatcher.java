@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.EventInfo;
+import com.appdirect.sdk.appmarket.api.NoticeType;
 
 @RequiredArgsConstructor
 public class AppmarketEventDispatcher {
@@ -26,23 +27,27 @@ public class AppmarketEventDispatcher {
 				return subscriptionCancelHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
 			case SUBSCRIPTION_CHANGE:
 				return subscriptionChangeHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
-			case SUBSCRIPTION_NOTICE: //NOSONAR
-				switch (eventInfo.getPayload().getNotice().getType()) {
-					case CLOSED:
-						return subscriptionClosedHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
-					case DEACTIVATED:
-						return subscriptionDeactivatedHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
-					case REACTIVATED:
-						return subscriptionReactivatedHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
-					case UPCOMING_INVOICE:
-						return subscriptionUpcomingInvoiceHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
-					default:
-						return unknownEventHandler().handle(consumerKeyUsedByTheRequest, eventInfo);
-				}
+			case SUBSCRIPTION_NOTICE:
+				return subscriptionNoticeHandlerFor(eventInfo.getPayload().getNotice().getType())
+					.handle(consumerKeyUsedByTheRequest, eventInfo);
 			default:
 				return unknownEventHandler().handle(consumerKeyUsedByTheRequest, eventInfo);
 		}
+	}
 
+	private SDKEventHandler subscriptionNoticeHandlerFor(NoticeType noticeType) {
+		switch (noticeType) {
+			case CLOSED:
+				return subscriptionClosedHandler;
+			case DEACTIVATED:
+				return subscriptionDeactivatedHandler;
+			case REACTIVATED:
+				return subscriptionReactivatedHandler;
+			case UPCOMING_INVOICE:
+				return subscriptionUpcomingInvoiceHandler;
+			default:
+				return unknownEventHandler();
+		}
 	}
 
 	private SDKEventHandler unknownEventHandler() {

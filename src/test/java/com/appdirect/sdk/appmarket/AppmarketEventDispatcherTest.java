@@ -92,7 +92,7 @@ public class AppmarketEventDispatcherTest {
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenEventTypeNotSupported_defaultsToUnknownEventProcessor() throws Exception {
+	public void testDispatchAndHandle_whenEventTypeNotSupported_returnsConfigError() throws Exception {
 		//Given
 		EventInfo testEvent = EventInfo.builder().type(EventType.USER_LINK).build();
 

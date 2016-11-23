@@ -15,7 +15,7 @@ public class SubscriptionDeactivatedParserTest {
 	private SubscriptionDeactivatedParser subscriptionDeactivatedParser = new SubscriptionDeactivatedParser();
 
 	@Test
-	public void parse() throws Exception {
+	public void testParse_whenEventInfoContainsASubscriptionDeactivatedMessage_thenParseAsAppropriateDeveloperEventType() throws Exception {
 		//Given
 		String testConsumerKey = "testConsumerKey";
 		String testAccountIdentifier = "testAccountIdentifier";
