@@ -1,9 +1,13 @@
 package com.appdirect.sdk.appmarket;
 
+import static com.appdirect.sdk.appmarket.api.ErrorCode.CONFIGURATION_ERROR;
+import static java.lang.String.format;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.api.SubscriptionChange;
 import com.appdirect.sdk.appmarket.api.SubscriptionClosed;
@@ -77,6 +81,11 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
+	public SDKEventHandler unknownEventHandler() {
+		return (consumerKeyUsedByTheRequest, event) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
+	}
+
+	@Bean
 	public EventParser<SubscriptionClosed> subscriptionClosedEventParser() {
 		return new SubscriptionClosedParser();
 	}
@@ -120,7 +129,8 @@ public class EventHandlingConfiguration {
 			subscriptionDeactivatedSdkHandler(),
 			subscriptionReactivatedSdkHandler(),
 			subscriptionClosedSdkHandler(),
-			subscriptionUpcomingInvoiceSdkHandler()
+			subscriptionUpcomingInvoiceSdkHandler(),
+			unknownEventHandler()
 		);
 	}
 }

@@ -1,8 +1,5 @@
 package com.appdirect.sdk.appmarket;
 
-import static com.appdirect.sdk.appmarket.api.ErrorCode.CONFIGURATION_ERROR;
-import static java.lang.String.format;
-
 import lombok.RequiredArgsConstructor;
 
 import com.appdirect.sdk.appmarket.api.APIResult;
@@ -18,20 +15,25 @@ public class AppmarketEventDispatcher {
 	private final SDKEventHandler subscriptionReactivatedHandler;
 	private final SDKEventHandler subscriptionClosedHandler;
 	private final SDKEventHandler subscriptionUpcomingInvoiceHandler;
+	private final SDKEventHandler unknownEventHandler;
 
-	public APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo) { //NOSONAR
+	public APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
+		return getHandlerFor(eventInfo)
+			.handle(consumerKeyUsedByTheRequest, eventInfo);
+	}
+
+	private SDKEventHandler getHandlerFor(EventInfo eventInfo) {
 		switch (eventInfo.getType()) {
 			case SUBSCRIPTION_ORDER:
-				return subscriptionOrderHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
+				return subscriptionOrderHandler;
 			case SUBSCRIPTION_CANCEL:
-				return subscriptionCancelHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
+				return subscriptionCancelHandler;
 			case SUBSCRIPTION_CHANGE:
-				return subscriptionChangeHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
+				return subscriptionChangeHandler;
 			case SUBSCRIPTION_NOTICE:
-				return subscriptionNoticeHandlerFor(eventInfo.getPayload().getNotice().getType())
-					.handle(consumerKeyUsedByTheRequest, eventInfo);
+				return subscriptionNoticeHandlerFor(eventInfo.getPayload().getNotice().getType());
 			default:
-				return unknownEventHandler().handle(consumerKeyUsedByTheRequest, eventInfo);
+				return unknownEventHandler;
 		}
 	}
 
@@ -46,11 +48,7 @@ public class AppmarketEventDispatcher {
 			case UPCOMING_INVOICE:
 				return subscriptionUpcomingInvoiceHandler;
 			default:
-				return unknownEventHandler();
+				return unknownEventHandler;
 		}
-	}
-
-	private SDKEventHandler unknownEventHandler() {
-		return (consumerKeyUsedByTheRequest, event) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
 	}
 }

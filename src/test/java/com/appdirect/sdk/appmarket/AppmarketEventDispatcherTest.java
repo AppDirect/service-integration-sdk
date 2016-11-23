@@ -1,6 +1,5 @@
 package com.appdirect.sdk.appmarket;
 
-import static com.appdirect.sdk.appmarket.api.ErrorCode.CONFIGURATION_ERROR;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CANCEL;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CHANGE;
 import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_NOTICE;
@@ -45,6 +44,8 @@ public class AppmarketEventDispatcherTest {
 	private SDKEventHandler mockSubscriptionClosedHandler;
 	@Mock
 	private SDKEventHandler mockSubscriptionIncomingNoticeHandler;
+	@Mock
+	private SDKEventHandler mockUnknownEventHandler;
 
 	@Mock
 	private APIResult mockSubscriptionOrderResponse;
@@ -60,7 +61,8 @@ public class AppmarketEventDispatcherTest {
 	private APIResult mockSubscriptionClosedResponse;
 	@Mock
 	private APIResult mockSubscriptionUpcomingInvoiceResponse;
-
+	@Mock
+	private APIResult mockUnknownEventResponse;
 	private String mockRequestConsumerKey = "some-key";
 
 	@Before
@@ -72,7 +74,8 @@ public class AppmarketEventDispatcherTest {
 			mockSubscriptionDeactivatedHandler,
 			mockSubscriptionReactivatedhandler,
 			mockSubscriptionClosedHandler,
-			mockSubscriptionIncomingNoticeHandler
+			mockSubscriptionIncomingNoticeHandler,
+			mockUnknownEventHandler
 		);
 
 		when(mockSubscriptionOrderHandler.handle(any(), any()))
@@ -89,10 +92,12 @@ public class AppmarketEventDispatcherTest {
 			.thenReturn(mockSubscriptionClosedResponse);
 		when(mockSubscriptionIncomingNoticeHandler.handle(any(), any()))
 			.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
+		when(mockUnknownEventHandler.handle(any(), any()))
+			.thenReturn(mockUnknownEventResponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenEventTypeNotSupported_returnsConfigError() throws Exception {
+	public void testDispatchAndHandle_whenEventTypeNotSupported_theUnknownEventHandlerIsInvoked() throws Exception {
 		//Given
 		EventInfo testEvent = EventInfo.builder().type(EventType.USER_LINK).build();
 
@@ -100,7 +105,7 @@ public class AppmarketEventDispatcherTest {
 		APIResult result = eventDispatcher.dispatchAndHandle(mockRequestConsumerKey, testEvent);
 
 		//Then
-		assertThat(result.getErrorCode()).isEqualTo(CONFIGURATION_ERROR);
+		assertThat(result).isEqualTo(mockUnknownEventResponse);
 	}
 
 	@Test
