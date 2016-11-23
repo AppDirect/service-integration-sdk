@@ -5,7 +5,6 @@
     "baseUrl": "https://gabrielspub-test.byappdirect.com"
   },
   "applicationUuid": null,
-  "flag": "DEVELOPMENT",
   "creator": {
     "uuid": "dac5f67b-7da7-4603-bb1b-3fd507509081",
     "openId": "https://gabrielspub-test.byappdirect.com/openid/id/dac5f67b-7da7-4603-bb1b-3fd507509081",

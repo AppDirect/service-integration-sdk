@@ -34,9 +34,9 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 
 	@Test
 	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/dev-order");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/order");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/dev-order");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/order");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
 	}

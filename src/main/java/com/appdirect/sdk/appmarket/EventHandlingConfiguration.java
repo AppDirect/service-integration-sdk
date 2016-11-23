@@ -1,37 +1,48 @@
 package com.appdirect.sdk.appmarket;
 
-import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CANCEL;
-import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_CHANGE;
-import static com.appdirect.sdk.appmarket.api.EventType.SUBSCRIPTION_ORDER;
-
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
+import static com.appdirect.sdk.appmarket.api.ErrorCode.CONFIGURATION_ERROR;
+import static java.lang.String.format;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.appdirect.sdk.appmarket.api.EventType;
+import com.appdirect.sdk.appmarket.api.APIResult;
 import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.api.SubscriptionChange;
+import com.appdirect.sdk.appmarket.api.SubscriptionClosed;
+import com.appdirect.sdk.appmarket.api.SubscriptionDeactivated;
 import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
+import com.appdirect.sdk.appmarket.api.SubscriptionReactivated;
+import com.appdirect.sdk.appmarket.api.SubscriptionUpcomingInvoice;
 
 @Configuration
 public class EventHandlingConfiguration {
 	private final AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
 	private final AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
 	private final AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
+	private final AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler;
+	private final AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
+	private final AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
+	private final AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
 
 	@Autowired
 	public EventHandlingConfiguration(
 		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
 		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
-		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler) {
+		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
+		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
+		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
+		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
+		AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
 
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
 		this.subscriptionChangeHandler = subscriptionChangeHandler;
+		this.subscriptionClosedHandler = subscriptionClosedHandler;
+		this.subscriptionDeactivatedHandler = subscriptionDeactivatedHandler;
+		this.subscriptionReactivatedHandler = subscriptionReactivatedHandler;
+		this.subscriptionUpcomingInvoiceHandler = subscriptionUpcomingInvoiceHandler;
 	}
 
 	@Bean
@@ -47,6 +58,51 @@ public class EventHandlingConfiguration {
 	@Bean
 	public SDKEventHandler subscriptionChangeSdkHandler() {
 		return new ParseAndHandleWrapper<>(subscriptionChangeEventParser(), subscriptionChangeHandler);
+	}
+
+	@Bean
+	public SDKEventHandler subscriptionClosedSdkHandler() {
+		return new ParseAndHandleWrapper<>(subscriptionClosedEventParser(), subscriptionClosedHandler);
+	}
+
+	@Bean
+	public SDKEventHandler subscriptionDeactivatedSdkHandler() {
+		return new ParseAndHandleWrapper<>(subscriptionDeactivatedEventParser(), subscriptionDeactivatedHandler);
+	}
+
+	@Bean
+	public SDKEventHandler subscriptionReactivatedSdkHandler() {
+		return new ParseAndHandleWrapper<>(subscriptionReactivatedEventParser(), subscriptionReactivatedHandler);
+	}
+
+	@Bean
+	public SDKEventHandler subscriptionUpcomingInvoiceSdkHandler() {
+		return new ParseAndHandleWrapper<>(subscriptionUpcomingInvoiceEventParser(), subscriptionUpcomingInvoiceHandler);
+	}
+
+	@Bean
+	public SDKEventHandler unknownEventHandler() {
+		return (consumerKeyUsedByTheRequest, event) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
+	}
+
+	@Bean
+	public EventParser<SubscriptionClosed> subscriptionClosedEventParser() {
+		return new SubscriptionClosedParser();
+	}
+
+	@Bean
+	public EventParser<SubscriptionDeactivated> subscriptionDeactivatedEventParser() {
+		return new SubscriptionDeactivatedParser();
+	}
+
+	@Bean
+	public EventParser<SubscriptionReactivated> subscriptionReactivatedEventParser() {
+		return new SubscriptionReactivatedParser();
+	}
+
+	@Bean
+	public EventParser<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceEventParser() {
+		return new SubscriptionUpcomingInvoiceParser();
 	}
 
 	@Bean
@@ -66,16 +122,15 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
-		return new AppmarketEventDispatcher(allHandlers());
-	}
-
-	@Bean
-	public Map<EventType, SDKEventHandler> allHandlers() {
-		Map<EventType, SDKEventHandler> allProcessors = new EnumMap<>(EventType.class);
-		allProcessors.put(SUBSCRIPTION_ORDER, subscriptionOrderSdkHandler());
-		allProcessors.put(SUBSCRIPTION_CANCEL, subscriptionCancelSdkHandler());
-		allProcessors.put(SUBSCRIPTION_CHANGE, subscriptionChangeSdkHandler());
-
-		return Collections.unmodifiableMap(allProcessors);
+		return new AppmarketEventDispatcher(
+			subscriptionOrderSdkHandler(),
+			subscriptionCancelSdkHandler(),
+			subscriptionChangeSdkHandler(),
+			subscriptionDeactivatedSdkHandler(),
+			subscriptionReactivatedSdkHandler(),
+			subscriptionClosedSdkHandler(),
+			subscriptionUpcomingInvoiceSdkHandler(),
+			unknownEventHandler()
+		);
 	}
 }

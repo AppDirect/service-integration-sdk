@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class SubscriptionOrder implements Event {
+public class SubscriptionOrder {
 	private final String consumerKeyUsedByTheRequest;
 	private final EventFlag flag;
 	private final UserInfo purchaserInfo;
