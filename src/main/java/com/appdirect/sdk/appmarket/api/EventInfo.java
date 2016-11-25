@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Representation of the JSON payload of an event received from the AppMarket.
+ * SDK internal, a user of the SDK should never interact with those directly.
+ */
 @Getter
 @ToString
 @AllArgsConstructor

@@ -9,6 +9,9 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Developer-facing event creation of an account requested by the AppMarket
+ */
 @Getter
 @AllArgsConstructor
 public class SubscriptionOrder {

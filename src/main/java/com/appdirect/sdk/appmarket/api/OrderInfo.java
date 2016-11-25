@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Containts all relevant information of an order placed using a {@link SubscriptionOrder} event
+ */
 @Getter
 @ToString
 @AllArgsConstructor

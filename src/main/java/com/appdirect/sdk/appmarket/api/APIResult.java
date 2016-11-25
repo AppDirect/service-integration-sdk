@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * The payload that is sent back to the AppMarket in response to an event
+ */
 @Getter
 @Setter
 @ToString

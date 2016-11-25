@@ -1,5 +1,8 @@
 package com.appdirect.sdk.appmarket.api;
 
+/**
+ * Standard error codes that are sent to the AppMarket
+ */
 public enum ErrorCode {
 	USER_ALREADY_EXISTS,
 	USER_NOT_FOUND,

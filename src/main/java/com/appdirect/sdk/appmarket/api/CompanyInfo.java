@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Information about a company. Generally, used to pass information about the company placing an order
+ * via a {@link SubscriptionOrder} event
+ */
 @Getter
 @ToString
 @AllArgsConstructor

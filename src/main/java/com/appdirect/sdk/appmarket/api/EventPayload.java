@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Represents the value of the "payload" element in an {@link EventInfo}
+ */
 @Getter
 @ToString
 @AllArgsConstructor

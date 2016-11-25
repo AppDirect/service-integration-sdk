@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+/**
+ * Represents an "account" (the equivalent of a subscription, from the AppMarket point of view)
+ */
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
