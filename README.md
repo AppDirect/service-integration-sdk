@@ -67,3 +67,7 @@ For more information review the documentation [here](http://docs.spring.io/sprin
 
 ## Building
 * `mvn clean javadoc:jar source:jar install`
+
+## Regular dependencies version update
+* `mvn versions:update-parent`
+* `mvn versions:use-latest-releases`
