@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.appdirect.sdk.APIResult;
+import com.appdirect.sdk.appmarket.api.APIResult;
 
 public class HealthControllerTest {
 
