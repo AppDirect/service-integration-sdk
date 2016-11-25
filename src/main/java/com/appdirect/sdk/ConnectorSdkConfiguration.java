@@ -4,12 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.appdirect.sdk.appmarket.AppmarketEventDispatcher;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.EventHandlingConfiguration;
-import com.appdirect.sdk.web.AppmarketEventController;
-import com.appdirect.sdk.web.AppmarketEventFetcher;
-import com.appdirect.sdk.web.AppmarketEventService;
 import com.appdirect.sdk.web.HealthController;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;

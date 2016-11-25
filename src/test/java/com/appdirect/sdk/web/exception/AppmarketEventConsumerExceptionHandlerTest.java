@@ -1,6 +1,6 @@
 package com.appdirect.sdk.web.exception;
 
-import static com.appdirect.sdk.appmarket.api.ErrorCode.NOT_FOUND;
+import static com.appdirect.sdk.ErrorCode.NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;

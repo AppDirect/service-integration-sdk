@@ -2,12 +2,11 @@ package com.appdirect.sdk.web;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.APIResult;
 
 public class HealthControllerTest {
 

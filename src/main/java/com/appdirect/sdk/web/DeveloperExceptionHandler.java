@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.APIResult;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j

@@ -2,8 +2,8 @@ package com.appdirect.sdk.exception;
 
 import lombok.Getter;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
-import com.appdirect.sdk.appmarket.api.ErrorCode;
+import com.appdirect.sdk.APIResult;
+import com.appdirect.sdk.ErrorCode;
 
 public class DeveloperServiceException extends RuntimeException {
 	private static final long serialVersionUID = 6079855456255852065L;

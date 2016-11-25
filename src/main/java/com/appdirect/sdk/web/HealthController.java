@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.APIResult;
 
 @Slf4j
 @RestController

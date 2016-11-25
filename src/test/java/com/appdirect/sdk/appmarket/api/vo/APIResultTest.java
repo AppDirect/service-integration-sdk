@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
-import com.appdirect.sdk.appmarket.api.ErrorCode;
+import com.appdirect.sdk.APIResult;
+import com.appdirect.sdk.ErrorCode;
 
 public class APIResultTest {
 
