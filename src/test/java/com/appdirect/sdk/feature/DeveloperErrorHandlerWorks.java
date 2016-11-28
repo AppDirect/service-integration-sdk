@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.appdirect.sdk.support.FakeAppmarket;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {MinimalConnectorWithFailingOrder.class}, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = {MinimalConnector.class}, webEnvironment = RANDOM_PORT)
 public class DeveloperErrorHandlerWorks {
 	@LocalServerPort
 	private int localConnectorPort;
@@ -34,11 +34,10 @@ public class DeveloperErrorHandlerWorks {
 
 	@Test
 	public void testDeveloperErrorHandler_whenSubscriptionOrderFails_weReturnAPayloadMatchingMarketplaceFormat() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/order");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/nonExistant/v1/events/order");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/order");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"asynchronous\":false,\"message\":\"Oops, ORDER FAILED !\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"asynchronous\":false,\"errorCode\":\"NOT_FOUND\",\"message\":\"Failed to fetch event: Not Found\"}");
 	}
 
 	private String connectorEventEndpoint() {
