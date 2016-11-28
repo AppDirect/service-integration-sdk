@@ -1,6 +1,6 @@
 package com.appdirect.sdk.web.exception;
 
-import static com.appdirect.sdk.appmarket.api.ErrorCode.NOT_FOUND;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.NOT_FOUND;
 import static java.lang.String.format;
 
 import java.io.IOException;
