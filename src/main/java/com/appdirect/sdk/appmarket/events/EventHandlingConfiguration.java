@@ -20,13 +20,13 @@ public class EventHandlingConfiguration {
 
 	@Autowired
 	public EventHandlingConfiguration(
-		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
-		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
-		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
-		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
-		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
-		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
-		AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
+			AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
+			AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
+			AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
+			AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
+			AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
+			AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
+			AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
 
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
@@ -115,14 +115,16 @@ public class EventHandlingConfiguration {
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
 		return new AppmarketEventDispatcher(
-			subscriptionOrderSdkHandler(),
-			subscriptionCancelSdkHandler(),
-			subscriptionChangeSdkHandler(),
-			subscriptionDeactivatedSdkHandler(),
-			subscriptionReactivatedSdkHandler(),
-			subscriptionClosedSdkHandler(),
-			subscriptionUpcomingInvoiceSdkHandler(),
-			unknownEventHandler()
+				new AsyncEvents(),
+				new AsyncEventHandler(),
+				subscriptionOrderSdkHandler(),
+				subscriptionCancelSdkHandler(),
+				subscriptionChangeSdkHandler(),
+				subscriptionDeactivatedSdkHandler(),
+				subscriptionReactivatedSdkHandler(),
+				subscriptionClosedSdkHandler(),
+				subscriptionUpcomingInvoiceSdkHandler(),
+				unknownEventHandler()
 		);
 	}
 }

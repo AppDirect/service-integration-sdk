@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class AppmarketEventDispatcher {
+	private final AsyncEvents asyncEvents;
+	private final AsyncEventHandler asyncHandler;
 	private final SDKEventHandler subscriptionOrderHandler;
 	private final SDKEventHandler subscriptionCancelHandler;
 	private final SDKEventHandler subscriptionChangeHandler;
@@ -14,8 +16,12 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler unknownEventHandler;
 
 	APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
-		return getHandlerFor(eventInfo)
-			.handle(consumerKeyUsedByTheRequest, eventInfo);
+		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
+		if (asyncEvents.eventShouldBeHandledAsync(eventInfo)) {
+			return asyncHandler.handle(eventHandler, consumerKeyUsedByTheRequest, eventInfo);
+		} else {
+			return eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
+		}
 	}
 
 	private SDKEventHandler getHandlerFor(EventInfo eventInfo) {
