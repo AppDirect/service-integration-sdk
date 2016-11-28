@@ -1,8 +1,8 @@
 package com.appdirect.sdk.appmarket;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
-import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
-import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
+import com.appdirect.sdk.appmarket.events.APIResult;
+import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
+import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 
 /**
  * This is the interface you need to implement to support handling appmarket events

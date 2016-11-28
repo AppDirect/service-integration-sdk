@@ -1,11 +1,12 @@
 package com.appdirect.sdk.web;
 
-import static com.appdirect.sdk.appmarket.api.ErrorCode.UNAUTHORIZED;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import com.appdirect.sdk.appmarket.api.APIResult;
+import com.appdirect.sdk.appmarket.events.APIResult;
+import com.appdirect.sdk.appmarket.events.DeveloperExceptionHandler;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 public class DeveloperExceptionHandlerTest {

@@ -21,7 +21,7 @@ import org.springframework.security.oauth.provider.token.OAuthProviderToken;
 
 @Slf4j
 @NoArgsConstructor
-public class OAuthSignatureCheckingFilter extends ProtectedResourceProcessingFilter implements Filter {
+class OAuthSignatureCheckingFilter extends ProtectedResourceProcessingFilter implements Filter {
 	@Value("${signature.validation.use.https:false}")
 	private Boolean signatureValidationUseHttps;
 

@@ -9,7 +9,7 @@ import org.springframework.security.oauth.provider.OAuthProviderSupport;
 public class OAuthKeyExtractor {
 	private final OAuthProviderSupport oauthProviderSupport;
 
-	public OAuthKeyExtractor(OAuthProviderSupport oauthProviderSupport) {
+	OAuthKeyExtractor(OAuthProviderSupport oauthProviderSupport) {
 		this.oauthProviderSupport = oauthProviderSupport;
 	}
 

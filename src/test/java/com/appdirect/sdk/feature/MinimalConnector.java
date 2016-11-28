@@ -1,6 +1,6 @@
 package com.appdirect.sdk.feature;
 
-import static com.appdirect.sdk.appmarket.api.APIResult.success;
+import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static java.lang.String.format;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,13 +11,13 @@ import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.api.SubscriptionCancel;
-import com.appdirect.sdk.appmarket.api.SubscriptionChange;
-import com.appdirect.sdk.appmarket.api.SubscriptionClosed;
-import com.appdirect.sdk.appmarket.api.SubscriptionDeactivated;
-import com.appdirect.sdk.appmarket.api.SubscriptionOrder;
-import com.appdirect.sdk.appmarket.api.SubscriptionReactivated;
-import com.appdirect.sdk.appmarket.api.SubscriptionUpcomingInvoice;
+import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
+import com.appdirect.sdk.appmarket.events.SubscriptionChange;
+import com.appdirect.sdk.appmarket.events.SubscriptionClosed;
+import com.appdirect.sdk.appmarket.events.SubscriptionDeactivated;
+import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
+import com.appdirect.sdk.appmarket.events.SubscriptionReactivated;
+import com.appdirect.sdk.appmarket.events.SubscriptionUpcomingInvoice;
 
 @SpringBootApplication
 @Import(ConnectorSdkConfiguration.class)

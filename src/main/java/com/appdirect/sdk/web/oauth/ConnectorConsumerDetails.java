@@ -9,13 +9,13 @@ import org.springframework.security.oauth.common.signature.SharedConsumerSecretI
 import org.springframework.security.oauth.common.signature.SignatureSecret;
 import org.springframework.security.oauth.provider.ExtraTrustConsumerDetails;
 
-public class ConnectorConsumerDetails implements ExtraTrustConsumerDetails {
+class ConnectorConsumerDetails implements ExtraTrustConsumerDetails {
     private static final long serialVersionUID = -6907656091309880557L;
 
     private final String key;
     private final SharedConsumerSecret secret;
 
-    public ConnectorConsumerDetails(String key, String secret) {
+    ConnectorConsumerDetails(String key, String secret) {
         this.key = key;
         this.secret = new SharedConsumerSecretImpl(secret);
     }
