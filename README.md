@@ -15,7 +15,7 @@ Spring Boot applications.
 <dependency>
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
 </dependency>
 ```
 
