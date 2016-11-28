@@ -7,13 +7,20 @@ import org.springframework.context.annotation.Import;
 import com.appdirect.sdk.appmarket.events.AppmarketCommunicationConfiguration;
 import com.appdirect.sdk.appmarket.events.DeveloperExceptionHandler;
 import com.appdirect.sdk.appmarket.events.EventHandlingConfiguration;
+import com.appdirect.sdk.notification.NotificationConfiguration;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 
 @Configuration
-@Import({JacksonConfiguration.class, SecurityConfiguration.class, EventHandlingConfiguration.class, AppmarketCommunicationConfiguration.class})
+@Import({
+	JacksonConfiguration.class, 
+	SecurityConfiguration.class, 
+	EventHandlingConfiguration.class, 
+	AppmarketCommunicationConfiguration.class,
+	NotificationConfiguration.class
+})
 public class ConnectorSdkConfiguration {
 
 	@Bean
