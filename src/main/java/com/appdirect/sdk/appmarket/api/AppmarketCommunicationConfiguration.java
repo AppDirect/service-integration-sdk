@@ -16,7 +16,7 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventService appmarketEventService(
-		DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, 
+		DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
 		AppmarketEventDispatcher eventDispatcher,
 		AppmarketEventFetcher appmarketEventFetcher) {
 		return new AppmarketEventService(appmarketEventFetcher, credentialsSupplier, eventDispatcher);
