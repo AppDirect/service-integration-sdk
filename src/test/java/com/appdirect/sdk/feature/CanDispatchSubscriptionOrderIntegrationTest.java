@@ -38,7 +38,7 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/order");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
 	}
 
 	private String connectorEventEndpoint() {

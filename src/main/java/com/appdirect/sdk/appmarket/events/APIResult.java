@@ -1,6 +1,5 @@
 package com.appdirect.sdk.appmarket.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,16 +12,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class APIResult {
 	private boolean success;
-	private boolean asynchronous = false;
 	private ErrorCode errorCode;
 	private String message;
 	private String accountIdentifier;
-	private String userIdentifier;
-	private String id;
 
 	public APIResult(ErrorCode errorCode, String message) {
 		setSuccess(false);

@@ -38,7 +38,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/closed");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CLOSED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_CLOSED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/deactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_DEACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_DEACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/reactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_REACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_REACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/upcoming-invoice");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_INVOICE a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_INVOICE a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	private String connectorEventEndpoint() {

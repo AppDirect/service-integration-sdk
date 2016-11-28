@@ -46,7 +46,7 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 		);
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo(
-			format("{\"success\":true,\"asynchronous\":false,\"message\":\"SUB_CANCEL %s has been processed, for real.\"}", expectedAccountId)
+			format("{\"success\":true,\"message\":\"SUB_CANCEL %s has been processed, for real.\"}", expectedAccountId)
 		);
 	}
 
