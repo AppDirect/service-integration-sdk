@@ -3,6 +3,7 @@ package com.appdirect.sdk.support;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,6 +17,12 @@ public class ContentOf {
 
 	public static byte[] resourceAsBytes(String name) throws IOException {
 		return Files.readAllBytes(Paths.get(resourceUri(name)));
+	}
+
+	public static String streamAsString(InputStream is) {
+		// lifted from http://stackoverflow.com/a/5445161/26605
+		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
 	}
 
 	private static URI resourceUri(String name) {

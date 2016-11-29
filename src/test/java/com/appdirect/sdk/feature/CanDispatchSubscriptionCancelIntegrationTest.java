@@ -45,9 +45,9 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event has been accepted by the connector. It will be processed soon.\"}");
 
-		// TODO: wait for the event result to be POSTed to /api/integration/v1/events/{eventUrl}/result
-		//assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/api/integration/v1/events/cancel/result");
-		//assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("\"{\"success\":true}");
+		assertThat(fakeAppmarket.resolvedEvents()).contains("cancel");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/api/integration/v1/events/cancel/result");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("\"{\"success\":true}");
 	}
 
 	private String connectorEventEndpoint() {

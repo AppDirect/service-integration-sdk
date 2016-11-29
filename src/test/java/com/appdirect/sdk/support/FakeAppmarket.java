@@ -2,6 +2,7 @@ package com.appdirect.sdk.support;
 
 import static com.appdirect.sdk.support.ContentOf.resourceAsBytes;
 import static com.appdirect.sdk.support.ContentOf.resourceAsString;
+import static com.appdirect.sdk.support.ContentOf.streamAsString;
 import static com.appdirect.sdk.support.HttpClientHelper.anAppmarketHttpClient;
 import static com.appdirect.sdk.support.HttpClientHelper.get;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -12,6 +13,9 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+
+import lombok.RequiredArgsConstructor;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -31,6 +35,8 @@ public class FakeAppmarket {
 	private final String isvKey;
 	private final String isvSecret;
 	private final List<String> allRequestPaths;
+	private final List<String> resolvedEvents;
+	private String lastRequestBody;
 
 	public static FakeAppmarket create(int port, String isvKey, String isvSecret) throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -42,16 +48,30 @@ public class FakeAppmarket {
 		this.isvKey = isvKey;
 		this.isvSecret = isvSecret;
 		this.allRequestPaths = new ArrayList<>();
+		this.resolvedEvents = new ArrayList<>();
 	}
 
 	public FakeAppmarket start() {
-		server.createContext("/v1/events/order", new OauthSecuredJson("events/subscription-order.json"));
-		server.createContext("/v1/events/cancel", new OauthSecuredJson("events/subscription-cancel.json"));
-		server.createContext("/v1/events/change", new OauthSecuredJson("events/subscription-change.json"));
-		server.createContext("/v1/events/deactivated", new OauthSecuredJson("events/subscription-deactivated.json"));
-		server.createContext("/v1/events/reactivated", new OauthSecuredJson("events/subscription-reactivated.json"));
-		server.createContext("/v1/events/closed", new OauthSecuredJson("events/subscription-closed.json"));
-		server.createContext("/v1/events/upcoming-invoice", new OauthSecuredJson("events/subscription-upcoming-invoice.json"));
+		Predicate<HttpExchange> oauthInTheHeader = httpExchange -> {
+			String authorization = httpExchange.getRequestHeaders().getFirst("Authorization");
+			return authorization != null && authorization.startsWith("OAuth oauth_consumer_key=\"" + isvKey + "\",");
+		};
+
+		server.createContext("/v1/events/order", new ReturnResourceContent(oauthInTheHeader, "events/subscription-order.json"));
+		server.createContext("/v1/events/cancel", new ReturnResourceContent(oauthInTheHeader, "events/subscription-cancel.json"));
+		server.createContext("/v1/events/change", new ReturnResourceContent(oauthInTheHeader, "events/subscription-change.json"));
+		server.createContext("/v1/events/deactivated", new ReturnResourceContent(oauthInTheHeader, "events/subscription-deactivated.json"));
+		server.createContext("/v1/events/reactivated", new ReturnResourceContent(oauthInTheHeader, "events/subscription-reactivated.json"));
+		server.createContext("/v1/events/closed", new ReturnResourceContent(oauthInTheHeader, "events/subscription-closed.json"));
+		server.createContext("/v1/events/upcoming-invoice", new ReturnResourceContent(oauthInTheHeader, "events/subscription-upcoming-invoice.json"));
+		server.createContext("/api/integration/v1/events/", new OauthSecuredHandler(oauthInTheHeader) {
+			@Override
+			byte[] buildJsonResponse(URI requestUri) throws IOException {
+				String eventId = requestUri.getPath().split("/")[4];
+				resolvedEvents.add(eventId);
+				return "".getBytes(UTF_8);
+			}
+		});
 
 		server.start();
 		return this;
@@ -67,6 +87,14 @@ public class FakeAppmarket {
 
 	public List<String> allRequestPaths() {
 		return new ArrayList<>(allRequestPaths);
+	}
+
+	public String lastRequestBody() {
+		return lastRequestBody;
+	}
+
+	public List<String> resolvedEvents() {
+		return resolvedEvents;
 	}
 
 	public HttpResponse sendEventTo(String connectorEventEndpointUrl, String appmarketEventPath) throws Exception {
@@ -91,36 +119,18 @@ public class FakeAppmarket {
 		consumer.sign(request);
 	}
 
-	private class OauthSecuredJson implements HttpHandler {
+	class ReturnResourceContent extends OauthSecuredHandler {
 		private final String jsonResource;
 
-		private OauthSecuredJson(String jsonResource) {
+		ReturnResourceContent(Predicate<HttpExchange> authorized, String jsonResource) {
+			super(authorized);
 			this.jsonResource = jsonResource;
 		}
 
 		@Override
-		public void handle(HttpExchange t) throws IOException {
-			allRequestPaths.add(t.getRequestURI().toString());
-
-			String authorization = t.getRequestHeaders().getFirst("Authorization");
-			if (authorization == null || !authorization.startsWith("OAuth oauth_consumer_key=\"" + isvKey + "\",")) {
-				sendResponse(t, 401, "UNAUTHORIZED! Use OAUTH!".getBytes(UTF_8));
-				return;
-			}
-			t.getResponseHeaders().add("Content-Type", "application/json");
-
-			String accountId = getOptionalAccountIdParam(t.getRequestURI());
-			byte[] response = accountId == null ? resourceAsBytes(jsonResource) : resourceAsString(jsonResource).replace("{{account-id}}", accountId).getBytes(UTF_8);
-
-			sendResponse(t, 200, response);
-		}
-
-		private void sendResponse(HttpExchange t, int statusCode, byte[] response) throws IOException {
-			t.sendResponseHeaders(statusCode, response.length);
-
-			OutputStream os = t.getResponseBody();
-			os.write(response);
-			os.close();
+		byte[] buildJsonResponse(URI requestUri) throws IOException {
+			String accountId = getOptionalAccountIdParam(requestUri);
+			return accountId == null ? resourceAsBytes(jsonResource) : resourceAsString(jsonResource).replace("{{account-id}}", accountId).getBytes(UTF_8);
 		}
 
 		private String getOptionalAccountIdParam(URI requestURI) {
@@ -129,6 +139,35 @@ public class FakeAppmarket {
 				return null;
 			}
 			return query.split("=")[1];
+		}
+	}
+
+	@RequiredArgsConstructor
+	abstract class OauthSecuredHandler implements HttpHandler {
+		private final Predicate<HttpExchange> authorized;
+
+		@Override
+		public void handle(HttpExchange t) throws IOException {
+			allRequestPaths.add(t.getRequestURI().toString());
+
+			if (!authorized.test(t)) {
+				sendResponse(t, 401, "UNAUTHORIZED! Use OAUTH!".getBytes(UTF_8));
+				return;
+			}
+			lastRequestBody = streamAsString(t.getRequestBody());
+
+			t.getResponseHeaders().add("Content-Type", "application/json");
+			sendResponse(t, 200, buildJsonResponse(t.getRequestURI()));
+		}
+
+		abstract byte[] buildJsonResponse(URI requestUri) throws IOException;
+
+		private void sendResponse(HttpExchange t, int statusCode, byte[] response) throws IOException {
+			t.sendResponseHeaders(statusCode, response.length);
+
+			OutputStream os = t.getResponseBody();
+			os.write(response);
+			os.close();
 		}
 	}
 }
