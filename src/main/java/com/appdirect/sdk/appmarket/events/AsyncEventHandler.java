@@ -6,15 +6,19 @@ import java.util.concurrent.Executor;
 
 public class AsyncEventHandler {
 	private final Executor executor;
+	private final AppmarketEventClient appmarketEventClient;
 
-	public AsyncEventHandler(Executor executor) {
+	public AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient) {
 		this.executor = executor;
+		this.appmarketEventClient = appmarketEventClient;
 	}
 
 	public APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		executor.execute(() -> {
 			APIResult result = eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
-			// TODO: resolve the event on the appmarket
+			if (result != null) {
+				appmarketEventClient.resolve(eventInfo, result);
+			}
 		});
 		return async("Event has been accepted by the connector. It will be processed soon.");
 	}

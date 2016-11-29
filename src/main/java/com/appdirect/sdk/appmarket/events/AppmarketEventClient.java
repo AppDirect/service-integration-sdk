@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 @Slf4j
-class AppmarketEventFetcher {
+class AppmarketEventClient {
 
 	private final RestOperationsFactory restClientFactory;
 
-	AppmarketEventFetcher(RestOperationsFactory restClientFactory) {
+	AppmarketEventClient(RestOperationsFactory restClientFactory) {
 		this.restClientFactory = restClientFactory;
 	}
 
@@ -18,4 +18,7 @@ class AppmarketEventFetcher {
 		return restClientFactory.restOperationsForProfile(key, secret).getForObject(url, EventInfo.class);
 	}
 
+	public void resolve(EventInfo eventToResolve, APIResult result) {
+		// TODO: implement!
+	}
 }

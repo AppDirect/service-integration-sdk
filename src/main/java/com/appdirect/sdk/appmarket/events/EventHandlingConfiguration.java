@@ -20,6 +20,7 @@ public class EventHandlingConfiguration {
 	private final AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
 	private final AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
 	private final AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
+	private final AppmarketEventClient appmarketEventClient;
 
 	@Autowired
 	public EventHandlingConfiguration(
@@ -29,7 +30,8 @@ public class EventHandlingConfiguration {
 			AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
 			AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
 			AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
-			AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
+			AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler,
+			AppmarketEventClient appmarketEventClient) {
 
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
@@ -38,6 +40,7 @@ public class EventHandlingConfiguration {
 		this.subscriptionDeactivatedHandler = subscriptionDeactivatedHandler;
 		this.subscriptionReactivatedHandler = subscriptionReactivatedHandler;
 		this.subscriptionUpcomingInvoiceHandler = subscriptionUpcomingInvoiceHandler;
+		this.appmarketEventClient = appmarketEventClient;
 	}
 
 	@Bean
@@ -124,7 +127,7 @@ public class EventHandlingConfiguration {
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
 		return new AppmarketEventDispatcher(
 				new AsyncEvents(),
-				new AsyncEventHandler(defaultExecutorService()),
+				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
 				subscriptionOrderSdkHandler(),
 				subscriptionCancelSdkHandler(),
 				subscriptionChangeSdkHandler(),

@@ -13,18 +13,18 @@ import org.springframework.web.client.RestTemplate;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AppmarketEventFetcherTest {
+public class AppmarketEventClientTest {
 	@Mock
 	private RestOperationsFactory restOperationsFactory;
 
 	@Mock
 	private RestTemplate restOperations;
 
-	private AppmarketEventFetcher testedFetcher;
+	private AppmarketEventClient testedFetcher;
 
 	@Before
 	public void setUp() throws Exception {
-		testedFetcher = new AppmarketEventFetcher(restOperationsFactory);
+		testedFetcher = new AppmarketEventClient(restOperationsFactory);
 	}
 
 	@Test
