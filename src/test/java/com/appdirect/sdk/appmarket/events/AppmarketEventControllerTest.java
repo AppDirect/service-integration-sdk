@@ -1,7 +1,9 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,6 +29,8 @@ public class AppmarketEventControllerTest {
 		keyExtractor = mock(OAuthKeyExtractor.class);
 
 		controller = new AppmarketEventController(service, keyExtractor);
+
+		when(service.processEvent(anyString(), anyString())).thenReturn(aHugeSuccess());
 	}
 
 	@Test
@@ -56,6 +60,6 @@ public class AppmarketEventControllerTest {
 	}
 
 	private APIResult aHugeSuccess() {
-		return new APIResult(true, "HUGE SUCCESS!");
+		return success("HUGE SUCCESS!");
 	}
 }

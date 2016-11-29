@@ -1,6 +1,9 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static java.lang.String.format;
+import static java.util.concurrent.Executors.newWorkStealingPool;
+
+import java.util.concurrent.ExecutorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -112,11 +115,16 @@ public class EventHandlingConfiguration {
 		return new SubscriptionChangeEventParser();
 	}
 
+	@Bean(destroyMethod = "shutdown")
+	public ExecutorService defaultExecutorService() {
+		return newWorkStealingPool();
+	}
+
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher() {
 		return new AppmarketEventDispatcher(
 				new AsyncEvents(),
-				new AsyncEventHandler(),
+				new AsyncEventHandler(defaultExecutorService()),
 				subscriptionOrderSdkHandler(),
 				subscriptionCancelSdkHandler(),
 				subscriptionChangeSdkHandler(),

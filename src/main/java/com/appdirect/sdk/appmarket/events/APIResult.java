@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -18,11 +19,12 @@ public class APIResult {
 	private ErrorCode errorCode;
 	private String message;
 	private String accountIdentifier;
+	@JsonIgnore
+	private int statusCodeReturnedToAppmarket;
 
 	public APIResult(ErrorCode errorCode, String message) {
-		setSuccess(false);
+		this(false, message);
 		setErrorCode(errorCode);
-		setMessage(message);
 	}
 
 	public APIResult(boolean success, String message) {
@@ -31,10 +33,19 @@ public class APIResult {
 	}
 
 	public static APIResult success(String message) {
-		return new APIResult(true, message);
+		APIResult result = new APIResult(true, message);
+		result.setStatusCodeReturnedToAppmarket(200);
+		return result;
+	}
+
+	public static APIResult async(String message) {
+		APIResult result = new APIResult(true, message);
+		result.setStatusCodeReturnedToAppmarket(202);
+		return result;
 	}
 
 	public static APIResult failure(ErrorCode errorCode, String message) {
 		return new APIResult(errorCode, message);
 	}
+
 }

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,7 +30,7 @@ public class FakeAppmarket {
 	private final HttpServer server;
 	private final String isvKey;
 	private final String isvSecret;
-	private String lastRequestPath;
+	private final List<String> allRequestPaths;
 
 	public static FakeAppmarket create(int port, String isvKey, String isvSecret) throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -39,6 +41,7 @@ public class FakeAppmarket {
 		this.server = server;
 		this.isvKey = isvKey;
 		this.isvSecret = isvSecret;
+		this.allRequestPaths = new ArrayList<>();
 	}
 
 	public FakeAppmarket start() {
@@ -59,7 +62,11 @@ public class FakeAppmarket {
 	}
 
 	public String lastRequestPath() {
-		return lastRequestPath;
+		return lastItemOrNull(allRequestPaths);
+	}
+
+	public List<String> allRequestPaths() {
+		return new ArrayList<>(allRequestPaths);
 	}
 
 	public HttpResponse sendEventTo(String connectorEventEndpointUrl, String appmarketEventPath) throws Exception {
@@ -73,6 +80,10 @@ public class FakeAppmarket {
 
 	private String baseAppmarketUrl() {
 		return "http://localhost:" + server.getAddress().getPort();
+	}
+
+	private <T> T lastItemOrNull(List<T> list) {
+		return list.isEmpty() ? null : list.get(list.size() - 1);
 	}
 
 	private void oauthSign(HttpGet request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
@@ -89,7 +100,7 @@ public class FakeAppmarket {
 
 		@Override
 		public void handle(HttpExchange t) throws IOException {
-			lastRequestPath = t.getRequestURI().toString();
+			allRequestPaths.add(t.getRequestURI().toString());
 
 			String authorization = t.getRequestHeaders().getFirst("Authorization");
 			if (authorization == null || !authorization.startsWith("OAuth oauth_consumer_key=\"" + isvKey + "\",")) {
