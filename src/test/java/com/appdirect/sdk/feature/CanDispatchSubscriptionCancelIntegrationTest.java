@@ -47,7 +47,7 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 
 		assertThat(fakeAppmarket.resolvedEvents()).contains("cancel");
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/api/integration/v1/events/cancel/result");
-		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("\"{\"success\":true}");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_CANCEL 123 has been processed, for real.\"}");
 	}
 
 	private String connectorEventEndpoint() {
