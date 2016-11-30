@@ -56,7 +56,7 @@ public class AsyncEventHandlerTest {
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
 
-		verify(appmarketEventClient).resolve(eventToResolve, result);
+		verify(appmarketEventClient).resolve(eventToResolve, result, "some-key");
 	}
 
 	@Test

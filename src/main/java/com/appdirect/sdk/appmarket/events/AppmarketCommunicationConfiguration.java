@@ -10,8 +10,8 @@ import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 @Configuration
 public class AppmarketCommunicationConfiguration {
 	@Bean
-	public AppmarketEventClient appmarketEventFetcher(RestOperationsFactory restOperationsFactory) {
-		return new AppmarketEventClient(restOperationsFactory);
+	public AppmarketEventClient appmarketEventFetcher(RestOperationsFactory restOperationsFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		return new AppmarketEventClient(restOperationsFactory, credentialsSupplier);
 	}
 
 	@Bean

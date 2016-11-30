@@ -17,7 +17,7 @@ public class AsyncEventHandler {
 		executor.execute(() -> {
 			APIResult result = eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
 			if (result != null) {
-				appmarketEventClient.resolve(eventInfo, result);
+				appmarketEventClient.resolve(eventInfo, result, consumerKeyUsedByTheRequest);
 			}
 		});
 		return async("Event has been accepted by the connector. It will be processed soon.");
