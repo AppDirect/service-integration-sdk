@@ -17,6 +17,7 @@ import java.util.concurrent.Executor;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.slf4j.Logger;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
@@ -24,7 +25,8 @@ public class AsyncEventHandlerTest {
 
 	private Executor executor = mock(Executor.class);
 	private AppmarketEventClient appmarketEventClient = mock(AppmarketEventClient.class);
-	private AsyncEventHandler asyncEventHandler = new AsyncEventHandler(executor, appmarketEventClient);
+	private Logger mockLog = mock(Logger.class);
+	private AsyncEventHandler asyncEventHandler = new AsyncEventHandler(executor, appmarketEventClient, mockLog);
 
 	@Test
 	public void returnsOk() throws Exception {
@@ -79,22 +81,25 @@ public class AsyncEventHandlerTest {
 	}
 
 	@Test
-	public void whenHandlerThrowsDeveloperServiceException_itsResultsAreSentToTheAppmarket() throws Exception {
+	public void whenHandlerThrowsDeveloperServiceException_itsResultsAreSentToTheAppmarket_andLogged() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
-		when(someEventHandler.handle(anyString(), any())).thenThrow(new DeveloperServiceException(ACCOUNT_NOT_FOUND, "no account!"));
+		DeveloperServiceException theThrownException = new DeveloperServiceException(ACCOUNT_NOT_FOUND, "no account!");
+		when(someEventHandler.handle(anyString(), any())).thenThrow(theThrownException);
 
 		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
 
-		verify(appmarketEventClient).resolve(any(), eq(failure(ACCOUNT_NOT_FOUND, "no account!")), anyString());
+		verify(appmarketEventClient).resolve(any(), eq(theThrownException.getResult()), anyString());
+		verify(mockLog).error("Service returned an error for eventId={}, result={}", "some-event-id", theThrownException.getResult());
 	}
 
 	@Test
-	public void whenHandlerThrowsAnyException_unknownErrorIsSentToTheAppmarket() throws Exception {
+	public void whenHandlerThrowsAnyException_unknownErrorIsSentToTheAppmarket_andLogged() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
-		when(someEventHandler.handle(anyString(), any())).thenThrow(new IllegalArgumentException("some argument error"));
+		IllegalArgumentException theThrownException = new IllegalArgumentException("some argument error");
+		when(someEventHandler.handle(anyString(), any())).thenThrow(theThrownException);
 
 		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
 
@@ -102,6 +107,7 @@ public class AsyncEventHandlerTest {
 		eventHandling.run();
 
 		verify(appmarketEventClient).resolve(any(), eq(failure(UNKNOWN_ERROR, "some argument error")), anyString());
+		verify(mockLog).error("Exception while attempting to process an event. eventId={}", "some-event-id", theThrownException);
 	}
 
 	private Runnable extractRunnableFromExecutor() {
@@ -111,6 +117,6 @@ public class AsyncEventHandlerTest {
 	}
 
 	private EventInfo someEvent() {
-		return EventInfo.builder().id("some-event").build();
+		return EventInfo.builder().id("some-event-id").build();
 	}
 }

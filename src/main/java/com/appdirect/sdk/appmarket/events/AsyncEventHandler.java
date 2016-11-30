@@ -6,18 +6,24 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 
 import java.util.concurrent.Executor;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
-@Slf4j
 public class AsyncEventHandler {
+	private final Logger log;
 	private final Executor executor;
 	private final AppmarketEventClient appmarketEventClient;
 
 	public AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient) {
+		this(executor, appmarketEventClient, LoggerFactory.getLogger(AsyncEventHandler.class));
+	}
+
+	public AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, Logger log) {
 		this.executor = executor;
 		this.appmarketEventClient = appmarketEventClient;
+		this.log = log;
 	}
 
 	public APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
