@@ -88,7 +88,7 @@ public class FakeAppmarket {
 	}
 
 	public List<String> resolvedEvents() {
-		return resolvedEvents;
+		return new ArrayList<>(resolvedEvents);
 	}
 
 	private void markEventAsResolved(String eventId) {
