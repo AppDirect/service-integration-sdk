@@ -13,7 +13,7 @@ public class AsyncEventHandler {
 		this.appmarketEventClient = appmarketEventClient;
 	}
 
-	public APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo, String eventUrl) {
+	public APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		executor.execute(() -> {
 			APIResult result = eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
 			if (result != null) {

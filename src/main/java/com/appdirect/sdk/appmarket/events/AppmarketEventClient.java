@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.utils.EventIdExtractor.extractId;
 import static java.lang.String.format;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,9 @@ class AppmarketEventClient {
 
 	EventInfo fetchEvent(String url, String key, String secret) {
 		log.debug("Consuming event from url={}", url);
-		return restClientFactory.restOperationsForProfile(key, secret).getForObject(url, EventInfo.class);
+		EventInfo fetchedEvent = restClientFactory.restOperationsForProfile(key, secret).getForObject(url, EventInfo.class);
+		fetchedEvent.setId(extractId(url));
+		return fetchedEvent;
 	}
 
 	public void resolve(EventInfo eventToResolve, APIResult result, String key) {

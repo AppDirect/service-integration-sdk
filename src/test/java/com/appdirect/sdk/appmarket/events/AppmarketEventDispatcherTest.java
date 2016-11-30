@@ -103,79 +103,79 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = EventInfo.builder().type(EventType.USER_LINK).build();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockUnknownEventResponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenTheEventIsSusbscriptionOrder_thenInvokeAppropriateHandler() throws Exception {
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionOrder_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo testEvent = someSubOrderEvent();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionOrderResponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenTheEventIsSusbscriptionCancel_thenInvokeAppropriateHandler() throws Exception {
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionCancel_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo testEvent = someSubCancelEvent();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionCancelResponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenTheEventIsSusbscriptionChange_thenInvokeAppropriateHandler() throws Exception {
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionChange_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo testEvent = someSubChange();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionChangeResponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenTheEventIsSusbscriptionDeactivate_thenInvokeAppropriateHandler() throws Exception {
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionDeactivate_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo testEvent = subscriptionNoticeOfType(DEACTIVATED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionDeactivatedResponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenTheEventIsSusbscriptionReactivate_thenInvokeAppropriateHandler() throws Exception {
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionReactivate_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo testEvent = subscriptionNoticeOfType(REACTIVATED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionReactivatedResaponse);
 	}
 
 	@Test
-	public void testDispatchAndHandle_whenTheEventIsSusbscriptionClose_thenInvokeAppropriateHandler() throws Exception {
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionClose_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo testEvent = subscriptionNoticeOfType(CLOSED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionClosedResponse);
@@ -187,7 +187,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = subscriptionNoticeOfType(UPCOMING_INVOICE);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionUpcomingInvoiceResponse);
@@ -199,10 +199,10 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = someSubOrderEvent();
 		APIResult asyncSuccess = success("ASYNC!!");
 		when(mockAsyncEvents.eventShouldBeHandledAsync(testEvent)).thenReturn(true);
-		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, someKey, testEvent, "some-url")).thenReturn(asyncSuccess);
+		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, someKey, testEvent)).thenReturn(asyncSuccess);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, "some-url");
+		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent);
 
 		//Then
 		assertThat(result).isEqualTo(asyncSuccess);

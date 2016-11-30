@@ -34,9 +34,9 @@ public class AppmarketEventClientTest {
 	}
 
 	@Test
-	public void fetchEvent_callsGet_onTheRightUrl() throws Exception {
+	public void fetchEvent_callsGet_onTheRightUrl_andSetsEventId() throws Exception {
 		//Given
-		String testUrl = "testUrl";
+		String testUrl = "some.com/events/the-id-inferred-from-url";
 		String testKey = "testKey";
 		String testSecret = "testSecret";
 		EventInfo testEventInfo = EventInfo.builder().build();
@@ -51,6 +51,7 @@ public class AppmarketEventClientTest {
 
 		//Then
 		assertThat(fetchedEvent).isEqualTo(testEventInfo);
+		assertThat(fetchedEvent.getId()).isEqualTo("the-id-inferred-from-url");
 	}
 
 	@Test

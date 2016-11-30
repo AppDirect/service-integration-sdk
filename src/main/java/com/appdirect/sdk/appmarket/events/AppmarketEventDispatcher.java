@@ -15,10 +15,10 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler subscriptionUpcomingInvoiceHandler;
 	private final SDKEventHandler unknownEventHandler;
 
-	APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo, String eventUrl) {
+	APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
 		if (asyncEvents.eventShouldBeHandledAsync(eventInfo)) {
-			return asyncHandler.handle(eventHandler, consumerKeyUsedByTheRequest, eventInfo, eventUrl);
+			return asyncHandler.handle(eventHandler, consumerKeyUsedByTheRequest, eventInfo);
 		} else {
 			return eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
 		}

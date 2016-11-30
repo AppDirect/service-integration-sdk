@@ -24,7 +24,7 @@ public class AsyncEventHandlerTest {
 	public void returnsOk() throws Exception {
 		SDKEventHandler someEventHandler = (someKey, someEvent) -> null;
 
-		APIResult result = asyncEventHandler.handle(someEventHandler, "some-key", someEvent(), "some-url");
+		APIResult result = asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
 
 		assertThat(result.isSuccess()).isTrue();
 		assertThat(result.getStatusCodeReturnedToAppmarket()).isEqualTo(202);
@@ -36,7 +36,7 @@ public class AsyncEventHandlerTest {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		EventInfo eventToHandle = someEvent();
 
-		asyncEventHandler.handle(someEventHandler, "some-key", eventToHandle, "some-url");
+		asyncEventHandler.handle(someEventHandler, "some-key", eventToHandle);
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -51,7 +51,7 @@ public class AsyncEventHandlerTest {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		when(someEventHandler.handle(anyString(), any())).thenReturn(result);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", eventToResolve, "some-url");
+		asyncEventHandler.handle(someEventHandler, "some-key", eventToResolve);
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -64,7 +64,7 @@ public class AsyncEventHandlerTest {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		when(someEventHandler.handle(anyString(), any())).thenReturn(null);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", someEvent(), "some-url");
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
