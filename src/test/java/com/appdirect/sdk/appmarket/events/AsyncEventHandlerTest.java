@@ -111,6 +111,6 @@ public class AsyncEventHandlerTest {
 	}
 
 	private EventInfo someEvent() {
-		return EventInfo.builder().build();
+		return EventInfo.builder().id("some-event").build();
 	}
 }

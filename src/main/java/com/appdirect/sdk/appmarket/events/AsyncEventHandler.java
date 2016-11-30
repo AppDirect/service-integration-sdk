@@ -6,8 +6,11 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 
 import java.util.concurrent.Executor;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
+@Slf4j
 public class AsyncEventHandler {
 	private final Executor executor;
 	private final AppmarketEventClient appmarketEventClient;
@@ -23,8 +26,10 @@ public class AsyncEventHandler {
 			try {
 				result = eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
 			} catch (DeveloperServiceException e) {
+				log.error("Service returned an error for eventId={}, result={}", eventInfo.getId(), e.getResult());
 				result = e.getResult();
 			} catch (Exception e) {
+				log.error("Exception while attempting to process an event. eventId={}", eventInfo.getId(), e);
 				result = failure(UNKNOWN_ERROR, e.getMessage());
 			}
 
