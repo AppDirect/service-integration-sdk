@@ -99,7 +99,6 @@ public class FakeAppmarket {
 
 	private void markEventAsResolved(String eventId) {
 		synchronized (resolvedEvents) {
-			System.out.println("ADDING to list");
 			resolvedEvents.add(eventId);
 			resolvedEvents.notify();
 		}

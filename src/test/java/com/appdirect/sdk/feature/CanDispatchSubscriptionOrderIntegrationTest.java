@@ -42,7 +42,7 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 
 		fakeAppmarket.waitForResolvedEvents(1);
 		assertThat(fakeAppmarket.resolvedEvents()).contains("order");
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/api/integration/v1/events/order/result");
+		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/order/result");
 		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
 	}
 
