@@ -13,6 +13,7 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
 import lombok.RequiredArgsConstructor;
@@ -68,7 +69,7 @@ public class FakeAppmarket {
 			@Override
 			byte[] buildJsonResponse(URI requestUri) throws IOException {
 				String eventId = requestUri.getPath().split("/")[5];
-				resolvedEvents.add(eventId);
+				markEventAsResolved(eventId);
 				return "".getBytes(UTF_8);
 			}
 		});
@@ -97,6 +98,14 @@ public class FakeAppmarket {
 		return resolvedEvents;
 	}
 
+	private void markEventAsResolved(String eventId) {
+		synchronized (resolvedEvents) {
+			System.out.println("ADDING to list");
+			resolvedEvents.add(eventId);
+			resolvedEvents.notify();
+		}
+	}
+
 	public HttpResponse sendEventTo(String connectorEventEndpointUrl, String appmarketEventPath) throws Exception {
 		CloseableHttpClient httpClient = anAppmarketHttpClient();
 		HttpGet request = get(connectorEventEndpointUrl, "eventUrl", baseAppmarketUrl() + appmarketEventPath);
@@ -117,6 +126,21 @@ public class FakeAppmarket {
 	private void oauthSign(HttpGet request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(isvKey, isvSecret);
 		consumer.sign(request);
+	}
+
+	public void waitForResolvedEvents(int desiredNumberOfResolvedEvents) throws Exception {
+		long maxNumberOfTries = 100, timeoutOfOneTryMs = 50;
+		synchronized (resolvedEvents) {
+			int tries = 0;
+			while (resolvedEvents.size() < desiredNumberOfResolvedEvents && tries < maxNumberOfTries) {
+				tries++;
+				resolvedEvents.wait(timeoutOfOneTryMs);
+			}
+
+			if (tries == maxNumberOfTries) {
+				throw new TimeoutException("Could not find " + desiredNumberOfResolvedEvents + " resolved event after trying for " + maxNumberOfTries * timeoutOfOneTryMs + "ms. | resolvedEvents: " + resolvedEvents);
+			}
+		}
 	}
 
 	class ReturnResourceContent extends OauthSecuredHandler {
