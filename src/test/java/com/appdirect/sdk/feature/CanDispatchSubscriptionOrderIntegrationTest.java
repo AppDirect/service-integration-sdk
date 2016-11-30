@@ -36,11 +36,14 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/order");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/order");
+		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/order");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event has been accepted by the connector. It will be processed soon.\"}");
 
-		// TODO: add the asserts for the async resolution
+		fakeAppmarket.waitForResolvedEvents(1);
+		assertThat(fakeAppmarket.resolvedEvents()).contains("order");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/api/integration/v1/events/order/result");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
 	}
 
 	private String connectorEventEndpoint() {
