@@ -1,6 +1,5 @@
 package com.appdirect.sdk.support;
 
-import static com.appdirect.sdk.support.ContentOf.resourceAsBytes;
 import static com.appdirect.sdk.support.ContentOf.resourceAsString;
 import static com.appdirect.sdk.support.ContentOf.streamAsString;
 import static com.appdirect.sdk.support.HttpClientHelper.anAppmarketHttpClient;
@@ -153,16 +152,16 @@ public class FakeAppmarket {
 
 		@Override
 		byte[] buildJsonResponse(URI requestUri) throws IOException {
-			String accountId = getOptionalAccountIdParam(requestUri);
-			String url = baseAppmarketUrl();
-
-			return accountId == null ? resourceAsBytes(jsonResource) : resourceAsString(jsonResource).replace("{{account-id}}", accountId).replace("{{fake-appmarket-url}}", url).getBytes(UTF_8);
+			return resourceAsString(jsonResource)
+					.replace("{{fake-appmarket-url}}", baseAppmarketUrl())
+					.replace("{{account-id}}", getOptionalAccountIdParam(requestUri))
+					.getBytes(UTF_8);
 		}
 
 		private String getOptionalAccountIdParam(URI requestURI) {
 			String query = requestURI.getQuery();
 			if (query == null || !query.startsWith("account-id")) {
-				return null;
+				return "";
 			}
 			return query.split("=")[1];
 		}
