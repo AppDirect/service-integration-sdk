@@ -67,7 +67,7 @@ public class FakeAppmarket {
 		server.createContext("/api/integration/v1/events/", new OauthSecuredHandler(oauthInTheHeader) {
 			@Override
 			byte[] buildJsonResponse(URI requestUri) throws IOException {
-				String eventId = requestUri.getPath().split("/")[4];
+				String eventId = requestUri.getPath().split("/")[5];
 				resolvedEvents.add(eventId);
 				return "".getBytes(UTF_8);
 			}
@@ -130,7 +130,9 @@ public class FakeAppmarket {
 		@Override
 		byte[] buildJsonResponse(URI requestUri) throws IOException {
 			String accountId = getOptionalAccountIdParam(requestUri);
-			return accountId == null ? resourceAsBytes(jsonResource) : resourceAsString(jsonResource).replace("{{account-id}}", accountId).getBytes(UTF_8);
+			String url = baseAppmarketUrl();
+
+			return accountId == null ? resourceAsBytes(jsonResource) : resourceAsString(jsonResource).replace("{{account-id}}", accountId).replace("{{fake-appmarket-url}}", url).getBytes(UTF_8);
 		}
 
 		private String getOptionalAccountIdParam(URI requestURI) {

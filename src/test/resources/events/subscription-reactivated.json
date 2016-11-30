@@ -1,7 +1,7 @@
 {
   "type": "SUBSCRIPTION_NOTICE",
   "marketplace": {
-    "baseUrl": "https://www.acme.com",
+    "baseUrl": "{{fake-appmarket-url}}",
     "partner": "APPDIRECT"
   },
   "payload": {
