@@ -16,23 +16,11 @@ import javax.mail.internet.MimeMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {
-	HtmlEmailNotificationServiceIntegrationTest.TestConfig.class,
-	NotificationConfiguration.class
-})
 public class HtmlEmailNotificationServiceIntegrationTest {
 
 	private static final int TEST_SMTP_SERVER_PORT = 3025;
@@ -42,23 +30,15 @@ public class HtmlEmailNotificationServiceIntegrationTest {
 		new ServerSetup(TEST_SMTP_SERVER_PORT, TEST_SMTP_SERVER_BIND_ADDRESS, PROTOCOL_SMTP)
 	);
 
-	@Configuration
-	public static class TestConfig {
-
-		@Bean
-		public JavaMailSender mailSender() {
-			JavaMailSenderImpl sender = new JavaMailSenderImpl();
-			sender.setHost(TEST_SMTP_SERVER_BIND_ADDRESS);
-			sender.setPort(TEST_SMTP_SERVER_PORT);
-			return sender;
-		}
-	}
-
-	@Autowired
 	private HtmlEmailNotificationService htmlEmailNotificationService;
 
 	@Before
 	public void setUp() throws Exception {
+		JavaMailSenderImpl sender = new JavaMailSenderImpl();
+		sender.setHost(TEST_SMTP_SERVER_BIND_ADDRESS);
+		sender.setPort(TEST_SMTP_SERVER_PORT);
+
+		htmlEmailNotificationService = new HtmlEmailNotificationService("from@example.com", sender);
 		greenMail.start();
 	}
 
