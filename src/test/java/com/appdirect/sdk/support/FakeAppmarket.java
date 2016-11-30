@@ -57,13 +57,7 @@ public class FakeAppmarket {
 			return authorization != null && authorization.startsWith("OAuth oauth_consumer_key=\"" + isvKey + "\",");
 		};
 
-		server.createContext("/v1/events/order", new ReturnResourceContent(oauthInTheHeader, "events/subscription-order.json"));
-		server.createContext("/v1/events/cancel", new ReturnResourceContent(oauthInTheHeader, "events/subscription-cancel.json"));
-		server.createContext("/v1/events/change", new ReturnResourceContent(oauthInTheHeader, "events/subscription-change.json"));
-		server.createContext("/v1/events/deactivated", new ReturnResourceContent(oauthInTheHeader, "events/subscription-deactivated.json"));
-		server.createContext("/v1/events/reactivated", new ReturnResourceContent(oauthInTheHeader, "events/subscription-reactivated.json"));
-		server.createContext("/v1/events/closed", new ReturnResourceContent(oauthInTheHeader, "events/subscription-closed.json"));
-		server.createContext("/v1/events/upcoming-invoice", new ReturnResourceContent(oauthInTheHeader, "events/subscription-upcoming-invoice.json"));
+		server.createContext("/v1/events/", new ReturnResourceContent(oauthInTheHeader));
 		server.createContext("/api/integration/v1/events/", new OauthSecuredHandler(oauthInTheHeader) {
 			@Override
 			byte[] buildJsonResponse(URI requestUri) throws IOException {
@@ -142,19 +136,23 @@ public class FakeAppmarket {
 	}
 
 	class ReturnResourceContent extends OauthSecuredHandler {
-		private final String jsonResource;
-
-		ReturnResourceContent(Predicate<HttpExchange> authorized, String jsonResource) {
+		ReturnResourceContent(Predicate<HttpExchange> authorized) {
 			super(authorized);
-			this.jsonResource = jsonResource;
 		}
 
 		@Override
 		byte[] buildJsonResponse(URI requestUri) throws IOException {
+			String jsonResource = buildJsonResourceFrom(requestUri);
 			return resourceAsString(jsonResource)
 					.replace("{{fake-appmarket-url}}", baseAppmarketUrl())
 					.replace("{{account-id}}", getOptionalAccountIdParam(requestUri))
 					.getBytes(UTF_8);
+		}
+
+		private String buildJsonResourceFrom(URI requestUri) {
+			String[] fragments = requestUri.getPath().split("/");
+			String resourceName = fragments[fragments.length - 1];
+			return "events/subscription-" + resourceName + ".json";
 		}
 
 		private String getOptionalAccountIdParam(URI requestURI) {

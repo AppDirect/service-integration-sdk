@@ -34,7 +34,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 	@Test
 	public void subscriptionClosedIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/closed");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/closed");
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/closed");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
@@ -43,7 +43,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 	@Test
 	public void subscriptionDeactivatedIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/deactivated");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/deactivated");
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/deactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
@@ -52,7 +52,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 	@Test
 	public void subscriptionReactivatedIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/reactivated");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/reactivated");
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/reactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
@@ -61,7 +61,7 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 	@Test
 	public void subscriptionUpcomingInvoiceIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/upcoming-invoice");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/upcoming-invoice");
 
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/upcoming-invoice");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);

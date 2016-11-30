@@ -34,7 +34,7 @@ public class Returns401WhenNotAuthenticated {
 
 	@Test
 	public void unauthorizedIsReturned_whenBadCredentialsArePassed() throws Exception {
-		HttpResponse response = fakeAppmarketWithWrongCredentials.sendEventTo(connectorEventEndpoint(), "some/event");
+		HttpResponse response = fakeAppmarketWithWrongCredentials.sendEventTo(connectorEventEndpoint(), "/some/event");
 
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(401);
 		assertThat(EntityUtils.toString(response.getEntity())).matches("\\{\"timestamp\":\".*\",\"status\":401,\"error\":\"Unauthorized\",\"message\":\"Invalid signature for signature method HMAC-SHA1\",\"path\":\"/api/v1/integration/processEvent\"\\}");

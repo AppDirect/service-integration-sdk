@@ -34,7 +34,7 @@ public class CanDispatchSubscriptionChangeIntegrationTest {
 
 	@Test
 	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "v1/events/change");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/change");
 
 		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/change");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);

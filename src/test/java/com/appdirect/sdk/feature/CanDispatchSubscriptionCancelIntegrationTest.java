@@ -38,7 +38,7 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 		String expectedAccountId = "123";
 		HttpResponse response = fakeAppmarket.sendEventTo(
 				connectorEventEndpoint(),
-				format("v1/events/cancel?account-id=%s", expectedAccountId)
+				format("/v1/events/cancel?account-id=%s", expectedAccountId)
 		);
 
 		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/cancel?account-id=123");
