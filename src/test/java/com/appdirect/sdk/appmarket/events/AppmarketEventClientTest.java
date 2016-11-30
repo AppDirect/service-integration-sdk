@@ -56,16 +56,16 @@ public class AppmarketEventClientTest {
 	@Test
 	public void resolveEvent_callsPost_onTheRightUrl() throws Exception {
 		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
-		EventInfo cancelEvent = someEvent(SUBSCRIPTION_CANCEL, "http://base.com");
+		EventInfo cancelEvent = someEvent(SUBSCRIPTION_CANCEL, "http://base.com", "id-of-the-event");
 		APIResult resultToSend = success("async is resolved");
 
-		testedFetcher.resolve(cancelEvent, resultToSend, "some-key", "https://www.acme-marketplace.com/api/integration/v1/events/id-of-the-event");
+		testedFetcher.resolve(cancelEvent, resultToSend, "some-key");
 
 		verify(restOperations).postForObject("http://base.com/api/integration/v1/events/id-of-the-event/result", resultToSend, String.class);
 	}
 
-	private EventInfo someEvent(EventType type, String baseUrl) {
+	private EventInfo someEvent(EventType type, String baseUrl, String id) {
 		MarketInfo marketInfo = new MarketInfo("some-partner", baseUrl);
-		return EventInfo.builder().type(type).marketplace(marketInfo).build();
+		return EventInfo.builder().type(type).marketplace(marketInfo).id(id).build();
 	}
 }

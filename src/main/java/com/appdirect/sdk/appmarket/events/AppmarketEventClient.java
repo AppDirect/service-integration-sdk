@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import lombok.extern.slf4j.Slf4j;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.utils.EventIdExtractor;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 @Slf4j
@@ -24,17 +23,15 @@ class AppmarketEventClient {
 		return restClientFactory.restOperationsForProfile(key, secret).getForObject(url, EventInfo.class);
 	}
 
-	public void resolve(EventInfo eventToResolve, APIResult result, String key, String eventUrl) {
-		String url = eventResolutionEndpoint(eventToResolve, eventUrl);
+	public void resolve(EventInfo eventToResolve, APIResult result, String key) {
+		String url = eventResolutionEndpoint(eventToResolve);
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
 		restClientFactory.restOperationsForProfile(key, secret).postForObject(url, result, String.class);
 	}
 
-	private String eventResolutionEndpoint(EventInfo eventToResolve, String eventUrl) {
-		String eventId = EventIdExtractor.extractId(eventUrl);
-
+	private String eventResolutionEndpoint(EventInfo eventToResolve) {
 		String appmarketUrl = eventToResolve.getMarketplace().getBaseUrl();
-		return format("%s/api/integration/v1/events/%s/result", appmarketUrl, eventId);
+		return format("%s/api/integration/v1/events/%s/result", appmarketUrl, eventToResolve.getId());
 	}
 }
