@@ -3,8 +3,6 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CANCEL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -69,14 +67,5 @@ public class AppmarketEventClientTest {
 	private EventInfo someEvent(EventType type, String baseUrl) {
 		MarketInfo marketInfo = new MarketInfo("some-partner", baseUrl);
 		return EventInfo.builder().type(type).marketplace(marketInfo).build();
-	}
-
-	@Test
-	public void verifyUrlParsing_excludesParams() {
-		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
-
-		testedFetcher.resolve(someEvent(SUBSCRIPTION_CANCEL, "https://base.com"), APIResult.success("Super good"), "some-key", "https://base.com/api/integration/v1/events/id?param=1234");
-
-		verify(restOperations).postForObject(eq("https://base.com/api/integration/v1/events/id/result"), any(), eq(String.class));
 	}
 }

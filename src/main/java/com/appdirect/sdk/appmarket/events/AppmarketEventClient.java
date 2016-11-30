@@ -2,11 +2,10 @@ package com.appdirect.sdk.appmarket.events;
 
 import static java.lang.String.format;
 
-import java.net.URI;
-
 import lombok.extern.slf4j.Slf4j;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.utils.EventIdExtractor;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 @Slf4j
@@ -33,8 +32,7 @@ class AppmarketEventClient {
 	}
 
 	private String eventResolutionEndpoint(EventInfo eventToResolve, String eventUrl) {
-		String path = URI.create(eventUrl).getPath();
-		String eventId = path.substring(path.lastIndexOf("/") + 1);
+		String eventId = EventIdExtractor.extractId(eventUrl);
 
 		String appmarketUrl = eventToResolve.getMarketplace().getBaseUrl();
 		return format("%s/api/integration/v1/events/%s/result", appmarketUrl, eventId);
