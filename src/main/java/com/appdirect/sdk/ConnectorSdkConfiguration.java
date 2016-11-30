@@ -13,7 +13,12 @@ import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 
 @Configuration
-@Import({JacksonConfiguration.class, SecurityConfiguration.class, EventHandlingConfiguration.class, AppmarketCommunicationConfiguration.class})
+@Import({
+	JacksonConfiguration.class,
+	SecurityConfiguration.class,
+	EventHandlingConfiguration.class,
+	AppmarketCommunicationConfiguration.class
+})
 public class ConnectorSdkConfiguration {
 
 	@Bean
