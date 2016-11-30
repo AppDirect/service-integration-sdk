@@ -6,6 +6,7 @@ import static com.icegreen.greenmail.util.ServerSetup.PROTOCOL_SMTP;
 import static java.lang.System.lineSeparator;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,7 @@ public class HtmlEmailNotificationServiceIntegrationTest {
 
 		//Then
 		assertThat(getBody(receivedMessage)).isEqualTo(expectedEmailBody);
-		assertThat(headers(receivedMessage).get("Subject")).isEqualTo(expectedEmailSubject);
+		assertThat(headers(receivedMessage)).contains(entry("Subject", expectedEmailSubject));
 	}
 
 	private Map<String, String> headers(MimeMessage receivedMessage) {

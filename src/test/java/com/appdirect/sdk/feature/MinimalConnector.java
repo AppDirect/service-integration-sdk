@@ -3,6 +3,7 @@ package com.appdirect.sdk.feature;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static java.lang.String.format;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -22,6 +23,7 @@ import com.appdirect.sdk.appmarket.events.SubscriptionReactivated;
 import com.appdirect.sdk.appmarket.events.SubscriptionUpcomingInvoice;
 
 @SpringBootApplication
+@EnableAutoConfiguration
 @Import(ConnectorSdkConfiguration.class)
 public class MinimalConnector {
 	@Bean
@@ -74,13 +76,5 @@ public class MinimalConnector {
 		return event -> success(
 			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
-	}
-
-	@Bean
-	public JavaMailSender mailSender() {
-		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-		javaMailSender.setHost("127.0.0.1");
-		javaMailSender.setPort(999);
-		return javaMailSender;
 	}
 }

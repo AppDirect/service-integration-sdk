@@ -17,7 +17,7 @@ import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 	JacksonConfiguration.class,
 	SecurityConfiguration.class,
 	EventHandlingConfiguration.class,
-	AppmarketCommunicationConfiguration.class 
+	AppmarketCommunicationConfiguration.class
 })
 public class ConnectorSdkConfiguration {
 

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
@@ -68,12 +69,16 @@ public class HtmlEmailNotificationServiceTest {
 		String expectedRecipientAddress = "expectedRecepient@example.com";
 
 		when(mockEmailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-		doThrow(SendNotificationFailedException.class)
+		doThrow(MessagingException.class)
 			.when(mockEmailSender).send(any(MimeMessage.class));
 
 		//When
 		assertThatThrownBy(() ->
 			testedEmailService.sendHtmlEmail(expectedEmailSubject, expectedMessageBody, expectedRecipientAddress)
-		).isInstanceOf(SendNotificationFailedException.class);
+		)
+			.isInstanceOf(SendNotificationFailedException.class)
+			.hasMessage(
+				"Failed sending email notification with from=mockSender@example.com, to=expectedRecepient@example.com, notification=expectedMessageBody"
+			);
 	}
 }
