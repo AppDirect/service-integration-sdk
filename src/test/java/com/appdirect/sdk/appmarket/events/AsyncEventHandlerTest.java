@@ -1,9 +1,13 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.ACCOUNT_NOT_FOUND;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -13,6 +17,8 @@ import java.util.concurrent.Executor;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 public class AsyncEventHandlerTest {
 
@@ -70,6 +76,32 @@ public class AsyncEventHandlerTest {
 		eventHandling.run();
 
 		verifyZeroInteractions(appmarketEventClient);
+	}
+
+	@Test
+	public void whenHandlerThrowsDeveloperServiceException_itsResultsAreSentToTheAppmarket() throws Exception {
+		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
+		when(someEventHandler.handle(anyString(), any())).thenThrow(new DeveloperServiceException(ACCOUNT_NOT_FOUND, "no account!"));
+
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
+
+		Runnable eventHandling = extractRunnableFromExecutor();
+		eventHandling.run();
+
+		verify(appmarketEventClient).resolve(any(), eq(failure(ACCOUNT_NOT_FOUND, "no account!")), anyString());
+	}
+
+	@Test
+	public void whenHandlerThrowsAnyException_unknownErrorIsSentToTheAppmarket() throws Exception {
+		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
+		when(someEventHandler.handle(anyString(), any())).thenThrow(new IllegalArgumentException("some argument error"));
+
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
+
+		Runnable eventHandling = extractRunnableFromExecutor();
+		eventHandling.run();
+
+		verify(appmarketEventClient).resolve(any(), eq(failure(UNKNOWN_ERROR, "some argument error")), anyString());
 	}
 
 	private Runnable extractRunnableFromExecutor() {

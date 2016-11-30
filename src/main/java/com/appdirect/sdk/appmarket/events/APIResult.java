@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class APIResult {
 	private boolean success;

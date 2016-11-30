@@ -1,14 +1,13 @@
 package com.appdirect.sdk.feature;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
@@ -21,6 +20,7 @@ import com.appdirect.sdk.appmarket.events.SubscriptionDeactivated;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.SubscriptionReactivated;
 import com.appdirect.sdk.appmarket.events.SubscriptionUpcomingInvoice;
+import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -33,7 +33,11 @@ public class MinimalConnector {
 
 	@Bean
 	public AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler() {
-		return event -> success("SUB_ORDER has been processed, trust me.");
+		return event -> {
+			if (event.getPurchaserInfo() == null)
+				throw new DeveloperServiceException(USER_NOT_FOUND, "You should always have a creator");
+			return success("SUB_ORDER has been processed, trust me.");
+		};
 	}
 
 	@Bean
