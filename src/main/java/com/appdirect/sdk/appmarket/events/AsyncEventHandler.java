@@ -31,9 +31,12 @@ class AsyncEventHandler {
 			APIResult result;
 			try {
 				result = eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo);
+			} catch (DeveloperServiceException e) {
+				log.error("Exception while attempting to process an event. eventId={}", eventInfo.getId(), e);
+				result = e.getResult();
 			} catch (Exception e) {
 				log.error("Exception while attempting to process an event. eventId={}", eventInfo.getId(), e);
-				result = e instanceof DeveloperServiceException ? ((DeveloperServiceException) e).getResult() : failure(UNKNOWN_ERROR, e.getMessage());
+				result = failure(UNKNOWN_ERROR, e.getMessage());
 			}
 
 			if (result != null) {
