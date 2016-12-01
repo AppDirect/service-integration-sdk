@@ -9,18 +9,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-public class AsyncEventsTest {
+public class EventsTest {
 
 	@Test
 	public void allEventsShouldBeHandledAsync_butSubscriptionNotice() throws Exception {
-		AsyncEvents asyncEvents = new AsyncEvents();
+		Events events = new Events();
 
-		assertThat(asyncEvents.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_ORDER))).isTrue();
-		assertThat(asyncEvents.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_CANCEL))).isTrue();
-		assertThat(asyncEvents.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_CHANGE))).isTrue();
-		assertThat(asyncEvents.eventShouldBeHandledAsync(eventOfType(ADDON_ORDER))).isTrue();
+		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_ORDER))).isTrue();
+		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_CANCEL))).isTrue();
+		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_CHANGE))).isTrue();
+		assertThat(events.eventShouldBeHandledAsync(eventOfType(ADDON_ORDER))).isTrue();
 
-		assertThat(asyncEvents.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_NOTICE))).isFalse();
+		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_NOTICE))).isFalse();
 	}
 
 	private EventInfo eventOfType(EventType eventType) {
