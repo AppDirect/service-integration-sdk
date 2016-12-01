@@ -1,7 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
-import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CANCEL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -57,16 +56,10 @@ public class AppmarketEventClientTest {
 	@Test
 	public void resolveEvent_callsPost_onTheRightUrl() throws Exception {
 		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
-		EventInfo cancelEvent = someEvent(SUBSCRIPTION_CANCEL, "http://base.com", "id-of-the-event");
 		APIResult resultToSend = success("async is resolved");
 
-		testedFetcher.resolve(cancelEvent, resultToSend, "some-key");
+		testedFetcher.resolve("http://base.com", "id-of-the-event", resultToSend, "some-key");
 
 		verify(restOperations).postForObject("http://base.com/api/integration/v1/events/id-of-the-event/result", resultToSend, String.class);
-	}
-
-	private EventInfo someEvent(EventType type, String baseUrl, String id) {
-		MarketInfo marketInfo = new MarketInfo("some-partner", baseUrl);
-		return EventInfo.builder().type(type).marketplace(marketInfo).id(id).build();
 	}
 }

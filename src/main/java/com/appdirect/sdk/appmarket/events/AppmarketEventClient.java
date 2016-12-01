@@ -9,7 +9,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 @Slf4j
-class AppmarketEventClient {
+public class AppmarketEventClient {
 
 	private final RestOperationsFactory restClientFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
@@ -26,15 +26,14 @@ class AppmarketEventClient {
 		return fetchedEvent;
 	}
 
-	public void resolve(EventInfo eventToResolve, APIResult result, String key) {
-		String url = eventResolutionEndpoint(eventToResolve);
+	public void resolve(String baseAppmarketUrl, String eventId, APIResult result, String key) {
+		String url = eventResolutionEndpoint(baseAppmarketUrl, eventId);
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
 		restClientFactory.restOperationsForProfile(key, secret).postForObject(url, result, String.class);
 	}
 
-	private String eventResolutionEndpoint(EventInfo eventToResolve) {
-		String appmarketUrl = eventToResolve.getMarketplace().getBaseUrl();
-		return format("%s/api/integration/v1/events/%s/result", appmarketUrl, eventToResolve.getId());
+	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventId) {
+		return format("%s/api/integration/v1/events/%s/result", baseAppmarketUrl, eventId);
 	}
 }

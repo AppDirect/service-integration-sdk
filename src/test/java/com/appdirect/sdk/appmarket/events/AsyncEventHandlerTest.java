@@ -54,17 +54,16 @@ public class AsyncEventHandlerTest {
 
 	@Test
 	public void resolvesTheEventOnTheAppmarket() throws Exception {
-		EventInfo eventToResolve = someEvent();
 		APIResult result = success("After some async processing, I have now completed successfully");
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		when(someEventHandler.handle(anyString(), any())).thenReturn(result);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", eventToResolve);
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent("base-url", "event-id"));
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
 
-		verify(appmarketEventClient).resolve(eventToResolve, result, "some-key");
+		verify(appmarketEventClient).resolve("base-url", "event-id", result, "some-key");
 	}
 
 	@Test
@@ -91,7 +90,7 @@ public class AsyncEventHandlerTest {
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
 
-		verify(appmarketEventClient).resolve(any(), eq(theThrownException.getResult()), anyString());
+		verify(appmarketEventClient).resolve(anyString(), anyString(), eq(theThrownException.getResult()), anyString());
 		verify(mockLog).error("Service returned an error for eventId={}, result={}", "some-event-id", theThrownException.getResult());
 	}
 
@@ -106,7 +105,7 @@ public class AsyncEventHandlerTest {
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
 
-		verify(appmarketEventClient).resolve(any(), eq(failure(UNKNOWN_ERROR, "some argument error")), anyString());
+		verify(appmarketEventClient).resolve(anyString(), anyString(), eq(failure(UNKNOWN_ERROR, "some argument error")), anyString());
 		verify(mockLog).error("Exception while attempting to process an event. eventId={}", "some-event-id", theThrownException);
 	}
 
@@ -117,6 +116,11 @@ public class AsyncEventHandlerTest {
 	}
 
 	private EventInfo someEvent() {
-		return EventInfo.builder().id("some-event-id").build();
+		return someEvent("some-base-url", "some-event-id");
+	}
+
+	private EventInfo someEvent(String baseUrl, String eventId) {
+		MarketInfo marketplace = new MarketInfo("some-partner", baseUrl);
+		return EventInfo.builder().marketplace(marketplace).id(eventId).build();
 	}
 }
