@@ -11,22 +11,22 @@ import org.slf4j.LoggerFactory;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
-public class AsyncEventHandler {
+class AsyncEventHandler {
 	private final Logger log;
 	private final Executor executor;
 	private final AppmarketEventClient appmarketEventClient;
 
-	public AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient) {
+	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient) {
 		this(executor, appmarketEventClient, LoggerFactory.getLogger(AsyncEventHandler.class));
 	}
 
-	public AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, Logger log) {
+	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, Logger log) {
 		this.executor = executor;
 		this.appmarketEventClient = appmarketEventClient;
 		this.log = log;
 	}
 
-	public APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
+	APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo) {
 		executor.execute(() -> {
 			APIResult result;
 			try {
@@ -40,7 +40,7 @@ public class AsyncEventHandler {
 			}
 
 			if (result != null) {
-				appmarketEventClient.resolve(eventInfo, result, consumerKeyUsedByTheRequest);
+				appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, consumerKeyUsedByTheRequest);
 			}
 		});
 		return async("Event has been accepted by the connector. It will be processed soon.");

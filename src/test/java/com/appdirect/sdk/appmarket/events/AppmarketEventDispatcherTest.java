@@ -24,7 +24,7 @@ public class AppmarketEventDispatcherTest {
 	private AppmarketEventDispatcher eventDispatcher;
 
 	@Mock
-	private AsyncEvents mockAsyncEvents;
+	private Events mockEvents;
 	@Mock
 	private AsyncEventHandler mockAsyncEventHandler;
 	@Mock
@@ -65,7 +65,7 @@ public class AppmarketEventDispatcherTest {
 	@Before
 	public void setUp() throws Exception {
 		eventDispatcher = new AppmarketEventDispatcher(
-				mockAsyncEvents,
+				mockEvents,
 				mockAsyncEventHandler,
 				mockSubscriptionOrderHandler,
 				mockSubscriptionCancelHandler,
@@ -77,7 +77,7 @@ public class AppmarketEventDispatcherTest {
 				mockUnknownEventHandler
 		);
 
-		when(mockAsyncEvents.eventShouldBeHandledAsync(any()))
+		when(mockEvents.eventShouldBeHandledAsync(any()))
 				.thenReturn(false);
 		when(mockSubscriptionOrderHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionOrderResponse);
@@ -198,7 +198,7 @@ public class AppmarketEventDispatcherTest {
 		//Given
 		EventInfo testEvent = someSubOrderEvent();
 		APIResult asyncSuccess = success("ASYNC!!");
-		when(mockAsyncEvents.eventShouldBeHandledAsync(testEvent)).thenReturn(true);
+		when(mockEvents.eventShouldBeHandledAsync(testEvent)).thenReturn(true);
 		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, someKey, testEvent)).thenReturn(asyncSuccess);
 
 		//When

@@ -123,7 +123,7 @@ public class EventHandlingConfiguration {
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
-				new AsyncEvents(),
+				new Events(),
 				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
 				subscriptionOrderSdkHandler(),
 				subscriptionCancelSdkHandler(),
