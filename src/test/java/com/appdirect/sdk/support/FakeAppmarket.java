@@ -36,7 +36,9 @@ public class FakeAppmarket {
 	private final String isvSecret;
 	private final List<String> allRequestPaths;
 	private final List<String> resolvedEvents;
+	private final Object resolvedEventsLock = new Object();
 	private String lastRequestBody;
+	private Throwable backgroundThreadException;
 
 	public static FakeAppmarket create(int port, String isvKey, String isvSecret) throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -73,6 +75,11 @@ public class FakeAppmarket {
 
 	public void stop() {
 		server.stop(0);
+		if (backgroundThreadException != null) {
+			IllegalThreadStateException illegalThreadStateException = new IllegalThreadStateException("One of the FakeAppMarket's request thread threw an exception. This is bad.");
+			illegalThreadStateException.initCause(backgroundThreadException);
+			throw illegalThreadStateException;
+		}
 	}
 
 	public String lastRequestPath() {
@@ -92,9 +99,9 @@ public class FakeAppmarket {
 	}
 
 	private void markEventAsResolved(String eventId) {
-		synchronized (resolvedEvents) {
+		synchronized (resolvedEventsLock) {
 			resolvedEvents.add(eventId);
-			resolvedEvents.notify();
+			resolvedEventsLock.notify();
 		}
 	}
 
@@ -122,11 +129,11 @@ public class FakeAppmarket {
 
 	public void waitForResolvedEvents(int desiredNumberOfResolvedEvents) throws Exception {
 		long maxNumberOfTries = 100, timeoutOfOneTryMs = 50;
-		synchronized (resolvedEvents) {
+		synchronized (resolvedEventsLock) {
 			int tries = 0;
 			while (resolvedEvents.size() < desiredNumberOfResolvedEvents && tries < maxNumberOfTries) {
 				tries++;
-				resolvedEvents.wait(timeoutOfOneTryMs);
+				resolvedEventsLock.wait(timeoutOfOneTryMs);
 			}
 
 			if (tries == maxNumberOfTries) {
@@ -170,16 +177,23 @@ public class FakeAppmarket {
 
 		@Override
 		public void handle(HttpExchange t) throws IOException {
-			allRequestPaths.add(t.getRequestURI().toString());
+			byte[] response = "".getBytes(UTF_8);
+			try {
+				allRequestPaths.add(t.getRequestURI().toString());
 
-			if (!authorized.test(t)) {
-				sendResponse(t, 401, "UNAUTHORIZED! Use OAUTH!".getBytes(UTF_8));
-				return;
+				if (!authorized.test(t)) {
+					sendResponse(t, 401, "UNAUTHORIZED! Use OAUTH!".getBytes(UTF_8));
+					return;
+				}
+				lastRequestBody = streamAsString(t.getRequestBody());
+
+				t.getResponseHeaders().add("Content-Type", "application/json");
+				response = buildJsonResponse(t.getRequestURI());
+			} catch (Exception e) {
+				backgroundThreadException = e;
+			} finally {
+				sendResponse(t, 200, response);
 			}
-			lastRequestBody = streamAsString(t.getRequestBody());
-
-			t.getResponseHeaders().add("Content-Type", "application/json");
-			sendResponse(t, 200, buildJsonResponse(t.getRequestURI()));
 		}
 
 		abstract byte[] buildJsonResponse(URI requestUri) throws IOException;
