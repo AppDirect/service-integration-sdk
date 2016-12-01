@@ -9,6 +9,9 @@ Spring Boot applications.
 * Automatic oauth authentication of messages using signed fetch
 * Automatic Oauth signing of messages to the marketplace
 
+##Documentation
+For detailed docs, check out our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki) 
+
 ##Getting started
 * Include a dependency on the sdk in your pom.xml
 ```
