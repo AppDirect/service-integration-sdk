@@ -91,7 +91,7 @@ public class AsyncEventHandlerTest {
 		eventHandling.run();
 
 		verify(appmarketEventClient).resolve(anyString(), anyString(), eq(theThrownException.getResult()), anyString());
-		verify(mockLog).error("Service returned an error for eventId={}, result={}", "some-event-id", theThrownException.getResult());
+		verify(mockLog).error("Exception while attempting to process an event. eventId={}", "some-event-id", theThrownException);
 	}
 
 	@Test
