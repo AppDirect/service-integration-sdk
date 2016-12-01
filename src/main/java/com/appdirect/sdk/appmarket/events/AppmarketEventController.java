@@ -35,6 +35,10 @@ class AppmarketEventController {
 		APIResult result = appmarketEventService.processEvent(eventUrl, keyUsedToSignRequest);
 
 		log.info("apiResult={}", result);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		return new ResponseEntity<>(result, httpStatusOf(result));
+	}
+
+	private HttpStatus httpStatusOf(APIResult result) {
+		return HttpStatus.valueOf(result.getStatusCodeReturnedToAppmarket());
 	}
 }

@@ -5,16 +5,6 @@
     "baseUrl": "{{fake-appmarket-url}}"
   },
   "applicationUuid": null,
-  "creator": {
-    "uuid": "dac5f67b-7da7-4603-bb1b-3fd507509081",
-    "openId": "https://gabrielspub-test.byappdirect.com/openid/id/dac5f67b-7da7-4603-bb1b-3fd507509081",
-    "email": "gabriel.x@gmail.com",
-    "firstName": "Gabriel",
-    "lastName": "SomeLastName",
-    "language": "en",
-    "address": null,
-    "attributes": null
-  },
   "payload": {
     "user": null,
     "company": {

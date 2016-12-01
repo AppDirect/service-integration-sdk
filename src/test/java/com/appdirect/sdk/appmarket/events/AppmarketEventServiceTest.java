@@ -24,7 +24,7 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
 public class AppmarketEventServiceTest {
 
 	@Mock
-	private AppmarketEventFetcher appmarketEventFetcher;
+	private AppmarketEventClient appmarketEventClient;
 	@Mock
 	private AppmarketEventDispatcher eventDispatcher;
 	@Mock
@@ -34,7 +34,7 @@ public class AppmarketEventServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testedService = new AppmarketEventService(appmarketEventFetcher, credentialsSupplier, eventDispatcher);
+		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 
 		when(credentialsSupplier.getConsumerCredentials("testKey")).thenReturn(someCredentials("testKey", "testSecret"));
 	}
@@ -47,7 +47,7 @@ public class AppmarketEventServiceTest {
 				.build();
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
 
-		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
 		when(eventDispatcher.dispatchAndHandle("testKey", testEvent))
@@ -65,7 +65,7 @@ public class AppmarketEventServiceTest {
 		//Given
 		DeveloperServiceException expectedException = new DeveloperServiceException("Bad stuff happened");
 
-		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenThrow(expectedException);
 
 		//Then
@@ -76,7 +76,7 @@ public class AppmarketEventServiceTest {
 	@Test
 	public void processEvent_whenUnknownExceptionThrown_thenBusinessLevelExceptionWithUnknownErrorCodeIsReturned() {
 		//Given
-		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenThrow(new RuntimeException());
 
 		//When
@@ -95,7 +95,7 @@ public class AppmarketEventServiceTest {
 				.flag(STATELESS)
 				.build();
 
-		when(appmarketEventFetcher.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
 		//When

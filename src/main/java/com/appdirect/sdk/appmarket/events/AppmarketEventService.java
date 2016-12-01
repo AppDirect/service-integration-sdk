@@ -10,14 +10,14 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j
 class AppmarketEventService {
-	private final AppmarketEventFetcher appmarketEventFetcher;
+	private final AppmarketEventClient appmarketEventClient;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final AppmarketEventDispatcher dispatcher;
 
-	AppmarketEventService(AppmarketEventFetcher appmarketEventFetcher,
+	AppmarketEventService(AppmarketEventClient appmarketEventClient,
 						  DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
 						  AppmarketEventDispatcher dispatcher) {
-		this.appmarketEventFetcher = appmarketEventFetcher;
+		this.appmarketEventClient = appmarketEventClient;
 		this.credentialsSupplier = credentialsSupplier;
 		this.dispatcher = dispatcher;
 	}
@@ -41,7 +41,7 @@ class AppmarketEventService {
 
 	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
 		Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
-		EventInfo event = appmarketEventFetcher.fetchEvent(url, credentials.developerKey, credentials.developerSecret);
+		EventInfo event = appmarketEventClient.fetchEvent(url, credentials.developerKey, credentials.developerSecret);
 		log.info("Successfully retrieved event={}", event);
 		return event;
 	}

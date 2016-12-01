@@ -2,7 +2,7 @@
   "type": "SUBSCRIPTION_CANCEL",
   "marketplace": {
     "partner": "gabrielspub-test",
-    "baseUrl": "https://gabrielspub-test.byappdirect.com"
+    "baseUrl": "{{fake-appmarket-url}}"
   },
   "applicationUuid": null,
   "creator": {

@@ -3,6 +3,7 @@ package com.appdirect.sdk.appmarket.events;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -21,4 +22,5 @@ class EventInfo {
 	private UserInfo creator;
 	private EventPayload payload;
 	private String returnUrl;
+	@Setter private String id;
 }

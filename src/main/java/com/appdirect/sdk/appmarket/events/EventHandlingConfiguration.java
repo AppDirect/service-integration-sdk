@@ -1,6 +1,9 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static java.lang.String.format;
+import static java.util.concurrent.Executors.newWorkStealingPool;
+
+import java.util.concurrent.ExecutorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +23,13 @@ public class EventHandlingConfiguration {
 
 	@Autowired
 	public EventHandlingConfiguration(
-		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
-		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
-		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
-		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
-		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
-		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
-		AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
+			AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
+			AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
+			AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
+			AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
+			AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
+			AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
+			AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
 
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
@@ -112,17 +115,24 @@ public class EventHandlingConfiguration {
 		return new SubscriptionChangeEventParser();
 	}
 
+	@Bean(destroyMethod = "shutdown")
+	public ExecutorService defaultExecutorService() {
+		return newWorkStealingPool();
+	}
+
 	@Bean
-	public AppmarketEventDispatcher appmarketEventDispatcher() {
+	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
-			subscriptionOrderSdkHandler(),
-			subscriptionCancelSdkHandler(),
-			subscriptionChangeSdkHandler(),
-			subscriptionDeactivatedSdkHandler(),
-			subscriptionReactivatedSdkHandler(),
-			subscriptionClosedSdkHandler(),
-			subscriptionUpcomingInvoiceSdkHandler(),
-			unknownEventHandler()
+				new Events(),
+				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
+				subscriptionOrderSdkHandler(),
+				subscriptionCancelSdkHandler(),
+				subscriptionChangeSdkHandler(),
+				subscriptionDeactivatedSdkHandler(),
+				subscriptionReactivatedSdkHandler(),
+				subscriptionClosedSdkHandler(),
+				subscriptionUpcomingInvoiceSdkHandler(),
+				unknownEventHandler()
 		);
 	}
 }
