@@ -18,7 +18,7 @@ For detailed docs, check out our [GitHub wiki](https://github.com/AppDirect/serv
 <dependency>
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -72,7 +72,7 @@ public class MinimalConnector {
 
 Note that the SDK includes the `spring-boot-starter-actuator`, which 
 means several more endpoints are exposed automatically by Spring.
-For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/htmlsingle/#production-ready-endpoints)
+For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/1.4.2.RELEASE/reference/htmlsingle/#production-ready-endpoints)
 
 ## Building
 * `mvn clean javadoc:jar source:jar install`
