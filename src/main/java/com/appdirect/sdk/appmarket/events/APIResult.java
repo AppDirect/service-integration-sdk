@@ -21,6 +21,7 @@ public class APIResult {
 	private ErrorCode errorCode;
 	private String message;
 	private String accountIdentifier;
+	private String userIdentifier;
 	@JsonIgnore
 	private int statusCodeReturnedToAppmarket;
 

@@ -14,4 +14,12 @@ public class APIResultTest {
 		assertThat(unsuccessfulResult.getErrorCode()).isEqualTo(ErrorCode.CONFIGURATION_ERROR);
 		assertThat(unsuccessfulResult.getMessage()).isEqualTo("some-message");
 	}
+
+	@Test
+	public void userIdentifier_canBeUsed() throws Exception {
+		APIResult someResult = APIResult.success("success-message");
+		someResult.setUserIdentifier("some-user");
+
+		assertThat(someResult.getUserIdentifier()).isEqualTo("some-user");
+	}
 }
