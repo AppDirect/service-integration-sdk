@@ -15,7 +15,7 @@ public class HtmlEmailNotificationService {
 	private final String fromAddress;
 	private final JavaMailSender sender;
 
-	public void sendHtmlEmail(String messageSubject, String messageBody, String toAddress) throws SendNotificationFailedException {
+	public void sendHtmlEmail(String messageSubject, String messageBody, String toAddress) {
 
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(sender.createMimeMessage());

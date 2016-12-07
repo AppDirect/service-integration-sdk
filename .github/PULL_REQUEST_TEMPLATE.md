@@ -1,3 +1,3 @@
 JIRA ticket:
 
-- [ ] Added the "Requires Tech Lead Approval" label
+- [ ] Approved by a PI tech lead
