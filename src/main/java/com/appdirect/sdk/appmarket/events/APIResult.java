@@ -41,7 +41,7 @@ public class APIResult {
 		return result;
 	}
 
-	public static APIResult async(String message) {
+	public static APIResult asyncEventResult(String message) {
 		APIResult result = new APIResult(true, message);
 		result.setStatusCodeReturnedToAppmarket(202);
 		return result;

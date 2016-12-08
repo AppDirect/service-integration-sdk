@@ -1,8 +1,9 @@
 package com.appdirect.sdk.appmarket.events;
 
-import static com.appdirect.sdk.appmarket.events.APIResult.async;
+import static com.appdirect.sdk.appmarket.events.APIResult.asyncEventResult;
 import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
+import static java.lang.String.format;
 
 import java.util.concurrent.Executor;
 
@@ -43,6 +44,8 @@ class AsyncEventHandler {
 				appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, consumerKeyUsedByTheRequest);
 			}
 		});
-		return async("Event has been accepted by the connector. It will be processed soon.");
+		return asyncEventResult(
+			format("Event with eventId=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
+		);
 	}
 }

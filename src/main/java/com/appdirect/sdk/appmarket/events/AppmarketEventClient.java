@@ -31,6 +31,7 @@ public class AppmarketEventClient {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
 		restClientFactory.restOperationsForProfile(key, secret).postForObject(url, result, String.class);
+		log.info("Resolved event with eventId={} with apiResult={}", eventId, result);
 	}
 
 	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventId) {
