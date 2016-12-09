@@ -36,7 +36,7 @@ public class AsyncEventHandlerTest {
 
 		assertThat(result.isSuccess()).isTrue();
 		assertThat(result.getStatusCodeReturnedToAppmarket()).isEqualTo(202);
-		assertThat(result.getMessage()).isEqualTo("Event has been accepted by the connector. It will be processed soon.");
+		assertThat(result.getMessage()).isEqualTo("Event with eventId=some-event-id has been accepted by the connector. It will be processed soon.");
 	}
 
 	@Test

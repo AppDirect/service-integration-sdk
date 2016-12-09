@@ -38,7 +38,7 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 
 		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/order");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event has been accepted by the connector. It will be processed soon.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=order has been accepted by the connector. It will be processed soon.\"}");
 
 		fakeAppmarket.waitForResolvedEvents(1);
 		assertThat(fakeAppmarket.resolvedEvents()).contains("order");
@@ -52,7 +52,7 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 
 		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/order-without-creator");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event has been accepted by the connector. It will be processed soon.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=order-without-creator has been accepted by the connector. It will be processed soon.\"}");
 
 		fakeAppmarket.waitForResolvedEvents(1);
 		assertThat(fakeAppmarket.resolvedEvents()).contains("order-without-creator");
