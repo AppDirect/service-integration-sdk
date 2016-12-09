@@ -2,6 +2,8 @@ package com.appdirect.sdk.appmarket.events;
 
 import static java.lang.String.format;
 
+import java.util.Map;
+
 import lombok.extern.slf4j.Slf4j;
 
 import com.appdirect.sdk.appmarket.Credentials;
@@ -22,14 +24,14 @@ class AppmarketEventService {
 		this.dispatcher = dispatcher;
 	}
 
-	APIResult processEvent(String eventUrl, String keyUsedToSignRequest) {
+	APIResult processEvent(String eventUrl, String keyUsedToSignRequest, Map<String, String[]> queryParams) {
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
 			EventInfo event = fetchEvent(eventUrl, keyUsedToSignRequest);
 			if (event.getFlag() == EventFlag.STATELESS) {
 				return APIResult.success("success response to stateless event.");
 			}
-			return dispatcher.dispatchAndHandle(keyUsedToSignRequest, event);
+			return dispatcher.dispatchAndHandle(keyUsedToSignRequest, event, queryParams);
 		} catch (DeveloperServiceException e) {
 			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
 			throw e;

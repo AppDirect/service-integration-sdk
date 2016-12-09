@@ -32,7 +32,7 @@ class AppmarketEventController {
 		String keyUsedToSignRequest = keyExtractor.extractFrom(request);
 		log.info("eventUrl={} signed with consumerKey={}", eventUrl, keyUsedToSignRequest);
 
-		APIResult result = appmarketEventService.processEvent(eventUrl, keyUsedToSignRequest);
+		APIResult result = appmarketEventService.processEvent(eventUrl, keyUsedToSignRequest, request.getParameterMap());
 
 		log.info("apiResult={}", result);
 		return new ResponseEntity<>(result, httpStatusOf(result));

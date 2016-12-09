@@ -2,6 +2,8 @@ package com.appdirect.sdk.appmarket.events;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
+import java.util.HashMap;
+
 import org.junit.Test;
 
 public class SubscriptionChangeEventParserTest {
@@ -23,7 +25,7 @@ public class SubscriptionChangeEventParserTest {
 				.build();
 
 		//When
-		SubscriptionChange parsedEvent = testedParser.parse("the-magic-key", testEventInfo);
+		SubscriptionChange parsedEvent = testedParser.parse("the-magic-key", testEventInfo, new HashMap<>());
 
 		//Then
 		assertThat(parsedEvent.getConsumerKeyUsedByRequest()).isEqualTo("the-magic-key");

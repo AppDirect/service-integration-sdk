@@ -2,6 +2,8 @@ package com.appdirect.sdk.appmarket.events;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashMap;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -28,7 +30,7 @@ public class SubscriptionCancelEventParserTest {
 			.build();
 
 		//When
-		SubscriptionCancel parsedEvent = testedParser.parse("the-key", testEventInfo);
+		SubscriptionCancel parsedEvent = testedParser.parse("the-key", testEventInfo, new HashMap<>());
 
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())

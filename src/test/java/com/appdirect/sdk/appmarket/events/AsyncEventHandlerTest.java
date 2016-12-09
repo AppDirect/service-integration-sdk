@@ -6,6 +6,7 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.ACCOUNT_NOT_FOUND;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -13,6 +14,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import org.junit.Test;
@@ -30,9 +33,9 @@ public class AsyncEventHandlerTest {
 
 	@Test
 	public void returnsOk() throws Exception {
-		SDKEventHandler someEventHandler = (someKey, someEvent) -> null;
+		SDKEventHandler someEventHandler = (someKey, someEvent, queryParams) -> null;
 
-		APIResult result = asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
+		APIResult result = asyncEventHandler.handle(someEventHandler, "some-key", someEvent(), new HashMap<>());
 
 		assertThat(result.isSuccess()).isTrue();
 		assertThat(result.getStatusCodeReturnedToAppmarket()).isEqualTo(202);
@@ -43,22 +46,23 @@ public class AsyncEventHandlerTest {
 	public void handlesTheEventInTheExecutor() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		EventInfo eventToHandle = someEvent();
+		Map<String, String[]> queryParams = new HashMap<>();
 
-		asyncEventHandler.handle(someEventHandler, "some-key", eventToHandle);
+		asyncEventHandler.handle(someEventHandler, "some-key", eventToHandle, queryParams);
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
 
-		verify(someEventHandler).handle("some-key", eventToHandle);
+		verify(someEventHandler).handle("some-key", eventToHandle, queryParams);
 	}
 
 	@Test
 	public void resolvesTheEventOnTheAppmarket() throws Exception {
 		APIResult result = success("After some async processing, I have now completed successfully");
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
-		when(someEventHandler.handle(anyString(), any())).thenReturn(result);
+		when(someEventHandler.handle(anyString(), any(), anyMapOf(String.class, String[].class))).thenReturn(result);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", someEvent("base-url", "event-id"));
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent("base-url", "event-id"), new HashMap<>());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -69,9 +73,9 @@ public class AsyncEventHandlerTest {
 	@Test
 	public void doesNotResolveTheEventOnTheAppmarket_whenHandlerReturnsNull() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
-		when(someEventHandler.handle(anyString(), any())).thenReturn(null);
+		when(someEventHandler.handle(anyString(), any(), anyMapOf(String.class, String[].class))).thenReturn(null);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent(), new HashMap<>());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -83,9 +87,9 @@ public class AsyncEventHandlerTest {
 	public void whenHandlerThrowsDeveloperServiceException_itsResultsAreSentToTheAppmarket_andLogged() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		DeveloperServiceException theThrownException = new DeveloperServiceException(ACCOUNT_NOT_FOUND, "no account!");
-		when(someEventHandler.handle(anyString(), any())).thenThrow(theThrownException);
+		when(someEventHandler.handle(anyString(), any(), anyMapOf(String.class, String[].class))).thenThrow(theThrownException);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent(), new HashMap<>());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -98,9 +102,9 @@ public class AsyncEventHandlerTest {
 	public void whenHandlerThrowsAnyException_unknownErrorIsSentToTheAppmarket_andLogged() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		IllegalArgumentException theThrownException = new IllegalArgumentException("some argument error");
-		when(someEventHandler.handle(anyString(), any())).thenThrow(theThrownException);
+		when(someEventHandler.handle(anyString(), any(), anyMapOf(String.class, String[].class))).thenThrow(theThrownException);
 
-		asyncEventHandler.handle(someEventHandler, "some-key", someEvent());
+		asyncEventHandler.handle(someEventHandler, "some-key", someEvent(), new HashMap<>());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
