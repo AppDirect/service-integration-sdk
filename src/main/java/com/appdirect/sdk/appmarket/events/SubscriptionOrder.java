@@ -21,7 +21,7 @@ public class SubscriptionOrder extends EventWithConsumerKeyAndQueryParameters {
 	private final String partner;
 	private final String applicationUuid;
 
-	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String applicationUuid, Map<String, String[]> queryParameters) {
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String applicationUuid, Map<String, String[]> queryParameters) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 		super(consumerKeyUsedByTheRequest, queryParameters);
 		this.flag = flag;
 		this.purchaserInfo = purchaserInfo;
