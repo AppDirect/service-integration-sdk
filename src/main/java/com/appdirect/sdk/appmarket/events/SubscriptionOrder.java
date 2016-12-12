@@ -6,16 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Developer-facing event creation of an account requested by the AppMarket
  */
 @Getter
-@AllArgsConstructor
-public class SubscriptionOrder {
-	private final String consumerKeyUsedByTheRequest;
+public class SubscriptionOrder extends EventWithConsumerKeyAndQueryParameters {
 	private final EventFlag flag;
 	private final UserInfo purchaserInfo;
 	private final Map<String, String> configuration;
@@ -23,6 +20,17 @@ public class SubscriptionOrder {
 	private final OrderInfo orderInfo;
 	private final String partner;
 	private final String applicationUuid;
+
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String applicationUuid, Map<String, String[]> queryParameters) {
+		super(consumerKeyUsedByTheRequest, queryParameters);
+		this.flag = flag;
+		this.purchaserInfo = purchaserInfo;
+		this.configuration = configuration;
+		this.companyInfo = companyInfo;
+		this.orderInfo = orderInfo;
+		this.partner = partner;
+		this.applicationUuid = applicationUuid;
+	}
 
 	public Optional<EventFlag> getFlag() {
 		return ofNullable(flag);

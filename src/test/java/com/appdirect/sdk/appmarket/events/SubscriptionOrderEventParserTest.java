@@ -92,6 +92,13 @@ public class SubscriptionOrderEventParserTest {
 		assertThat(parsedEvent.getApplicationUuid()).contains("the-app-uuid");
 	}
 
+	@Test
+	public void parse_setsTheQueryParameters() throws Exception {
+		SubscriptionOrder parsedEvent = parser.parse("some-key", someEvent().build(), someQueryParams("a-key", "one value"));
+
+		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("a-key", array("one value")));
+	}
+
 	private EventInfoBuilder eventWithOrderInfo(String editionCode) {
 		return someEvent().payload(EventPayload.builder().order(OrderInfo.builder().editionCode(editionCode).build()).build());
 	}
@@ -117,8 +124,12 @@ public class SubscriptionOrderEventParserTest {
 	}
 
 	private Map<String, String[]> someQueryParams() {
+		return someQueryParams("param1", "value1");
+	}
+
+	private Map<String, String[]> someQueryParams(String key, String... values) {
 		Map<String, String[]> queryParams = new HashMap<>();
-		queryParams.put("param1", array("value1"));
+		queryParams.put(key, values);
 		return queryParams;
 	}
 }
