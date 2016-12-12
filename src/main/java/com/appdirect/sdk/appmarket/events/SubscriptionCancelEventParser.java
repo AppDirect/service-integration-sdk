@@ -7,7 +7,8 @@ class SubscriptionCancelEventParser implements EventParser<SubscriptionCancel> {
 	public SubscriptionCancel parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
 		return new SubscriptionCancel(
 				consumerKeyUsedByTheRequest,
-				eventInfo.getPayload().getAccount().getAccountIdentifier()
+				eventInfo.getPayload().getAccount().getAccountIdentifier(),
+				queryParams
 		);
 	}
 }
