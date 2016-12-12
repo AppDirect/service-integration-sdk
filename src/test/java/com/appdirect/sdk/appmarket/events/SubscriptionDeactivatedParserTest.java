@@ -2,6 +2,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.AccountStatus.SUSPENDED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.util.Arrays.array;
 
 import java.util.HashMap;
 
@@ -18,12 +19,17 @@ public class SubscriptionDeactivatedParserTest {
 		AccountStatus testAccountStatus = SUSPENDED;
 		EventInfo testEventInfo = createSubscriptionDeactivatedEvent(testAccountIdentifier, testAccountStatus);
 
+		HashMap<String, String[]> testQueryParams = new HashMap<>();
+		testQueryParams.put("hello", array("world"));
+
 		//When
-		SubscriptionDeactivated parsedEvent = subscriptionDeactivatedParser.parse(testConsumerKey, testEventInfo, new HashMap<>());
+		SubscriptionDeactivated parsedEvent = subscriptionDeactivatedParser.parse(testConsumerKey, testEventInfo, testQueryParams);
 
 		//Then
 		assertThat(parsedEvent.getAccountInfo().getAccountIdentifier()).isEqualTo(testAccountIdentifier);
 		assertThat(parsedEvent.getAccountInfo().getStatus()).isEqualTo(testAccountStatus);
+		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo(testConsumerKey);
+		assertThat(parsedEvent.getQueryParameters()).isEqualTo(testQueryParams);
 	}
 
 	private EventInfo createSubscriptionDeactivatedEvent(String testAccountIdentifier, AccountStatus testAccountStatus) {
