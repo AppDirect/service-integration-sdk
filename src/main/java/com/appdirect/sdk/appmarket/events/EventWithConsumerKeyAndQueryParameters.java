@@ -1,7 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
-import static java.util.Collections.unmodifiableMap;
-
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
@@ -33,6 +32,6 @@ public abstract class EventWithConsumerKeyAndQueryParameters {
 	 * @return an unmodifiable view of the query parameters map.
 	 */
 	public Map<String, String[]> getQueryParameters() {
-		return unmodifiableMap(queryParameters);
+		return new HashMap<>(queryParameters);
 	}
 }
