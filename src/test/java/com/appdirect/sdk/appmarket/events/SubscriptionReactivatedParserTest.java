@@ -1,11 +1,9 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.util.Arrays.array;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Test;
 
@@ -14,21 +12,21 @@ public class SubscriptionReactivatedParserTest {
 
 	@Test
 	public void parse_extractsTheConsumerKey() throws Exception {
-		SubscriptionReactivated parsedEvent = parser.parse("the-key", someEvent(), someQueryParams());
+		SubscriptionReactivated parsedEvent = parser.parse("the-key", someEvent(), oneQueryParam());
 
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-key");
 	}
 
 	@Test
 	public void parse_extractsTheAccountInfo() throws Exception {
-		SubscriptionReactivated parsedEvent = parser.parse("the-key", someEventFor("big-account"), someQueryParams());
+		SubscriptionReactivated parsedEvent = parser.parse("the-key", someEventFor("big-account"), oneQueryParam());
 
 		assertThat(parsedEvent.getAccountInfo().getAccountIdentifier()).isEqualTo("big-account");
 	}
 
 	@Test
 	public void parse_extractsTheQueryParams() throws Exception {
-		SubscriptionReactivated parsedEvent = parser.parse("the-key", someEvent(), someQueryParams("hello", "the"));
+		SubscriptionReactivated parsedEvent = parser.parse("the-key", someEvent(), oneQueryParam("hello", "the"));
 
 		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("hello", array("the")));
 	}
@@ -39,15 +37,5 @@ public class SubscriptionReactivatedParserTest {
 
 	private EventInfo someEventFor(String accountId) {
 		return EventInfo.builder().payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(accountId).build()).build()).build();
-	}
-
-	private Map<String, String[]> someQueryParams() {
-		return someQueryParams("param1", "value1");
-	}
-
-	private Map<String, String[]> someQueryParams(String key, String... values) {
-		Map<String, String[]> queryParams = new HashMap<>();
-		queryParams.put(key, values);
-		return queryParams;
 	}
 }
