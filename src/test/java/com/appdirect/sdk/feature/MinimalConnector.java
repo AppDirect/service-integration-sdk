@@ -42,9 +42,10 @@ public class MinimalConnector {
 
 	@Bean
 	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
-		return event -> success(
-			format("SUB_CANCEL %s has been processed, for real.", event.getAccountIdentifier())
-		);
+		return event -> {
+			String[] queryParamValue = event.getQueryParameters().getOrDefault("query", new String[]{"absent!"});
+			return success(format("SUB_CANCEL %s has been processed, for real. query=%s", event.getAccountIdentifier(), queryParamValue[0]));
+		};
 	}
 
 	@Bean

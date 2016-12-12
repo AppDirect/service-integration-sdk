@@ -3,11 +3,16 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.OK;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,24 +35,26 @@ public class AppmarketEventControllerTest {
 
 		controller = new AppmarketEventController(service, keyExtractor);
 
-		when(service.processEvent(anyString(), anyString())).thenReturn(aHugeSuccess());
+		when(service.processEvent(anyString(), anyString(), anyMapOf(String.class, String[].class))).thenReturn(aHugeSuccess());
 	}
 
 	@Test
-	public void processEvent_sendsTheRequestToTheKeyExtractor_andSendsTheKeyToTheService() throws Exception {
+	public void processEvent_sendsTheRequestToTheKeyExtractor_andSendsTheKeyAndParamsToTheService() throws Exception {
+		Map<String, String[]> someParams = new HashMap<>();
 		HttpServletRequest someRequest = mock(HttpServletRequest.class);
+		when(someRequest.getParameterMap()).thenReturn(someParams);
 		when(keyExtractor.extractFrom(someRequest)).thenReturn("the-key-from-the-request");
 
 		controller.processEvent(someRequest, "some-event-url");
 
-		verify(service).processEvent("some-event-url", "the-key-from-the-request");
+		verify(service).processEvent("some-event-url", "the-key-from-the-request", someParams);
 	}
 
 	@Test
 	public void processEvent_sendsTheEventToTheService_andReturnsItsResults() throws Exception {
 		when(keyExtractor.extractFrom(any())).thenReturn("da-key");
 		APIResult aHugeSuccess = aHugeSuccess();
-		when(service.processEvent("some-event-url", "da-key")).thenReturn(aHugeSuccess);
+		when(service.processEvent(eq("some-event-url"), eq("da-key"), anyMapOf(String.class, String[].class))).thenReturn(aHugeSuccess);
 
 		ResponseEntity<APIResult> response = controller.processEvent(anyRequest(), "some-event-url");
 

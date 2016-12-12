@@ -38,7 +38,8 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 		String expectedAccountId = "123";
 		HttpResponse response = fakeAppmarket.sendEventTo(
 				connectorEventEndpoint(),
-				format("/v1/events/cancel?account-id=%s", expectedAccountId)
+				format("/v1/events/cancel?account-id=%s", expectedAccountId),
+				"query", "params"
 		);
 
 		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/cancel?account-id=123");
@@ -48,7 +49,7 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 		fakeAppmarket.waitForResolvedEvents(1);
 		assertThat(fakeAppmarket.resolvedEvents()).contains("cancel");
 		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/cancel/result");
-		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_CANCEL 123 has been processed, for real.\"}");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_CANCEL 123 has been processed, for real. query=params\"}");
 	}
 
 	private String connectorEventEndpoint() {

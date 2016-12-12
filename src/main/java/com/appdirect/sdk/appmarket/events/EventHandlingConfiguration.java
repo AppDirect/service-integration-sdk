@@ -77,7 +77,7 @@ public class EventHandlingConfiguration {
 
 	@Bean
 	public SDKEventHandler unknownEventHandler() {
-		return (consumerKeyUsedByTheRequest, event) -> new APIResult(ErrorCode.CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
+		return (consumerKeyUsedByTheRequest, event, queryParams) -> new APIResult(ErrorCode.CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
 	}
 
 	@Bean
