@@ -3,6 +3,8 @@ package com.appdirect.sdk.appmarket.events;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,7 @@ class AppmarketEventController {
 		String keyUsedToSignRequest = keyExtractor.extractFrom(request);
 		log.info("eventUrl={} signed with consumerKey={}", eventUrl, keyUsedToSignRequest);
 
-		APIResult result = appmarketEventService.processEvent(eventUrl, keyUsedToSignRequest, request.getParameterMap());
+		APIResult result = appmarketEventService.processEvent(eventUrl, keyUsedToSignRequest, new HashMap<>(request.getParameterMap()));
 
 		log.info("apiResult={}", result);
 		return new ResponseEntity<>(result, httpStatusOf(result));
