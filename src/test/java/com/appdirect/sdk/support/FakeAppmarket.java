@@ -5,6 +5,7 @@ import static com.appdirect.sdk.support.ContentOf.streamAsString;
 import static com.appdirect.sdk.support.HttpClientHelper.anAppmarketHttpClient;
 import static com.appdirect.sdk.support.HttpClientHelper.get;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -105,9 +106,14 @@ public class FakeAppmarket {
 		}
 	}
 
-	public HttpResponse sendEventTo(String connectorEventEndpointUrl, String appmarketEventPath) throws Exception {
+	public HttpResponse sendEventTo(String connectorEventEndpointUrl, String appmarketEventPath, String... extraQueryParameters) throws Exception {
+		List<String> allParams = new ArrayList<>();
+		allParams.add("eventUrl");
+		allParams.add(baseAppmarketUrl() + appmarketEventPath);
+		allParams.addAll(asList(extraQueryParameters));
+
 		CloseableHttpClient httpClient = anAppmarketHttpClient();
-		HttpGet request = get(connectorEventEndpointUrl, "eventUrl", baseAppmarketUrl() + appmarketEventPath);
+		HttpGet request = get(connectorEventEndpointUrl, allParams.toArray(new String[]{}));
 
 		oauthSign(request);
 
