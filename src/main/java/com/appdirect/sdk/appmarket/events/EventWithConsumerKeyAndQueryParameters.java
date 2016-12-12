@@ -1,6 +1,7 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.HashMap;
+import static java.util.Collections.unmodifiableMap;
+
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
@@ -29,9 +30,9 @@ public abstract class EventWithConsumerKeyAndQueryParameters {
 	 * i.e. calling <code>/processEvent?eventUrl=some-url&themeColor=yellow&themeColor=red</code> would yield
 	 * a map with 2 entries: <code>eventUrl=[some-url]</code> and <code>themeColor=[yellow, red]</code>.
 	 *
-	 * @return the query parameters map.
+	 * @return an unmodifiable view of the query parameters map.
 	 */
 	public Map<String, String[]> getQueryParameters() {
-		return new HashMap<>(queryParameters);
+		return unmodifiableMap(queryParameters);
 	}
 }
