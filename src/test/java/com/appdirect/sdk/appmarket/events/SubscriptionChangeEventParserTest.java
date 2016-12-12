@@ -1,11 +1,9 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.util.Arrays.array;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Test;
 
@@ -28,7 +26,7 @@ public class SubscriptionChangeEventParserTest {
 				.build();
 
 		//When
-		SubscriptionChange parsedEvent = testedParser.parse("the-magic-key", testEventInfo, someParam("param1", "value12"));
+		SubscriptionChange parsedEvent = testedParser.parse("the-magic-key", testEventInfo, oneQueryParam("param1", "value12"));
 
 		//Then
 		assertThat(parsedEvent.getOwner()).isEqualTo(expectedCreatorDetails);
@@ -36,11 +34,5 @@ public class SubscriptionChangeEventParserTest {
 		assertThat(parsedEvent.getAccount()).isEqualTo(expectedAccountInfo);
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-magic-key");
 		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("param1", array("value12")));
-	}
-
-	private Map<String, String[]> someParam(String key, String... values) {
-		HashMap<String, String[]> params = new HashMap<>();
-		params.put(key, values);
-		return params;
 	}
 }
