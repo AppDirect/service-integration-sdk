@@ -10,7 +10,8 @@ class SubscriptionChangeEventParser implements EventParser<SubscriptionChange> {
 				consumerKeyUsedByTheRequest,
 				eventInfo.getCreator(),
 				eventInfo.getPayload().getOrder(),
-				eventInfo.getPayload().getAccount()
+				eventInfo.getPayload().getAccount(),
+				queryParams
 		);
 	}
 }
