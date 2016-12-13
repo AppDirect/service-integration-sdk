@@ -18,9 +18,9 @@ class AppmarketEventDispatcher {
 	APIResult dispatchAndHandle(EventInfo eventInfo, EventExecutionContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
 		if (events.eventShouldBeHandledAsync(eventInfo)) {
-			return asyncHandler.handle(eventHandler, eventContext.getConsumerKeyUsedByTheRequest(), eventInfo, eventContext.getQueryParameters());
+			return asyncHandler.handle(eventHandler, eventInfo, eventContext);
 		} else {
-			return eventHandler.handle(eventContext.getConsumerKeyUsedByTheRequest(), eventInfo, eventContext.getQueryParameters());
+			return eventHandler.handle(eventInfo, eventContext);
 		}
 	}
 

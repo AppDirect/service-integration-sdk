@@ -1,7 +1,5 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 
 /**
@@ -19,8 +17,8 @@ class ParseAndHandleWrapper<T> implements SDKEventHandler {
 	}
 
 	@Override
-	public APIResult handle(String consumerKeyUsedByTheRequest, EventInfo event, Map<String, String[]> queryParams) {
-		T parsedEvent = parser.parse(consumerKeyUsedByTheRequest, event, queryParams);
+	public APIResult handle(EventInfo event, EventExecutionContext eventContext) {
+		T parsedEvent = parser.parse(eventContext.getConsumerKeyUsedByTheRequest(), event, eventContext.getQueryParameters());
 		return eventHandler.handle(parsedEvent);
 	}
 }

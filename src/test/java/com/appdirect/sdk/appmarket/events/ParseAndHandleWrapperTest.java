@@ -37,7 +37,7 @@ public class ParseAndHandleWrapperTest {
 		when(parser.parse("oauth-key", theEvent, queryParams)).thenReturn(theRichEvent);
 		when(handler.handle(theRichEvent)).thenReturn(success("All is good"));
 
-		APIResult result = wrapper.handle("oauth-key", theEvent, queryParams);
+		APIResult result = wrapper.handle(theEvent, new EventExecutionContext("oauth-key", queryParams));
 
 		assertThat(result.getMessage()).isEqualTo("All is good");
 	}

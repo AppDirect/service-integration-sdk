@@ -11,7 +11,6 @@ import static com.appdirect.sdk.appmarket.events.NoticeType.REACTIVATED;
 import static com.appdirect.sdk.appmarket.events.NoticeType.UPCOMING_INVOICE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -82,21 +81,21 @@ public class AppmarketEventDispatcherTest {
 
 		when(mockEvents.eventShouldBeHandledAsync(any()))
 				.thenReturn(false);
-		when(mockSubscriptionOrderHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionOrderHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionOrderResponse);
-		when(mockSubscriptionCancelHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionCancelHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionCancelResponse);
-		when(mockSubscriptionChangeHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionChangeHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionChangeResponse);
-		when(mockSubscriptionDeactivatedHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionDeactivatedHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionDeactivatedResponse);
-		when(mockSubscriptionReactivatedhandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionReactivatedhandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionReactivatedResaponse);
-		when(mockSubscriptionClosedHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionClosedHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionClosedResponse);
-		when(mockSubscriptionIncomingNoticeHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockSubscriptionIncomingNoticeHandler.handle(any(), any()))
 				.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
-		when(mockUnknownEventHandler.handle(any(), any(), anyMapOf(String.class, String[].class)))
+		when(mockUnknownEventHandler.handle(any(), any()))
 				.thenReturn(mockUnknownEventResponse);
 	}
 
@@ -200,13 +199,13 @@ public class AppmarketEventDispatcherTest {
 	public void testDispatchAndHandle_whenTheEventShouldBeHandledAsync_sendItToAsyncHandler() throws Exception {
 		//Given
 		EventInfo testEvent = someSubOrderEvent();
-		Map<String, String[]> queryParams = new HashMap<>();
+		EventExecutionContext eventContext = eventContext("the-key", new HashMap<>());
 		APIResult asyncSuccess = success("ASYNC!!");
 		when(mockEvents.eventShouldBeHandledAsync(testEvent)).thenReturn(true);
-		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, "the-key", testEvent, queryParams)).thenReturn(asyncSuccess);
+		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, testEvent, eventContext)).thenReturn(asyncSuccess);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, eventContext("the-key", queryParams));
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, eventContext);
 
 		//Then
 		assertThat(result).isEqualTo(asyncSuccess);
