@@ -4,6 +4,8 @@ import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.ACCOUNT_NOT_FOUND;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -13,8 +15,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executor;
 
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class AsyncEventHandlerTest {
 	public void returnsOk() throws Exception {
 		SDKEventHandler someEventHandler = (someEvent, someEventContext) -> null;
 
-		APIResult result = asyncEventHandler.handle(someEventHandler, someEvent(), someEventContext());
+		APIResult result = asyncEventHandler.handle(someEventHandler, someEvent(), defaultEventContext());
 
 		assertThat(result.isSuccess()).isTrue();
 		assertThat(result.getStatusCodeReturnedToAppmarket()).isEqualTo(202);
@@ -45,7 +45,7 @@ public class AsyncEventHandlerTest {
 	public void handlesTheEventInTheExecutor() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		EventInfo eventToHandle = someEvent();
-		EventExecutionContext theContext = someEventContext();
+		EventExecutionContext theContext = defaultEventContext();
 
 		asyncEventHandler.handle(someEventHandler, eventToHandle, theContext);
 
@@ -74,7 +74,7 @@ public class AsyncEventHandlerTest {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		when(someEventHandler.handle(any(), any())).thenReturn(null);
 
-		asyncEventHandler.handle(someEventHandler, someEvent(), someEventContext());
+		asyncEventHandler.handle(someEventHandler, someEvent(), defaultEventContext());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -88,7 +88,7 @@ public class AsyncEventHandlerTest {
 		DeveloperServiceException theThrownException = new DeveloperServiceException(ACCOUNT_NOT_FOUND, "no account!");
 		when(someEventHandler.handle(any(), any())).thenThrow(theThrownException);
 
-		asyncEventHandler.handle(someEventHandler, someEvent(), someEventContext());
+		asyncEventHandler.handle(someEventHandler, someEvent(), defaultEventContext());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -103,7 +103,7 @@ public class AsyncEventHandlerTest {
 		IllegalArgumentException theThrownException = new IllegalArgumentException("some argument error");
 		when(someEventHandler.handle(any(), any())).thenThrow(theThrownException);
 
-		asyncEventHandler.handle(someEventHandler, someEvent(), someEventContext());
+		asyncEventHandler.handle(someEventHandler, someEvent(), defaultEventContext());
 
 		Runnable eventHandling = extractRunnableFromExecutor();
 		eventHandling.run();
@@ -125,17 +125,5 @@ public class AsyncEventHandlerTest {
 	private EventInfo someEvent(String baseUrl, String eventId) {
 		MarketInfo marketplace = new MarketInfo("some-partner", baseUrl);
 		return EventInfo.builder().marketplace(marketplace).id(eventId).build();
-	}
-
-	private EventExecutionContext someEventContext() {
-		return eventContext("some-key");
-	}
-
-	private EventExecutionContext eventContext(String consumerKey) {
-		return eventContext(consumerKey, new HashMap<>());
-	}
-
-	private EventExecutionContext eventContext(String consumerKey, Map<String, String[]> queryParams) {
-		return new EventExecutionContext(consumerKey, queryParams);
 	}
 }
