@@ -22,14 +22,14 @@ class AppmarketEventService {
 		this.dispatcher = dispatcher;
 	}
 
-	APIResult processEvent(String eventUrl, EventExecutionContext eventExecutionContext) {
+	APIResult processEvent(String eventUrl, EventExecutionContext eventContext) {
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
-			EventInfo event = fetchEvent(eventUrl, eventExecutionContext.getConsumerKeyUsedByTheRequest());
+			EventInfo event = fetchEvent(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
 			if (event.getFlag() == EventFlag.STATELESS) {
 				return APIResult.success("success response to stateless event.");
 			}
-			return dispatcher.dispatchAndHandle(eventExecutionContext.getConsumerKeyUsedByTheRequest(), event, eventExecutionContext.getQueryParameters());
+			return dispatcher.dispatchAndHandle(event, eventContext);
 		} catch (DeveloperServiceException e) {
 			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
 			throw e;

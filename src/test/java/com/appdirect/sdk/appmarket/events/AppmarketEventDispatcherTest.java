@@ -64,7 +64,6 @@ public class AppmarketEventDispatcherTest {
 	private APIResult mockSubscriptionUpcomingInvoiceResponse;
 	@Mock
 	private APIResult mockUnknownEventResponse;
-	private String someKey = "some-key";
 
 	@Before
 	public void setUp() throws Exception {
@@ -107,7 +106,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = EventInfo.builder().type(EventType.USER_LINK).build();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockUnknownEventResponse);
@@ -119,7 +118,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = someSubOrderEvent();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionOrderResponse);
@@ -131,7 +130,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = someSubCancelEvent();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionCancelResponse);
@@ -143,7 +142,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = someSubChange();
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionChangeResponse);
@@ -155,7 +154,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = subscriptionNoticeOfType(DEACTIVATED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionDeactivatedResponse);
@@ -167,7 +166,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = subscriptionNoticeOfType(REACTIVATED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionReactivatedResaponse);
@@ -179,7 +178,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = subscriptionNoticeOfType(CLOSED);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionClosedResponse);
@@ -191,7 +190,7 @@ public class AppmarketEventDispatcherTest {
 		EventInfo testEvent = subscriptionNoticeOfType(UPCOMING_INVOICE);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, new HashMap<>());
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, someContext());
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionUpcomingInvoiceResponse);
@@ -204,10 +203,10 @@ public class AppmarketEventDispatcherTest {
 		Map<String, String[]> queryParams = new HashMap<>();
 		APIResult asyncSuccess = success("ASYNC!!");
 		when(mockEvents.eventShouldBeHandledAsync(testEvent)).thenReturn(true);
-		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, someKey, testEvent, queryParams)).thenReturn(asyncSuccess);
+		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, "the-key", testEvent, queryParams)).thenReturn(asyncSuccess);
 
 		//When
-		APIResult result = eventDispatcher.dispatchAndHandle(someKey, testEvent, queryParams);
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, eventContext("the-key", queryParams));
 
 		//Then
 		assertThat(result).isEqualTo(asyncSuccess);
@@ -232,5 +231,13 @@ public class AppmarketEventDispatcherTest {
 
 	private EventInfo someSubCancelEvent() {
 		return EventInfo.builder().type(SUBSCRIPTION_CANCEL).build();
+	}
+
+	private EventExecutionContext someContext() {
+		return eventContext("some-key", new HashMap<>());
+	}
+
+	private EventExecutionContext eventContext(String consumerKey, Map<String, String[]> queryParams) {
+		return new EventExecutionContext(consumerKey, queryParams);
 	}
 }
