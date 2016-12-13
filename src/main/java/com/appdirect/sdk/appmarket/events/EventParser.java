@@ -1,7 +1,5 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 /**
  * SDK internal - parses an EventInfo and returns a rich event of type T
  *
@@ -9,5 +7,5 @@ import java.util.Map;
  */
 @FunctionalInterface
 interface EventParser<T> {
-	T parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams);
+	T parse(EventInfo eventInfo, EventExecutionContext eventContext);
 }

@@ -1,17 +1,15 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 class SubscriptionChangeEventParser implements EventParser<SubscriptionChange> {
 
 	@Override
-	public SubscriptionChange parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
+	public SubscriptionChange parse(EventInfo eventInfo, EventExecutionContext eventContext) {
 		return new SubscriptionChange(
-				consumerKeyUsedByTheRequest,
+				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getCreator(),
 				eventInfo.getPayload().getOrder(),
 				eventInfo.getPayload().getAccount(),
-				queryParams
+				eventContext.getQueryParameters()
 		);
 	}
 }

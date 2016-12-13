@@ -1,10 +1,8 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 class SubscriptionUpcomingInvoiceParser implements EventParser<SubscriptionUpcomingInvoice> {
 	@Override
-	public SubscriptionUpcomingInvoice parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
-		return new SubscriptionUpcomingInvoice(consumerKeyUsedByTheRequest, eventInfo.getPayload().getAccount(), queryParams);
+	public SubscriptionUpcomingInvoice parse(EventInfo eventInfo, EventExecutionContext eventContext) {
+		return new SubscriptionUpcomingInvoice(eventContext.getConsumerKeyUsedByTheRequest(), eventInfo.getPayload().getAccount(), eventContext.getQueryParameters());
 	}
 }

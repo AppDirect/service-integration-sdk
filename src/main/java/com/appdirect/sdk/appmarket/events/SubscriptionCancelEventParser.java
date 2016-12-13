@@ -1,14 +1,12 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 class SubscriptionCancelEventParser implements EventParser<SubscriptionCancel> {
 	@Override
-	public SubscriptionCancel parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
+	public SubscriptionCancel parse(EventInfo eventInfo, EventExecutionContext eventContext) {
 		return new SubscriptionCancel(
-				consumerKeyUsedByTheRequest,
+				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getPayload().getAccount().getAccountIdentifier(),
-				queryParams
+				eventContext.getQueryParameters()
 		);
 	}
 }
