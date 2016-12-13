@@ -1,10 +1,8 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 class SubscriptionReactivatedParser implements EventParser<SubscriptionReactivated> {
 	@Override
-	public SubscriptionReactivated parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
-		return new SubscriptionReactivated(consumerKeyUsedByTheRequest, eventInfo.getPayload().getAccount(), queryParams);
+	public SubscriptionReactivated parse(EventInfo eventInfo, EventExecutionContext eventContext) {
+		return new SubscriptionReactivated(eventContext.getConsumerKeyUsedByTheRequest(), eventInfo.getPayload().getAccount(), eventContext.getQueryParameters());
 	}
 }

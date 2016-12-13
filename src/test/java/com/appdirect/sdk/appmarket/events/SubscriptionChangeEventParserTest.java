@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -26,7 +27,7 @@ public class SubscriptionChangeEventParserTest {
 				.build();
 
 		//When
-		SubscriptionChange parsedEvent = testedParser.parse("the-magic-key", testEventInfo, oneQueryParam("param1", "value12"));
+		SubscriptionChange parsedEvent = testedParser.parse(testEventInfo, eventContext("the-magic-key", oneQueryParam("param1", "value12")));
 
 		//Then
 		assertThat(parsedEvent.getOwner()).isEqualTo(expectedCreatorDetails);

@@ -34,10 +34,15 @@ class AppmarketEventController {
 		String keyUsedToSignRequest = keyExtractor.extractFrom(request);
 		log.info("eventUrl={} signed with consumerKey={}", eventUrl, keyUsedToSignRequest);
 
-		APIResult result = appmarketEventService.processEvent(eventUrl, keyUsedToSignRequest, new HashMap<>(request.getParameterMap()));
+		APIResult result = appmarketEventService.processEvent(eventUrl, eventExecutionContext(request, keyUsedToSignRequest));
 
 		log.info("apiResult={}", result);
 		return new ResponseEntity<>(result, httpStatusOf(result));
+	}
+
+	private EventExecutionContext eventExecutionContext(HttpServletRequest request, String keyUsedToSignRequest) {
+		HashMap<String, String[]> queryParamsNotTiedToRequestReference = new HashMap<>(request.getParameterMap());
+		return new EventExecutionContext(keyUsedToSignRequest, queryParamsNotTiedToRequestReference);
 	}
 
 	private HttpStatus httpStatusOf(APIResult result) {

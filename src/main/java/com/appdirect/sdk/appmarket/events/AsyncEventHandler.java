@@ -5,7 +5,6 @@ import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
-import java.util.Map;
 import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
@@ -28,11 +27,11 @@ class AsyncEventHandler {
 		this.log = log;
 	}
 
-	APIResult handle(SDKEventHandler eventHandler, String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
+	APIResult handle(SDKEventHandler eventHandler, EventInfo eventInfo, EventExecutionContext eventContext) {
 		executor.execute(() -> {
 			APIResult result;
 			try {
-				result = eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo, queryParams);
+				result = eventHandler.handle(eventInfo, eventContext);
 			} catch (DeveloperServiceException e) {
 				log.error("Exception while attempting to process an event. eventId={}", eventInfo.getId(), e);
 				result = e.getResult();
@@ -42,7 +41,7 @@ class AsyncEventHandler {
 			}
 
 			if (result != null) {
-				appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, consumerKeyUsedByTheRequest);
+				appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, eventContext.getConsumerKeyUsedByTheRequest());
 			}
 		});
 		return asyncEventResult(

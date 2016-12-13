@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -31,7 +32,7 @@ public class SubscriptionCancelEventParserTest {
 				.build();
 
 		//When
-		SubscriptionCancel parsedEvent = testedParser.parse("the-key", testEventInfo, oneQueryParam("param1", "value22", "value44"));
+		SubscriptionCancel parsedEvent = testedParser.parse(testEventInfo, eventContext("the-key", oneQueryParam("param1", "value22", "value44")));
 
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())

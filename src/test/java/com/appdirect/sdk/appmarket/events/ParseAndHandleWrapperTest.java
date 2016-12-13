@@ -1,12 +1,10 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,12 @@ public class ParseAndHandleWrapperTest {
 	@Test
 	public void testHandle_parsesEvent_sendsItToTheHandler_thenReturnResults() throws Exception {
 		EventInfo theEvent = EventInfo.builder().build();
-		Map<String, String[]> queryParams = new HashMap<>();
+		EventExecutionContext eventContext = defaultEventContext();
 		SubscriptionOrder theRichEvent = mock(SubscriptionOrder.class);
-		when(parser.parse("oauth-key", theEvent, queryParams)).thenReturn(theRichEvent);
+		when(parser.parse(theEvent, eventContext)).thenReturn(theRichEvent);
 		when(handler.handle(theRichEvent)).thenReturn(success("All is good"));
 
-		APIResult result = wrapper.handle("oauth-key", theEvent, queryParams);
+		APIResult result = wrapper.handle(theEvent, eventContext);
 
 		assertThat(result.getMessage()).isEqualTo("All is good");
 	}

@@ -1,17 +1,16 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.STATELESS;
 import static com.appdirect.sdk.appmarket.events.EventType.ACCOUNT_UNSYNC;
-import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
-
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,12 +52,12 @@ public class AppmarketEventServiceTest {
 		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
-		Map<String, String[]> queryParams = oneQueryParam();
-		when(eventDispatcher.dispatchAndHandle("testKey", testEvent, queryParams))
+		EventExecutionContext eventContext = eventContext("testKey");
+		when(eventDispatcher.dispatchAndHandle(testEvent, eventContext))
 				.thenReturn(expectedProcessingResult);
 
 		//When
-		APIResult actualResponse = testedService.processEvent("http://test.url.org", "testKey", queryParams);
+		APIResult actualResponse = testedService.processEvent("http://test.url.org", eventContext);
 
 		//Then
 		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
@@ -73,7 +72,7 @@ public class AppmarketEventServiceTest {
 				.thenThrow(expectedException);
 
 		//Then
-		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org", "testKey", oneQueryParam()))
+		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org", eventContext("testKey")))
 				.isEqualTo(expectedException);
 	}
 
@@ -84,7 +83,7 @@ public class AppmarketEventServiceTest {
 				.thenThrow(new RuntimeException());
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org", "testKey", oneQueryParam()));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org", eventContext("testKey")));
 
 		//Then
 		assertThat(exceptionCaught)
@@ -103,7 +102,7 @@ public class AppmarketEventServiceTest {
 				.thenReturn(testEvent);
 
 		//When
-		APIResult actualResult = testedService.processEvent("http://test.url.org", "testKey", oneQueryParam());
+		APIResult actualResult = testedService.processEvent("http://test.url.org", eventContext("testKey"));
 
 		//Then
 		assertThat(actualResult.isSuccess())
@@ -119,7 +118,7 @@ public class AppmarketEventServiceTest {
 		String expectedErrorMessage = format("Failed to process event. eventUrl=%s", invalidUrl);
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, "testKey", oneQueryParam()));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, defaultEventContext()));
 
 		//Then
 		assertThat(exceptionCaught)

@@ -1,7 +1,5 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -17,12 +15,12 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler subscriptionUpcomingInvoiceHandler;
 	private final SDKEventHandler unknownEventHandler;
 
-	APIResult dispatchAndHandle(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
+	APIResult dispatchAndHandle(EventInfo eventInfo, EventExecutionContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
 		if (events.eventShouldBeHandledAsync(eventInfo)) {
-			return asyncHandler.handle(eventHandler, consumerKeyUsedByTheRequest, eventInfo, queryParams);
+			return asyncHandler.handle(eventHandler, eventInfo, eventContext);
 		} else {
-			return eventHandler.handle(consumerKeyUsedByTheRequest, eventInfo, queryParams);
+			return eventHandler.handle(eventInfo, eventContext);
 		}
 	}
 

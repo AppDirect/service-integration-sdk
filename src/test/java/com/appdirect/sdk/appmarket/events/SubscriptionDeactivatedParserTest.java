@@ -1,6 +1,7 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.AccountStatus.SUSPENDED;
+import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +23,7 @@ public class SubscriptionDeactivatedParserTest {
 		Map<String, String[]> testQueryParams = oneQueryParam("hello", "world");
 
 		//When
-		SubscriptionDeactivated parsedEvent = subscriptionDeactivatedParser.parse(testConsumerKey, testEventInfo, testQueryParams);
+		SubscriptionDeactivated parsedEvent = subscriptionDeactivatedParser.parse(testEventInfo, eventContext(testConsumerKey, testQueryParams));
 
 		//Then
 		assertThat(parsedEvent.getAccountInfo().getAccountIdentifier()).isEqualTo(testAccountIdentifier);

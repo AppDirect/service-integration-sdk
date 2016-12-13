@@ -1,15 +1,13 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.Map;
-
 /**
  * To see what is mandatory or not, consult https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#attributes
  */
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
-	public SubscriptionOrder parse(String consumerKeyUsedByTheRequest, EventInfo eventInfo, Map<String, String[]> queryParams) {
+	public SubscriptionOrder parse(EventInfo eventInfo, EventExecutionContext eventContext) {
 		return new SubscriptionOrder(
-				consumerKeyUsedByTheRequest,
+				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getFlag(),
 				eventInfo.getCreator(),
 				eventInfo.getPayload().getConfiguration(),
@@ -17,6 +15,6 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 				eventInfo.getPayload().getOrder(),
 				eventInfo.getMarketplace().getPartner(),
 				eventInfo.getApplicationUuid(),
-				queryParams);
+				eventContext.getQueryParameters());
 	}
 }
