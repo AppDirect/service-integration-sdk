@@ -58,10 +58,14 @@ public class AppmarketEventServiceTest {
 				.thenReturn(expectedProcessingResult);
 
 		//When
-		APIResult actualResponse = testedService.processEvent("http://test.url.org", "testKey", queryParams);
+		APIResult actualResponse = testedService.processEvent("http://test.url.org", executionContext("testKey", queryParams));
 
 		//Then
 		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
+	}
+
+	private EventExecutionContext executionContext(String consumerKeyUsedByTheRequest, Map<String, String[]> queryParams) {
+		return new EventExecutionContext(consumerKeyUsedByTheRequest, queryParams);
 	}
 
 	@Test
@@ -73,7 +77,7 @@ public class AppmarketEventServiceTest {
 				.thenThrow(expectedException);
 
 		//Then
-		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org", "testKey", oneQueryParam()))
+		assertThatThrownBy(() -> testedService.processEvent("http://test.url.org", executionContext("testKey", oneQueryParam())))
 				.isEqualTo(expectedException);
 	}
 
@@ -84,7 +88,7 @@ public class AppmarketEventServiceTest {
 				.thenThrow(new RuntimeException());
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org", "testKey", oneQueryParam()));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent("http://test.url.org", executionContext("testKey", oneQueryParam())));
 
 		//Then
 		assertThat(exceptionCaught)
@@ -103,7 +107,7 @@ public class AppmarketEventServiceTest {
 				.thenReturn(testEvent);
 
 		//When
-		APIResult actualResult = testedService.processEvent("http://test.url.org", "testKey", oneQueryParam());
+		APIResult actualResult = testedService.processEvent("http://test.url.org", executionContext("testKey", oneQueryParam()));
 
 		//Then
 		assertThat(actualResult.isSuccess())
@@ -119,7 +123,7 @@ public class AppmarketEventServiceTest {
 		String expectedErrorMessage = format("Failed to process event. eventUrl=%s", invalidUrl);
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, "testKey", oneQueryParam()));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, executionContext("testKey", oneQueryParam())));
 
 		//Then
 		assertThat(exceptionCaught)
