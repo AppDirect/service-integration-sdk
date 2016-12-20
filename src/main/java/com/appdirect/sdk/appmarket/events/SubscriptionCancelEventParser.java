@@ -7,7 +7,7 @@ class SubscriptionCancelEventParser implements EventParser<SubscriptionCancel> {
 				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getPayload().getAccount().getAccountIdentifier(),
 				eventContext.getQueryParameters(),
-				null
+				eventInfo.getFlag()
 		);
 	}
 }

@@ -1,6 +1,7 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -16,10 +17,11 @@ public class SubscriptionCancelEventParserTest {
 	private SubscriptionCancelEventParser testedParser = new SubscriptionCancelEventParser();
 
 	@Test
-	public void testParse_whenParsingEventInfo_thenTheAccountId_andRequestParams_ShouldBeExtracted() throws Exception {
+	public void testParse_whenParsingEventInfo_thenTheAccountId_theDevFlag_andRequestParams_ShouldBeExtracted() throws Exception {
 		//Given
 		String testAccountIdentifier = "testAccountIdentifier";
 		EventInfo testEventInfo = EventInfo.builder()
+				.flag(DEVELOPMENT)
 				.payload(
 						EventPayload.builder()
 								.account(
@@ -37,6 +39,7 @@ public class SubscriptionCancelEventParserTest {
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())
 				.isEqualTo(testEventInfo.getPayload().getAccount().getAccountIdentifier());
+		assertThat(parsedEvent.isDevelopment()).isTrue();
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-key");
 		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("param1", array("value22", "value44")));
 	}
