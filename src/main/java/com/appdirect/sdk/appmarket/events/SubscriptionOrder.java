@@ -10,7 +10,7 @@ import lombok.Getter;
  * Developer-facing event creation of an account requested by the AppMarket
  */
 @Getter
-public class SubscriptionOrder extends EventWithConsumerKeyAndQueryParameters {
+public class SubscriptionOrder extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final UserInfo purchaserInfo;
 	private final Map<String, String> configuration;
 	private final CompanyInfo companyInfo;

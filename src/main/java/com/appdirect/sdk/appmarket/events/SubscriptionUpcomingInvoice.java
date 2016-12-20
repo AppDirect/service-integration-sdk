@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @see <a href="https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#notice-types">SUBSCRIPTION_NOTICE types</a>
  */
-public class SubscriptionUpcomingInvoice extends EventWithConsumerKeyAndQueryParameters {
+public class SubscriptionUpcomingInvoice extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final AccountInfo accountInfo;
 
 	public SubscriptionUpcomingInvoice(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters, EventFlag flag) {

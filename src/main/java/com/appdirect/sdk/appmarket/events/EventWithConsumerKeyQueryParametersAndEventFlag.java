@@ -12,14 +12,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
- * abstract event type that offers the consumer key used by the request publishing the event
- * and the map of query parameters received with this event.
+ * abstract event type that offers the consumer key used by the request publishing the event,
+ * the map of query parameters received with this event and the flag (if any) present on this event.
  */
 @Getter
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public abstract class EventWithConsumerKeyAndQueryParameters {
+public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
 	/**
 	 * Returns the consumer key that was used by the appmarket to publish this event.
 	 * You can use this to determine which product is the originator of this event.

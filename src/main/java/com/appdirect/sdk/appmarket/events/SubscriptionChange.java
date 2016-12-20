@@ -10,7 +10,7 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class SubscriptionChange extends EventWithConsumerKeyAndQueryParameters {
+public class SubscriptionChange extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final UserInfo owner;
 	private final OrderInfo order;
 	private final AccountInfo account;
