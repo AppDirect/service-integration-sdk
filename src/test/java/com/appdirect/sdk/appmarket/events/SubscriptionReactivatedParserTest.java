@@ -2,6 +2,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
 import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -21,9 +22,16 @@ public class SubscriptionReactivatedParserTest {
 
 	@Test
 	public void parse_extractsTheAccountInfo() throws Exception {
-		SubscriptionReactivated parsedEvent = parser.parse(someEventFor("big-account"), defaultEventContext());
+		SubscriptionReactivated parsedEvent = parser.parse(someEventFor("big-account").build(), defaultEventContext());
 
 		assertThat(parsedEvent.getAccountInfo().getAccountIdentifier()).isEqualTo("big-account");
+	}
+
+	@Test
+	public void parse_extractsTheDevelopmentFlag() throws Exception {
+		SubscriptionReactivated parsedEvent = parser.parse(someEventFor("big-account").flag(DEVELOPMENT).build(), defaultEventContext());
+
+		assertThat(parsedEvent.isDevelopment()).isTrue();
 	}
 
 	@Test
@@ -34,10 +42,10 @@ public class SubscriptionReactivatedParserTest {
 	}
 
 	private EventInfo someEvent() {
-		return someEventFor("some-account");
+		return someEventFor("some-account").build();
 	}
 
-	private EventInfo someEventFor(String accountId) {
-		return EventInfo.builder().payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(accountId).build()).build()).build();
+	private EventInfo.EventInfoBuilder someEventFor(String accountId) {
+		return EventInfo.builder().payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(accountId).build()).build());
 	}
 }

@@ -2,6 +2,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.AccountStatus.SUSPENDED;
 import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,11 +30,13 @@ public class SubscriptionDeactivatedParserTest {
 		assertThat(parsedEvent.getAccountInfo().getAccountIdentifier()).isEqualTo(testAccountIdentifier);
 		assertThat(parsedEvent.getAccountInfo().getStatus()).isEqualTo(testAccountStatus);
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo(testConsumerKey);
+		assertThat(parsedEvent.isDevelopment()).isTrue();
 		assertThat(parsedEvent.getQueryParameters()).isEqualTo(testQueryParams);
 	}
 
 	private EventInfo createSubscriptionDeactivatedEvent(String testAccountIdentifier, AccountStatus testAccountStatus) {
 		return EventInfo.builder()
+				.flag(DEVELOPMENT)
 				.payload(EventPayload.builder()
 					.account(
 						AccountInfo.builder()
