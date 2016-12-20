@@ -15,8 +15,8 @@ public class SubscriptionChange extends EventWithConsumerKeyAndQueryParameters {
 	private final OrderInfo order;
 	private final AccountInfo account;
 
-	public SubscriptionChange(String consumerKeyUsedByTheRequest, UserInfo owner, OrderInfo order, AccountInfo account, Map<String, String[]> queryParameters) {
-		super(consumerKeyUsedByTheRequest, queryParameters);
+	public SubscriptionChange(String consumerKeyUsedByTheRequest, UserInfo owner, OrderInfo order, AccountInfo account, Map<String, String[]> queryParameters, EventFlag flag) {
+		super(consumerKeyUsedByTheRequest, queryParameters, flag);
 		this.owner = owner;
 		this.order = order;
 		this.account = account;

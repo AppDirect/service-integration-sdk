@@ -1,8 +1,11 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,8 @@ public abstract class EventWithConsumerKeyAndQueryParameters {
 	 */
 	private final String consumerKeyUsedByTheRequest;
 	private final Map<String, String[]> queryParameters;
+	@Getter(AccessLevel.NONE)
+	private final EventFlag flag;
 
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.
@@ -33,5 +38,16 @@ public abstract class EventWithConsumerKeyAndQueryParameters {
 	 */
 	public Map<String, String[]> getQueryParameters() {
 		return new HashMap<>(queryParameters);
+	}
+
+	/**
+	 * Returns whether this event is a development event or not. If it is a development event, implementors
+	 * should not make any permanent changes to external systems (billing, emails, etc.) Development events are
+	 * sent as part of the INTEGRATION REPORT feature of the marketplace.
+	 *
+	 * @return <code>true</code> if the event is a development event; <code>false</code> otherwise.
+	 */
+	public boolean isDevelopment() {
+		return flag == DEVELOPMENT;
 	}
 }

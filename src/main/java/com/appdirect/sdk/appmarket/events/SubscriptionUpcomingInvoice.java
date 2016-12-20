@@ -11,8 +11,8 @@ import java.util.Map;
 public class SubscriptionUpcomingInvoice extends EventWithConsumerKeyAndQueryParameters {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionUpcomingInvoice(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters) {
-		super(consumerKeyUsedByTheRequest, queryParameters);
+	public SubscriptionUpcomingInvoice(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters, EventFlag flag) {
+		super(consumerKeyUsedByTheRequest, queryParameters, flag);
 		this.accountInfo = accountInfo;
 	}
 

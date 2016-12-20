@@ -14,8 +14,8 @@ import java.util.Map;
 public class SubscriptionDeactivated extends EventWithConsumerKeyAndQueryParameters {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionDeactivated(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters) {
-		super(consumerKeyUsedByTheRequest, queryParameters);
+	public SubscriptionDeactivated(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters, EventFlag flag) {
+		super(consumerKeyUsedByTheRequest, queryParameters, flag);
 		this.accountInfo = accountInfo;
 	}
 
