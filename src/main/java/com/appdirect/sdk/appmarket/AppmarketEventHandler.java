@@ -15,7 +15,7 @@ import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 @FunctionalInterface
 public interface AppmarketEventHandler<T> {
 	/**
-	 * For async events (as defined by {@link com.appdirect.sdk.appmarket.events.Events#eventShouldBeHandledAsync}),
+	 * For async events (everything but <code>SUBSCRIPTION_NOTICE</code> events),
 	 * returning a <code>null</code> result will not resolve the event on the appmarket's side.
 	 * You will have to manually resolve the event using {@link AppmarketEventClient#resolve} at a later point in time.
 	 *

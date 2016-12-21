@@ -31,7 +31,7 @@ public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
 
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.
-	 * i.e. calling <code>/processEvent?eventUrl=some-url&themeColor=yellow&themeColor=red</code> would yield
+	 * i.e. calling <code>/processEvent?eventUrl=some-url&amp;themeColor=yellow&amp;themeColor=red</code> would yield
 	 * a map with 2 entries: <code>eventUrl=[some-url]</code> and <code>themeColor=[yellow, red]</code>.
 	 *
 	 * @return an unmodifiable view of the query parameters map.
