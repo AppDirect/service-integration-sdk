@@ -15,4 +15,5 @@ import lombok.Getter;
 public class AccountInfo {
 	private final String accountIdentifier;
 	private final AccountStatus status;
+	private final String parentAccountIdentifier;
 }

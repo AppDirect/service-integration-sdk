@@ -1,0 +1,71 @@
+{
+  "type": "SUBSCRIPTION_ORDER",
+  "marketplace": {
+    "partner": "some-partner",
+    "baseUrl": "{{fake-appmarket-url}}"
+  },
+  "applicationUuid": null,
+  "flag": null,
+  "creator": {
+    "uuid": "dac5f67b-7da7-4603-bb1b-3fd507509083",
+    "openId": "https://{{fake-appmarket-url}}/openid/id/dac5f67b-7da7-4603-bb1b-3fd507509083",
+    "email": "gabriel.x@gmail.com",
+    "firstName": "Gabriel",
+    "lastName": "SomeLastName",
+    "language": "en",
+    "address": {
+      "salutation": null,
+      "firstName": null,
+      "lastName": null,
+      "fullName": null,
+      "companyName": null,
+      "phone": null,
+      "phoneExtension": null,
+      "fax": null,
+      "faxExtension": null,
+      "street1": null,
+      "street2": null,
+      "city": null,
+      "state": null,
+      "zip": null,
+      "country": null,
+      "pobox": null,
+      "pozip": null
+    },
+    "attributes": null
+  },
+  "payload": {
+    "user": null,
+    "company": {
+      "uuid": "6c9832df-a5f2-40dc-9fe6-823ac2c4f143",
+      "externalId": null,
+      "name": "Gabriel's Company",
+      "email": "some-company-2017-11-9@yopmail.com",
+      "phoneNumber": null,
+      "website": null,
+      "country": "US"
+    },
+    "account": {
+      "accountIdentifier": null,
+      "status": "INITIALIZED",
+      "parentAccountIdentifier": "the-account-id-of-the-main-app"
+    },
+    "addonInstance": null,
+    "addonBinding": null,
+    "order": {
+      "editionCode": "addon-edition",
+      "addonOfferingCode": null,
+      "pricingDuration": "MONTHLY",
+      "items": [
+        {
+          "unit": "USER",
+          "quantity": 1
+        }
+      ]
+    },
+    "notice": null,
+    "configuration": {}
+  },
+  "returnUrl": null,
+  "links": []
+}
