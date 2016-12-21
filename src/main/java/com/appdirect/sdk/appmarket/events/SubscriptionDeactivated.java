@@ -11,11 +11,11 @@ import java.util.Map;
  *
  * @see <a href="https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#notice-types">SUBSCRIPTION_NOTICE types</a>
  */
-public class SubscriptionDeactivated extends EventWithConsumerKeyAndQueryParameters {
+public class SubscriptionDeactivated extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionDeactivated(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters) {
-		super(consumerKeyUsedByTheRequest, queryParameters);
+	public SubscriptionDeactivated(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters, EventFlag flag) {
+		super(consumerKeyUsedByTheRequest, queryParameters, flag);
 		this.accountInfo = accountInfo;
 	}
 

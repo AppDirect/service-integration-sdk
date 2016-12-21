@@ -48,7 +48,7 @@ public class SubscriptionOrderEventParserTest {
 
 		SubscriptionOrder parsedEvent = parser.parse(rawDevEvent, defaultEventContext());
 
-		assertThat(parsedEvent.getFlag()).contains(DEVELOPMENT);
+		assertThat(parsedEvent.isDevelopment()).isTrue();
 	}
 
 	@Test
