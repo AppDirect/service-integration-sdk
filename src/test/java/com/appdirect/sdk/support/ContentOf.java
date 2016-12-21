@@ -29,7 +29,7 @@ public class ContentOf {
 		try {
 			URL resource = ContentOf.class.getClassLoader().getResource(name);
 			if (resource == null) {
-				throw new RuntimeException("Cannot find resourceBytes: " + name);
+				throw new RuntimeException("Cannot find resource: " + name);
 			}
 			return resource.toURI();
 		} catch (URISyntaxException e) {
