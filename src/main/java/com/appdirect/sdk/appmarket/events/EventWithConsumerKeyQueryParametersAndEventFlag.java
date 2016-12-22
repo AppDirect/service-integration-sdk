@@ -37,7 +37,7 @@ public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
 	 * @return an unmodifiable view of the query parameters map.
 	 */
 	public Map<String, String[]> getQueryParameters() {
-		return new HashMap<>(queryParameters);
+		return new HashMap<>(queryParameters == null ? new HashMap<>() : queryParameters);
 	}
 
 	/**
