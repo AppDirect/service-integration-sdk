@@ -9,14 +9,12 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 /**
  * abstract event type that offers the consumer key used by the request publishing the event,
  * the map of query parameters received with this event and the flag (if any) present on this event.
  */
 @Getter
-@ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
@@ -37,7 +35,7 @@ public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
 	 * @return an unmodifiable view of the query parameters map.
 	 */
 	public Map<String, String[]> getQueryParameters() {
-		return new HashMap<>(queryParameters);
+		return new HashMap<>(queryParameters == null ? new HashMap<>() : queryParameters);
 	}
 
 	/**
