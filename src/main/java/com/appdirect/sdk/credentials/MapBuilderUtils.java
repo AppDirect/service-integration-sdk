@@ -27,12 +27,12 @@ class MapBuilderUtils {
 	static Map<String, String> fromCommaDelimitedKeyValuePairs(String commaDelimitedKeyValuePairs) {
 		return Stream.of(commaDelimitedKeyValuePairs.split(","))
 			.collect(toMap(
-				MapBuilderUtils::extractDeveloperKey,
-				MapBuilderUtils::extractDeveloperSecret
+				MapBuilderUtils::extractKey,
+				MapBuilderUtils::extractValue
 			));
 	}
 
-	private static String extractDeveloperKey(String columnSeparatedKeyValuePair) {
+	private static String extractKey(String columnSeparatedKeyValuePair) {
 		String[] kv = columnSeparatedKeyValuePair.split(":");
 		Assert.isTrue(
 			kv.length == 2,
@@ -41,7 +41,7 @@ class MapBuilderUtils {
 		return kv[0];
 	}
 
-	private static String extractDeveloperSecret(String columnSeparatedKeyValuePair) {
+	private static String extractValue(String columnSeparatedKeyValuePair) {
 		String[] kv = columnSeparatedKeyValuePair.split(":");
 		Assert.isTrue(
 			kv.length == 2,
