@@ -31,7 +31,6 @@ public class MapBuilderUtilsTest {
 		assertThat(parsedMap).containsOnly(entry("k1", "s1"), entry("k2", "s2"), entry("k3", "s3"));
 	}
 
-
 	@Test
 	public void errorsOut_when_singleMalformedEntry() throws Exception {
 		assertThatThrownBy(() -> MapBuilderUtils.fromCommaDelimitedKeyValuePairs("k1:s1:3"))
