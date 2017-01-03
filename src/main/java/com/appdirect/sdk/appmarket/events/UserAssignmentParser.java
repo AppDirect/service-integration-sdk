@@ -9,7 +9,7 @@ public class UserAssignmentParser implements EventParser<UserAssignment> {
 		return new UserAssignment(
 			eventInfo.getPayload().getUser().getUuid(),
 			eventInfo.getPayload().getAccount().getAccountIdentifier(),
-			eventContext.getConsumerKeyUsedByTheRequest(), 
+			eventContext.getConsumerKeyUsedByTheRequest(),
 			eventContext.getQueryParameters(),
 			eventInfo.getFlag()
 		);

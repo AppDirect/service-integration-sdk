@@ -13,23 +13,23 @@ import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 
 @Configuration
 public class EventHandlingConfiguration {
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<UserAssignment> userAssignmentHandler;
-	@Autowired 
+	@Autowired
 	private AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
 
 	@Bean
