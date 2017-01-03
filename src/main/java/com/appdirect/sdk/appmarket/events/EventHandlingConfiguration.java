@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.ErrorCode.CONFIGURATION_ERROR;
 import static java.lang.String.format;
 import static java.util.concurrent.Executors.newWorkStealingPool;
 
@@ -28,48 +29,15 @@ public class EventHandlingConfiguration {
 	@Autowired
 	private AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
 	@Autowired
+	private AppmarketEventHandler<AddonSubscriptionOrder> addonSubscriptionOrderHandler;
+	@Autowired
 	private AppmarketEventHandler<UserAssignment> userAssignmentHandler;
 	@Autowired
 	private AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
 
 	@Bean
-	public SDKEventHandler subscriptionOrderSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionOrderParser(), subscriptionOrderHandler);
-	}
-
-	@Bean
-	public SDKEventHandler subscriptionCancelSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionCancelParser(), subscriptionCancelHandler);
-	}
-
-	@Bean
-	public SDKEventHandler subscriptionChangeSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionChangeEventParser(), subscriptionChangeHandler);
-	}
-
-	@Bean
-	public SDKEventHandler subscriptionClosedSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionClosedEventParser(), subscriptionClosedHandler);
-	}
-
-	@Bean
-	public SDKEventHandler subscriptionDeactivatedSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionDeactivatedEventParser(), subscriptionDeactivatedHandler);
-	}
-
-	@Bean
-	public SDKEventHandler subscriptionReactivatedSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionReactivatedEventParser(), subscriptionReactivatedHandler);
-	}
-
-	@Bean
-	public SDKEventHandler subscriptionUpcomingInvoiceSdkHandler() {
-		return new ParseAndHandleWrapper<>(subscriptionUpcomingInvoiceEventParser(), subscriptionUpcomingInvoiceHandler);
-	}
-
-	@Bean
 	public SDKEventHandler unknownEventHandler() {
-		return (event, eventContext) -> new APIResult(ErrorCode.CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
+		return (event, eventContext) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
 	}
 
 	@Bean
@@ -92,40 +60,6 @@ public class EventHandlingConfiguration {
 		return new UserUnassignmentParser();
 	}
 
-	@Bean
-	public EventParser<SubscriptionClosed> subscriptionClosedEventParser() {
-		return new SubscriptionClosedParser();
-	}
-
-	@Bean
-	public EventParser<SubscriptionDeactivated> subscriptionDeactivatedEventParser() {
-		return new SubscriptionDeactivatedParser();
-	}
-
-	@Bean
-	public EventParser<SubscriptionReactivated> subscriptionReactivatedEventParser() {
-		return new SubscriptionReactivatedParser();
-	}
-
-	@Bean
-	public EventParser<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceEventParser() {
-		return new SubscriptionUpcomingInvoiceParser();
-	}
-
-	@Bean
-	public EventParser<SubscriptionOrder> subscriptionOrderParser() {
-		return new SubscriptionOrderEventParser();
-	}
-
-	@Bean
-	public EventParser<SubscriptionCancel> subscriptionCancelParser() {
-		return new SubscriptionCancelEventParser();
-	}
-
-	@Bean
-	public EventParser<SubscriptionChange> subscriptionChangeEventParser() {
-		return new SubscriptionChangeEventParser();
-	}
 
 	@Bean(destroyMethod = "shutdown")
 	public ExecutorService defaultExecutorService() {
@@ -135,18 +69,20 @@ public class EventHandlingConfiguration {
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
-			new Events(),
-			new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
-			subscriptionOrderSdkHandler(),
-			subscriptionCancelSdkHandler(),
-			subscriptionChangeSdkHandler(),
-			subscriptionDeactivatedSdkHandler(),
-			subscriptionReactivatedSdkHandler(),
-			subscriptionClosedSdkHandler(),
-			subscriptionUpcomingInvoiceSdkHandler(),
-			unknownEventHandler(),
-			userAssignmentHandler(),
-			userUnassignmentHandler()
+				new Events(),
+				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
+				new ParseAndHandleWrapper<>(new SubscriptionOrderEventParser(), subscriptionOrderHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionCancelEventParser(), subscriptionCancelHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionChangeEventParser(), subscriptionChangeHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionDeactivatedParser(), subscriptionDeactivatedHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionReactivatedParser(), subscriptionReactivatedHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
+				new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
+				unknownEventHandler(),
+				userAssignmentHandler(),
+				userUnassignmentHandler(),
+				eventInfo -> false // TODO: pass real detector (i.e. "edition code detector" or something)
 		);
 	}
 }
