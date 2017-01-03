@@ -19,7 +19,7 @@ public class UserUnassignmentParserTest {
 	}
 
 	@Test
-	public void testParse_whenParsingAnEventInfoInstanceOfTypeUserAssign_generateTheAppropriateRichEventObject() throws Exception {
+	public void testParse_whenParsingAnEventInfoInstanceOfTypeUserUnassign_generateTheAppropriateRichEventObject() throws Exception {
 		//Given
 		String expectedAccountId = "expectedAccountId";
 		String expectedAssignedUserId = "expectedAssignedUserId";
@@ -28,7 +28,7 @@ public class UserUnassignmentParserTest {
 		EventFlag expectedEventFlag = null;
 		UserUnassignment expectedRichEvent = new UserUnassignment(expectedAssignedUserId, expectedAccountId, expectedConsumerKey, expectedQueryParams, expectedEventFlag);
 
-		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, expectedAssignedUserId);
+		EventInfo testEventInfo = userUnassignmentEvent(expectedAccountId, expectedAssignedUserId);
 		EventHandlingContext testEventHandlingContext = new EventHandlingContext(expectedConsumerKey, expectedQueryParams);
 
 
@@ -39,7 +39,7 @@ public class UserUnassignmentParserTest {
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
 	}
 
-	private EventInfo userAssignmentEvent(String accountIdentifier, String userIdentifier) {
+	private EventInfo userUnassignmentEvent(String accountIdentifier, String userIdentifier) {
 		return EventInfo.builder()
 			.type(EventType.USER_ASSIGNMENT)
 			.payload(EventPayload.builder()
