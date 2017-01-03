@@ -15,7 +15,7 @@ public class AddonSubscriptionOrder extends EventWithConsumerKeyQueryParametersA
 	private final String partner;
 	private final String parentAccountIdentifier;
 
-	public AddonSubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String parentAccountIdentifier, Map<String, String[]> queryParameters) {
+	public AddonSubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String parentAccountIdentifier, Map<String, String[]> queryParameters) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 		super(consumerKeyUsedByTheRequest, queryParameters, flag);
 		this.purchaserInfo = purchaserInfo;
 		this.companyInfo = companyInfo;
