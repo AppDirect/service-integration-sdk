@@ -165,7 +165,7 @@ public class FakeAppmarket {
 		private String buildJsonResourceFrom(URI requestUri) {
 			String[] fragments = requestUri.getPath().split("/");
 			String resourceName = fragments[fragments.length - 1];
-			return "events/subscription-" + resourceName + ".json";
+			return "events/" + resourceName + ".json";
 		}
 
 		private String getOptionalAccountIdParam(URI requestURI) {

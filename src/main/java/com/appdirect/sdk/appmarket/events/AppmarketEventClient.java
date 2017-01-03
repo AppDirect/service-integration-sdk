@@ -21,7 +21,9 @@ public class AppmarketEventClient {
 
 	EventInfo fetchEvent(String url, String key, String secret) {
 		log.debug("Consuming event from url={}", url);
-		EventInfo fetchedEvent = restClientFactory.restOperationsForProfile(key, secret).getForObject(url, EventInfo.class);
+		EventInfo fetchedEvent = restClientFactory
+			.restOperationsForProfile(key, secret)
+			.getForObject(url, EventInfo.class);
 		fetchedEvent.setId(extractId(url));
 		return fetchedEvent;
 	}

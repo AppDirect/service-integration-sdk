@@ -85,7 +85,7 @@ public class MinimalConnector {
 			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
-	
+
 	@Bean
 	public AppmarketEventHandler<UserAssignment> userAssignmentDevHandler() {
 		return event -> success(
