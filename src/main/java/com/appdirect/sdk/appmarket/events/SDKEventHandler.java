@@ -5,5 +5,5 @@ package com.appdirect.sdk.appmarket.events;
  */
 @FunctionalInterface
 interface SDKEventHandler {
-	APIResult handle(EventInfo event, EventExecutionContext eventContext);
+	APIResult handle(EventInfo event, EventHandlingContext eventContext);
 }

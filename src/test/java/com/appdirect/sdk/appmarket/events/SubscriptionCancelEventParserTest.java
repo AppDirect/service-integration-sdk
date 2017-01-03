@@ -1,6 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;

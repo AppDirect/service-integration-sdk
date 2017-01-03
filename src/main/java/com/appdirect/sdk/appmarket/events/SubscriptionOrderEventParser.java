@@ -5,7 +5,7 @@ package com.appdirect.sdk.appmarket.events;
  */
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
-	public SubscriptionOrder parse(EventInfo eventInfo, EventExecutionContext eventContext) {
+	public SubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		return new SubscriptionOrder(
 				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getFlag(),

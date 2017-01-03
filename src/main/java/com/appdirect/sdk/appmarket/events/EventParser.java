@@ -7,5 +7,5 @@ package com.appdirect.sdk.appmarket.events;
  */
 @FunctionalInterface
 interface EventParser<T> {
-	T parse(EventInfo eventInfo, EventExecutionContext eventContext);
+	T parse(EventInfo eventInfo, EventHandlingContext eventContext);
 }

@@ -40,9 +40,9 @@ class AppmarketEventController {
 		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
 
-	private EventExecutionContext eventExecutionContext(HttpServletRequest request, String keyUsedToSignRequest) {
+	private EventHandlingContext eventExecutionContext(HttpServletRequest request, String keyUsedToSignRequest) {
 		HashMap<String, String[]> queryParamsNotTiedToRequestReference = new HashMap<>(request.getParameterMap());
-		return new EventExecutionContext(keyUsedToSignRequest, queryParamsNotTiedToRequestReference);
+		return new EventHandlingContext(keyUsedToSignRequest, queryParamsNotTiedToRequestReference);
 	}
 
 	private HttpStatus httpStatusOf(APIResult result) {

@@ -1,11 +1,13 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CANCEL;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CHANGE;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_NOTICE;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_ORDER;
+import static com.appdirect.sdk.appmarket.events.EventType.USER_ASSIGNMENT;
+import static com.appdirect.sdk.appmarket.events.EventType.USER_UNASSIGNMENT;
 import static com.appdirect.sdk.appmarket.events.NoticeType.CLOSED;
 import static com.appdirect.sdk.appmarket.events.NoticeType.DEACTIVATED;
 import static com.appdirect.sdk.appmarket.events.NoticeType.REACTIVATED;
@@ -44,7 +46,6 @@ public class AppmarketEventDispatcherTest {
 	private SDKEventHandler mockSubscriptionIncomingNoticeHandler;
 	@Mock
 	private SDKEventHandler mockUnknownEventHandler;
-
 	@Mock
 	private APIResult mockSubscriptionOrderResponse;
 	@Mock
@@ -61,40 +62,54 @@ public class AppmarketEventDispatcherTest {
 	private APIResult mockSubscriptionUpcomingInvoiceResponse;
 	@Mock
 	private APIResult mockUnknownEventResponse;
+	@Mock
+	private SDKEventHandler mockUserAssignmentHandler;
+	@Mock
+	private SDKEventHandler mockUserUnassignmentHandler;
+	@Mock
+	private APIResult mockUserAssignmentResponse;
+	@Mock
+	private APIResult mockUserUnassignmentResponse;
 
 	@Before
 	public void setUp() throws Exception {
 		eventDispatcher = new AppmarketEventDispatcher(
-				mockEvents,
-				mockAsyncEventHandler,
-				mockSubscriptionOrderHandler,
-				mockSubscriptionCancelHandler,
-				mockSubscriptionChangeHandler,
-				mockSubscriptionDeactivatedHandler,
-				mockSubscriptionReactivatedhandler,
-				mockSubscriptionClosedHandler,
-				mockSubscriptionIncomingNoticeHandler,
-				mockUnknownEventHandler
+			mockEvents,
+			mockAsyncEventHandler,
+			mockSubscriptionOrderHandler,
+			mockSubscriptionCancelHandler,
+			mockSubscriptionChangeHandler,
+			mockSubscriptionDeactivatedHandler,
+			mockSubscriptionReactivatedhandler,
+			mockSubscriptionClosedHandler,
+			mockSubscriptionIncomingNoticeHandler,
+			mockUnknownEventHandler,
+			mockUserAssignmentHandler,
+			mockUserUnassignmentHandler
 		);
 
 		when(mockEvents.eventShouldBeHandledAsync(any()))
-				.thenReturn(false);
+			.thenReturn(false);
 		when(mockSubscriptionOrderHandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionOrderResponse);
+			.thenReturn(mockSubscriptionOrderResponse);
 		when(mockSubscriptionCancelHandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionCancelResponse);
+			.thenReturn(mockSubscriptionCancelResponse);
 		when(mockSubscriptionChangeHandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionChangeResponse);
+			.thenReturn(mockSubscriptionChangeResponse);
 		when(mockSubscriptionDeactivatedHandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionDeactivatedResponse);
+			.thenReturn(mockSubscriptionDeactivatedResponse);
 		when(mockSubscriptionReactivatedhandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionReactivatedResaponse);
+			.thenReturn(mockSubscriptionReactivatedResaponse);
 		when(mockSubscriptionClosedHandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionClosedResponse);
+			.thenReturn(mockSubscriptionClosedResponse);
 		when(mockSubscriptionIncomingNoticeHandler.handle(any(), any()))
-				.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
+			.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
 		when(mockUnknownEventHandler.handle(any(), any()))
-				.thenReturn(mockUnknownEventResponse);
+			.thenReturn(mockUnknownEventResponse);
+		when(mockUserAssignmentHandler.handle(any(), any()))
+			.thenReturn(mockUserAssignmentResponse);
+		when(mockUserUnassignmentHandler.handle(any(), any()))
+			.thenReturn(mockUserUnassignmentResponse);
 	}
 
 	@Test
@@ -194,10 +209,34 @@ public class AppmarketEventDispatcherTest {
 	}
 
 	@Test
+	public void testDispatchAndHandle_whenTheEventIsUserAssign_thenTheUserAssignHandlerIsInvoked() throws Exception {
+		//Given
+		EventInfo testEvent = someUserAssign();
+
+		//When
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, defaultEventContext());
+
+		//Then
+		assertThat(result).isEqualTo(mockUserAssignmentResponse);
+	}
+
+	@Test
+	public void testDispatchAndHandle_whenTheEventIsUserUnassign_thenTheUserUnassignmentHandlerIsInvoked() throws Exception {
+		//Given
+		EventInfo testEvent = someUserUnassign();
+
+		//When
+		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, defaultEventContext());
+
+		//Then
+		assertThat(result).isEqualTo(mockUserUnassignmentResponse);
+	}
+
+	@Test
 	public void testDispatchAndHandle_whenTheEventShouldBeHandledAsync_sendItToAsyncHandler() throws Exception {
 		//Given
 		EventInfo testEvent = someSubOrderEvent();
-		EventExecutionContext eventContext = defaultEventContext();
+		EventHandlingContext eventContext = defaultEventContext();
 		APIResult asyncSuccess = success("ASYNC!!");
 		when(mockEvents.eventShouldBeHandledAsync(testEvent)).thenReturn(true);
 		when(mockAsyncEventHandler.handle(mockSubscriptionOrderHandler, testEvent, eventContext)).thenReturn(asyncSuccess);
@@ -211,11 +250,11 @@ public class AppmarketEventDispatcherTest {
 
 	private EventInfo subscriptionNoticeOfType(NoticeType type) {
 		return EventInfo.builder()
-				.type(SUBSCRIPTION_NOTICE)
-				.payload(EventPayload.builder()
-						.notice(new NoticeInfo(type, "testEvent"))
-						.build())
-				.build();
+			.type(SUBSCRIPTION_NOTICE)
+			.payload(EventPayload.builder()
+				.notice(new NoticeInfo(type, "testEvent"))
+				.build())
+			.build();
 	}
 
 	private EventInfo someSubChange() {
@@ -228,5 +267,13 @@ public class AppmarketEventDispatcherTest {
 
 	private EventInfo someSubCancelEvent() {
 		return EventInfo.builder().type(SUBSCRIPTION_CANCEL).build();
+	}
+
+	private EventInfo someUserAssign() {
+		return EventInfo.builder().type(USER_ASSIGNMENT).build();
+	}
+
+	private EventInfo someUserUnassign() {
+		return EventInfo.builder().type(USER_UNASSIGNMENT).build();
 	}
 }

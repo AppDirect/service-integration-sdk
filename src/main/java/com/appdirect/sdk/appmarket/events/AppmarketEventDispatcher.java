@@ -17,7 +17,7 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler userAssignmentHandler;
 	private final SDKEventHandler userUnassignmentHandler;
 
-	APIResult dispatchAndHandle(EventInfo eventInfo, EventExecutionContext eventContext) {
+	APIResult dispatchAndHandle(EventInfo eventInfo, EventHandlingContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
 		if (events.eventShouldBeHandledAsync(eventInfo)) {
 			return asyncHandler.handle(eventHandler, eventInfo, eventContext);

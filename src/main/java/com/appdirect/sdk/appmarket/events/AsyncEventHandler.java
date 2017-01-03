@@ -27,7 +27,7 @@ class AsyncEventHandler {
 		this.log = log;
 	}
 
-	APIResult handle(SDKEventHandler eventHandler, EventInfo eventInfo, EventExecutionContext eventContext) {
+	APIResult handle(SDKEventHandler eventHandler, EventInfo eventInfo, EventHandlingContext eventContext) {
 		executor.execute(() -> {
 			APIResult result;
 			try {

@@ -1,8 +1,8 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.STATELESS;
 import static com.appdirect.sdk.appmarket.events.EventType.ACCOUNT_UNSYNC;
 import static java.lang.String.format;
@@ -38,7 +38,8 @@ public class AppmarketEventServiceTest {
 	public void setUp() throws Exception {
 		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 
-		when(credentialsSupplier.getConsumerCredentials("testKey")).thenReturn(someCredentials("testKey", "testSecret"));
+		when(credentialsSupplier.getConsumerCredentials("testKey"))
+			.thenReturn(new Credentials("testKey", "testSecret"));
 	}
 
 	@Test
@@ -52,7 +53,7 @@ public class AppmarketEventServiceTest {
 		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
 				.thenReturn(testEvent);
 
-		EventExecutionContext eventContext = eventContext("testKey");
+		EventHandlingContext eventContext = eventContext("testKey");
 		when(eventDispatcher.dispatchAndHandle(testEvent, eventContext))
 				.thenReturn(expectedProcessingResult);
 
@@ -124,9 +125,5 @@ public class AppmarketEventServiceTest {
 		assertThat(exceptionCaught)
 				.isExactlyInstanceOf(DeveloperServiceException.class)
 				.hasFieldOrPropertyWithValue("result.message", expectedErrorMessage);
-	}
-
-	private Credentials someCredentials(String key, String secret) {
-		return new Credentials(key, secret);
 	}
 }

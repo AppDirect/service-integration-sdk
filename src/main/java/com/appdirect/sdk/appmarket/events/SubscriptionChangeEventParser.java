@@ -3,7 +3,7 @@ package com.appdirect.sdk.appmarket.events;
 class SubscriptionChangeEventParser implements EventParser<SubscriptionChange> {
 
 	@Override
-	public SubscriptionChange parse(EventInfo eventInfo, EventExecutionContext eventContext) {
+	public SubscriptionChange parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		return new SubscriptionChange(
 				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getCreator(),

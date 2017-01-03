@@ -4,8 +4,8 @@ import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.ACCOUNT_NOT_FOUND;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -45,7 +45,7 @@ public class AsyncEventHandlerTest {
 	public void handlesTheEventInTheExecutor() throws Exception {
 		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
 		EventInfo eventToHandle = someEvent();
-		EventExecutionContext theContext = defaultEventContext();
+		EventHandlingContext theContext = defaultEventContext();
 
 		asyncEventHandler.handle(someEventHandler, eventToHandle, theContext);
 

@@ -1,7 +1,7 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.defaultEventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,7 +30,7 @@ public class ParseAndHandleWrapperTest {
 	@Test
 	public void testHandle_parsesEvent_sendsItToTheHandler_thenReturnResults() throws Exception {
 		EventInfo theEvent = EventInfo.builder().build();
-		EventExecutionContext eventContext = defaultEventContext();
+		EventHandlingContext eventContext = defaultEventContext();
 		SubscriptionOrder theRichEvent = mock(SubscriptionOrder.class);
 		when(parser.parse(theEvent, eventContext)).thenReturn(theRichEvent);
 		when(handler.handle(theRichEvent)).thenReturn(success("All is good"));

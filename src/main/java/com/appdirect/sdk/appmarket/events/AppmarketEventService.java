@@ -22,7 +22,7 @@ class AppmarketEventService {
 		this.dispatcher = dispatcher;
 	}
 
-	APIResult processEvent(String eventUrl, EventExecutionContext eventContext) {
+	APIResult processEvent(String eventUrl, EventHandlingContext eventContext) {
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
 			EventInfo event = fetchEvent(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
