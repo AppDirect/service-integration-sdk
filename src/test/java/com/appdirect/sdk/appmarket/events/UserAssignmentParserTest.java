@@ -11,11 +11,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserAssignmentParserTest {
-	private UserUnassignmentParser testedEventParser;
+	private UserAssignmentParser testedEventParser;
 
 	@Before
 	public void setUp() throws Exception {
-		testedEventParser = new UserUnassignmentParser();
+		testedEventParser = new UserAssignmentParser();
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class UserAssignmentParserTest {
 
 
 		//When
-		UserUnassignment parsedRichEvent = testedEventParser.parse(testEventInfo, testEventHandlingContext);
+		UserAssignment parsedRichEvent = testedEventParser.parse(testEventInfo, testEventHandlingContext);
 
 		//Then
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
