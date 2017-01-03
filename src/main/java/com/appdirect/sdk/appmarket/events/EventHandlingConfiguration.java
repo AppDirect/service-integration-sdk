@@ -20,16 +20,20 @@ public class EventHandlingConfiguration {
 	private final AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
 	private final AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
 	private final AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
+	private final AppmarketEventHandler<UserAssignment> userAssignmentHandler;
+	private final AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
 
 	@Autowired
 	public EventHandlingConfiguration(
-			AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
-			AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
-			AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
-			AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
-			AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
-			AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
-			AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler) {
+		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
+		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
+		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
+		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
+		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
+		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
+		AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler, 
+		AppmarketEventHandler<UserAssignment> userAssignmentHandler, 
+		AppmarketEventHandler<UserUnassignment> userUnassignmentHandler) {
 
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
@@ -38,6 +42,8 @@ public class EventHandlingConfiguration {
 		this.subscriptionDeactivatedHandler = subscriptionDeactivatedHandler;
 		this.subscriptionReactivatedHandler = subscriptionReactivatedHandler;
 		this.subscriptionUpcomingInvoiceHandler = subscriptionUpcomingInvoiceHandler;
+		this.userAssignmentHandler = userAssignmentHandler;
+		this.userUnassignmentHandler = userUnassignmentHandler;
 	}
 
 	@Bean
@@ -78,6 +84,26 @@ public class EventHandlingConfiguration {
 	@Bean
 	public SDKEventHandler unknownEventHandler() {
 		return (event, eventContext) -> new APIResult(ErrorCode.CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
+	}
+
+	@Bean
+	public SDKEventHandler userAssignmentHandler() {
+		return new ParseAndHandleWrapper<>(userAssignmentEventParser(), userAssignmentHandler);
+	}
+
+	@Bean
+	public SDKEventHandler userUnassignmentHandler() {
+		return new ParseAndHandleWrapper<>(userUnassignmentEventParser(), userUnassignmentHandler);
+	}
+
+	@Bean
+	public EventParser<UserAssignment> userAssignmentEventParser() {
+		return new UserAssignmentParser();
+	}
+
+	@Bean
+	public  EventParser<UserUnassignment> userUnassignmentEventParser() {
+		return new UserUnassignmentParser();
 	}
 
 	@Bean
@@ -132,7 +158,9 @@ public class EventHandlingConfiguration {
 				subscriptionReactivatedSdkHandler(),
 				subscriptionClosedSdkHandler(),
 				subscriptionUpcomingInvoiceSdkHandler(),
-				unknownEventHandler()
+				unknownEventHandler(),
+				userAssignmentHandler(),
+				userUnassignmentHandler()
 		);
 	}
 }
