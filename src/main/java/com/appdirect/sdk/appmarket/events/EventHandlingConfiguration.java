@@ -13,38 +13,24 @@ import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 
 @Configuration
 public class EventHandlingConfiguration {
-	private final AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
-	private final AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
-	private final AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
-	private final AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler;
-	private final AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
-	private final AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
-	private final AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
-	private final AppmarketEventHandler<UserAssignment> userAssignmentHandler;
-	private final AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
-
-	@Autowired
-	public EventHandlingConfiguration(
-		AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler,
-		AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler,
-		AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler,
-		AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler,
-		AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler,
-		AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler,
-		AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler, 
-		AppmarketEventHandler<UserAssignment> userAssignmentHandler, 
-		AppmarketEventHandler<UserUnassignment> userUnassignmentHandler) {
-
-		this.subscriptionOrderHandler = subscriptionOrderHandler;
-		this.subscriptionCancelHandler = subscriptionCancelHandler;
-		this.subscriptionChangeHandler = subscriptionChangeHandler;
-		this.subscriptionClosedHandler = subscriptionClosedHandler;
-		this.subscriptionDeactivatedHandler = subscriptionDeactivatedHandler;
-		this.subscriptionReactivatedHandler = subscriptionReactivatedHandler;
-		this.subscriptionUpcomingInvoiceHandler = subscriptionUpcomingInvoiceHandler;
-		this.userAssignmentHandler = userAssignmentHandler;
-		this.userUnassignmentHandler = userUnassignmentHandler;
-	}
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler;
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
+	@Autowired 
+	private AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
+	@Autowired 
+	private AppmarketEventHandler<UserAssignment> userAssignmentHandler;
+	@Autowired 
+	private AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
 
 	@Bean
 	public SDKEventHandler subscriptionOrderSdkHandler() {
@@ -102,7 +88,7 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public  EventParser<UserUnassignment> userUnassignmentEventParser() {
+	public EventParser<UserUnassignment> userUnassignmentEventParser() {
 		return new UserUnassignmentParser();
 	}
 
@@ -149,18 +135,18 @@ public class EventHandlingConfiguration {
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
-				new Events(),
-				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
-				subscriptionOrderSdkHandler(),
-				subscriptionCancelSdkHandler(),
-				subscriptionChangeSdkHandler(),
-				subscriptionDeactivatedSdkHandler(),
-				subscriptionReactivatedSdkHandler(),
-				subscriptionClosedSdkHandler(),
-				subscriptionUpcomingInvoiceSdkHandler(),
-				unknownEventHandler(),
-				userAssignmentHandler(),
-				userUnassignmentHandler()
+			new Events(),
+			new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
+			subscriptionOrderSdkHandler(),
+			subscriptionCancelSdkHandler(),
+			subscriptionChangeSdkHandler(),
+			subscriptionDeactivatedSdkHandler(),
+			subscriptionReactivatedSdkHandler(),
+			subscriptionClosedSdkHandler(),
+			subscriptionUpcomingInvoiceSdkHandler(),
+			unknownEventHandler(),
+			userAssignmentHandler(),
+			userUnassignmentHandler()
 		);
 	}
 }
