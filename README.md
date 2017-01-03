@@ -9,10 +9,10 @@ Spring Boot applications.
 * Automatic oauth authentication of messages using signed fetch
 * Automatic Oauth signing of messages to the marketplace
 
-##Documentation
-For detailed docs, check out our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki) 
+## Documentation
+For detailed docs, check out our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
 
-##Getting started
+## Getting started
 * Include a dependency on the sdk in your pom.xml
 ```
 <dependency>
@@ -35,6 +35,12 @@ public class MinimalConnector {
 * Ensure your application context includes a `DeveloperSpecificAppmarketCredentialsSupplier` bean
   that returns valid appmarket credentials given a consumer key.
 
+* Ensure your application context includes a `Predicate<EventInfo> addonDetector` bean that determines if a
+  given `eventInfo` is related to an addon subscription or to a regular subscription.
+    * Most addons are identified based on the `editionCode` value contained in the `payload.order` section of the event.
+    * To help with that, we offer the [`EditionCodeBasedAddonDetector`](src/main/java/com/appdirect/sdk/appmarket/events/EditionCodeBasedAddonDetector.java) class.
+      To use it as the default detector, add it as a bean in your context.
+
 * Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of market events.
   * Not providing handler for a mandatory event types will lead to an application context failure.
   * The events you need to expose `AppmarketEventHandler`s for are
@@ -45,6 +51,7 @@ public class MinimalConnector {
       * [`SubscriptionDeactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionDeactivated.java)
       * [`SubscriptionReactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionReactivated.java)
       * [`SubscriptionUpcomingInvoice`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionUpcomingInvoice.java)
+      * [`AddonSubscriptionOrder`](src/main/java/com/appdirect/sdk/appmarket/events/AddonSubscriptionOrder.java)
 
 ## Exposed endpoints
 * `GET /health`
@@ -52,7 +59,7 @@ public class MinimalConnector {
 
 * `GET /info`
   Returns information about the deployed application. The information returned varies
-  according to the configuration of the client application. Currently we've 
+  according to the configuration of the client application. Currently we've
   confirmed that if there is a `git.properties` file in the classpath, generated
   by the [git commit id maven plugin](https://github.com/ktoso/maven-git-commit-id-plugin),
   you'll get output like:
@@ -70,7 +77,7 @@ public class MinimalConnector {
 * `GET /api/v1/integration/processEvent?eventUrl=[insert-event-callback-url-here]`
   That is the endpoint where the appmarket sends event notifications
 
-Note that the SDK includes the `spring-boot-starter-actuator`, which 
+Note that the SDK includes the `spring-boot-starter-actuator`, which
 means several more endpoints are exposed automatically by Spring.
 For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/1.4.2.RELEASE/reference/htmlsingle/#production-ready-endpoints)
 
