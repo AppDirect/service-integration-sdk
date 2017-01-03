@@ -5,10 +5,12 @@ import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@Getter
 @EqualsAndHashCode(callSuper = true)
 public class UserUnassignment extends EventWithConsumerKeyQueryParametersAndEventFlag {
+	@Getter
 	private final String unassignedUsedId;
+
+	@Getter
 	private final String accountId;
 
 	UserUnassignment(String unassignedUsedId,
