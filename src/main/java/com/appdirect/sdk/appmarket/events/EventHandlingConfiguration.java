@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import static java.util.concurrent.Executors.newWorkStealingPool;
 
 import java.util.concurrent.ExecutorService;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -60,14 +61,13 @@ public class EventHandlingConfiguration {
 		return new UserUnassignmentParser();
 	}
 
-
 	@Bean(destroyMethod = "shutdown")
 	public ExecutorService defaultExecutorService() {
 		return newWorkStealingPool();
 	}
 
 	@Bean
-	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
+	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, Predicate<EventInfo> addonDetector) {
 		return new AppmarketEventDispatcher(
 				new Events(),
 				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
@@ -82,7 +82,7 @@ public class EventHandlingConfiguration {
 				unknownEventHandler(),
 				userAssignmentHandler(),
 				userUnassignmentHandler(),
-				eventInfo -> false // TODO: pass real detector (i.e. "edition code detector" or something)
+				addonDetector
 		);
 	}
 }
