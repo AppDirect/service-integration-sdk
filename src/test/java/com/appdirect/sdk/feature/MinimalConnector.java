@@ -90,7 +90,7 @@ public class MinimalConnector {
 
 	@Bean
 	public EditionCodeBasedAddonDetector addonDetector() {
-		return new EditionCodeBasedAddonDetector("this-is-an-addon");
+		return new EditionCodeBasedAddonDetector("addon-edition");
 	}
 
 	@Bean
