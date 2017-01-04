@@ -6,34 +6,26 @@ import static java.util.concurrent.Executors.newWorkStealingPool;
 
 import java.util.concurrent.ExecutorService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 
 @Configuration
+@RequiredArgsConstructor
 public class EventHandlingConfiguration {
-	@Autowired
-	private AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
-	@Autowired
-	private AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
-	@Autowired
-	private AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
-	@Autowired
-	private AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler;
-	@Autowired
-	private AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
-	@Autowired
-	private AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
-	@Autowired
-	private AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
-	@Autowired
-	private AppmarketEventHandler<AddonSubscriptionOrder> addonSubscriptionOrderHandler;
-	@Autowired
-	private AppmarketEventHandler<UserAssignment> userAssignmentHandler;
-	@Autowired
-	private AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
+	private final AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler;
+	private final AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler;
+	private final AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler;
+	private final AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler;
+	private final AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler;
+	private final AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
+	private final AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
+	private final AppmarketEventHandler<AddonSubscriptionOrder> addonSubscriptionOrderHandler;
+	private final AppmarketEventHandler<UserAssignment> userAssignmentHandler;
+	private final AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
 
 	@Bean
 	public SDKEventHandler unknownEventHandler() {
