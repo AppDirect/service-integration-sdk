@@ -19,8 +19,6 @@ class EventPayload {
 	private UserInfo user;
 	private CompanyInfo company;
 	private AccountInfo account;
-	private AddonInstanceInfo addonInstance;
-	private AddonBindingInfo addonBinding;
 	private OrderInfo order;
 	private NoticeInfo notice;
 	private Map<String, String> configuration = new HashMap<>();
