@@ -11,10 +11,10 @@ import org.junit.Test;
 
 public class EventsTest {
 
+	private Events events = new Events();
+
 	@Test
 	public void allEventsShouldBeHandledAsync_butSubscriptionNotice() throws Exception {
-		Events events = new Events();
-
 		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_ORDER))).isTrue();
 		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_CANCEL))).isTrue();
 		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_CHANGE))).isTrue();
@@ -23,7 +23,23 @@ public class EventsTest {
 		assertThat(events.eventShouldBeHandledAsync(eventOfType(SUBSCRIPTION_NOTICE))).isFalse();
 	}
 
+	@Test
+	public void extractEditionCode_returnsEmpty_whenEventHasNoEdition() throws Exception {
+		assertThat(events.extractEditionCode(eventOfType(SUBSCRIPTION_NOTICE))).isEmpty();
+	}
+
+	@Test
+	public void extractEditionCode_returnsTheEdition_whenEventHasOne() throws Exception {
+		assertThat(events.extractEditionCode(eventWithEdition("some"))).contains("some");
+	}
+
 	private EventInfo eventOfType(EventType eventType) {
 		return EventInfo.builder().type(eventType).build();
+	}
+
+	private EventInfo eventWithEdition(String editionCode) {
+		return EventInfo.builder().payload(
+				EventPayload.builder().order(
+						OrderInfo.builder().editionCode(editionCode).build()).build()).build();
 	}
 }

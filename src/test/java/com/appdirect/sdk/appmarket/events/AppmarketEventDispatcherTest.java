@@ -16,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,6 +103,9 @@ public class AppmarketEventDispatcherTest {
 
 		when(mockEvents.eventShouldBeHandledAsync(any()))
 			.thenReturn(false);
+		when(mockEvents.extractEditionCode(any()))
+				.thenReturn(Optional.empty());
+
 		when(mockSubscriptionOrderHandler.handle(any(), any()))
 			.thenReturn(mockSubscriptionOrderResponse);
 		when(mockSubscriptionCancelHandler.handle(any(), any()))
@@ -225,7 +230,7 @@ public class AppmarketEventDispatcherTest {
 	public void testDispatchAndHandle_whenTheEventIsSubscriptionOrder_forAddon_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo addonTestEvent = someSubOrderEvent();
-		when(mockEvents.extractEditionCode(addonTestEvent)).thenReturn("add-on-edition");
+		when(mockEvents.extractEditionCode(addonTestEvent)).thenReturn(Optional.of("add-on-edition"));
 		when(mockAddonDetector.editionCodeIsRelatedToAddon("add-on-edition")).thenReturn(true);
 
 		//When

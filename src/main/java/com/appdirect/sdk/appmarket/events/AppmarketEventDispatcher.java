@@ -44,7 +44,9 @@ class AppmarketEventDispatcher {
 	}
 
 	private SDKEventHandler getHandlerFor(final EventInfo rawEvent) {
-		final boolean eventIsForAddon = addonDetector.editionCodeIsRelatedToAddon(events.extractEditionCode(rawEvent));
+		final boolean eventIsForAddon = events.extractEditionCode(rawEvent)
+				.map(addonDetector::editionCodeIsRelatedToAddon)
+				.orElse(false);
 
 		Map<EventType, Supplier<SDKEventHandler>> eventsToHandlers = new EnumMap<>(EventType.class);
 		eventsToHandlers.put(SUBSCRIPTION_ORDER, () -> eventIsForAddon ? addonSubscriptionOrderHandler : subscriptionOrderHandler);
