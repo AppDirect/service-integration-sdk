@@ -15,24 +15,32 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 class AppmarketEventDispatcher {
 	private final Events events;
 	private final AsyncEventHandler asyncHandler;
+	private final Map<NoticeType, SDKEventHandler> noticeEventsToHandlers;
 	private final SDKEventHandler subscriptionOrderHandler;
 	private final SDKEventHandler subscriptionCancelHandler;
 	private final SDKEventHandler subscriptionChangeHandler;
-	private final SDKEventHandler subscriptionDeactivatedHandler;
-	private final SDKEventHandler subscriptionReactivatedHandler;
-	private final SDKEventHandler subscriptionClosedHandler;
-	private final SDKEventHandler subscriptionUpcomingInvoiceHandler;
 	private final SDKEventHandler addonSubscriptionOrderHandler;
 	private final SDKEventHandler userAssignmentHandler;
 	private final SDKEventHandler userUnassignmentHandler;
 	private final SDKEventHandler unknownEventHandler;
 	private final EditionCodeBasedAddonDetector addonDetector;
+
+	AppmarketEventDispatcher(Events events, AsyncEventHandler asyncHandler, SDKEventHandler subscriptionOrderHandler, SDKEventHandler subscriptionCancelHandler, SDKEventHandler subscriptionChangeHandler, SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler, SDKEventHandler addonSubscriptionOrderHandler, SDKEventHandler userAssignmentHandler, SDKEventHandler userUnassignmentHandler, SDKEventHandler unknownEventHandler, EditionCodeBasedAddonDetector addonDetector) { // NOSONAR: ctor has too many params - This is for SDK use only.
+		this.events = events;
+		this.asyncHandler = asyncHandler;
+		this.noticeEventsToHandlers = fillNoticeEventsHandlersMap(subscriptionDeactivatedHandler, subscriptionReactivatedHandler, subscriptionClosedHandler, subscriptionUpcomingInvoiceHandler);
+		this.subscriptionOrderHandler = subscriptionOrderHandler;
+		this.subscriptionCancelHandler = subscriptionCancelHandler;
+		this.subscriptionChangeHandler = subscriptionChangeHandler;
+		this.addonSubscriptionOrderHandler = addonSubscriptionOrderHandler;
+		this.userAssignmentHandler = userAssignmentHandler;
+		this.userUnassignmentHandler = userUnassignmentHandler;
+		this.unknownEventHandler = unknownEventHandler;
+		this.addonDetector = addonDetector;
+	}
 
 	APIResult dispatchAndHandle(EventInfo rawEvent, EventHandlingContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(rawEvent);
@@ -60,12 +68,15 @@ class AppmarketEventDispatcher {
 	}
 
 	private SDKEventHandler subscriptionNoticeHandlerFor(NoticeType noticeType) {
+		return noticeEventsToHandlers.getOrDefault(noticeType, unknownEventHandler);
+	}
+
+	private Map<NoticeType, SDKEventHandler> fillNoticeEventsHandlersMap(SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler) {
 		Map<NoticeType, SDKEventHandler> eventsToHandlers = new EnumMap<>(NoticeType.class);
 		eventsToHandlers.put(CLOSED, subscriptionClosedHandler);
 		eventsToHandlers.put(DEACTIVATED, subscriptionDeactivatedHandler);
 		eventsToHandlers.put(REACTIVATED, subscriptionReactivatedHandler);
 		eventsToHandlers.put(UPCOMING_INVOICE, subscriptionUpcomingInvoiceHandler);
-
-		return eventsToHandlers.getOrDefault(noticeType, unknownEventHandler);
+		return eventsToHandlers;
 	}
 }
