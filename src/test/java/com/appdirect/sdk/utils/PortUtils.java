@@ -19,7 +19,7 @@ public class PortUtils { //NOSONAR, the private constructor is created by Lombok
 			socket.setReuseAddress(true);
 			return socket.getLocalPort();
 		} catch (IOException e) {
-			throw new FreePortNotFoundException("Failed getting a free port", e);
+			throw new RuntimeException("Failed getting a free port", e);
 		}
 	}
 }
