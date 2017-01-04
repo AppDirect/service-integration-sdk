@@ -31,10 +31,10 @@ class AppmarketEventDispatcher {
 	AppmarketEventDispatcher(Events events, AsyncEventHandler asyncHandler, SDKEventHandler subscriptionOrderHandler, SDKEventHandler subscriptionCancelHandler, SDKEventHandler subscriptionChangeHandler, SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler, SDKEventHandler addonSubscriptionOrderHandler, SDKEventHandler userAssignmentHandler, SDKEventHandler userUnassignmentHandler, SDKEventHandler unknownEventHandler, EditionCodeBasedAddonDetector addonDetector) { // NOSONAR: ctor has too many params - This is for SDK use only.
 		this.events = events;
 		this.asyncHandler = asyncHandler;
-		this.noticeEventsToHandlers = fillNoticeEventsHandlersMap(subscriptionDeactivatedHandler, subscriptionReactivatedHandler, subscriptionClosedHandler, subscriptionUpcomingInvoiceHandler);
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
 		this.subscriptionChangeHandler = subscriptionChangeHandler;
+		this.noticeEventsToHandlers = buildNoticeHandlersMap(subscriptionDeactivatedHandler, subscriptionReactivatedHandler, subscriptionClosedHandler, subscriptionUpcomingInvoiceHandler);
 		this.addonSubscriptionOrderHandler = addonSubscriptionOrderHandler;
 		this.userAssignmentHandler = userAssignmentHandler;
 		this.userUnassignmentHandler = userUnassignmentHandler;
@@ -71,7 +71,7 @@ class AppmarketEventDispatcher {
 		return noticeEventsToHandlers.getOrDefault(noticeType, unknownEventHandler);
 	}
 
-	private Map<NoticeType, SDKEventHandler> fillNoticeEventsHandlersMap(SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler) {
+	private Map<NoticeType, SDKEventHandler> buildNoticeHandlersMap(SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler) {
 		Map<NoticeType, SDKEventHandler> eventsToHandlers = new EnumMap<>(NoticeType.class);
 		eventsToHandlers.put(CLOSED, subscriptionClosedHandler);
 		eventsToHandlers.put(DEACTIVATED, subscriptionDeactivatedHandler);
