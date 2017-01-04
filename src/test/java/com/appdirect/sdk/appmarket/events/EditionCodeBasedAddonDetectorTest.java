@@ -18,14 +18,18 @@ public class EditionCodeBasedAddonDetectorTest {
 	public void doesNotMatchCode_whenCodeIsAbsent() throws Exception {
 		EditionCodeBasedAddonDetector addonDetector = new EditionCodeBasedAddonDetector("the-code");
 
-		assertThat(addonDetector.editionCodeIsRelatedToAddon("another-not-related-code")).isFalse();
+		assertThat(addonDetector.editionCodeIsRelatedToAddon("another-unrelated-code"))
+				.as("absent code must not be matched")
+				.isFalse();
 	}
 
 	@Test
 	public void doesNotMatchCode_whenCaseDoesNotMatch() throws Exception {
 		EditionCodeBasedAddonDetector addonDetector = new EditionCodeBasedAddonDetector("ALL_CAPS");
 
-		assertThat(addonDetector.editionCodeIsRelatedToAddon("aLL_CAPS")).isFalse();
+		assertThat(addonDetector.editionCodeIsRelatedToAddon("aLL_CAPS"))
+				.as("codes differing by case must not be matched")
+				.isFalse();
 	}
 
 	@Test
