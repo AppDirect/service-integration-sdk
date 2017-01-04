@@ -8,18 +8,18 @@ import java.net.ServerSocket;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = PRIVATE)
-public class PortUtils {
+public class PortUtils { //NOSONAR, the private constructor is created by Lombok
 
 	/**
-	 * @see <a href="https://gist.github.com/vorburger/3429822">Source gist</a> 
 	 * @return a random, unused TCP port
+	 * @see <a href="https://gist.github.com/vorburger/3429822">Source gist</a>
 	 */
 	public static int getRandomFreePort() {
 		try (ServerSocket socket = new ServerSocket(0)) {
 			socket.setReuseAddress(true);
 			return socket.getLocalPort();
 		} catch (IOException e) {
-			throw new RuntimeException("Failed getting a free port", e);
+			throw new FreePortNotFoundException("Failed getting a free port", e);
 		}
 	}
 }
