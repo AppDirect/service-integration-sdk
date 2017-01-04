@@ -2,7 +2,7 @@ package com.appdirect.sdk.appmarket.events;
 
 class AddonSubscriptionOrderEventParser implements EventParser<AddonSubscriptionOrder> {
 	@Override
-	public AddonSubscriptionOrder parse(EventInfo eventInfo, EventExecutionContext eventContext) {
+	public AddonSubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		return new AddonSubscriptionOrder(
 				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getFlag(),

@@ -20,9 +20,9 @@ class AppmarketEventDispatcher {
 	private final EditionCodeBasedAddonDetector addonDetector;
 
 	APIResult dispatchAndHandle(EventInfo rawEvent, EventHandlingContext eventContext) {
-		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
-		if (events.eventShouldBeHandledAsync(eventInfo)) {
-			return asyncHandler.handle(eventHandler, eventInfo, eventContext);
+		SDKEventHandler eventHandler = getHandlerFor(rawEvent);
+		if (events.eventShouldBeHandledAsync(rawEvent)) {
+			return asyncHandler.handle(eventHandler, rawEvent, eventContext);
 		} else {
 			return eventHandler.handle(rawEvent, eventContext);
 		}
