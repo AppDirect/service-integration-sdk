@@ -96,7 +96,7 @@ public class MinimalConnector {
 	@Bean
 	public AppmarketEventHandler<UserUnassignment> userUnassignmentDevHandler() {
 		return event -> success(
-			format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUsedId(), event.getAccountId())
+			format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUserId(), event.getAccountId())
 		);
 	}
 

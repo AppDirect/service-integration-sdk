@@ -1,7 +1,7 @@
 {
   "type": "USER_ASSIGNMENT",
   "marketplace": {
-    "partner": "APPDIRECT",
+    "partner": "gabrielspub-test",
     "baseUrl": "{{fake-appmarket-url}}"
   },
   "applicationUuid": null,

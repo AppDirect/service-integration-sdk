@@ -8,19 +8,19 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class UserUnassignment extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	@Getter
-	private final String unassignedUsedId;
+	private final String unassignedUserId;
 
 	@Getter
 	private final String accountId;
 
-	UserUnassignment(String unassignedUsedId,
+	UserUnassignment(String unassignedUserId,
 					 String accountId,
 					 String consumerKey,
 					 Map<String, String[]> queryParameters,
 					 EventFlag eventFlag) {
 
 		super(consumerKey, queryParameters, eventFlag);
-		this.unassignedUsedId = unassignedUsedId;
+		this.unassignedUserId = unassignedUserId;
 		this.accountId = accountId;
 	}
 }

@@ -1,14 +1,14 @@
 {
   "type": "USER_UNASSIGNMENT",
   "marketplace": {
-    "partner": "APPDIRECT",
+    "partner": "gabrielspub-test",
     "baseUrl": "{{fake-appmarket-url}}"
   },
   "applicationUuid": null,
   "flag": null,
   "creator": {
     "uuid": "c0929f6a-ecb4-4e65-b378-6f681c0616d4",
-    "openId": "https://dev29.appdirect.com/openid/id/c0929f6a-ecb4-4e65-b378-6f681c0616d4",
+    "openId": "https://gabrielspub-test.byappdirect.com/openid/id/c0929f6a-ecb4-4e65-b378-6f681c0616d4",
     "email": "santiagoenduser355@yopmail.com",
     "firstName": "Enduser355!",
     "lastName": "Enduser355!",
