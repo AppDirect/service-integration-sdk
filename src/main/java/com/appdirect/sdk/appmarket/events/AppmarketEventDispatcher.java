@@ -1,5 +1,20 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CANCEL;
+import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CHANGE;
+import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_NOTICE;
+import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_ORDER;
+import static com.appdirect.sdk.appmarket.events.EventType.USER_ASSIGNMENT;
+import static com.appdirect.sdk.appmarket.events.EventType.USER_UNASSIGNMENT;
+import static com.appdirect.sdk.appmarket.events.NoticeType.CLOSED;
+import static com.appdirect.sdk.appmarket.events.NoticeType.DEACTIVATED;
+import static com.appdirect.sdk.appmarket.events.NoticeType.REACTIVATED;
+import static com.appdirect.sdk.appmarket.events.NoticeType.UPCOMING_INVOICE;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -28,39 +43,27 @@ class AppmarketEventDispatcher {
 		}
 	}
 
-	private SDKEventHandler getHandlerFor(EventInfo rawEvent) {
-		boolean eventIsForAddon = addonDetector.editionCodeIsRelatedToAddon(events.extractEditionCode(rawEvent));
+	private SDKEventHandler getHandlerFor(final EventInfo rawEvent) {
+		final boolean eventIsForAddon = addonDetector.editionCodeIsRelatedToAddon(events.extractEditionCode(rawEvent));
 
-		switch (rawEvent.getType()) {
-			case SUBSCRIPTION_ORDER:
-				return eventIsForAddon ? addonSubscriptionOrderHandler : subscriptionOrderHandler;
-			case SUBSCRIPTION_CANCEL:
-				return subscriptionCancelHandler;
-			case SUBSCRIPTION_CHANGE:
-				return subscriptionChangeHandler;
-			case SUBSCRIPTION_NOTICE:
-				return subscriptionNoticeHandlerFor(rawEvent.getPayload().getNotice().getType());
-			case USER_ASSIGNMENT:
-				return userAssignmentHandler;
-			case USER_UNASSIGNMENT:
-				return userUnassignmentHandler;
-			default:
-				return unknownEventHandler;
-		}
+		Map<EventType, Supplier<SDKEventHandler>> eventsToHandlers = new HashMap<>();
+		eventsToHandlers.put(SUBSCRIPTION_ORDER, () -> eventIsForAddon ? addonSubscriptionOrderHandler : subscriptionOrderHandler);
+		eventsToHandlers.put(SUBSCRIPTION_CANCEL, () -> subscriptionCancelHandler);
+		eventsToHandlers.put(SUBSCRIPTION_CHANGE, () -> subscriptionChangeHandler);
+		eventsToHandlers.put(SUBSCRIPTION_NOTICE, () -> subscriptionNoticeHandlerFor(rawEvent.getPayload().getNotice().getType()));
+		eventsToHandlers.put(USER_ASSIGNMENT, () -> userAssignmentHandler);
+		eventsToHandlers.put(USER_UNASSIGNMENT, () -> userUnassignmentHandler);
+
+		return eventsToHandlers.getOrDefault(rawEvent.getType(), () -> unknownEventHandler).get();
 	}
 
-	private SDKEventHandler subscriptionNoticeHandlerFor(NoticeType noticeType) {
-		switch (noticeType) {
-			case CLOSED:
-				return subscriptionClosedHandler;
-			case DEACTIVATED:
-				return subscriptionDeactivatedHandler;
-			case REACTIVATED:
-				return subscriptionReactivatedHandler;
-			case UPCOMING_INVOICE:
-				return subscriptionUpcomingInvoiceHandler;
-			default:
-				return unknownEventHandler;
-		}
+	private SDKEventHandler subscriptionNoticeHandlerFor(final NoticeType noticeType) {
+		Map<NoticeType, SDKEventHandler> eventsToHandlers = new HashMap<>();
+		eventsToHandlers.put(CLOSED, subscriptionClosedHandler);
+		eventsToHandlers.put(DEACTIVATED, subscriptionDeactivatedHandler);
+		eventsToHandlers.put(REACTIVATED, subscriptionReactivatedHandler);
+		eventsToHandlers.put(UPCOMING_INVOICE, subscriptionUpcomingInvoiceHandler);
+
+		return eventsToHandlers.getOrDefault(noticeType, unknownEventHandler);
 	}
 }
