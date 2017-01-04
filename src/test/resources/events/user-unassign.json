@@ -38,7 +38,7 @@
   "payload": {
     "user": {
       "uuid": "c00cfbd7-03d5-497c-ab7e-5ddf6aba4a26",
-      "openId": "https://dev29.appdirect.com/openid/id/c00cfbd7-03d5-497c-ab7e-5ddf6aba4a26",
+      "openId": "https://gabrielspub-test.byappdirect.com/openid/id/c00cfbd7-03d5-497c-ab7e-5ddf6aba4a26",
       "email": "santiagoenduser357@yopmail.com",
       "firstName": "Enduser357!",
       "lastName": "Enduser357!",
