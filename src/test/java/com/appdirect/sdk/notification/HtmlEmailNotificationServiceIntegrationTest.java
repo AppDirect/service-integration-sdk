@@ -14,27 +14,34 @@ import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import com.appdirect.sdk.utils.PortUtils;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 
+@Slf4j
 public class HtmlEmailNotificationServiceIntegrationTest {
 
-	private static final int TEST_SMTP_SERVER_PORT = 3025;
+	private static final int TEST_SMTP_SERVER_PORT = PortUtils.getRandomFreePort();
 	private static final String TEST_SMTP_SERVER_BIND_ADDRESS = "127.0.0.1";
 
-	private GreenMail greenMail = new GreenMail(
-		new ServerSetup(TEST_SMTP_SERVER_PORT, TEST_SMTP_SERVER_BIND_ADDRESS, PROTOCOL_SMTP)
-	);
+	private GreenMail greenMail;
 
 	private HtmlEmailNotificationService htmlEmailNotificationService;
 
 	@Before
 	public void setUp() throws Exception {
+		log.warn("Port selected: {}", TEST_SMTP_SERVER_PORT);
+		greenMail = new GreenMail(
+			new ServerSetup(TEST_SMTP_SERVER_PORT, TEST_SMTP_SERVER_BIND_ADDRESS, PROTOCOL_SMTP)
+		);
+
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
 		sender.setHost(TEST_SMTP_SERVER_BIND_ADDRESS);
 		sender.setPort(TEST_SMTP_SERVER_PORT);
