@@ -93,9 +93,9 @@ public class AppmarketEventDispatcherTest {
 				mockSubscriptionClosedHandler,
 				mockSubscriptionIncomingNoticeHandler,
 				mockAddonSubscriptionOrderHandler,
-				mockUnknownEventHandler,
 				mockUserAssignmentHandler,
 				mockUserUnassignmentHandler,
+				mockUnknownEventHandler,
 				mockAddonDetector
 		);
 

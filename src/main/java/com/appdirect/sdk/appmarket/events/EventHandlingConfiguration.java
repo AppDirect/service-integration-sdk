@@ -40,26 +40,6 @@ public class EventHandlingConfiguration {
 		return (event, eventContext) -> new APIResult(CONFIGURATION_ERROR, format("Unsupported event type %s", event.getType()));
 	}
 
-	@Bean
-	public SDKEventHandler userAssignmentHandler() {
-		return new ParseAndHandleWrapper<>(userAssignmentEventParser(), userAssignmentHandler);
-	}
-
-	@Bean
-	public SDKEventHandler userUnassignmentHandler() {
-		return new ParseAndHandleWrapper<>(userUnassignmentEventParser(), userUnassignmentHandler);
-	}
-
-	@Bean
-	public EventParser<UserAssignment> userAssignmentEventParser() {
-		return new UserAssignmentParser();
-	}
-
-	@Bean
-	public EventParser<UserUnassignment> userUnassignmentEventParser() {
-		return new UserUnassignmentParser();
-	}
-
 	@Bean(destroyMethod = "shutdown")
 	public ExecutorService defaultExecutorService() {
 		return newWorkStealingPool();
@@ -78,9 +58,9 @@ public class EventHandlingConfiguration {
 				new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
 				new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
 				new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
+				new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
+				new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
 				unknownEventHandler(),
-				userAssignmentHandler(),
-				userUnassignmentHandler(),
 				addonDetector
 		);
 	}

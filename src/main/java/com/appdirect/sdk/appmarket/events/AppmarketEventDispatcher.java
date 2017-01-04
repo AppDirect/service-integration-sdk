@@ -14,9 +14,9 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler subscriptionClosedHandler;
 	private final SDKEventHandler subscriptionUpcomingInvoiceHandler;
 	private final SDKEventHandler addonSubscriptionOrderHandler;
-	private final SDKEventHandler unknownEventHandler;
 	private final SDKEventHandler userAssignmentHandler;
 	private final SDKEventHandler userUnassignmentHandler;
+	private final SDKEventHandler unknownEventHandler;
 	private final EditionCodeBasedAddonDetector addonDetector;
 
 	APIResult dispatchAndHandle(EventInfo rawEvent, EventHandlingContext eventContext) {
