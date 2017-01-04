@@ -61,10 +61,10 @@ public class HtmlEmailNotificationServiceIntegrationTest {
 		//Given
 		String expectedEmailBody = "testBody";
 		String expectedEmailSubject = "testSubject";
-		String expectedRecepient = "testReceiver@example.com";
+		String expectedRecipient = "testReceiver@example.com";
 
 		//When
-		htmlEmailNotificationService.sendHtmlEmail(expectedEmailSubject, expectedEmailBody, expectedRecepient);
+		htmlEmailNotificationService.sendHtmlEmail(expectedEmailSubject, expectedEmailBody, expectedRecipient);
 		greenMail.waitForIncomingEmail(1);
 		MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
