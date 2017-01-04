@@ -16,8 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.function.Predicate;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +78,7 @@ public class AppmarketEventDispatcherTest {
 	private APIResult mockUserUnassignmentResponse;
 
 	@Mock
-	private Predicate<EventInfo> mockAddonDetector;
+	private EditionCodeBasedAddonDetector mockAddonDetector;
 
 	@Before
 	public void setUp() throws Exception {
@@ -227,7 +225,8 @@ public class AppmarketEventDispatcherTest {
 	public void testDispatchAndHandle_whenTheEventIsSubscriptionOrder_forAddon_thenInvokeAppropriateHandler() throws Exception {
 		//Given
 		EventInfo addonTestEvent = someSubOrderEvent();
-		when(mockAddonDetector.test(addonTestEvent)).thenReturn(true);
+		when(mockEvents.extractEditionCode(addonTestEvent)).thenReturn("add-on-edition");
+		when(mockAddonDetector.editionCodeIsRelatedToAddon("add-on-edition")).thenReturn(true);
 
 		//When
 		APIResult result = eventDispatcher.dispatchAndHandle(addonTestEvent, defaultEventContext());

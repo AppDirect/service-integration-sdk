@@ -35,11 +35,9 @@ public class MinimalConnector {
 * Ensure your application context includes a `DeveloperSpecificAppmarketCredentialsSupplier` bean
   that returns valid appmarket credentials given a consumer key.
 
-* Ensure your application context includes a `Predicate<EventInfo> addonDetector` bean that determines if a
-  given `eventInfo` is related to an addon subscription or to a regular subscription.
-    * Most addons are identified based on the `editionCode` value contained in the `payload.order` section of the event.
-    * To help with that, we offer the [`EditionCodeBasedAddonDetector`](src/main/java/com/appdirect/sdk/appmarket/events/EditionCodeBasedAddonDetector.java) class.
-      To use it as the default detector, add it as a bean in your context.
+* Ensure your application context includes an [`EditionCodeBasedAddonDetector`](src/main/java/com/appdirect/sdk/appmarket/events/EditionCodeBasedAddonDetector.java)
+  bean. It determines if a given `editionCode` is related to an add-on subscription or to a regular subscription.
+  * The bean requires you pass it your add-on edition codes.
 
 * Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of market events.
   * Not providing handler for a mandatory event types will lead to an application context failure.

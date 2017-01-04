@@ -4,8 +4,6 @@ import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
-import java.util.function.Predicate;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +14,7 @@ import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
-import com.appdirect.sdk.appmarket.events.EventInfo;
+import com.appdirect.sdk.appmarket.events.EditionCodeBasedAddonDetector;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionChange;
 import com.appdirect.sdk.appmarket.events.SubscriptionClosed;
@@ -91,8 +89,8 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public Predicate<EventInfo> addonDetector() {
-		return eventInfo -> false; // TODO: do something smarter: like check edition code for magic value.
+	public EditionCodeBasedAddonDetector addonDetector() {
+		return new EditionCodeBasedAddonDetector("this-is-an-addon");
 	}
 
 	@Bean

@@ -1,7 +1,5 @@
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.function.Predicate;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,7 +17,7 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler unknownEventHandler;
 	private final SDKEventHandler userAssignmentHandler;
 	private final SDKEventHandler userUnassignmentHandler;
-	private final Predicate<EventInfo> addonDetector;
+	private final EditionCodeBasedAddonDetector addonDetector;
 
 	APIResult dispatchAndHandle(EventInfo rawEvent, EventHandlingContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
@@ -31,7 +29,7 @@ class AppmarketEventDispatcher {
 	}
 
 	private SDKEventHandler getHandlerFor(EventInfo rawEvent) {
-		boolean eventIsForAddon = addonDetector.test(rawEvent);
+		boolean eventIsForAddon = addonDetector.editionCodeIsRelatedToAddon(events.extractEditionCode(rawEvent));
 
 		switch (rawEvent.getType()) {
 			case SUBSCRIPTION_ORDER:

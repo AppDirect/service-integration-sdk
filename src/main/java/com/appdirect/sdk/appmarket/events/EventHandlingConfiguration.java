@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import static java.util.concurrent.Executors.newWorkStealingPool;
 
 import java.util.concurrent.ExecutorService;
-import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -67,7 +66,7 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, Predicate<EventInfo> addonDetector) {
+	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, EditionCodeBasedAddonDetector addonDetector) {
 		return new AppmarketEventDispatcher(
 				new Events(),
 				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),

@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @Builder
-public class EventInfo {
+class EventInfo {
 	private EventType type;
 	private MarketInfo marketplace;
 	private String applicationUuid;
