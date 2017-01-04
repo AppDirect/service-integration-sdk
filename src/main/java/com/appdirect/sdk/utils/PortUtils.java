@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PRIVATE)
 public class PortUtils {
 
+	/**
+	 * @see <a href="https://gist.github.com/vorburger/3429822">Source gist</a> 
+	 * @return a random, unused TCP port
+	 */
 	public static int getRandomFreePort() {
 		try (ServerSocket socket = new ServerSocket(0)) {
 			socket.setReuseAddress(true);
