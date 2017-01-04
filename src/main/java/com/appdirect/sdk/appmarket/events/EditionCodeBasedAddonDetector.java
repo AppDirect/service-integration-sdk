@@ -23,10 +23,10 @@ public class EditionCodeBasedAddonDetector {
 	/**
 	 * Determines if a given edition code is related to an add-on subscription or not.
 	 *
-	 * @param editionCode the edition code to check, can be null.
+	 * @param editionCode the edition code to check; case-sensitive, can be null.
 	 * @return <code>true</code> if the edition code is related to an add-on subscription; <code>false</code> otherwise.
 	 */
 	public boolean editionCodeIsRelatedToAddon(String editionCode) {
-		return false; // TODO: Implement this!
+		return addonEditionCodes.contains(editionCode);
 	}
 }
