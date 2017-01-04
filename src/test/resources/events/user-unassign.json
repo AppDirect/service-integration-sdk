@@ -1,0 +1,66 @@
+{
+  "type": "USER_UNASSIGNMENT",
+  "marketplace": {
+    "partner": "gabrielspub-test",
+    "baseUrl": "{{fake-appmarket-url}}"
+  },
+  "applicationUuid": null,
+  "flag": null,
+  "creator": {
+    "uuid": "c0929f6a-ecb4-4e65-b378-6f681c0616d4",
+    "openId": "https://gabrielspub-test.byappdirect.com/openid/id/c0929f6a-ecb4-4e65-b378-6f681c0616d4",
+    "email": "santiagoenduser355@yopmail.com",
+    "firstName": "Enduser355!",
+    "lastName": "Enduser355!",
+    "language": "en",
+    "locale": "en-US",
+    "address": {
+      "salutation": null,
+      "firstName": "Enduser355!",
+      "lastName": "Enduser355!",
+      "fullName": "Enduser355! Enduser355!",
+      "companyName": null,
+      "phone": "5088917623",
+      "phoneExtension": null,
+      "fax": null,
+      "faxExtension": null,
+      "street1": "50 Grove St.",
+      "street2": "",
+      "city": "Somerville",
+      "state": "MA",
+      "zip": "02144",
+      "country": "US",
+      "pobox": null,
+      "pozip": null
+    },
+    "attributes": null
+  },
+  "payload": {
+    "user": {
+      "uuid": "c00cfbd7-03d5-497c-ab7e-5ddf6aba4a26",
+      "openId": "https://gabrielspub-test.byappdirect.com/openid/id/c00cfbd7-03d5-497c-ab7e-5ddf6aba4a26",
+      "email": "santiagoenduser357@yopmail.com",
+      "firstName": "Enduser357!",
+      "lastName": "Enduser357!",
+      "language": "es",
+      "locale": "es",
+      "address": null,
+      "attributes": {
+        "userName": "santiagoenduser357@santiagoenduser355.onmicrosoft.com"
+      }
+    },
+    "company": null,
+    "account": {
+      "accountIdentifier": "49528348-a996-463c-a9cd-cde156ab93b6",
+      "status": "ACTIVE",
+      "parentAccountIdentifier": "8669f454-33ec-42cd-85da-ad0f6dcd2ab3"
+    },
+    "addonInstance": null,
+    "addonBinding": null,
+    "order": null,
+    "notice": null,
+    "configuration": {}
+  },
+  "returnUrl": null,
+  "links": []
+}

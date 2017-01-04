@@ -7,11 +7,11 @@ import java.util.Map;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-class EventExecutionContext {
+class EventHandlingContext {
 	private final String consumerKeyUsedByTheRequest;
 	private final Map<String, String[]> queryParameters;
 
-	EventExecutionContext(String consumerKeyUsedByTheRequest, Map<String, String[]> queryParameters) {
+	EventHandlingContext(String consumerKeyUsedByTheRequest, Map<String, String[]> queryParameters) {
 		this.consumerKeyUsedByTheRequest = consumerKeyUsedByTheRequest;
 		this.queryParameters = queryParameters;
 	}

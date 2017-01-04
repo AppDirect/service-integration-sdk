@@ -1,6 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
-import static com.appdirect.sdk.appmarket.events.EventExecutionContexts.eventContext;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,24 +21,24 @@ public class SubscriptionCancelEventParserTest {
 		//Given
 		String testAccountIdentifier = "testAccountIdentifier";
 		EventInfo testEventInfo = EventInfo.builder()
-				.flag(DEVELOPMENT)
-				.payload(
-						EventPayload.builder()
-								.account(
-										AccountInfo.builder()
-												.accountIdentifier(testAccountIdentifier)
-												.build()
-								)
-								.build()
-				)
-				.build();
+			.flag(DEVELOPMENT)
+			.payload(
+				EventPayload.builder()
+					.account(
+						AccountInfo.builder()
+							.accountIdentifier(testAccountIdentifier)
+							.build()
+					)
+					.build()
+			)
+			.build();
 
 		//When
 		SubscriptionCancel parsedEvent = testedParser.parse(testEventInfo, eventContext("the-key", oneQueryParam("param1", "value22", "value44")));
 
 		//Then
 		assertThat(parsedEvent.getAccountIdentifier())
-				.isEqualTo(testEventInfo.getPayload().getAccount().getAccountIdentifier());
+			.isEqualTo(testEventInfo.getPayload().getAccount().getAccountIdentifier());
 		assertThat(parsedEvent.isDevelopment()).isTrue();
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-key");
 		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("param1", array("value22", "value44")));

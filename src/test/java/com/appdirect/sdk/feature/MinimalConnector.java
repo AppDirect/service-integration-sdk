@@ -20,6 +20,8 @@ import com.appdirect.sdk.appmarket.events.SubscriptionDeactivated;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.SubscriptionReactivated;
 import com.appdirect.sdk.appmarket.events.SubscriptionUpcomingInvoice;
+import com.appdirect.sdk.appmarket.events.UserAssignment;
+import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @SpringBootApplication
@@ -81,6 +83,20 @@ public class MinimalConnector {
 	public AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingNoticeHandler() {
 		return event -> success(
 			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<UserAssignment> userAssignmentDevHandler() {
+		return event -> success(
+			format("USER_ASSIGN for user %s for account %s has been processed, for real.", event.getAssignedUserId(), event.getAccountId())
+		);
+	}
+
+	@Bean
+	public AppmarketEventHandler<UserUnassignment> userUnassignmentDevHandler() {
+		return event -> success(
+			format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUserId(), event.getAccountId())
 		);
 	}
 

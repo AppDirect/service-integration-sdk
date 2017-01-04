@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
  * Developer-facing event creation of an account requested by the AppMarket
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class SubscriptionOrder extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final UserInfo purchaserInfo;
 	private final Map<String, String> configuration;

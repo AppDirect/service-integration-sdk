@@ -34,36 +34,36 @@ public class CanDispatchSubscriptionNoticeIntegrationTest {
 
 	@Test
 	public void subscriptionClosedIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/closed");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-closed");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/closed");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/subscription-closed");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_CLOSED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
 	public void subscriptionDeactivatedIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/deactivated");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-deactivated");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/deactivated");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/subscription-deactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_DEACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
 	public void subscriptionReactivatedIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/reactivated");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-reactivated");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/reactivated");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/subscription-reactivated");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_REACTIVATED a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}
 
 	@Test
 	public void subscriptionUpcomingInvoiceIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/upcoming-invoice");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-upcoming-invoice");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/upcoming-invoice");
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/subscription-upcoming-invoice");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"SUB_INVOICE a3f72246-5377-4d92-8bdc-b1b6b450c55c has been processed, for real.\"}");
 	}

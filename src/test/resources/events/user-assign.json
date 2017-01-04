@@ -1,0 +1,64 @@
+{
+  "type": "USER_ASSIGNMENT",
+  "marketplace": {
+    "partner": "gabrielspub-test",
+    "baseUrl": "{{fake-appmarket-url}}"
+  },
+  "applicationUuid": null,
+  "flag": null,
+  "creator": {
+    "uuid": "02a229c8-556b-46fc-9c60-098733d0697a",
+    "email": "flamail150@yopmail.com",
+    "firstName": "Fla",
+    "lastName": "Retest Bug PI7170",
+    "language": "en",
+    "locale": "en-US",
+    "address": {
+      "salutation": null,
+      "firstName": "Fla",
+      "lastName": "Retest Bug PI7170",
+      "fullName": "Fla Retest Bug PI7170",
+      "companyName": null,
+      "phone": "5088973126",
+      "phoneExtension": null,
+      "fax": null,
+      "faxExtension": null,
+      "street1": "50 Grove St.",
+      "street2": "",
+      "city": "Somerville",
+      "state": "MA",
+      "zip": "02144",
+      "country": "US",
+      "pobox": null,
+      "pozip": null
+    },
+    "attributes": null
+  },
+  "payload": {
+    "user": {
+      "uuid": "09c94342-38bf-4bc3-bceb-8bb1f75b8454",
+      "email": "flamail151@yopmail.com",
+      "firstName": "Fla",
+      "lastName": "Invite Retest Bug PI7170",
+      "language": "en",
+      "locale": "en-US",
+      "address": null,
+      "attributes": {
+        "userName": "flamail151@flamail150.onmicrosoft.com"
+      }
+    },
+    "company": null,
+    "account": {
+      "accountIdentifier": "4bcd8661-25ee-4c44-9b65-82dd532eeee7",
+      "status": "ACTIVE",
+      "parentAccountIdentifier": null
+    },
+    "addonInstance": null,
+    "addonBinding": null,
+    "order": null,
+    "notice": null,
+    "configuration": {}
+  },
+  "returnUrl": null,
+  "links": []
+}

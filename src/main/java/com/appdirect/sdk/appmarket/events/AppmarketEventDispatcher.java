@@ -14,8 +14,10 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler subscriptionClosedHandler;
 	private final SDKEventHandler subscriptionUpcomingInvoiceHandler;
 	private final SDKEventHandler unknownEventHandler;
+	private final SDKEventHandler userAssignmentHandler;
+	private final SDKEventHandler userUnassignmentHandler;
 
-	APIResult dispatchAndHandle(EventInfo eventInfo, EventExecutionContext eventContext) {
+	APIResult dispatchAndHandle(EventInfo eventInfo, EventHandlingContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(eventInfo);
 		if (events.eventShouldBeHandledAsync(eventInfo)) {
 			return asyncHandler.handle(eventHandler, eventInfo, eventContext);
@@ -34,6 +36,10 @@ class AppmarketEventDispatcher {
 				return subscriptionChangeHandler;
 			case SUBSCRIPTION_NOTICE:
 				return subscriptionNoticeHandlerFor(eventInfo.getPayload().getNotice().getType());
+			case USER_ASSIGNMENT:
+				return userAssignmentHandler;
+			case USER_UNASSIGNMENT:
+				return userUnassignmentHandler;
 			default:
 				return unknownEventHandler;
 		}

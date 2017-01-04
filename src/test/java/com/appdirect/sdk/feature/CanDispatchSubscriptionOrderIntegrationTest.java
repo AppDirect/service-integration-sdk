@@ -34,29 +34,29 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 
 	@Test
 	public void subscriptionOrderIsProcessedSuccessfully() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/order");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-order");
 
-		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/order");
+		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/subscription-order");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=order has been accepted by the connector. It will be processed soon.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=subscription-order has been accepted by the connector. It will be processed soon.\"}");
 
 		fakeAppmarket.waitForResolvedEvents(1);
-		assertThat(fakeAppmarket.resolvedEvents()).contains("order");
-		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/order/result");
+		assertThat(fakeAppmarket.resolvedEvents()).contains("subscription-order");
+		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/subscription-order/result");
 		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_ORDER has been processed, trust me.\"}");
 	}
 
 	@Test
 	public void subscriptionOrderFailsAndIsReportedToAppMarket() throws Exception {
-		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/order-without-creator");
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-order-without-creator");
 
-		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/order-without-creator");
+		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/subscription-order-without-creator");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=order-without-creator has been accepted by the connector. It will be processed soon.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=subscription-order-without-creator has been accepted by the connector. It will be processed soon.\"}");
 
 		fakeAppmarket.waitForResolvedEvents(1);
-		assertThat(fakeAppmarket.resolvedEvents()).contains("order-without-creator");
-		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/order-without-creator/result");
+		assertThat(fakeAppmarket.resolvedEvents()).contains("subscription-order-without-creator");
+		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/subscription-order-without-creator/result");
 		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":false,\"errorCode\":\"USER_NOT_FOUND\",\"message\":\"You should always have a creator\"}");
 	}
 

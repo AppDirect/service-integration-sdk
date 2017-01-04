@@ -1,6 +1,5 @@
 package com.appdirect.sdk.feature;
 
-import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -18,7 +17,7 @@ import com.appdirect.sdk.support.FakeAppmarket;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MinimalConnector.class, webEnvironment = RANDOM_PORT)
-public class CanDispatchSubscriptionCancelIntegrationTest {
+public class CanDispatchUserUnassignIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
 	private FakeAppmarket fakeAppmarket;
@@ -34,22 +33,17 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 	}
 
 	@Test
-	public void subscriptionCancelIsProcessedSuccessfully() throws Exception {
-		String expectedAccountId = "123";
-		HttpResponse response = fakeAppmarket.sendEventTo(
-				connectorEventEndpoint(),
-				format("/v1/events/subscription-cancel?account-id=%s", expectedAccountId),
-				"query", "params"
-		);
+	public void userUnassignIsProcessedSuccessfully() throws Exception {
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/user-unassign");
 
-		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/subscription-cancel?account-id=123");
+		assertThat(fakeAppmarket.allRequestPaths()).first().isEqualTo("/v1/events/user-unassign");
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(202);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=subscription-cancel has been accepted by the connector. It will be processed soon.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true,\"message\":\"Event with eventId=user-unassign has been accepted by the connector. It will be processed soon.\"}");
 
 		fakeAppmarket.waitForResolvedEvents(1);
-		assertThat(fakeAppmarket.resolvedEvents()).contains("subscription-cancel");
-		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/subscription-cancel/result");
-		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"SUB_CANCEL 123 has been processed, for real. query=params\"}");
+		assertThat(fakeAppmarket.resolvedEvents()).contains("user-unassign");
+		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/user-unassign/result");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":true,\"message\":\"USER_UNASSIGN for user c00cfbd7-03d5-497c-ab7e-5ddf6aba4a26 for account 49528348-a996-463c-a9cd-cde156ab93b6 has been processed, for real.\"}");
 	}
 
 	private String connectorEventEndpoint() {
