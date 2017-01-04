@@ -2,12 +2,14 @@ package com.appdirect.sdk.appmarket.events;
 
 import java.util.Map;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
  * Developer-facing event representing a SUBSCRIPTION_ORDER made for an add-on to the main product.
  */
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class AddonSubscriptionOrder extends EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final UserInfo purchaserInfo;
 	private final CompanyInfo companyInfo;
