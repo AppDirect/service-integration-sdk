@@ -14,7 +14,6 @@ import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
-import com.appdirect.sdk.appmarket.events.EditionCodeBasedAddonDetector;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionChange;
 import com.appdirect.sdk.appmarket.events.SubscriptionClosed;
@@ -86,11 +85,6 @@ public class MinimalConnector {
 		return event -> success(
 			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
-	}
-
-	@Bean
-	public EditionCodeBasedAddonDetector addonDetector() {
-		return new EditionCodeBasedAddonDetector("addon-edition");
 	}
 
 	@Bean
