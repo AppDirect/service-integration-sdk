@@ -1,0 +1,54 @@
+{
+  "type": "SUBSCRIPTION_CANCEL",
+  "marketplace": {
+    "partner": "some-partner",
+    "baseUrl": "{{fake-appmarket-url}}"
+  },
+  "applicationUuid": null,
+  "flag": null,
+  "creator": {
+    "uuid": "abd1e139-5878-4c76-8131-f5b92c6ecd88",
+    "openId": "https://{{fake-appmarket-url}}/openid/id/abd1e139-5878-4c76-8131-f5b92c6ecd88",
+    "email": "santiagoenduser360@yopmail.com",
+    "firstName": "Gabriel",
+    "lastName": "SomeLastName",
+    "language": "en",
+    "locale": "en-US",
+    "address": {
+      "salutation": null,
+      "firstName": "Gabriel",
+      "lastName": "SomeLastName",
+      "fullName": "Gabriel SomeLastName",
+      "companyName": null,
+      "phone": "5555555555",
+      "phoneExtension": null,
+      "fax": null,
+      "faxExtension": null,
+      "street1": "50 Grove St.",
+      "street2": "",
+      "city": "Somerville",
+      "state": "MA",
+      "zip": "02144",
+      "country": "US",
+      "pobox": null,
+      "pozip": null
+    },
+    "attributes": null
+  },
+  "payload": {
+    "user": null,
+    "company": null,
+    "account": {
+      "accountIdentifier": "84954943-8a11-458c-8c08-fdea867fef93",
+      "status": "ACTIVE",
+      "parentAccountIdentifier": "31db1381-3c58-452f-90c2-79fb460bee0c"
+    },
+    "addonInstance": null,
+    "addonBinding": null,
+    "order": null,
+    "notice": null,
+    "configuration": {}
+  },
+  "returnUrl": null,
+  "links": []
+}

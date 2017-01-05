@@ -48,6 +48,8 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private SDKEventHandler mockAddonSubscriptionOrderHandler;
 	@Mock
+	private SDKEventHandler mockAddonSubscriptionCancelHandler;
+	@Mock
 	private SDKEventHandler mockUnknownEventHandler;
 
 	@Mock
@@ -76,6 +78,8 @@ public class AppmarketEventDispatcherTest {
 	private APIResult mockUserAssignmentResponse;
 	@Mock
 	private APIResult mockUserUnassignmentResponse;
+	@Mock
+	private APIResult mockAddonSubscriptionCancelResponse;
 
 	@Mock
 	private AddonEventDetector mockAddonDetector;
@@ -83,20 +87,21 @@ public class AppmarketEventDispatcherTest {
 	@Before
 	public void setUp() throws Exception {
 		eventDispatcher = new AppmarketEventDispatcher(
-				mockEvents,
-				mockAsyncEventHandler,
-				mockSubscriptionOrderHandler,
-				mockSubscriptionCancelHandler,
-				mockSubscriptionChangeHandler,
-				mockSubscriptionDeactivatedHandler,
-				mockSubscriptionReactivatedhandler,
-				mockSubscriptionClosedHandler,
-				mockSubscriptionIncomingNoticeHandler,
-				mockAddonSubscriptionOrderHandler,
-				mockUserAssignmentHandler,
-				mockUserUnassignmentHandler,
-				mockUnknownEventHandler,
-				mockAddonDetector
+			mockEvents,
+			mockAsyncEventHandler,
+			mockSubscriptionOrderHandler,
+			mockSubscriptionCancelHandler,
+			mockSubscriptionChangeHandler,
+			mockSubscriptionDeactivatedHandler,
+			mockSubscriptionReactivatedhandler,
+			mockSubscriptionClosedHandler,
+			mockSubscriptionIncomingNoticeHandler,
+			mockAddonSubscriptionOrderHandler,
+			mockAddonSubscriptionCancelHandler,
+			mockUserAssignmentHandler,
+			mockUserUnassignmentHandler,
+			mockUnknownEventHandler,
+			mockAddonDetector
 		);
 
 		when(mockEvents.eventShouldBeHandledAsync(any()))
@@ -118,6 +123,8 @@ public class AppmarketEventDispatcherTest {
 			.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
 		when(mockAddonSubscriptionOrderHandler.handle(any(), any()))
 			.thenReturn(mockAddonSubscriptionOrderResponse);
+		when(mockAddonSubscriptionCancelHandler.handle(any(), any()))
+			.thenReturn(mockAddonSubscriptionCancelResponse);
 		when(mockUnknownEventHandler.handle(any(), any()))
 			.thenReturn(mockUnknownEventResponse);
 		when(mockUserAssignmentHandler.handle(any(), any()))
@@ -233,6 +240,20 @@ public class AppmarketEventDispatcherTest {
 
 		//Then
 		assertThat(result).isEqualTo(mockAddonSubscriptionOrderResponse);
+	}
+
+	@Test
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionCancel_forAddon_thenInvokeAppropriateHandler() throws Exception {
+		//Given
+		EventInfo addonTestEvent = someSubCancelEvent();
+		when(mockAddonDetector.eventIsRelatedToAddon(addonTestEvent))
+			.thenReturn(true);
+
+		//When
+		APIResult result = eventDispatcher.dispatchAndHandle(addonTestEvent, defaultEventContext());
+
+		//Then
+		assertThat(result).isEqualTo(mockAddonSubscriptionCancelResponse);
 	}
 
 	@Test
