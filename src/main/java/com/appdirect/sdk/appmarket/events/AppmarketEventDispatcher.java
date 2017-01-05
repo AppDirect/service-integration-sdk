@@ -10,6 +10,7 @@ import static com.appdirect.sdk.appmarket.events.NoticeType.CLOSED;
 import static com.appdirect.sdk.appmarket.events.NoticeType.DEACTIVATED;
 import static com.appdirect.sdk.appmarket.events.NoticeType.REACTIVATED;
 import static com.appdirect.sdk.appmarket.events.NoticeType.UPCOMING_INVOICE;
+import static java.util.Collections.unmodifiableMap;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -77,6 +78,6 @@ class AppmarketEventDispatcher {
 		eventsToHandlers.put(DEACTIVATED, subscriptionDeactivatedHandler);
 		eventsToHandlers.put(REACTIVATED, subscriptionReactivatedHandler);
 		eventsToHandlers.put(UPCOMING_INVOICE, subscriptionUpcomingInvoiceHandler);
-		return eventsToHandlers;
+		return unmodifiableMap(eventsToHandlers);
 	}
 }
