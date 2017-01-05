@@ -27,9 +27,9 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler userAssignmentHandler;
 	private final SDKEventHandler userUnassignmentHandler;
 	private final SDKEventHandler unknownEventHandler;
-	private final EditionCodeBasedAddonDetector addonDetector;
+	private final AddonEventDetector addonDetector;
 
-	AppmarketEventDispatcher(Events events, AsyncEventHandler asyncHandler, SDKEventHandler subscriptionOrderHandler, SDKEventHandler subscriptionCancelHandler, SDKEventHandler subscriptionChangeHandler, SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler, SDKEventHandler addonSubscriptionOrderHandler, SDKEventHandler userAssignmentHandler, SDKEventHandler userUnassignmentHandler, SDKEventHandler unknownEventHandler, EditionCodeBasedAddonDetector addonDetector) { // NOSONAR: ctor has too many params - This is for SDK use only.
+	AppmarketEventDispatcher(Events events, AsyncEventHandler asyncHandler, SDKEventHandler subscriptionOrderHandler, SDKEventHandler subscriptionCancelHandler, SDKEventHandler subscriptionChangeHandler, SDKEventHandler subscriptionDeactivatedHandler, SDKEventHandler subscriptionReactivatedHandler, SDKEventHandler subscriptionClosedHandler, SDKEventHandler subscriptionUpcomingInvoiceHandler, SDKEventHandler addonSubscriptionOrderHandler, SDKEventHandler userAssignmentHandler, SDKEventHandler userUnassignmentHandler, SDKEventHandler unknownEventHandler, AddonEventDetector addonDetector) { // NOSONAR: ctor has too many params - This is for SDK use only.
 		this.events = events;
 		this.asyncHandler = asyncHandler;
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
@@ -53,9 +53,7 @@ class AppmarketEventDispatcher {
 	}
 
 	private SDKEventHandler getHandlerFor(final EventInfo rawEvent) {
-		final boolean eventIsForAddon = events.extractEditionCode(rawEvent)
-				.map(addonDetector::editionCodeIsRelatedToAddon)
-				.orElse(false);
+		final boolean eventIsForAddon = addonDetector.eventIsRelatedToAddon(rawEvent);
 
 		Map<EventType, Supplier<SDKEventHandler>> eventsToHandlers = new EnumMap<>(EventType.class);
 		eventsToHandlers.put(SUBSCRIPTION_ORDER, () -> eventIsForAddon ? addonSubscriptionOrderHandler : subscriptionOrderHandler);

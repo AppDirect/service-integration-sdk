@@ -38,7 +38,7 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, EditionCodeBasedAddonDetector addonDetector) {
+	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
 				new Events(),
 				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
@@ -53,7 +53,7 @@ public class EventHandlingConfiguration {
 				new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
 				new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
 				unknownEventHandler(),
-				addonDetector
+				new AddonEventDetector()
 		);
 	}
 }
