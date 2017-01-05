@@ -49,6 +49,8 @@ public class MinimalConnector {
       * [`SubscriptionDeactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionDeactivated.java)
       * [`SubscriptionReactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionReactivated.java)
       * [`SubscriptionUpcomingInvoice`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionUpcomingInvoice.java)
+      * [`UserAssignment`](src/main/java/com/appdirect/sdk/appmarket/events/UserAssignment.java)
+      * [`UserUnassignment`](src/main/java/com/appdirect/sdk/appmarket/events/UserUnassignment.java)
       * [`AddonSubscriptionOrder`](src/main/java/com/appdirect/sdk/appmarket/events/AddonSubscriptionOrder.java)
 
 ## Exposed endpoints
