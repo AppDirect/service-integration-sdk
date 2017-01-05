@@ -13,6 +13,7 @@ import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.events.AddonSubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.EditionCodeBasedAddonDetector;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
@@ -96,6 +97,11 @@ public class MinimalConnector {
 	@Bean
 	public AppmarketEventHandler<AddonSubscriptionOrder> addonSubscriptionOrderHandler() {
 		return event -> success("ADDON_ORDER has been processed just now.");
+	}
+
+	@Bean
+	public AppmarketEventHandler<AddonSubscriptionCancel> addonSubscriptionCancelAppmarketEventHandler() {
+		return event -> success("ADDON_CANCEL has been processed just now.");
 	}
 
 	@Bean

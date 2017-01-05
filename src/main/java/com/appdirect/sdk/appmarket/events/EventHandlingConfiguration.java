@@ -24,6 +24,7 @@ public class EventHandlingConfiguration {
 	private final AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler;
 	private final AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingInvoiceHandler;
 	private final AppmarketEventHandler<AddonSubscriptionOrder> addonSubscriptionOrderHandler;
+	private final AppmarketEventHandler<AddonSubscriptionCancel> addonSubscriptionCancelHandler;
 	private final AppmarketEventHandler<UserAssignment> userAssignmentHandler;
 	private final AppmarketEventHandler<UserUnassignment> userUnassignmentHandler;
 
@@ -38,7 +39,8 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, EditionCodeBasedAddonDetector addonDetector) {
+	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, 
+															 EditionCodeBasedAddonDetector addonDetector) {
 		return new AppmarketEventDispatcher(
 				new Events(),
 				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
@@ -50,6 +52,7 @@ public class EventHandlingConfiguration {
 				new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
 				new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
 				new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
+				new ParseAndHandleWrapper<>(new AddonSubscriptionCancelEventParser(), addonSubscriptionCancelHandler), 
 				new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
 				new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
 				unknownEventHandler(),

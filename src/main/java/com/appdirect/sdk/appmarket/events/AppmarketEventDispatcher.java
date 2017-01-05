@@ -24,32 +24,35 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler subscriptionCancelHandler;
 	private final SDKEventHandler subscriptionChangeHandler;
 	private final SDKEventHandler addonSubscriptionOrderHandler;
+	private final SDKEventHandler addonSubscriptionCancelHandler;
 	private final SDKEventHandler userAssignmentHandler;
 	private final SDKEventHandler userUnassignmentHandler;
 	private final SDKEventHandler unknownEventHandler;
 	private final EditionCodeBasedAddonDetector addonDetector;
 
-	AppmarketEventDispatcher(Events events, 
-							 AsyncEventHandler asyncHandler, 
-							 SDKEventHandler subscriptionOrderHandler, 
-							 SDKEventHandler subscriptionCancelHandler, 
-							 SDKEventHandler subscriptionChangeHandler, 
-							 SDKEventHandler subscriptionDeactivatedHandler, 
-							 SDKEventHandler subscriptionReactivatedHandler, 
-							 SDKEventHandler subscriptionClosedHandler, 
-							 SDKEventHandler subscriptionUpcomingInvoiceHandler, 
-							 SDKEventHandler addonSubscriptionOrderHandler, 
-							 SDKEventHandler userAssignmentHandler, 
-							 SDKEventHandler userUnassignmentHandler, 
-							 SDKEventHandler unknownEventHandler, 
+	AppmarketEventDispatcher(Events events,
+							 AsyncEventHandler asyncHandler,
+							 SDKEventHandler subscriptionOrderHandler,
+							 SDKEventHandler subscriptionCancelHandler,
+							 SDKEventHandler subscriptionChangeHandler,
+							 SDKEventHandler subscriptionDeactivatedHandler,
+							 SDKEventHandler subscriptionReactivatedHandler,
+							 SDKEventHandler subscriptionClosedHandler,
+							 SDKEventHandler subscriptionUpcomingInvoiceHandler,
+							 SDKEventHandler addonSubscriptionOrderHandler,
+							 SDKEventHandler addonSubscriptionCancelHandler, 
+							 SDKEventHandler userAssignmentHandler,
+							 SDKEventHandler userUnassignmentHandler,
+							 SDKEventHandler unknownEventHandler,
 							 EditionCodeBasedAddonDetector addonDetector) { // NOSONAR: ctor has too many params - This is for SDK use only.
 		this.events = events;
 		this.asyncHandler = asyncHandler;
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
 		this.subscriptionCancelHandler = subscriptionCancelHandler;
 		this.subscriptionChangeHandler = subscriptionChangeHandler;
-		this.noticeEventsToHandlers = buildNoticeHandlersMap(subscriptionDeactivatedHandler, subscriptionReactivatedHandler, subscriptionClosedHandler, subscriptionUpcomingInvoiceHandler);
 		this.addonSubscriptionOrderHandler = addonSubscriptionOrderHandler;
+		this.addonSubscriptionCancelHandler = addonSubscriptionCancelHandler;
+		this.noticeEventsToHandlers = buildNoticeHandlersMap(subscriptionDeactivatedHandler, subscriptionReactivatedHandler, subscriptionClosedHandler, subscriptionUpcomingInvoiceHandler);
 		this.userAssignmentHandler = userAssignmentHandler;
 		this.userUnassignmentHandler = userUnassignmentHandler;
 		this.unknownEventHandler = unknownEventHandler;
@@ -72,7 +75,7 @@ class AppmarketEventDispatcher {
 
 		Map<EventType, Supplier<SDKEventHandler>> eventsToHandlers = new EnumMap<>(EventType.class);
 		eventsToHandlers.put(SUBSCRIPTION_ORDER, () -> eventIsForAddon ? addonSubscriptionOrderHandler : subscriptionOrderHandler);
-		eventsToHandlers.put(SUBSCRIPTION_CANCEL, () -> subscriptionCancelHandler);
+		eventsToHandlers.put(SUBSCRIPTION_CANCEL, () -> eventIsForAddon ? addonSubscriptionCancelHandler : subscriptionCancelHandler);
 		eventsToHandlers.put(SUBSCRIPTION_CHANGE, () -> subscriptionChangeHandler);
 		eventsToHandlers.put(SUBSCRIPTION_NOTICE, () -> subscriptionNoticeHandlerFor(rawEvent.getPayload().getNotice().getType()));
 		eventsToHandlers.put(USER_ASSIGNMENT, () -> userAssignmentHandler);
