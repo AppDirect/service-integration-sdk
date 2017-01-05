@@ -16,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +32,7 @@ public class AppmarketEventDispatcherTest {
 	private Events mockEvents;
 	@Mock
 	private AsyncEventHandler mockAsyncEventHandler;
+
 	@Mock
 	private SDKEventHandler mockSubscriptionOrderHandler;
 	@Mock
@@ -45,7 +48,10 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private SDKEventHandler mockSubscriptionIncomingNoticeHandler;
 	@Mock
+	private SDKEventHandler mockAddonSubscriptionOrderHandler;
+	@Mock
 	private SDKEventHandler mockUnknownEventHandler;
+
 	@Mock
 	private APIResult mockSubscriptionOrderResponse;
 	@Mock
@@ -61,6 +67,8 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private APIResult mockSubscriptionUpcomingInvoiceResponse;
 	@Mock
+	private APIResult mockAddonSubscriptionOrderResponse;
+	@Mock
 	private APIResult mockUnknownEventResponse;
 	@Mock
 	private SDKEventHandler mockUserAssignmentHandler;
@@ -71,25 +79,33 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private APIResult mockUserUnassignmentResponse;
 
+	@Mock
+	private EditionCodeBasedAddonDetector mockAddonDetector;
+
 	@Before
 	public void setUp() throws Exception {
 		eventDispatcher = new AppmarketEventDispatcher(
-			mockEvents,
-			mockAsyncEventHandler,
-			mockSubscriptionOrderHandler,
-			mockSubscriptionCancelHandler,
-			mockSubscriptionChangeHandler,
-			mockSubscriptionDeactivatedHandler,
-			mockSubscriptionReactivatedhandler,
-			mockSubscriptionClosedHandler,
-			mockSubscriptionIncomingNoticeHandler,
-			mockUnknownEventHandler,
-			mockUserAssignmentHandler,
-			mockUserUnassignmentHandler
+				mockEvents,
+				mockAsyncEventHandler,
+				mockSubscriptionOrderHandler,
+				mockSubscriptionCancelHandler,
+				mockSubscriptionChangeHandler,
+				mockSubscriptionDeactivatedHandler,
+				mockSubscriptionReactivatedhandler,
+				mockSubscriptionClosedHandler,
+				mockSubscriptionIncomingNoticeHandler,
+				mockAddonSubscriptionOrderHandler,
+				mockUserAssignmentHandler,
+				mockUserUnassignmentHandler,
+				mockUnknownEventHandler,
+				mockAddonDetector
 		);
 
 		when(mockEvents.eventShouldBeHandledAsync(any()))
 			.thenReturn(false);
+		when(mockEvents.extractEditionCode(any()))
+				.thenReturn(Optional.empty());
+
 		when(mockSubscriptionOrderHandler.handle(any(), any()))
 			.thenReturn(mockSubscriptionOrderResponse);
 		when(mockSubscriptionCancelHandler.handle(any(), any()))
@@ -104,6 +120,8 @@ public class AppmarketEventDispatcherTest {
 			.thenReturn(mockSubscriptionClosedResponse);
 		when(mockSubscriptionIncomingNoticeHandler.handle(any(), any()))
 			.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
+		when(mockAddonSubscriptionOrderHandler.handle(any(), any()))
+			.thenReturn(mockAddonSubscriptionOrderResponse);
 		when(mockUnknownEventHandler.handle(any(), any()))
 			.thenReturn(mockUnknownEventResponse);
 		when(mockUserAssignmentHandler.handle(any(), any()))
@@ -206,6 +224,20 @@ public class AppmarketEventDispatcherTest {
 
 		//Then
 		assertThat(result).isEqualTo(mockSubscriptionUpcomingInvoiceResponse);
+	}
+
+	@Test
+	public void testDispatchAndHandle_whenTheEventIsSubscriptionOrder_forAddon_thenInvokeAppropriateHandler() throws Exception {
+		//Given
+		EventInfo addonTestEvent = someSubOrderEvent();
+		when(mockEvents.extractEditionCode(addonTestEvent)).thenReturn(Optional.of("add-on-edition"));
+		when(mockAddonDetector.editionCodeIsRelatedToAddon("add-on-edition")).thenReturn(true);
+
+		//When
+		APIResult result = eventDispatcher.dispatchAndHandle(addonTestEvent, defaultEventContext());
+
+		//Then
+		assertThat(result).isEqualTo(mockAddonSubscriptionOrderResponse);
 	}
 
 	@Test

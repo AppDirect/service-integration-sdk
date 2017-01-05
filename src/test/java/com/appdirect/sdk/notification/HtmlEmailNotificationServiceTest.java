@@ -38,7 +38,7 @@ public class HtmlEmailNotificationServiceTest {
 		//Given
 		String expectedEmailSubject = "expectedEmailSubject";
 		String expectedMessageBody = "expectedMessageBody";
-		String expectedRecipientAddress = "expectedRecepient@example.com";
+		String expectedRecipientAddress = "expectedRecipient@example.com";
 
 		when(mockEmailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
 		ArgumentCaptor<MimeMessage> argumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -66,7 +66,7 @@ public class HtmlEmailNotificationServiceTest {
 		//Given
 		String expectedEmailSubject = "expectedEmailSubject";
 		String expectedMessageBody = "expectedMessageBody";
-		String expectedRecipientAddress = "expectedRecepient@example.com";
+		String expectedRecipientAddress = "expectedRecipient@example.com";
 
 		when(mockEmailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
 		doThrow(MessagingException.class)
@@ -78,7 +78,7 @@ public class HtmlEmailNotificationServiceTest {
 		)
 			.isInstanceOf(SendNotificationFailedException.class)
 			.hasMessage(
-				"Failed sending email notification with from=mockSender@example.com, to=expectedRecepient@example.com, notification=expectedMessageBody"
+				"Failed sending email notification with from=mockSender@example.com, to=expectedRecipient@example.com, notification=expectedMessageBody"
 			);
 	}
 }
