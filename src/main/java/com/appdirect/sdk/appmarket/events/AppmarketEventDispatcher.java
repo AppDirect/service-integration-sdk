@@ -30,21 +30,21 @@ class AppmarketEventDispatcher {
 	private final SDKEventHandler unknownEventHandler;
 	private final AddonEventDetector addonDetector;
 
-	AppmarketEventDispatcher(Events events, 
-							 AsyncEventHandler asyncHandler, 
-							 SDKEventHandler subscriptionOrderHandler, 
-							 SDKEventHandler subscriptionCancelHandler, 
-							 SDKEventHandler subscriptionChangeHandler, 
-							 SDKEventHandler subscriptionDeactivatedHandler, 
-							 SDKEventHandler subscriptionReactivatedHandler, 
-							 SDKEventHandler subscriptionClosedHandler, 
-							 SDKEventHandler subscriptionUpcomingInvoiceHandler, 
-							 SDKEventHandler addonSubscriptionOrderHandler, 
-							 SDKEventHandler addonSubscriptionCancelHandler, 
-							 SDKEventHandler userAssignmentHandler, 
-							 SDKEventHandler userUnassignmentHandler, 
-							 SDKEventHandler unknownEventHandler, 
-							 AddonEventDetector addonDetector) { // NOSONAR: ctor has too many params - This is for SDK use only.
+	AppmarketEventDispatcher(Events events, // NOSONAR: ctor has too many params - This is for SDK use only.
+							 AsyncEventHandler asyncHandler,
+							 SDKEventHandler subscriptionOrderHandler,
+							 SDKEventHandler subscriptionCancelHandler,
+							 SDKEventHandler subscriptionChangeHandler,
+							 SDKEventHandler subscriptionDeactivatedHandler,
+							 SDKEventHandler subscriptionReactivatedHandler,
+							 SDKEventHandler subscriptionClosedHandler,
+							 SDKEventHandler subscriptionUpcomingInvoiceHandler,
+							 SDKEventHandler addonSubscriptionOrderHandler,
+							 SDKEventHandler addonSubscriptionCancelHandler,
+							 SDKEventHandler userAssignmentHandler,
+							 SDKEventHandler userUnassignmentHandler,
+							 SDKEventHandler unknownEventHandler,
+							 AddonEventDetector addonDetector) { 
 		this.events = events;
 		this.asyncHandler = asyncHandler;
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
