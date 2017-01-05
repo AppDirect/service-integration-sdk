@@ -48,6 +48,8 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private SDKEventHandler mockAddonSubscriptionOrderHandler;
 	@Mock
+	private SDKEventHandler mockAddonSubscriptionCancelHandler;
+	@Mock
 	private SDKEventHandler mockUnknownEventHandler;
 
 	@Mock
@@ -76,6 +78,8 @@ public class AppmarketEventDispatcherTest {
 	private APIResult mockUserAssignmentResponse;
 	@Mock
 	private APIResult mockUserUnassignmentResponse;
+	@Mock
+	private APIResult mockAddonSubscriptionCancelResponse;
 
 	@Mock
 	private AddonEventDetector mockAddonDetector;
@@ -93,6 +97,7 @@ public class AppmarketEventDispatcherTest {
 				mockSubscriptionClosedHandler,
 				mockSubscriptionIncomingNoticeHandler,
 				mockAddonSubscriptionOrderHandler,
+				mockAddonSubscriptionCancelHandler, 
 				mockUserAssignmentHandler,
 				mockUserUnassignmentHandler,
 				mockUnknownEventHandler,
@@ -118,6 +123,8 @@ public class AppmarketEventDispatcherTest {
 			.thenReturn(mockSubscriptionUpcomingInvoiceResponse);
 		when(mockAddonSubscriptionOrderHandler.handle(any(), any()))
 			.thenReturn(mockAddonSubscriptionOrderResponse);
+		when(mockAddonSubscriptionCancelHandler.handle(any(), any()))
+			.thenReturn(mockAddonSubscriptionCancelResponse);
 		when(mockUnknownEventHandler.handle(any(), any()))
 			.thenReturn(mockUnknownEventResponse);
 		when(mockUserAssignmentHandler.handle(any(), any()))
