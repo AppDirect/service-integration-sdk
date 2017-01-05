@@ -44,7 +44,7 @@ class AppmarketEventDispatcher {
 							 SDKEventHandler userAssignmentHandler,
 							 SDKEventHandler userUnassignmentHandler,
 							 SDKEventHandler unknownEventHandler,
-							 AddonEventDetector addonDetector) { 
+							 AddonEventDetector addonDetector) {
 		this.events = events;
 		this.asyncHandler = asyncHandler;
 		this.subscriptionOrderHandler = subscriptionOrderHandler;
