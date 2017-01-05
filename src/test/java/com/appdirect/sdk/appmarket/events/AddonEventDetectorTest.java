@@ -19,7 +19,11 @@ public class AddonEventDetectorTest {
 	}
 
 	private EventInfo anEventWithParentAccountId() {
-		return EventInfo.builder().payload(EventPayload.builder().account(AccountInfo.builder().parentAccountIdentifier("some-parent-account-id").build()).build()).build();
+		return EventInfo.builder()
+				.payload(EventPayload.builder()
+						.account(AccountInfo.builder().parentAccountIdentifier("some-parent-account-id").build())
+						.build())
+				.build();
 	}
 
 	private EventInfo anEventWithNoParentAccountId() {

@@ -15,6 +15,9 @@ public class AddonEventDetector {
 	 * @return <code>true</code> if the event is related to an add-on subscription; <code>false</code> otherwise.
 	 */
 	public boolean eventIsRelatedToAddon(EventInfo rawEvent) {
-		return Optional.ofNullable(rawEvent.getPayload()).map(EventPayload::getAccount).map(AccountInfo::getParentAccountIdentifier).isPresent();
+		return Optional.ofNullable(rawEvent.getPayload())
+				.map(EventPayload::getAccount)
+				.map(AccountInfo::getParentAccountIdentifier)
+				.isPresent();
 	}
 }
