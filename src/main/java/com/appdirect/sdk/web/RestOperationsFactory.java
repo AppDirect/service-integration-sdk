@@ -2,13 +2,13 @@ package com.appdirect.sdk.web;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
+import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
 
 public class RestOperationsFactory {
-	private final AppmarketEventConsumerExceptionHandler errorHandler;
+	private final AppmarketEventClientExceptionHandler errorHandler;
 
-	public RestOperationsFactory(AppmarketEventConsumerExceptionHandler errorHandler) {
+	public RestOperationsFactory(AppmarketEventClientExceptionHandler errorHandler) {
 		this.errorHandler = errorHandler;
 	}
 

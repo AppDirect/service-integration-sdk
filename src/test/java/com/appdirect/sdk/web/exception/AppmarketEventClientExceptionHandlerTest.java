@@ -15,13 +15,13 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
-public class AppmarketEventConsumerExceptionHandlerTest {
+public class AppmarketEventClientExceptionHandlerTest {
 
-	private AppmarketEventConsumerExceptionHandler handler;
+	private AppmarketEventClientExceptionHandler handler;
 
 	@Before
 	public void setup() throws Exception {
-		handler = new AppmarketEventConsumerExceptionHandler();
+		handler = new AppmarketEventClientExceptionHandler();
 	}
 
 	@Test

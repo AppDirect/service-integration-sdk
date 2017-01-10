@@ -7,22 +7,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
+import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestOperationsFactoryTest {
 	
 	@Mock
-	private AppmarketEventConsumerExceptionHandler appmarketEventConsumerExceptionHandler;
+	private AppmarketEventClientExceptionHandler appmarketEventClientExceptionHandler;
 
 	private RestOperationsFactory testRestOperationsFactory;
 
 	@Before
 	public void setUp() throws Exception {
-		testRestOperationsFactory = new RestOperationsFactory(appmarketEventConsumerExceptionHandler);
+		testRestOperationsFactory = new RestOperationsFactory(appmarketEventClientExceptionHandler);
 	}
 
 	@Test
@@ -35,7 +34,7 @@ public class RestOperationsFactoryTest {
 		RestTemplate restClient = testRestOperationsFactory.restOperationsForProfile(testKey, testSecret);
 
 		//Then
-		assertThat(restClient.getErrorHandler()).isEqualTo(appmarketEventConsumerExceptionHandler);
+		assertThat(restClient.getErrorHandler()).isEqualTo(appmarketEventClientExceptionHandler);
 	}
 
 }
