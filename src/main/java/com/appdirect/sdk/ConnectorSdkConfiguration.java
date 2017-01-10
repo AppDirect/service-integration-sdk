@@ -9,8 +9,8 @@ import com.appdirect.sdk.appmarket.events.DeveloperExceptionHandler;
 import com.appdirect.sdk.appmarket.events.EventHandlingConfiguration;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
+import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.SecurityConfiguration;
-import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 
 @Configuration
 @Import({
@@ -22,8 +22,8 @@ import com.appdirect.sdk.web.exception.AppmarketEventConsumerExceptionHandler;
 public class ConnectorSdkConfiguration {
 
 	@Bean
-	public AppmarketEventConsumerExceptionHandler appmarketEventConsumerExceptionHandler() {
-		return new AppmarketEventConsumerExceptionHandler();
+	public AppmarketEventClientExceptionHandler appmarketEventConsumerExceptionHandler() {
+		return new AppmarketEventClientExceptionHandler();
 	}
 
 	@Bean

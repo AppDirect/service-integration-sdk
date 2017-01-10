@@ -112,6 +112,10 @@ public class FakeAppmarket {
 		allParams.add(baseAppmarketUrl() + appmarketEventPath);
 		allParams.addAll(asList(extraQueryParameters));
 
+		return sendSignedRequestTo(connectorEventEndpointUrl, allParams);
+	}
+
+	public HttpResponse sendSignedRequestTo(String connectorEventEndpointUrl, List<String> allParams) throws Exception {
 		CloseableHttpClient httpClient = anAppmarketHttpClient();
 		HttpGet request = get(connectorEventEndpointUrl, allParams.toArray(new String[]{}));
 

@@ -14,7 +14,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j
-public class AppmarketEventConsumerExceptionHandler implements ResponseErrorHandler {
+public class AppmarketEventClientExceptionHandler implements ResponseErrorHandler {
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
 		log.error("Response error: code={} text={}", response.getStatusCode(), response.getStatusText());

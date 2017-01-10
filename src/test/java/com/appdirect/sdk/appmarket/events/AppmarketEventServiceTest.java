@@ -1,14 +1,14 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
-import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
-import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.STATELESS;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventType.ACCOUNT_UNSYNC;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -39,7 +39,7 @@ public class AppmarketEventServiceTest {
 		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
-			.thenReturn(new Credentials("testKey", "testSecret"));
+				.thenReturn(new Credentials("testKey", "testSecret"));
 	}
 
 	@Test
@@ -116,10 +116,11 @@ public class AppmarketEventServiceTest {
 	public void testProcessEvent_ifTheEventUrlIsInvalid_thenABusinessLevelExceptionWithAppropriateMessageIsThrown() {
 		//Given
 		String invalidUrl = "inVaLidUrl";
-		String expectedErrorMessage = format("Failed to process event. eventUrl=%s", invalidUrl);
+		String expectedErrorMessage = format("Failed to process event. eventUrl=%s | exception=Url is not valid.", invalidUrl);
+		when(appmarketEventClient.fetchEvent(any(), any(), any())).thenThrow(new IllegalArgumentException("Url is not valid."));
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, defaultEventContext()));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, eventContext("testKey")));
 
 		//Then
 		assertThat(exceptionCaught)
