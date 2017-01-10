@@ -1,5 +1,6 @@
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ class AppmarketEventService {
 			throw e;
 		} catch (RuntimeException e) {
 			log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
-			throw new DeveloperServiceException(ErrorCode.UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
+			throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
 		}
 	}
 

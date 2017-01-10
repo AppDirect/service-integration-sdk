@@ -27,12 +27,12 @@ public class APIResult {
 
 	public APIResult(ErrorCode errorCode, String message) {
 		this(false, message);
-		setErrorCode(errorCode);
+		this.errorCode = errorCode;
 	}
 
 	public APIResult(boolean success, String message) {
-		setSuccess(success);
-		setMessage(message);
+		this.success = success;
+		this.message = message;
 	}
 
 	public static APIResult success(String message) {
@@ -48,7 +48,8 @@ public class APIResult {
 	}
 
 	public static APIResult failure(ErrorCode errorCode, String message) {
-		return new APIResult(errorCode, message);
+		APIResult result = new APIResult(errorCode, message);
+		result.setStatusCodeReturnedToAppmarket(200);
+		return result;
 	}
-
 }

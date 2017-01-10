@@ -1,5 +1,7 @@
 package com.appdirect.sdk.exception;
 
+import static com.appdirect.sdk.appmarket.events.APIResult.failure;
+
 import lombok.Getter;
 
 import com.appdirect.sdk.appmarket.events.APIResult;
@@ -18,6 +20,6 @@ public class DeveloperServiceException extends RuntimeException {
 
 	public DeveloperServiceException(ErrorCode errorCode, String message) {
 		super(message);
-		this.result = new APIResult(errorCode, message);
+		this.result = failure(errorCode, message);
 	}
 }
