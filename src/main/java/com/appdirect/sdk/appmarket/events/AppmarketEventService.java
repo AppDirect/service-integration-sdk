@@ -35,7 +35,7 @@ class AppmarketEventService {
 			throw e;
 		} catch (RuntimeException e) {
 			log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
-			throw new DeveloperServiceException(ErrorCode.UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s", eventUrl));
+			throw new DeveloperServiceException(ErrorCode.UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
 		}
 	}
 
