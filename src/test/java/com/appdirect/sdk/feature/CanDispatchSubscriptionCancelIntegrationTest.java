@@ -3,6 +3,7 @@ package com.appdirect.sdk.feature;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -25,7 +26,7 @@ public class CanDispatchSubscriptionCancelIntegrationTest {
 
 	@Before
 	public void setUp() throws Exception {
-		fakeAppmarket = FakeAppmarket.create(localConnectorPort + 1, "isv-key", "isv-secret").start();
+		fakeAppmarket = FakeAppmarket.create(findAvailableTcpPort(), "isv-key", "isv-secret").start();
 	}
 
 	@After

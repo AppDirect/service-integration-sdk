@@ -7,6 +7,7 @@ import static java.lang.System.lineSeparator;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,30 +22,28 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import com.appdirect.sdk.utils.PortUtils;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 
 @Slf4j
 public class HtmlEmailNotificationServiceIntegrationTest {
-
-	private static final int TEST_SMTP_SERVER_PORT = PortUtils.getRandomFreePort();
-	private static final String TEST_SMTP_SERVER_BIND_ADDRESS = "127.0.0.1";
-
 	private GreenMail greenMail;
 
 	private HtmlEmailNotificationService htmlEmailNotificationService;
 
 	@Before
 	public void setUp() throws Exception {
-		log.warn("Port selected: {}", TEST_SMTP_SERVER_PORT);
+		String mailServerHost = "127.0.0.1";
+		int mailServerPort = findAvailableTcpPort();
+
+		log.warn("Port selected: {}", mailServerPort);
 		greenMail = new GreenMail(
-			new ServerSetup(TEST_SMTP_SERVER_PORT, TEST_SMTP_SERVER_BIND_ADDRESS, PROTOCOL_SMTP)
+			new ServerSetup(mailServerPort, mailServerHost, PROTOCOL_SMTP)
 		);
 
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
-		sender.setHost(TEST_SMTP_SERVER_BIND_ADDRESS);
-		sender.setPort(TEST_SMTP_SERVER_PORT);
+		sender.setHost(mailServerHost);
+		sender.setPort(mailServerPort);
 
 		htmlEmailNotificationService = new HtmlEmailNotificationService("from@example.com", sender);
 		greenMail.start();

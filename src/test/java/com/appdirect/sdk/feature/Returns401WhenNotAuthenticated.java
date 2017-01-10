@@ -2,6 +2,7 @@ package com.appdirect.sdk.feature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -24,7 +25,7 @@ public class Returns401WhenNotAuthenticated {
 
 	@Before
 	public void setUp() throws Exception {
-		fakeAppmarketWithWrongCredentials = FakeAppmarket.create(localConnectorPort + 1, "wrong-key", "wrong-secret").start();
+		fakeAppmarketWithWrongCredentials = FakeAppmarket.create(findAvailableTcpPort(), "wrong-key", "wrong-secret").start();
 	}
 
 	@After
