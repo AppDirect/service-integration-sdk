@@ -38,7 +38,7 @@ public class ErrorHandlingWorks {
 	public void whenEventIsNotFoundOnAppmarket_weReturnAPayloadMatchingMarketplaceFormat() throws Exception {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/nonExistant/v1/events/order");
 
-		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"NOT_FOUND\",\"message\":\"Failed to fetch event: Not Found\"}");
 	}
 
@@ -46,7 +46,7 @@ public class ErrorHandlingWorks {
 	public void whenHostOfEventIsUnknown_weReturnTheRightPayloadToAppmarket() throws Exception {
 		HttpResponse response = fakeAppmarket.sendSignedRequestTo(connectorEventEndpoint(), asList("eventUrl", "http://does-not.exists"));
 
-		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"UNKNOWN_ERROR\",\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists; nested exception is java.net.UnknownHostException: does-not.exists\"}");
 	}
 
@@ -54,8 +54,7 @@ public class ErrorHandlingWorks {
 	public void whenNoticeEventFails_errorIsReportedToAppmarket() throws Exception {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-closed", "failThisCall", "true");
 
-		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/subscription-closed");
-		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"OPERATION_CANCELLED\",\"message\":\"You made this call fail\"}");
 	}
 
@@ -65,5 +64,13 @@ public class ErrorHandlingWorks {
 
 	private String baseConnectorUrl() {
 		return "http://localhost:" + localConnectorPort;
+	}
+
+	/**
+	 * Returning a failure with a non-200 code results in the appmarket showing a "communication error" and
+	 * logging the first few chars of the raw response, leading to truncated and messy logs. So let's return 200.
+	 */
+	private void assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(HttpResponse response) {
+		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 	}
 }

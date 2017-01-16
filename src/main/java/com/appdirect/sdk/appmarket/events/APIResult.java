@@ -47,6 +47,15 @@ public class APIResult {
 		return result;
 	}
 
+	/**
+	 * Creates a failed result with the given error code and message.
+	 * Note: HTTP OK (200) will be returned to the appmarket; all responses
+	 * going to the appmarket need to have a 200 status, whether they are successful or not.
+	 *
+	 * @param errorCode the code of the error
+	 * @param message   human-readable error message that explains the issue.
+	 * @return the failed result object
+	 */
 	public static APIResult failure(ErrorCode errorCode, String message) {
 		APIResult result = new APIResult(errorCode, message);
 		result.setStatusCodeReturnedToAppmarket(200);
