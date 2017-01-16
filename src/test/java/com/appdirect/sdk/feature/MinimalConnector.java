@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
@@ -55,15 +56,17 @@ public class MinimalConnector {
 		};
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<SubscriptionChange> subscriptionChangeHandler() {
+	public AppmarketEventHandler<SubscriptionChange> mySubscriptionChangeHandler() {
 		return event -> success(
 			format("SUB_CHANGE for accountId=%s has been processed, %dGB has been requested.", event.getAccount().getAccountIdentifier(), event.getOrder().getItems().get(0).getQuantity())
 		);
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler() {
+	public AppmarketEventHandler<SubscriptionClosed> mySubscriptionClosedHandler() {
 		return event -> {
 			boolean callShouldFail = event.getQueryParameters().containsKey("failThisCall");
 			return callShouldFail ?
@@ -72,46 +75,53 @@ public class MinimalConnector {
 		};
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<SubscriptionDeactivated> subscriptionDeactivatedHandler() {
+	public AppmarketEventHandler<SubscriptionDeactivated> mySubscriptionDeactivatedHandler() {
 		return event -> success(
 			format("SUB_DEACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<SubscriptionReactivated> subscriptionReactivatedHandler() {
+	public AppmarketEventHandler<SubscriptionReactivated> mySubscriptionReactivatedHandler() {
 		return event -> success(
 			format("SUB_REACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<SubscriptionUpcomingInvoice> subscriptionUpcomingNoticeHandler() {
+	public AppmarketEventHandler<SubscriptionUpcomingInvoice> mySubscriptionUpcomingNoticeHandler() {
 		return event -> success(
 			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<AddonSubscriptionOrder> addonSubscriptionOrderHandler() {
+	public AppmarketEventHandler<AddonSubscriptionOrder> myAddonSubscriptionOrderHandler() {
 		return event -> success("ADDON_ORDER has been processed just now.");
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<AddonSubscriptionCancel> addonSubscriptionCancelAppmarketEventHandler() {
+	public AppmarketEventHandler<AddonSubscriptionCancel> myAddonSubscriptionCancelAppmarketEventHandler() {
 		return event -> success("ADDON_CANCEL has been processed just now.");
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<UserAssignment> userAssignmentDevHandler() {
+	public AppmarketEventHandler<UserAssignment> myUserAssignmentDevHandler() {
 		return event -> success(
 			format("USER_ASSIGN for user %s for account %s has been processed, for real.", event.getAssignedUserId(), event.getAccountId())
 		);
 	}
 
+	@Primary
 	@Bean
-	public AppmarketEventHandler<UserUnassignment> userUnassignmentDevHandler() {
+	public AppmarketEventHandler<UserUnassignment> myUserUnassignmentDevHandler() {
 		return event -> success(
 			format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUserId(), event.getAccountId())
 		);
