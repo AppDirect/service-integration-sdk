@@ -1,6 +1,8 @@
 package com.appdirect.sdk.feature;
 
+import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
@@ -62,9 +64,12 @@ public class MinimalConnector {
 
 	@Bean
 	public AppmarketEventHandler<SubscriptionClosed> subscriptionClosedHandler() {
-		return event -> success(
-			format("SUB_CLOSED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
-		);
+		return event -> {
+			boolean callShouldFail = event.getQueryParameters().containsKey("failThisCall");
+			return callShouldFail ?
+					failure(OPERATION_CANCELLED, "You made this call fail") :
+					success(format("SUB_CLOSED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier()));
+		};
 	}
 
 	@Bean
