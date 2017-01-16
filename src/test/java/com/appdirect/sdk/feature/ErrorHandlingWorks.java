@@ -50,6 +50,15 @@ public class ErrorHandlingWorks {
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"UNKNOWN_ERROR\",\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists; nested exception is java.net.UnknownHostException: does-not.exists\"}");
 	}
 
+	@Test
+	public void whenNoticeEventFails_errorIsReportedToAppmarket() throws Exception {
+		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-closed", "failThisCall", "true");
+
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo("/v1/events/subscription-closed");
+		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"OPERATION_CANCELLED\",\"message\":\"You made this call fail\"}");
+	}
+
 	private String connectorEventEndpoint() {
 		return baseConnectorUrl() + "/api/v1/integration/processEvent";
 	}
