@@ -1,4 +1,4 @@
-package com.appdirect.sdk.feature;
+package com.appdirect.sdk.feature.sample_connector.full;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
@@ -6,7 +6,6 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -29,10 +28,13 @@ import com.appdirect.sdk.appmarket.events.UserAssignment;
 import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
+/**
+ * Sample connector that supports all of the supported events, both the
+ * mandatory and optional ones.
+ */
 @SpringBootApplication
-@EnableAutoConfiguration
 @Import(ConnectorSdkConfiguration.class)
-public class MinimalConnector {
+public class FullConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
 		return someKey -> new Credentials(someKey, "isv-secret");

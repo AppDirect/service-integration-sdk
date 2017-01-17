@@ -14,10 +14,11 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
 import com.appdirect.sdk.support.HttpClientHelper;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = MinimalConnector.class, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = FullConnector.class, webEnvironment = RANDOM_PORT)
 public class HealthCheckTest {
 	@LocalServerPort
 	private int localConnectorPort;
