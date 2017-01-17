@@ -35,11 +35,22 @@ public class MinimalConnector {
 * Ensure your application context includes a `DeveloperSpecificAppmarketCredentialsSupplier` bean
   that returns valid appmarket credentials given a consumer key.
 
-* Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of market events.
+* Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of mandatory market events.
   * Not providing handler for a mandatory event types will lead to an application context failure.
   * The events you need to expose `AppmarketEventHandler`s for are
       * [`SubscriptionOrder`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionOrder.java)
       * [`SubscriptionCancel`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionCancel.java)
+
+* Optional events can be handled if need be.
+  * Add `AppmarketEventHandler<T>` beans for every desired events and annotate it with `@Primary`.
+  ```
+  @Primary
+  @Bean
+  public AppmarketEventHandler<SubscriptionUpcomingInvoice> mySubscriptionUpcomingNoticeHandler() {
+  	return event -> ApiResult.success("My handler for a SUBSCRIPTION_UPCOMING_INVOICE event");
+  }
+  ```
+  * Available optional events:
       * [`SubscriptionChange`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionChange.java)
       * [`SubscriptionClosed`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionClosed.java)
       * [`SubscriptionDeactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionDeactivated.java)
@@ -48,6 +59,7 @@ public class MinimalConnector {
       * [`UserAssignment`](src/main/java/com/appdirect/sdk/appmarket/events/UserAssignment.java)
       * [`UserUnassignment`](src/main/java/com/appdirect/sdk/appmarket/events/UserUnassignment.java)
       * [`AddonSubscriptionOrder`](src/main/java/com/appdirect/sdk/appmarket/events/AddonSubscriptionOrder.java)
+      * [`AddonSubscriptionCancel`](src/main/java/com/appdirect/sdk/appmarket/events/AddonSubscriptionCancel.java)
 
 ## Exposed endpoints
 * `GET /health`
