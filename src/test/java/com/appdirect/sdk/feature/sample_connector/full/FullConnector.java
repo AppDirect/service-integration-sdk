@@ -131,7 +131,7 @@ public class FullConnector {
 
 	private void sleepForOneSecond_toTriggerRaceCondition_thatModifiedSharedQueryParams() {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(1000); // NOSONAR - we use sleep() to know our code really fixes a race condition on query params & slow machines
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
