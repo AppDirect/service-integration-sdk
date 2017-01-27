@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
+import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
+import com.appdirect.sdk.appmarket.migration.CustomerAccountValidator;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
@@ -25,5 +28,15 @@ public class AppmarketCommunicationConfiguration {
 	@Bean
 	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor) {
 		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor);
+	}
+
+	@Bean
+	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidator customerAccountValidator) {
+		return new AppmarketMigrationService(customerAccountValidator);
+	}
+
+	@Bean
+	public AppmarketMigrationController appmarketMigrationController(AppmarketMigrationService appmarketMigrationService) {
+		return new AppmarketMigrationController(appmarketMigrationService);
 	}
 }
