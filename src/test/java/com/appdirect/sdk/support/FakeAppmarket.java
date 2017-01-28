@@ -18,8 +18,12 @@ import java.util.function.Predicate;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -124,6 +128,15 @@ public class FakeAppmarket {
 		return httpClient.execute(request);
 	}
 
+	public HttpResponse sendSignedPostRequestTo(String url, HttpEntity httpEntity) throws Exception {
+		CloseableHttpClient httpClient = anAppmarketHttpClient();
+		HttpPost request = new HttpPost(new URIBuilder(url).build());
+		request.setEntity(httpEntity);
+
+		oauthSign(request);
+		return httpClient.execute(request);
+	}
+
 	private String baseAppmarketUrl() {
 		return "http://localhost:" + server.getAddress().getPort();
 	}
@@ -132,7 +145,7 @@ public class FakeAppmarket {
 		return list.isEmpty() ? null : list.get(list.size() - 1);
 	}
 
-	private void oauthSign(HttpGet request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
+	private void oauthSign(HttpRequest request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(isvKey, isvSecret);
 		consumer.sign(request);
 	}
