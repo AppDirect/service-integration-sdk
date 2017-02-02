@@ -5,6 +5,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -45,9 +46,15 @@ public class CanValidateCustomerAccountIntegrationTest {
 
 	@Test
 	public void validateCustomerAccount() throws Exception {
-		Map<String, String> dataMap = new HashMap<>();
+		Map<String, String> customDataMap = new HashMap<>();
+		customDataMap.put("customerName", "Test Org");
+
+		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("tenantId", "3379191");
 		dataMap.put("tenantDomain", "test.org");
+		dataMap.put("externalVendorId", UUID.randomUUID().toString());
+		dataMap.put("customData", customDataMap);
+
 		String jsonData = objectMapper.writeValueAsString(dataMap);
 		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + "/api/v1/migration/validateCustomerAccount", new StringEntity(jsonData, ContentType.APPLICATION_JSON));
 

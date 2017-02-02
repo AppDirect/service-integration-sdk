@@ -3,7 +3,6 @@ package com.appdirect.sdk.appmarket.migration;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class AppmarketMigrationController {
 	private final AppmarketMigrationService migrationService;
 
 	@RequestMapping(method = POST, value = "/api/v1/migration/validateCustomerAccount", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-	public Callable<APIResult> validateISVCustomerAccount(@RequestBody Map<String, String> isvCustomerAccountData) {
+	public Callable<APIResult> validateISVCustomerAccount(@RequestBody CustomerAccount isvCustomerAccountData) {
 		return () -> migrationService.validateCustomerAccount(isvCustomerAccountData);
 	}
 }

@@ -1,10 +1,9 @@
 package com.appdirect.sdk.appmarket.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 import org.junit.Before;
@@ -28,9 +27,9 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerAccount_success() throws Exception {
-		when(migrationService.validateCustomerAccount(anyMap())).thenReturn(APIResult.success("Success"));
+		when(migrationService.validateCustomerAccount(any())).thenReturn(APIResult.success("Success"));
 
-		Callable<APIResult> result = migrationController.validateISVCustomerAccount(new HashMap<>());
+		Callable<APIResult> result = migrationController.validateISVCustomerAccount(new CustomerAccount());
 		APIResult apiResult = result.call();
 
 		assertThat(apiResult.isSuccess()).isTrue();
@@ -39,9 +38,9 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerAccount_failure() throws Exception {
-		when(migrationService.validateCustomerAccount(anyMap())).thenReturn(APIResult.failure(ErrorCode.NOT_FOUND, "Validation failed."));
+		when(migrationService.validateCustomerAccount(any())).thenReturn(APIResult.failure(ErrorCode.NOT_FOUND, "Validation failed."));
 
-		Callable<APIResult> result = migrationController.validateISVCustomerAccount(new HashMap<>());
+		Callable<APIResult> result = migrationController.validateISVCustomerAccount(new CustomerAccount());
 		APIResult apiResult = result.call();
 
 		assertThat(apiResult.isSuccess()).isFalse();

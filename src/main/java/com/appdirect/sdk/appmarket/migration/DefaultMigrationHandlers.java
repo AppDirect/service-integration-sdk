@@ -6,7 +6,7 @@ import com.appdirect.sdk.appmarket.events.APIResult;
 
 public class DefaultMigrationHandlers {
 	@Bean
-	public CustomerAccountValidator customerAccountValidator() {
+	public CustomerAccountValidationHandler customerAccountValidatorHandler() {
 		return (customerAccountData) -> APIResult.success("");
 	}
 }
