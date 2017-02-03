@@ -46,20 +46,17 @@ public class CanValidateCustomerAccountIntegrationTest {
 
 	@Test
 	public void validateCustomerAccount() throws Exception {
-		Map<String, String> customDataMap = new HashMap<>();
-		customDataMap.put("customerName", "Test Org");
-
-		Map<String, Object> dataMap = new HashMap<>();
+		Map<String, String> dataMap = new HashMap<>();
 		dataMap.put("tenantId", "3379191");
 		dataMap.put("tenantDomain", "test.org");
 		dataMap.put("externalVendorId", UUID.randomUUID().toString());
-		dataMap.put("customData", customDataMap);
+		dataMap.put("customerName", "Test Org");
 
 		String jsonData = objectMapper.writeValueAsString(dataMap);
 		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + "/api/v1/migration/validateCustomerAccount", new StringEntity(jsonData, ContentType.APPLICATION_JSON));
 
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":true}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"CONFIGURATION_ERROR\",\"message\":\"Customer account validation is not supported.\"}");
 	}
 
 	private String baseConnectorUrl() {

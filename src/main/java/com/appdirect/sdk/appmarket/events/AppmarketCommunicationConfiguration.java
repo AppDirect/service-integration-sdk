@@ -31,8 +31,8 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler customerAccountValidator) {
-		return new AppmarketMigrationService(customerAccountValidator);
+	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler validationHandler) {
+		return new AppmarketMigrationService(validationHandler);
 	}
 
 	@Bean
