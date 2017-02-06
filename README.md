@@ -18,7 +18,7 @@ For detailed docs, check out our [GitHub wiki](https://github.com/AppDirect/serv
 <dependency>
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
-    <version>1.13-SNAPSHOT</version>
+    <version>1.15-SNAPSHOT</version>
 </dependency>
 ```
 
