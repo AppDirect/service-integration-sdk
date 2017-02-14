@@ -47,4 +47,26 @@ public class AppmarketMigrationControllerTest {
 		assertThat(apiResult.isSuccess()).isFalse();
 		assertThat(apiResult.getMessage()).isEqualTo("Validation failed.");
 	}
+
+	@Test
+	public void validateISVCustomerSubscription_success() throws Exception {
+		when(migrationService.validateSubscription(anyMap())).thenReturn(APIResult.success("Success"));
+
+		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
+		APIResult apiResult = result.call();
+
+		assertThat(apiResult.isSuccess()).isTrue();
+		assertThat(apiResult.getMessage()).isEqualTo("Success");
+	}
+
+	@Test
+	public void validateISVCustomerSubscription_failure() throws Exception {
+		when(migrationService.validateSubscription(anyMap())).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Failure in validation"));
+
+		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
+		APIResult apiResult = result.call();
+
+		assertThat(apiResult.isSuccess()).isFalse();
+		assertThat(apiResult.getMessage()).isEqualTo("Failure in validation");
+	}
 }

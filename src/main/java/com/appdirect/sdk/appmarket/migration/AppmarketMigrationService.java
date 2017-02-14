@@ -10,9 +10,14 @@ import com.appdirect.sdk.appmarket.events.APIResult;
 @Slf4j
 @RequiredArgsConstructor
 public class AppmarketMigrationService {
-	private final CustomerAccountValidationHandler validationHandler;
+	private final CustomerAccountValidationHandler customerAccountValidationHandler;
+	private final SubscriptionValidationHandler subscriptionValidationHandler;
 
 	public APIResult validateCustomerAccount(Map<String, String> customerAccountData) {
-		return validationHandler.validate(customerAccountData);
+		return customerAccountValidationHandler.validate(customerAccountData);
+	}
+
+	public APIResult validateSubscription(Map<String, String> subscriptionData) {
+		return subscriptionValidationHandler.validate(subscriptionData);
 	}
 }
