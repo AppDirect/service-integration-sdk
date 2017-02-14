@@ -1,8 +1,6 @@
 package com.appdirect.sdk.appmarket.migration;
 
-
 import java.util.Map;
-
 import com.appdirect.sdk.appmarket.events.APIResult;
 
 @FunctionalInterface

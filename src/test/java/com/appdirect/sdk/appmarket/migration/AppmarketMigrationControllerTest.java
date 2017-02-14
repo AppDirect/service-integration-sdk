@@ -51,7 +51,6 @@ public class AppmarketMigrationControllerTest {
 	@Test
 	public void validateISVCustomerSubscription_success() throws Exception {
 		when(migrationService.validateSubscription(anyMap())).thenReturn(APIResult.success("Success"));
-
 		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
 		APIResult apiResult = result.call();
 
@@ -62,7 +61,6 @@ public class AppmarketMigrationControllerTest {
 	@Test
 	public void validateISVCustomerSubscription_failure() throws Exception {
 		when(migrationService.validateSubscription(anyMap())).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Failure in validation"));
-
 		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
 		APIResult apiResult = result.call();
 
