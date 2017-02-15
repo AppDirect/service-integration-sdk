@@ -1,7 +1,6 @@
 package com.appdirect.sdk.appmarket.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Mockito.when;
 
