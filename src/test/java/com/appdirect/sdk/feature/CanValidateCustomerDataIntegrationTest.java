@@ -27,14 +27,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FullConnector.class, webEnvironment = RANDOM_PORT)
-public class CanValidateISVDataIntegrationTest {
+public class CanValidateCustomerDataIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
 	private FakeAppmarket fakeAppmarket;
 	@Autowired
 	private ObjectMapper objectMapper;
-	private static final String CUSTOMER_ACCOUNT_API_END_PONT = "/api/v1/migration/validateCustomerAccount";
-	private static final String SUBSCRIPTION_API_END_PONT = "/api/v1/migration/validateSubscription";
+	private static final String CUSTOMER_ACCOUNT_API_END_POINT = "/api/v1/migration/validateCustomerAccount";
+	private static final String SUBSCRIPTION_API_END_POINT = "/api/v1/migration/validateSubscription";
 
 	@Before
 	public void setUp() throws Exception {
@@ -55,7 +55,7 @@ public class CanValidateISVDataIntegrationTest {
 		dataMap.put("customerName", "Test Org");
 
 		String jsonData = objectMapper.writeValueAsString(dataMap);
-		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + CUSTOMER_ACCOUNT_API_END_PONT, new StringEntity(jsonData, ContentType.APPLICATION_JSON));
+		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + CUSTOMER_ACCOUNT_API_END_POINT, new StringEntity(jsonData, ContentType.APPLICATION_JSON));
 
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
 		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"CONFIGURATION_ERROR\",\"message\":\"Customer account validation is not supported.\"}");
@@ -67,7 +67,7 @@ public class CanValidateISVDataIntegrationTest {
 		dataMap.put("subscriptionId", "76547391");
 		dataMap.put("sku", "Google-Apps-For-Business");
 		String jsonData = objectMapper.writeValueAsString(dataMap);
-		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + SUBSCRIPTION_API_END_PONT, new StringEntity(jsonData, ContentType.APPLICATION_JSON));
+		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + SUBSCRIPTION_API_END_POINT, new StringEntity(jsonData, ContentType.APPLICATION_JSON));
 
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
 		Map<String, Object>result = objectMapper.readValue(response.getEntity().getContent(), HashMap.class);
