@@ -10,4 +10,9 @@ public class DefaultMigrationHandlers {
 	public CustomerAccountValidationHandler customerAccountValidatorHandler() {
 		return (customerAccountData) -> APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Customer account validation is not supported.");
 	}
+
+	@Bean
+	public SubscriptionValidationHandler subscriptionValidatorHandler() {
+		return subscriptionData -> APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Subscription validation is not supported.");
+	}
 }

@@ -25,4 +25,9 @@ public class AppmarketMigrationController {
 	public Callable<APIResult> validateISVCustomerAccount(@RequestBody Map<String, String> isvCustomerAccountData) {
 		return () -> migrationService.validateCustomerAccount(isvCustomerAccountData);
 	}
+
+	@RequestMapping(method = POST, value = "/api/v1/migration/validateSubscription", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	public Callable<APIResult> validateISVSubscription(@RequestBody Map<String, String> isvSubscriptionData) {
+		return () -> migrationService.validateSubscription(isvSubscriptionData);
+	}
 }

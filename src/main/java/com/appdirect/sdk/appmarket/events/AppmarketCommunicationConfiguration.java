@@ -7,6 +7,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
+import com.appdirect.sdk.appmarket.migration.SubscriptionValidationHandler;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
@@ -31,8 +32,8 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler validationHandler) {
-		return new AppmarketMigrationService(validationHandler);
+	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler customerAccountValidationHandler, SubscriptionValidationHandler subscriptionValidationHandler) {
+		return new AppmarketMigrationService(customerAccountValidationHandler, subscriptionValidationHandler);
 	}
 
 	@Bean
