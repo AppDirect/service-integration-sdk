@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+/**
+ * A service that can be used by a connector in order to send emails.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class HtmlEmailNotificationService {

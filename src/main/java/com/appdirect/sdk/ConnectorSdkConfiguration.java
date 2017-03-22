@@ -14,6 +14,10 @@ import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 
+/**
+ * A {@link Configuration} instance that a connector using the SDK must import into their Spring Boot 
+ * {@link org.springframework.context.ApplicationContext} in order to be able to make use of the SDK.
+ */
 @Configuration
 @Import({
 	JacksonConfiguration.class,
