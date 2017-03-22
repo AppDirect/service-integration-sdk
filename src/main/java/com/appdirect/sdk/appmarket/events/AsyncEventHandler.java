@@ -27,6 +27,13 @@ class AsyncEventHandler {
 		this.log = log;
 	}
 
+	/**
+	 * Handles a raw AppMarket event asynchronously.
+	 * @param eventHandler contains the event handling logic for the incoming event
+	 * @param eventInfo the raw AppMarket event payload
+	 * @param eventContext contextual information about the event notification
+	 * @return and {@link APIResult} instance representing the response to be returned to the event notification.
+	 */
 	APIResult handle(SDKEventHandler eventHandler, EventInfo eventInfo, EventHandlingContext eventContext) {
 		executor.execute(() -> {
 			APIResult result;

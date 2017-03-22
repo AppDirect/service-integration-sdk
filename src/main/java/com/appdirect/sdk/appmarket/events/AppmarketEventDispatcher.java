@@ -16,6 +16,9 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * Dispatches incoming raw AppMarket events to the appropriate handler.
+ */
 class AppmarketEventDispatcher {
 	private final Events events;
 	private final AsyncEventHandler asyncHandler;
@@ -59,6 +62,13 @@ class AppmarketEventDispatcher {
 		this.addonDetector = addonDetector;
 	}
 
+	/**
+	 * Resolves the appropriate SDK-internal event handler that corresponds to the incoming event and
+	 * forwards the event to it
+	 * @param rawEvent the AppMarket event payload.
+	 * @param eventContext contextual information about the event
+	 * @return The paylkoad to be returned to the AppMarket in response to the notification request
+	 */
 	APIResult dispatchAndHandle(EventInfo rawEvent, EventHandlingContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(rawEvent);
 		if (events.eventShouldBeHandledAsync(rawEvent)) {

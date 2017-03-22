@@ -7,5 +7,12 @@ package com.appdirect.sdk.appmarket.events;
  */
 @FunctionalInterface
 interface EventParser<T> {
+	/**
+	 * Parses a raw {@link EventInfo} instance received from the AppMarket into the corresponding
+	 * rich event type (that is visible to clients of the SDK)
+	 * @param eventInfo representation of the raw event fetched from the AppMarket
+	 * @param eventContext contextual information about the event
+	 * @return The rich (client visible) event corresponding to the {@link EventInfo} input paramter 
+	 */
 	T parse(EventInfo eventInfo, EventHandlingContext eventContext);
 }
