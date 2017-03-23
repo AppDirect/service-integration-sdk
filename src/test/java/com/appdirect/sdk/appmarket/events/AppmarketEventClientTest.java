@@ -44,9 +44,11 @@ public class AppmarketEventClientTest {
 				.thenReturn(restOperations);
 		when(restOperations.getForObject(testUrl, EventInfo.class))
 				.thenReturn(testEventInfo);
-
+		String testDeveloperKey = "testKey";
+		String testDeveloperSecret = "testSecret";
+		Credentials testCredenials = new Credentials(testDeveloperKey, testDeveloperSecret);
 		//When
-		EventInfo fetchedEvent = testedFetcher.fetchEvent(testUrl, testKey, testSecret);
+		EventInfo fetchedEvent = testedFetcher.fetchEvent(testUrl, testCredenials);
 
 		//Then
 		assertThat(fetchedEvent).isEqualTo(testEventInfo);

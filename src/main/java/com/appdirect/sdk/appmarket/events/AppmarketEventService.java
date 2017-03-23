@@ -50,7 +50,7 @@ class AppmarketEventService {
 
 	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
 		Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
-		EventInfo event = appmarketEventClient.fetchEvent(url, credentials.developerKey, credentials.developerSecret);
+		EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
 		log.info("Successfully retrieved event={}", event);
 		return event;
 	}

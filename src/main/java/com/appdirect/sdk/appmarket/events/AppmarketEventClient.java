@@ -5,6 +5,7 @@ import static java.lang.String.format;
 
 import lombok.extern.slf4j.Slf4j;
 
+import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
@@ -25,15 +26,14 @@ public class AppmarketEventClient {
 	/**
 	 * Perform "signed fetch" in order to retrieve the payload of an event sent to the connector from the AppMarket
 	 *
-	 * @param url    from which we can fetch the event payload
-	 * @param key    the client key to sign the fetch request with
-	 * @param secret the client secret to sign the fetch request with
+	 * @param url         from which we can fetch the event payload
+	 * @param credentials the credentials used to sign the request
 	 * @return an {@link EventInfo} instance representing the retrieved payload
 	 */
-	EventInfo fetchEvent(String url, String key, String secret) {
+	EventInfo fetchEvent(String url, Credentials credentials) {
 		log.debug("Consuming event from url={}", url);
 		EventInfo fetchedEvent = restClientFactory
-				.restOperationsForProfile(key, secret)
+				.restOperationsForProfile(credentials.developerKey, credentials.developerSecret)
 				.getForObject(url, EventInfo.class);
 		fetchedEvent.setId(extractId(url));
 		return fetchedEvent;
