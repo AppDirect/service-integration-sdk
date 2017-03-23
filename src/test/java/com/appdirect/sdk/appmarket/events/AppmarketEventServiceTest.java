@@ -51,8 +51,8 @@ public class AppmarketEventServiceTest {
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
 		String testDeveloperKey = "testKey";
 		String testDeveloperSecret = "testSecret";
-		Credentials testCredenials = new Credentials(testDeveloperKey, testDeveloperSecret);
-		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredenials))
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenReturn(testEvent);
 
 		EventHandlingContext eventContext = eventContext("testKey");
@@ -73,8 +73,8 @@ public class AppmarketEventServiceTest {
 
 		String testDeveloperKey = "testKey";
 		String testDeveloperSecret = "testSecret";
-		Credentials testCredenials = new Credentials(testDeveloperKey, testDeveloperSecret);
-		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredenials))
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenThrow(expectedException);
 
 		//Then
@@ -87,8 +87,8 @@ public class AppmarketEventServiceTest {
 		//Given
 		String testDeveloperKey = "testKey";
 		String testDeveloperSecret = "testSecret";
-		Credentials testCredenials = new Credentials(testDeveloperKey, testDeveloperSecret);
-		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredenials))
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenThrow(new RuntimeException());
 
 		//When
@@ -108,8 +108,8 @@ public class AppmarketEventServiceTest {
 				.build();
 		String testDeveloperKey = "testKey";
 		String testDeveloperSecret = "testSecret";
-		Credentials testCredenials = new Credentials(testDeveloperKey, testDeveloperSecret);
-		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredenials))
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenReturn(testEvent);
 
 		//When
