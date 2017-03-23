@@ -13,7 +13,7 @@ interface EventParser<T> {
 	 *
 	 * @param eventInfo    representation of the raw event fetched from the AppMarket
 	 * @param eventContext contextual information about the event
-	 * @return The rich (client visible) event corresponding to the {@link EventInfo} input paramter
+	 * @return The rich (client visible) event corresponding to the {@link EventInfo} input parameter
 	 */
 	T parse(EventInfo eventInfo, EventHandlingContext eventContext);
 }

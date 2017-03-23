@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AddonSubscriptionCancelEventParserTest {
 
-	AddonSubscriptionCancelEventParser testedParser = new AddonSubscriptionCancelEventParser();
+	private AddonSubscriptionCancelEventParser testedParser = new AddonSubscriptionCancelEventParser();
 
 	@Test
 	public void parse_whenAnAddonSubscriptionCancelEventWithNoFlagIsParsed_aCorrespondingRichEventIsCreated() throws Exception {
@@ -65,7 +65,7 @@ public class AddonSubscriptionCancelEventParserTest {
 		assertThat(parsedEvent).isEqualTo(expectedEvent);
 	}
 	
-	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentidier, EventFlag eventFlag) {
+	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag) {
 		return EventInfo.builder()
 			.flag(eventFlag)
 			.payload(
@@ -73,7 +73,7 @@ public class AddonSubscriptionCancelEventParserTest {
 					.account(
 						AccountInfo.builder()
 							.accountIdentifier(accountIdentifier)
-							.parentAccountIdentifier(parentAccountIdentidier)
+							.parentAccountIdentifier(parentAccountIdentifier)
 							.build()
 					).build()
 			).build();

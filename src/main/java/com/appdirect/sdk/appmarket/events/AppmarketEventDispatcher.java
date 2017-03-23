@@ -67,7 +67,7 @@ class AppmarketEventDispatcher {
 	 * forwards the event to it
 	 * @param rawEvent the AppMarket event payload.
 	 * @param eventContext contextual information about the event
-	 * @return The paylkoad to be returned to the AppMarket in response to the notification request
+	 * @return The payload to be returned to the AppMarket in response to the notification request
 	 */
 	APIResult dispatchAndHandle(EventInfo rawEvent, EventHandlingContext eventContext) {
 		SDKEventHandler eventHandler = getHandlerFor(rawEvent);

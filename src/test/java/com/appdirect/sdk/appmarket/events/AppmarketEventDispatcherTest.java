@@ -40,7 +40,7 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private SDKEventHandler mockSubscriptionDeactivatedHandler;
 	@Mock
-	private SDKEventHandler mockSubscriptionReactivatedhandler;
+	private SDKEventHandler mockSubscriptionReactivatedHandler;
 	@Mock
 	private SDKEventHandler mockSubscriptionClosedHandler;
 	@Mock
@@ -61,7 +61,7 @@ public class AppmarketEventDispatcherTest {
 	@Mock
 	private APIResult mockSubscriptionDeactivatedResponse;
 	@Mock
-	private APIResult mockSubscriptionReactivatedResaponse;
+	private APIResult mockSubscriptionReactivatedResponse;
 	@Mock
 	private APIResult mockSubscriptionClosedResponse;
 	@Mock
@@ -93,7 +93,7 @@ public class AppmarketEventDispatcherTest {
 			mockSubscriptionCancelHandler,
 			mockSubscriptionChangeHandler,
 			mockSubscriptionDeactivatedHandler,
-			mockSubscriptionReactivatedhandler,
+				mockSubscriptionReactivatedHandler,
 			mockSubscriptionClosedHandler,
 			mockSubscriptionIncomingNoticeHandler,
 			mockAddonSubscriptionOrderHandler,
@@ -115,8 +115,8 @@ public class AppmarketEventDispatcherTest {
 			.thenReturn(mockSubscriptionChangeResponse);
 		when(mockSubscriptionDeactivatedHandler.handle(any(), any()))
 			.thenReturn(mockSubscriptionDeactivatedResponse);
-		when(mockSubscriptionReactivatedhandler.handle(any(), any()))
-			.thenReturn(mockSubscriptionReactivatedResaponse);
+		when(mockSubscriptionReactivatedHandler.handle(any(), any()))
+			.thenReturn(mockSubscriptionReactivatedResponse);
 		when(mockSubscriptionClosedHandler.handle(any(), any()))
 			.thenReturn(mockSubscriptionClosedResponse);
 		when(mockSubscriptionIncomingNoticeHandler.handle(any(), any()))
@@ -202,7 +202,7 @@ public class AppmarketEventDispatcherTest {
 		APIResult result = eventDispatcher.dispatchAndHandle(testEvent, defaultEventContext());
 
 		//Then
-		assertThat(result).isEqualTo(mockSubscriptionReactivatedResaponse);
+		assertThat(result).isEqualTo(mockSubscriptionReactivatedResponse);
 	}
 
 	@Test

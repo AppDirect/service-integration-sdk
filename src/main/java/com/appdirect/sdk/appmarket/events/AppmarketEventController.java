@@ -30,7 +30,7 @@ class AppmarketEventController {
 	}
 
 	/**
-	 * Defines the connector endpoint to which AppMarket integraion events should be sent.
+	 * Defines the connector endpoint to which AppMarket integration events should be sent.
 	 * @param request the http request
 	 * @param eventUrl the url from which the payload of the incoming event can be retrieved.
 	 * @return the HTTP response to return to the AppMarket.

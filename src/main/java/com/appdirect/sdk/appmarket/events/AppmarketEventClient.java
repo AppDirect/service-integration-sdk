@@ -10,7 +10,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 /**
- * This class defines method for performing HTTP requests against an AppMarket instace
+ * This class defines method for performing HTTP requests against an AppMarket instance
  */
 @Slf4j
 public class AppmarketEventClient {
@@ -40,12 +40,12 @@ public class AppmarketEventClient {
 	}
 
 	/**
-	 * Send an "event resolved" notification for an asyncronous event. It serves to notify the
+	 * Send an "event resolved" notification for an asynchronous event. It serves to notify the
 	 * AppMarket that the processing of a given event by the connector has been completed
 	 *
 	 * @param baseAppmarketUrl host on which the marketplace is running
 	 * @param eventId          the id of the event we would like to resolve
-	 * @param result           represents the event processing result sent to the AppMarket. It would infcate if the event
+	 * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
 	 *                         processing has been successful or not.
 	 * @param key              the client key used to sign the resolve request
 	 */
