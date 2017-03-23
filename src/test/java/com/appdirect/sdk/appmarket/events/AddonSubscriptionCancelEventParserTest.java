@@ -64,7 +64,7 @@ public class AddonSubscriptionCancelEventParserTest {
 		//Then
 		assertThat(parsedEvent).isEqualTo(expectedEvent);
 	}
-	
+
 	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag) {
 		return EventInfo.builder()
 			.flag(eventFlag)
