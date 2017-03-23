@@ -25,10 +25,11 @@ class AppmarketEventService {
 
 	/**
 	 * Processes an event notification from the AppMarket
-	 * @param eventUrl the url from which we can fetch the payload of the incoming event
+	 *
+	 * @param eventUrl     the url from which we can fetch the payload of the incoming event
 	 * @param eventContext contextual information about the event notification
-	 * @return the {@link APIResult} instance representing the payload to be returned in response of the event 
-	 * 		   notification request
+	 * @return the {@link APIResult} instance representing the payload to be returned in response of the event
+	 * notification request
 	 */
 	APIResult processEvent(String eventUrl, EventHandlingContext eventContext) {
 		log.info("processing event for eventUrl={}", eventUrl);
