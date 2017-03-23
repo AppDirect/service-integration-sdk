@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.appdirect.sdk.appmarket.events.APIResult;
 
+/**
+ * Provides an interface for invoking the client-provided validation logic for migrations.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class AppmarketMigrationService {

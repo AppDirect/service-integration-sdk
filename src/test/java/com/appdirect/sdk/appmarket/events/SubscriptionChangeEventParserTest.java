@@ -14,7 +14,7 @@ public class SubscriptionChangeEventParserTest {
 	private SubscriptionChangeEventParser testedParser = new SubscriptionChangeEventParser();
 
 	@Test
-	public void parses_creatorDetails_orderInfo_accountInfo_consumerKey_devflag_andQueryParameters() throws Exception {
+	public void parses_creatorDetails_orderInfo_accountInfo_consumerKey_devFlag_andQueryParameters() throws Exception {
 		//Given
 		UserInfo expectedCreatorDetails = UserInfo.builder().build();
 		AccountInfo expectedAccountInfo = AccountInfo.builder().build();

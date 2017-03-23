@@ -49,8 +49,10 @@ public class AppmarketEventServiceTest {
 				.type(ACCOUNT_UNSYNC)
 				.build();
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
-
-		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		String testDeveloperKey = "testKey";
+		String testDeveloperSecret = "testSecret";
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenReturn(testEvent);
 
 		EventHandlingContext eventContext = eventContext("testKey");
@@ -69,7 +71,10 @@ public class AppmarketEventServiceTest {
 		//Given
 		DeveloperServiceException expectedException = new DeveloperServiceException("Bad stuff happened");
 
-		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		String testDeveloperKey = "testKey";
+		String testDeveloperSecret = "testSecret";
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenThrow(expectedException);
 
 		//Then
@@ -80,7 +85,10 @@ public class AppmarketEventServiceTest {
 	@Test
 	public void processEvent_whenUnknownExceptionThrown_thenBusinessLevelExceptionWithUnknownErrorCodeIsReturned() {
 		//Given
-		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		String testDeveloperKey = "testKey";
+		String testDeveloperSecret = "testSecret";
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenThrow(new RuntimeException());
 
 		//When
@@ -98,8 +106,10 @@ public class AppmarketEventServiceTest {
 		EventInfo testEvent = EventInfo.builder()
 				.flag(STATELESS)
 				.build();
-
-		when(appmarketEventClient.fetchEvent("http://test.url.org", "testKey", "testSecret"))
+		String testDeveloperKey = "testKey";
+		String testDeveloperSecret = "testSecret";
+		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+		when(appmarketEventClient.fetchEvent("http://test.url.org", testCredentials))
 				.thenReturn(testEvent);
 
 		//When
@@ -117,7 +127,7 @@ public class AppmarketEventServiceTest {
 		//Given
 		String invalidUrl = "inVaLidUrl";
 		String expectedErrorMessage = format("Failed to process event. eventUrl=%s | exception=Url is not valid.", invalidUrl);
-		when(appmarketEventClient.fetchEvent(any(), any(), any())).thenThrow(new IllegalArgumentException("Url is not valid."));
+		when(appmarketEventClient.fetchEvent(any(), any())).thenThrow(new IllegalArgumentException("Url is not valid."));
 
 		//When
 		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, eventContext("testKey")));

@@ -55,7 +55,7 @@ public class HtmlEmailNotificationServiceIntegrationTest {
 	}
 
 	@Test
-	public void testSendEmailNotification_whenEmailNotificationSent_theTargetSmtpServerReceivesIt() throws Exception {
+	public void testSendEmailNotification_whenEmailNotificationSent_theTargetSMTPServerReceivesIt() throws Exception {
 
 		//Given
 		String expectedEmailBody = "testBody";

@@ -23,6 +23,14 @@ class AppmarketEventService {
 		this.dispatcher = dispatcher;
 	}
 
+	/**
+	 * Processes an event notification from the AppMarket
+	 *
+	 * @param eventUrl     the url from which we can fetch the payload of the incoming event
+	 * @param eventContext contextual information about the event notification
+	 * @return the {@link APIResult} instance representing the payload to be returned in response of the event
+	 * notification request
+	 */
 	APIResult processEvent(String eventUrl, EventHandlingContext eventContext) {
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
@@ -42,7 +50,7 @@ class AppmarketEventService {
 
 	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
 		Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
-		EventInfo event = appmarketEventClient.fetchEvent(url, credentials.developerKey, credentials.developerSecret);
+		EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
 		log.info("Successfully retrieved event={}", event);
 		return event;
 	}

@@ -15,10 +15,10 @@ public class StringBackedCredentialsSupplierTest {
 		StringBackedCredentialsSupplier credentialsSupplier = new StringBackedCredentialsSupplier("key1:s1");
 
 		//When
-		Credentials creds = credentialsSupplier.getConsumerCredentials("key1");
+		Credentials credentials = credentialsSupplier.getConsumerCredentials("key1");
 
 		//Then
-		assertThat(creds).is(credentialsOf("key1", "s1"));
+		assertThat(credentials).is(credentialsOf("key1", "s1"));
 	}
 
 	@Test
@@ -27,10 +27,10 @@ public class StringBackedCredentialsSupplierTest {
 		StringBackedCredentialsSupplier credentialsSupplier = new StringBackedCredentialsSupplier("key1:s2");
 
 		//When
-		Credentials creds = credentialsSupplier.getConsumerCredentials("bad-key");
+		Credentials credentials = credentialsSupplier.getConsumerCredentials("bad-key");
 
 		//Then
-		assertThat(creds).is(credentialsOf("this key does not exist in the supplier", "this key does not exist in the supplier"));
+		assertThat(credentials).is(credentialsOf("this key does not exist in the supplier", "this key does not exist in the supplier"));
 	}
 
 	private Condition<Credentials> credentialsOf(String key, String secret) {
