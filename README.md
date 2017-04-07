@@ -1,93 +1,34 @@
 # service-integration-sdk
 
 Represents a collection of utilities meant to facilitate the implementation
-of custom connectors. It is assumed that the SDK is consumed by
-Spring Boot applications.
+of custom connectors. A connector is an application that handles integration events from the
+AppDirect marketplace and takes care of the necessary interaction with an external vendor system in order to 
+complete the request.
+Essentially a connector is an adapter that allows the marketplace to interact with all external vendor systems in a 
+consistent manner.
+
+For more details, see the docs in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
+
+## Prerequisites
+* Your connector application should be implemented using [Spring Boot](https://projects.spring.io/spring-boot/)
+* A build tool capable of building and running Spring Boot applications. Although you have several options, in the following
+instructions we are going to assume that you're using [Apache Maven](https://maven.apache.org/)
 
 ## Features
 * Automatic parsing of incoming market events
 * Automatic oauth authentication of messages using signed fetch
 * Automatic Oauth signing of messages to the marketplace
 
-## Documentation
-For detailed docs, check out our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
+## Sample client application 
+An sample connector implemented with the SDK can be found [here](https://github.com/EmilDafinov/chatty-pie-connector)
+Please refer to the documentation of the connector for instructions on building / running it.
 
-## Getting started
-* Include a dependency on the sdk in your pom.xml
-```
-<dependency>
-    <groupId>com.appdirect</groupId>
-    <artifactId>service-integration-sdk</artifactId>
-    <version>1.15-SNAPSHOT</version>
-</dependency>
-```
-
-* Ensure your application context imports the `ConnectorSdkConfiguration`
-  class; Use the import annotation `@Import(ConnectorSdkConfiguration.class)`. i.e.
-```
-@SpringBootApplication
-@Import(ConnectorSdkConfiguration.class)
-public class MinimalConnector {
-    // your code...
-}
-```
-
-* Ensure your application context includes a `DeveloperSpecificAppmarketCredentialsSupplier` bean
-  that returns valid appmarket credentials given a consumer key.
-
-* Ensure your application context includes a `AppmarketEventHandler<T>` bean for every type of mandatory market events.
-  * Not providing handler for a mandatory event types will lead to an application context failure.
-  * The events you need to expose `AppmarketEventHandler`s for are
-      * [`SubscriptionOrder`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionOrder.java)
-      * [`SubscriptionCancel`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionCancel.java)
-
-* Optional events can be handled if need be.
-  * Add `AppmarketEventHandler<T>` beans for every desired events and annotate it with `@Primary`.
-  ```
-  @Primary
-  @Bean
-  public AppmarketEventHandler<SubscriptionUpcomingInvoice> mySubscriptionUpcomingNoticeHandler() {
-  	return event -> ApiResult.success("My handler for a SUBSCRIPTION_UPCOMING_INVOICE event");
-  }
-  ```
-  * Available optional events:
-      * [`SubscriptionChange`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionChange.java)
-      * [`SubscriptionClosed`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionClosed.java)
-      * [`SubscriptionDeactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionDeactivated.java)
-      * [`SubscriptionReactivated`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionReactivated.java)
-      * [`SubscriptionUpcomingInvoice`](src/main/java/com/appdirect/sdk/appmarket/events/SubscriptionUpcomingInvoice.java)
-      * [`UserAssignment`](src/main/java/com/appdirect/sdk/appmarket/events/UserAssignment.java)
-      * [`UserUnassignment`](src/main/java/com/appdirect/sdk/appmarket/events/UserUnassignment.java)
-      * [`AddonSubscriptionOrder`](src/main/java/com/appdirect/sdk/appmarket/events/AddonSubscriptionOrder.java)
-      * [`AddonSubscriptionCancel`](src/main/java/com/appdirect/sdk/appmarket/events/AddonSubscriptionCancel.java)
+## Getting Started
+See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started) instructions
+in the wiki for info on how to incorporate the SDK into your application.
 
 ## Exposed endpoints
-* `GET /health`
-  Returns a 200 (Success) HTTP code. Used to verify that the server is up
-
-* `GET /info`
-  Returns information about the deployed application. The information returned varies
-  according to the configuration of the client application. Currently we've
-  confirmed that if there is a `git.properties` file in the classpath, generated
-  by the [git commit id maven plugin](https://github.com/ktoso/maven-git-commit-id-plugin),
-  you'll get output like:
-  ```
-  {
-  	"git": {
-  		"commit": {
-  			"time": "2016-11-07T18:05:22.000+0000",
-  			"id": "2940352"
-  		},
-  		"branch": "bugfix/HTTPSigInConnector"
-  	}
-  }
-  ```
-* `GET /api/v1/integration/processEvent?eventUrl=[insert-event-callback-url-here]`
-  That is the endpoint where the appmarket sends event notifications
-
-Note that the SDK includes the `spring-boot-starter-actuator`, which
-means several more endpoints are exposed automatically by Spring.
-For more information review the documentation [here](http://docs.spring.io/spring-boot/docs/1.4.3.RELEASE/reference/htmlsingle/#production-ready-endpoints)
+Using the SDK enables several REST points on your connector application. For details, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints)
 
 ## Building
 * `mvn clean javadoc:jar source:jar install`
