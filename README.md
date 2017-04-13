@@ -1,7 +1,7 @@
 # service-integration-sdk
 
 Represents a collection of utilities meant to facilitate the implementation
-of custom connectors. A connector is an application that handles integration events from the
+of custom connectors. A connector is a stand-alone application that handles integration events from the
 AppDirect marketplace and takes care of the necessary interaction with an external vendor system in order to 
 complete the request.
 Essentially a connector is an adapter that allows the marketplace to interact with all external vendor systems in a 
@@ -25,6 +25,10 @@ what response is sent back to the AppDirect marketplace once the processing of a
 An sample connector implemented with the SDK can be found [here](https://github.com/EmilDafinov/chatty-pie-connector)
 Please refer to the documentation of the connector for instructions on building / running it.
 
+## Getting Started
+See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started) instructions
+in the wiki for info on how to incorporate the SDK into your application.
+
 ## Events handled
 Using the SDK enables your application to handle the following AppDirect marketplace integration events. You have full control
 of the logic that your connector will execute when an integration events. See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started)
@@ -41,14 +45,10 @@ to your event type.
 For specific information regarding the different event types and the responses that you need to send back to the 
 AppDirect marketplace when event processing is complete, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Event-Descriptions)
 
-## Getting Started
-See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started) instructions
-in the wiki for info on how to incorporate the SDK into your application.
-
 ## Exposed endpoints
 Using the SDK enables several REST points on your connector application. For details, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints)
 
-## Building
+## Building the SDK library locally
 * `mvn clean javadoc:jar source:jar install`
 
 ## Regular dependencies version update
