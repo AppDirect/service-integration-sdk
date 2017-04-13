@@ -10,6 +10,7 @@ consistent manner.
 For more details, see the docs in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
 
 ## Prerequisites
+* Java 8 or higher
 * Your connector application should be implemented using [Spring Boot](https://projects.spring.io/spring-boot/)
 * A build tool capable of building and running Spring Boot applications. Although you have several options, in the following
 instructions we are going to assume that you're using [Apache Maven](https://maven.apache.org/)
