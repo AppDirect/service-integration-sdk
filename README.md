@@ -1,13 +1,14 @@
 # service-integration-sdk
 
-Represents a collection of utilities meant to facilitate the implementation
-of custom connectors. A connector is a stand-alone application that handles integration events from the
-AppDirect marketplace and takes care of the necessary interaction with an external vendor system in order to 
-complete the request.
-Essentially a connector is an adapter that allows the marketplace to interact with all external vendor systems in a 
-consistent manner.
+## Overview
+Represents a collection of utilities meant to facilitate the implementation of custom connectors. 
+A connector is a stand-alone application that handles integration events from the AppDirect marketplace and takes 
+care of the necessary interaction with an external vendor system in order to complete the request. 
 
-For more details, see the docs in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
+Essentially a connector is an adapter that allows the marketplace to interact with all external vendor systems 
+in a consistent manner.
+
+For more details, see the documents in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
 
 ## Prerequisites
 * Java 8 or higher
@@ -17,20 +18,19 @@ instructions we are going to assume that you're using [Apache Maven](https://mav
 
 ## Features
 * Automatic parsing of incoming market integration events
-* Automatic oauth authentication of messages using signed fetch
+* Automatic OAuth authentication of messages using signed fetch
 * Provides you with objects modelling the responses needed to be sent to the marketplace, so that you can specify 
 what response is sent back to the AppDirect marketplace once the processing of a given integration event is complete
-* Automatic Oauth signing of messages to the marketplace
+* Automatic OAuth signing of messages to the marketplace
 
 ## Sample client application 
 An sample connector implemented with the SDK can be found [here](https://github.com/EmilDafinov/chatty-pie-connector)
 Please refer to the documentation of the connector for instructions on building / running it.
 
 ## Getting Started
-See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started) instructions
-in the wiki for info on how to incorporate the SDK into your application.
+To incorporate the SDK into your application please see  [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started).
 
-## Events handled
+## Event Handling
 Using the SDK enables your application to handle the following AppDirect marketplace integration events. You have full control
 of the logic that your connector will execute when an integration events. See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started)
 page for more information on how to implement your integration event handlers.
