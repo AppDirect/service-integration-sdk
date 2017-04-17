@@ -24,7 +24,7 @@ what response is sent back to the AppDirect marketplace once the processing of a
 * Automatic OAuth signing of messages to the marketplace
 
 ## Sample client application 
-An sample connector implemented with the SDK can be found [here](https://github.com/EmilDafinov/chatty-pie-connector)
+An sample connector implemented with the SDK can be found [here](https://github.com/AppDirect/chatty-pie-connector)
 Please refer to the documentation of the connector for instructions on building / running it.
 
 ## Getting Started
