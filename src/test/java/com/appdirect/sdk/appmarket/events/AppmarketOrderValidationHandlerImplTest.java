@@ -22,7 +22,7 @@ public class AppmarketOrderValidationHandlerImplTest {
 	}
 
 	@Test
-	public void testvalidateOrderFields_whenCalled_AnEmptySetIsReturned() throws Exception {
+	public void testValidateOrderFields_whenCalled_AnEmptySetIsReturned() throws Exception {
 		//Given
 		String testLocale = "EN";
 		Map<String, String> testOrderFields = new HashMap<>();
