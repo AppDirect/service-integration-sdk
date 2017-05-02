@@ -7,7 +7,7 @@ public class UserAssignmentParser implements EventParser<UserAssignment> {
 	@Override
 	public UserAssignment parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		return new UserAssignment(
-			eventInfo.getPayload().getUser().getUuid(),
+			eventInfo.getPayload().getUser(),
 			eventInfo.getPayload().getAccount().getAccountIdentifier(),
 			eventContext.getConsumerKeyUsedByTheRequest(),
 			eventContext.getQueryParameters(),

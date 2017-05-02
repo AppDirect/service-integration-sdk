@@ -23,12 +23,13 @@ public class UserAssignmentParserTest {
 		//Given
 		String expectedAccountId = "expectedAccountId";
 		String expectedAssignedUserId = "expectedAssignedUserId";
+		UserInfo userInfo = UserInfo.builder().uuid(expectedAssignedUserId).build();
 		String expectedConsumerKey = "expectedConsumerKey";
 		HashMap<String, String[]> expectedQueryParams = new HashMap<>();
 		EventFlag expectedEventFlag = null;
-		UserAssignment expectedRichEvent = new UserAssignment(expectedAssignedUserId, expectedAccountId, expectedConsumerKey, expectedQueryParams, expectedEventFlag);
+		UserAssignment expectedRichEvent = new UserAssignment(userInfo, expectedAccountId, expectedConsumerKey, expectedQueryParams, expectedEventFlag);
 
-		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, expectedAssignedUserId);
+		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, userInfo);
 		EventHandlingContext testEventHandlingContext = new EventHandlingContext(expectedConsumerKey, expectedQueryParams);
 
 
@@ -39,16 +40,14 @@ public class UserAssignmentParserTest {
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
 	}
 
-	private EventInfo userAssignmentEvent(String accountIdentifier, String userIdentifier) {
+	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo) {
 		return EventInfo.builder()
 			.type(EventType.USER_ASSIGNMENT)
 			.payload(EventPayload.builder()
 				.account(AccountInfo.builder()
 					.accountIdentifier(accountIdentifier)
 					.build())
-				.user(UserInfo.builder()
-					.uuid(userIdentifier)
-					.build())
+				.user(userInfo)
 				.build())
 			.build();
 	}
