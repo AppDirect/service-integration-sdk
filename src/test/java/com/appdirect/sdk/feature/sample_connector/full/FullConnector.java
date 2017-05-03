@@ -117,7 +117,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<UserAssignment> myUserAssignmentDevHandler() {
 		return event -> success(
-			format("USER_ASSIGN for user %s for account %s has been processed, for real.", event.getAssignedUserId(), event.getAccountId())
+			format("USER_ASSIGN for user %s for account %s has been processed, for real.", event.getAssignedUser().getUuid(), event.getAccountId())
 		);
 	}
 
