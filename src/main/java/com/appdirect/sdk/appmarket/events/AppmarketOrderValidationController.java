@@ -21,7 +21,7 @@ public class AppmarketOrderValidationController {
 		this.validationHandler = validationHandler;
 	}
 
-	@RequestMapping(method = POST, 
+	@RequestMapping(method = POST,
 			value = "/unsecured/integration/orderValidation",
 			consumes = APPLICATION_FORM_URLENCODED_VALUE,
 			produces = APPLICATION_JSON_VALUE
