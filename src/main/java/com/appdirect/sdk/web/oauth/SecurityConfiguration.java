@@ -16,9 +16,6 @@ import org.springframework.security.oauth.provider.token.OAuthProviderTokenServi
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificAppmarketCredentialsConsumerDetailsService;
-import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
-import com.appdirect.sdk.web.oauth.OAuthSignatureCheckingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -63,12 +60,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+				.authorizeRequests()
+				.antMatchers("/unsecured/**")
+				.permitAll()
+					.and()
 				.antMatcher("/api/v1/**")
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
+					.and()
 				.csrf().disable()
 				.authorizeRequests().anyRequest().authenticated()
-				.and()
+					.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }

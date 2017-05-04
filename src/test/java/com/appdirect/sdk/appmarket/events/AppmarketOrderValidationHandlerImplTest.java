@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,9 +27,9 @@ public class AppmarketOrderValidationHandlerImplTest {
 		Map<String, String> testOrderFields = new HashMap<>();
 
 		//When
-		Set<OrderValidationStatus> actualValidationMessages = tested.validateOrderFields(testLocale, testOrderFields);
+		ValidationResponse actualValidationMessages = tested.validateOrderFields(testLocale, testOrderFields);
 
 		//Then
-		assertThat(actualValidationMessages).isEmpty();
+		assertThat(actualValidationMessages.getResult()).isEmpty();
 	}
 }
