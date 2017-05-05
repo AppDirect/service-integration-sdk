@@ -33,18 +33,16 @@ public class AppmarketOrderValidationControllerTest {
 	@Test
 	public void testValidatie_whenControllerCalled_parametersForwardedToTheHandler() throws Exception {
 		//Given
-		String testLocale = "EN";
 		MultiValueMap testParams = mock(MultiValueMap.class);
 		Map<String, String> expectedParamsMap = new HashMap<>();
 		when(testParams.toSingleValueMap())
 				.thenReturn(expectedParamsMap);
 		//When
-		tested.validateOrderFields(testLocale, testParams);
+		tested.validateOrderFields(testParams);
 
 		//Then
 		verify(mockValidationHandler)
 				.validateOrderFields(
-						eq(testLocale),
 						eq(expectedParamsMap)
 				);
 	}

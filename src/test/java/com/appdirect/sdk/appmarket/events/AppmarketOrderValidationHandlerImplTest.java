@@ -23,11 +23,10 @@ public class AppmarketOrderValidationHandlerImplTest {
 	@Test
 	public void testValidateOrderFields_whenCalled_AnEmptySetIsReturned() throws Exception {
 		//Given
-		String testLocale = "EN";
 		Map<String, String> testOrderFields = new HashMap<>();
 
 		//When
-		ValidationResponse actualValidationMessages = tested.validateOrderFields(testLocale, testOrderFields);
+		ValidationResponse actualValidationMessages = tested.validateOrderFields(testOrderFields);
 
 		//Then
 		assertThat(actualValidationMessages.getResult()).isEmpty();
