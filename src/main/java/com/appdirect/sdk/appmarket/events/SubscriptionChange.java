@@ -15,11 +15,11 @@ public class SubscriptionChange extends EventWithContext {
 	private final OrderInfo order;
 	private final AccountInfo account;
 
-	public SubscriptionChange(String consumerKeyUsedByTheRequest, 
-							  UserInfo owner, 
-							  OrderInfo order, 
-							  AccountInfo account, 
-							  Map<String, String[]> queryParameters, 
+	public SubscriptionChange(String consumerKeyUsedByTheRequest,
+							  UserInfo owner,
+							  OrderInfo order,
+							  AccountInfo account,
+							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
 							  String eventId) {
 

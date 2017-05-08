@@ -18,7 +18,7 @@ public class AddonSubscriptionCancel extends EventWithContext {
 								   String parentAccountIdentifier,
 								   String consumerKeyUsedByTheRequest,
 								   Map<String, String[]> queryParameters,
-								   EventFlag flag, 
+								   EventFlag flag,
 								   String eventId) {
 
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);

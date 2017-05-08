@@ -11,11 +11,11 @@ public class UserAssignment extends EventWithContext {
 	private final UserInfo assignedUser;
 	private final String accountId;
 
-	public UserAssignment(UserInfo assignedUser, 
-						  String accountId, 
-						  String consumerKey, 
-						  Map<String, String []> queryParameters, 
-						  EventFlag eventFlag, 
+	public UserAssignment(UserInfo assignedUser,
+						  String accountId,
+						  String consumerKey,
+						  Map<String, String[]> queryParameters,
+						  EventFlag eventFlag,
 						  String eventId) {
 
 		super(consumerKey, queryParameters, eventFlag, eventId);

@@ -13,9 +13,9 @@ import lombok.Value;
 public class SubscriptionCancel extends EventWithContext {
 	private final String accountIdentifier;
 
-	public SubscriptionCancel(String consumerKeyUsedByTheRequest, 
-							  String accountIdentifier, 
-							  Map<String, String[]> queryParameters, 
+	public SubscriptionCancel(String consumerKeyUsedByTheRequest,
+							  String accountIdentifier,
+							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
 							  String eventId) {
 

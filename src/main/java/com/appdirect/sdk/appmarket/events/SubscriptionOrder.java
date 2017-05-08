@@ -20,14 +20,14 @@ public class SubscriptionOrder extends EventWithContext {
 	private final String partner;
 	private final String applicationUuid;
 
-	public SubscriptionOrder(String consumerKeyUsedByTheRequest, 
-							 EventFlag flag, 
-							 UserInfo purchaserInfo, 
-							 Map<String, String> configuration, 
-							 CompanyInfo companyInfo, 
-							 OrderInfo orderInfo, 
-							 String partner, 
-							 String applicationUuid, 
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest,
+							 EventFlag flag,
+							 UserInfo purchaserInfo,
+							 Map<String, String> configuration,
+							 CompanyInfo companyInfo,
+							 OrderInfo orderInfo,
+							 String partner,
+							 String applicationUuid,
 							 Map<String, String[]> queryParameters,
 							 String eventId) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 

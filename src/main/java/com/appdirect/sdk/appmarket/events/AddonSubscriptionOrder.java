@@ -17,13 +17,13 @@ public class AddonSubscriptionOrder extends EventWithContext {
 	private final String partner;
 	private final String parentAccountIdentifier;
 
-	public AddonSubscriptionOrder(String consumerKeyUsedByTheRequest, 
-								  EventFlag flag, 
-								  UserInfo purchaserInfo, 
-								  CompanyInfo companyInfo, 
-								  OrderInfo orderInfo, 
-								  String partner, 
-								  String parentAccountIdentifier, 
+	public AddonSubscriptionOrder(String consumerKeyUsedByTheRequest,
+								  EventFlag flag,
+								  UserInfo purchaserInfo,
+								  CompanyInfo companyInfo,
+								  OrderInfo orderInfo,
+								  String partner,
+								  String parentAccountIdentifier,
 								  Map<String, String[]> queryParameters,
 								  String eventId) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 

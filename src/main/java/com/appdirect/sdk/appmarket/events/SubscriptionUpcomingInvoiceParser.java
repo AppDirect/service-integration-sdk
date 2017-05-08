@@ -4,9 +4,9 @@ class SubscriptionUpcomingInvoiceParser implements EventParser<SubscriptionUpcom
 	@Override
 	public SubscriptionUpcomingInvoice parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		return new SubscriptionUpcomingInvoice(
-				eventContext.getConsumerKeyUsedByTheRequest(), 
-				eventInfo.getPayload().getAccount(), 
-				eventContext.getQueryParameters(), 
+				eventContext.getConsumerKeyUsedByTheRequest(),
+				eventInfo.getPayload().getAccount(),
+				eventContext.getQueryParameters(),
 				eventInfo.getFlag(),
 				eventInfo.getId()
 		);

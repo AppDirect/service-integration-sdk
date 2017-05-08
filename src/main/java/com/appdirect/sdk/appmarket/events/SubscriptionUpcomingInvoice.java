@@ -14,10 +14,10 @@ import lombok.EqualsAndHashCode;
 public class SubscriptionUpcomingInvoice extends EventWithContext {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionUpcomingInvoice(String consumerKeyUsedByTheRequest, 
-									   AccountInfo accountInfo, 
-									   Map<String, String[]> queryParameters, 
-									   EventFlag flag, 
+	public SubscriptionUpcomingInvoice(String consumerKeyUsedByTheRequest,
+									   AccountInfo accountInfo,
+									   Map<String, String[]> queryParameters,
+									   EventFlag flag,
 									   String eventId) {
 
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);

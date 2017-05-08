@@ -4,9 +4,9 @@ class SubscriptionReactivatedParser implements EventParser<SubscriptionReactivat
 	@Override
 	public SubscriptionReactivated parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		return new SubscriptionReactivated(
-				eventContext.getConsumerKeyUsedByTheRequest(), 
-				eventInfo.getPayload().getAccount(), 
-				eventContext.getQueryParameters(), 
+				eventContext.getConsumerKeyUsedByTheRequest(),
+				eventInfo.getPayload().getAccount(),
+				eventContext.getQueryParameters(),
 				eventInfo.getFlag(),
 				eventInfo.getId()
 		);
