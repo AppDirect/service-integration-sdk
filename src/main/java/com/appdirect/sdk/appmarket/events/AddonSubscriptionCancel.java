@@ -10,7 +10,7 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class AddonSubscriptionCancel extends EventWithConsumerKeyQueryParametersAndEventFlag {
+public class AddonSubscriptionCancel extends EventWithContext {
 	private final String accountIdentifier;
 	private final String parentAccountIdentifier;
 
@@ -18,9 +18,10 @@ public class AddonSubscriptionCancel extends EventWithConsumerKeyQueryParameters
 								   String parentAccountIdentifier,
 								   String consumerKeyUsedByTheRequest,
 								   Map<String, String[]> queryParameters,
-								   EventFlag flag) {
+								   EventFlag flag, 
+								   String eventId) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
 		this.accountIdentifier = accountIdentifier;
 		this.parentAccountIdentifier = parentAccountIdentifier;
 	}

@@ -21,16 +21,18 @@ public class AddonSubscriptionCancelEventParserTest {
 		String expectedConsumerKey = "expectedConsumerKey";
 		String expectedAddonAccountIdentifier = "expectedAddonAccountIdentifier";
 		String expectedParentAccountIdentifier = "expectedParentAccountIdentifier";
+		String expectedEventId = "expectedEventId";
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = null;
-		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag);
+		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
 			expectedAddonAccountIdentifier,
 			expectedParentAccountIdentifier,
 			expectedConsumerKey,
 			expectedParameters,
-			expectedFlag
+			expectedFlag,
+			expectedEventId
 		);
 
 		//When
@@ -48,14 +50,16 @@ public class AddonSubscriptionCancelEventParserTest {
 		String expectedParentAccountIdentifier = "expectedParentAccountIdentifier";
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = STATELESS;
-		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag);
+		String expectedEventId = "expectedEventId";
+		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
 			expectedAddonAccountIdentifier,
 			expectedParentAccountIdentifier,
 			expectedConsumerKey,
 			expectedParameters,
-			expectedFlag
+			expectedFlag,
+			expectedEventId
 		);
 
 		//When
@@ -65,7 +69,7 @@ public class AddonSubscriptionCancelEventParserTest {
 		assertThat(parsedEvent).isEqualTo(expectedEvent);
 	}
 
-	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag) {
+	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag, String eventId) {
 		return EventInfo.builder()
 			.flag(eventFlag)
 			.payload(
@@ -76,7 +80,9 @@ public class AddonSubscriptionCancelEventParserTest {
 							.parentAccountIdentifier(parentAccountIdentifier)
 							.build()
 					).build()
-			).build();
+			)
+			.id(eventId)
+			.build();
 	}
 
 }

@@ -27,9 +27,10 @@ public class UserAssignmentParserTest {
 		String expectedConsumerKey = "expectedConsumerKey";
 		HashMap<String, String[]> expectedQueryParams = new HashMap<>();
 		EventFlag expectedEventFlag = null;
-		UserAssignment expectedRichEvent = new UserAssignment(userInfo, expectedAccountId, expectedConsumerKey, expectedQueryParams, expectedEventFlag);
+		String expectedEventId = "expectedEventId";
+		UserAssignment expectedRichEvent = new UserAssignment(userInfo, expectedAccountId, expectedConsumerKey, expectedQueryParams, expectedEventFlag, expectedEventId);
 
-		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, userInfo);
+		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, userInfo, expectedEventId);
 		EventHandlingContext testEventHandlingContext = new EventHandlingContext(expectedConsumerKey, expectedQueryParams);
 
 
@@ -40,7 +41,7 @@ public class UserAssignmentParserTest {
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
 	}
 
-	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo) {
+	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo, String eventId) {
 		return EventInfo.builder()
 			.type(EventType.USER_ASSIGNMENT)
 			.payload(EventPayload.builder()
@@ -49,6 +50,7 @@ public class UserAssignmentParserTest {
 					.build())
 				.user(userInfo)
 				.build())
+			.id(eventId)
 			.build();
 	}
 }

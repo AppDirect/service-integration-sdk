@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class SubscriptionOrder extends EventWithConsumerKeyQueryParametersAndEventFlag {
+public class SubscriptionOrder extends EventWithContext {
 	private final UserInfo purchaserInfo;
 	private final Map<String, String> configuration;
 	private final CompanyInfo companyInfo;
@@ -20,8 +20,18 @@ public class SubscriptionOrder extends EventWithConsumerKeyQueryParametersAndEve
 	private final String partner;
 	private final String applicationUuid;
 
-	public SubscriptionOrder(String consumerKeyUsedByTheRequest, EventFlag flag, UserInfo purchaserInfo, Map<String, String> configuration, CompanyInfo companyInfo, OrderInfo orderInfo, String partner, String applicationUuid, Map<String, String[]> queryParameters) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
-		super(consumerKeyUsedByTheRequest, queryParameters, flag);
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest, 
+							 EventFlag flag, 
+							 UserInfo purchaserInfo, 
+							 Map<String, String> configuration, 
+							 CompanyInfo companyInfo, 
+							 OrderInfo orderInfo, 
+							 String partner, 
+							 String applicationUuid, 
+							 Map<String, String[]> queryParameters,
+							 String eventId) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
+
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
 		this.purchaserInfo = purchaserInfo;
 		this.configuration = configuration;
 		this.companyInfo = companyInfo;

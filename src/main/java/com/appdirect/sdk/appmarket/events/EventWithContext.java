@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
+public abstract class EventWithContext {
 	/**
 	 * Returns the consumer key that was used by the appmarket to publish this event.
 	 * You can use this to determine which product is the originator of this event.
@@ -26,6 +26,7 @@ public abstract class EventWithConsumerKeyQueryParametersAndEventFlag {
 	private final Map<String, String[]> queryParameters;
 	@Getter(AccessLevel.NONE)
 	private final EventFlag flag;
+	private final String eventId;
 
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.

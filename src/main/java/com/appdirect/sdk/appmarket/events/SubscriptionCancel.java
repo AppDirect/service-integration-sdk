@@ -10,11 +10,16 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class SubscriptionCancel extends EventWithConsumerKeyQueryParametersAndEventFlag {
+public class SubscriptionCancel extends EventWithContext {
 	private final String accountIdentifier;
 
-	public SubscriptionCancel(String consumerKeyUsedByTheRequest, String accountIdentifier, Map<String, String[]> queryParameters, EventFlag flag) {
-		super(consumerKeyUsedByTheRequest, queryParameters, flag);
+	public SubscriptionCancel(String consumerKeyUsedByTheRequest, 
+							  String accountIdentifier, 
+							  Map<String, String[]> queryParameters, 
+							  EventFlag flag,
+							  String eventId) {
+
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
 		this.accountIdentifier = accountIdentifier;
 	}
 }
