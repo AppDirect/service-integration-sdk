@@ -20,7 +20,7 @@ import com.appdirect.sdk.support.FakeAppmarket;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {FullConnector.class}, webEnvironment = RANDOM_PORT)
-public class ErrorHandlingWorks {
+public class ErrorHandlingIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
 	private FakeAppmarket fakeAppmarket;

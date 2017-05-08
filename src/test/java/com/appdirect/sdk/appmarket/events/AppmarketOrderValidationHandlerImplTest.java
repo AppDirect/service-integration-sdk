@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationHandlerImpl;
+import com.appdirect.sdk.appmarket.validation.ValidationResponse;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketOrderValidationHandlerImplTest {
 
@@ -23,11 +26,10 @@ public class AppmarketOrderValidationHandlerImplTest {
 	@Test
 	public void testValidateOrderFields_whenCalled_AnEmptySetIsReturned() throws Exception {
 		//Given
-		String testLocale = "EN";
 		Map<String, String> testOrderFields = new HashMap<>();
 
 		//When
-		ValidationResponse actualValidationMessages = tested.validateOrderFields(testLocale, testOrderFields);
+		ValidationResponse actualValidationMessages = tested.validateOrderFields(testOrderFields);
 
 		//Then
 		assertThat(actualValidationMessages.getResult()).isEmpty();

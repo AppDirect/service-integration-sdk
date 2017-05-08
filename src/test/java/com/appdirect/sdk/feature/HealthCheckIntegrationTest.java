@@ -19,7 +19,7 @@ import com.appdirect.sdk.support.HttpClientHelper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FullConnector.class, webEnvironment = RANDOM_PORT)
-public class HealthCheckTest {
+public class HealthCheckIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
 	private HttpClient httpClient = HttpClients.createMinimal();
