@@ -14,9 +14,9 @@ import lombok.EqualsAndHashCode;
 public class SubscriptionReactivated extends EventWithContext {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionReactivated(String consumerKeyUsedByTheRequest, 
-								   AccountInfo accountInfo, 
-								   Map<String, String[]> queryParameters, 
+	public SubscriptionReactivated(String consumerKeyUsedByTheRequest,
+								   AccountInfo accountInfo,
+								   Map<String, String[]> queryParameters,
 								   EventFlag flag,
 								   String eventId) {
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);

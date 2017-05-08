@@ -19,10 +19,10 @@ import lombok.EqualsAndHashCode;
 public class SubscriptionClosed extends EventWithContext {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionClosed(String consumerKeyUsedByTheRequest, 
-							  AccountInfo accountInfo, 
-							  Map<String, String[]> queryParameters, 
-							  EventFlag flag, 
+	public SubscriptionClosed(String consumerKeyUsedByTheRequest,
+							  AccountInfo accountInfo,
+							  Map<String, String[]> queryParameters,
+							  EventFlag flag,
 							  String eventId) {
 
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
