@@ -31,23 +31,11 @@ import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
 public class OrderValidationIsWiredUpIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
-	private HttpClient httpClient = HttpClients.createMinimal();
+	private HttpClient httpClient = createHttpClient();
 
 	@Test
 	public void testValidationEdnpoint_whenPostSent_DefaultHandlerRespondsWith200() throws Exception {
 		//Given
-		CloseableHttpClient httpClient = HttpClients.custom()
-				.setUserAgent("Apache-HttpClient/4.3.6 (java 1.5)")
-				.setDefaultHeaders(
-						asList(
-								new BasicHeader(HttpHeaders.ACCEPT, "application/json, application/xml"),
-								new BasicHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate"),
-								new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
-						)
-				)
-				.disableRedirectHandling()
-				.build();
-
 		HttpPost httpPost = new HttpPost(format("http://localhost:%d/unsecured/integration/orderValidation", localConnectorPort));
 		List<NameValuePair> keys = new ArrayList<>();
 		keys.add(new BasicNameValuePair("aKey", "aValue"));
@@ -58,5 +46,19 @@ public class OrderValidationIsWiredUpIntegrationTest {
 
 		//Then
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+	}
+
+	private CloseableHttpClient createHttpClient() {
+		return HttpClients.custom()
+				.setUserAgent("Apache-HttpClient/4.3.6 (java 1.5)")
+				.setDefaultHeaders(
+						asList(
+								new BasicHeader(HttpHeaders.ACCEPT, "application/json, application/xml"),
+								new BasicHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate"),
+								new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
+						)
+				)
+				.disableRedirectHandling()
+				.build();
 	}
 }
