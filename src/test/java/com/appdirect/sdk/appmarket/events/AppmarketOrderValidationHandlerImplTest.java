@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationHandlerImpl;
+import com.appdirect.sdk.appmarket.validation.ValidationResponse;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketOrderValidationHandlerImplTest {
 

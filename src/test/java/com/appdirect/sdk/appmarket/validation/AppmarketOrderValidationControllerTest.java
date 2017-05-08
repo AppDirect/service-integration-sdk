@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.events;
+package com.appdirect.sdk.appmarket.validation;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -15,6 +15,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.util.MultiValueMap;
+
+import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationController;
+import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketOrderValidationControllerTest {

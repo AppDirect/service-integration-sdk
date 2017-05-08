@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.events;
+package com.appdirect.sdk.appmarket.validation;
 
 import java.util.HashSet;
 import java.util.Map;

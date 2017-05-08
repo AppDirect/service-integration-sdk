@@ -1,4 +1,4 @@
-package com.appdirect.sdk.appmarket.events;
+package com.appdirect.sdk.appmarket.validation;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
