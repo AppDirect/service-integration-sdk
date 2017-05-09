@@ -8,7 +8,8 @@ class SubscriptionClosedParser implements EventParser<SubscriptionClosed> {
 				eventInfo.getPayload().getAccount(),
 				eventContext.getQueryParameters(),
 				eventInfo.getFlag(),
-				eventInfo.getId()
+				eventInfo.getId(),
+				eventInfo.getMarketplace().getBaseUrl()
 		);
 	}
 }

@@ -21,9 +21,10 @@ public class SubscriptionDeactivated extends EventWithContext {
 								   AccountInfo accountInfo,
 								   Map<String, String[]> queryParameters,
 								   EventFlag flag,
-								   String eventId) {
+								   String eventId,
+								   String marketplaceUrl) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, marketplaceUrl);
 		this.accountInfo = accountInfo;
 	}
 

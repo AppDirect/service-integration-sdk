@@ -12,7 +12,8 @@ public class UserAssignmentParser implements EventParser<UserAssignment> {
 			eventContext.getConsumerKeyUsedByTheRequest(),
 			eventContext.getQueryParameters(),
 			eventInfo.getFlag(),
-			eventInfo.getId()
+			eventInfo.getId(),
+			eventInfo.getMarketplace().getBaseUrl()
 		);
 	}
 }

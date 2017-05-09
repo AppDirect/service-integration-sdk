@@ -25,9 +25,10 @@ public class AddonSubscriptionOrder extends EventWithContext {
 								  String partner,
 								  String parentAccountIdentifier,
 								  Map<String, String[]> queryParameters,
-								  String eventId) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
+								  String eventId,
+								  String marketplaceUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, marketplaceUrl);
 		this.purchaserInfo = purchaserInfo;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;

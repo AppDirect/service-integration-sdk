@@ -22,6 +22,7 @@ public class SubscriptionCancelEventParserTest {
 		String testAccountIdentifier = "testAccountIdentifier";
 		EventInfo testEventInfo = EventInfo.builder()
 			.flag(DEVELOPMENT)
+			.marketplace(new MarketInfo("APPDIRECT", "http://example.com"))
 			.payload(
 				EventPayload.builder()
 					.account(

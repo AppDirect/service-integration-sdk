@@ -9,7 +9,8 @@ class AddonSubscriptionCancelEventParser implements EventParser<AddonSubscriptio
 			eventContext.getConsumerKeyUsedByTheRequest(),
 			eventContext.getQueryParameters(),
 			eventInfo.getFlag(),
-			eventInfo.getId()
+			eventInfo.getId(),
+			eventInfo.getMarketplace().getBaseUrl()
 		);
 	}
 }

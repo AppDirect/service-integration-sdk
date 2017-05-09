@@ -8,7 +8,8 @@ class SubscriptionReactivatedParser implements EventParser<SubscriptionReactivat
 				eventInfo.getPayload().getAccount(),
 				eventContext.getQueryParameters(),
 				eventInfo.getFlag(),
-				eventInfo.getId()
+				eventInfo.getId(),
+				eventInfo.getMarketplace().getBaseUrl()
 		);
 	}
 }

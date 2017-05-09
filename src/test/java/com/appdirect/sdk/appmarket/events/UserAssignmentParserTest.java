@@ -28,9 +28,18 @@ public class UserAssignmentParserTest {
 		HashMap<String, String[]> expectedQueryParams = new HashMap<>();
 		EventFlag expectedEventFlag = null;
 		String expectedEventId = "expectedEventId";
-		UserAssignment expectedRichEvent = new UserAssignment(userInfo, expectedAccountId, expectedConsumerKey, expectedQueryParams, expectedEventFlag, expectedEventId);
+		String expectedBaseUrl = "http://www.example.com";
+		UserAssignment expectedRichEvent = new UserAssignment(
+				userInfo, 
+				expectedAccountId, 
+				expectedConsumerKey, 
+				expectedQueryParams, 
+				expectedEventFlag, 
+				expectedEventId,
+				expectedBaseUrl
+		);
 
-		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, userInfo, expectedEventId);
+		EventInfo testEventInfo = userAssignmentEvent(expectedAccountId, userInfo, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventHandlingContext = new EventHandlingContext(expectedConsumerKey, expectedQueryParams);
 
 
@@ -41,9 +50,10 @@ public class UserAssignmentParserTest {
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
 	}
 
-	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo, String eventId) {
+	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo, String eventId, String baseUrl) {
 		return EventInfo.builder()
 			.type(EventType.USER_ASSIGNMENT)
+			.marketplace(new MarketInfo("APPDIRECT", baseUrl))
 			.payload(EventPayload.builder()
 				.account(AccountInfo.builder()
 					.accountIdentifier(accountIdentifier)

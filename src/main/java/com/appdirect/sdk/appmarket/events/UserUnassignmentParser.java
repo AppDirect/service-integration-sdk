@@ -9,7 +9,8 @@ public class UserUnassignmentParser implements EventParser<UserUnassignment> {
 			eventContext.getConsumerKeyUsedByTheRequest(),
 			eventContext.getQueryParameters(),
 			eventInfo.getFlag(),
-			eventInfo.getId()
+			eventInfo.getId(),
+			eventInfo.getMarketplace().getBaseUrl()
 		);
 	}
 }

@@ -27,6 +27,7 @@ public abstract class EventWithContext {
 	@Getter(AccessLevel.NONE)
 	private final EventFlag flag;
 	private final String eventId;
+	private final String marketplaceUrl;
 
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.

@@ -8,7 +8,8 @@ class SubscriptionCancelEventParser implements EventParser<SubscriptionCancel> {
 				eventInfo.getPayload().getAccount().getAccountIdentifier(),
 				eventContext.getQueryParameters(),
 				eventInfo.getFlag(),
-				eventInfo.getId()
+				eventInfo.getId(),
+				eventInfo.getMarketplace().getBaseUrl()
 		);
 	}
 }

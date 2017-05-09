@@ -18,8 +18,9 @@ public class SubscriptionReactivated extends EventWithContext {
 								   AccountInfo accountInfo,
 								   Map<String, String[]> queryParameters,
 								   EventFlag flag,
-								   String eventId) {
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId);
+								   String eventId,
+								   String marketplaceUrl) {
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, marketplaceUrl);
 		this.accountInfo = accountInfo;
 	}
 

@@ -24,7 +24,8 @@ public class AddonSubscriptionCancelEventParserTest {
 		String expectedEventId = "expectedEventId";
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = null;
-		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId);
+		String expectedBaseUrl = "http://www.example.com";
+		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
 			expectedAddonAccountIdentifier,
@@ -32,7 +33,8 @@ public class AddonSubscriptionCancelEventParserTest {
 			expectedConsumerKey,
 			expectedParameters,
 			expectedFlag,
-			expectedEventId
+			expectedEventId,
+			expectedBaseUrl
 		);
 
 		//When
@@ -51,7 +53,8 @@ public class AddonSubscriptionCancelEventParserTest {
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = STATELESS;
 		String expectedEventId = "expectedEventId";
-		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId);
+		String expectedBaseUrl = "http://www.example.com";
+		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
 			expectedAddonAccountIdentifier,
@@ -59,7 +62,8 @@ public class AddonSubscriptionCancelEventParserTest {
 			expectedConsumerKey,
 			expectedParameters,
 			expectedFlag,
-			expectedEventId
+			expectedEventId,
+			expectedBaseUrl
 		);
 
 		//When
@@ -69,9 +73,12 @@ public class AddonSubscriptionCancelEventParserTest {
 		assertThat(parsedEvent).isEqualTo(expectedEvent);
 	}
 
-	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag, String eventId) {
+	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag, String eventId, String baseUrl) {
 		return EventInfo.builder()
 			.flag(eventFlag)
+			.marketplace(
+				new MarketInfo("APPDIRECT", baseUrl)
+			)
 			.payload(
 				EventPayload.builder()
 					.account(
