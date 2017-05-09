@@ -38,7 +38,7 @@ public class AsyncEventHandlerTest {
 
 		assertThat(result.isSuccess()).isTrue();
 		assertThat(result.getStatusCodeReturnedToAppmarket()).isEqualTo(202);
-		assertThat(result.getMessage()).isEqualTo("Event with eventId=some-event-id has been accepted by the connector. It will be processed soon.");
+		assertThat(result.getMessage()).isEqualTo("Event with eventToken=some-event-id has been accepted by the connector. It will be processed soon.");
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class AsyncEventHandlerTest {
 		eventHandling.run();
 
 		verify(appmarketEventClient).resolve(anyString(), anyString(), eq(theThrownException.getResult()), anyString());
-		verify(mockLog).error("Exception while attempting to process an event. eventId={}", "some-event-id", theThrownException);
+		verify(mockLog).error("Exception while attempting to process an event. eventToken={}", "some-event-id", theThrownException);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class AsyncEventHandlerTest {
 		eventHandling.run();
 
 		verify(appmarketEventClient).resolve(anyString(), anyString(), eq(failure(UNKNOWN_ERROR, "some argument error")), anyString());
-		verify(mockLog).error("Exception while attempting to process an event. eventId={}", "some-event-id", theThrownException);
+		verify(mockLog).error("Exception while attempting to process an event. eventToken={}", "some-event-id", theThrownException);
 	}
 
 	private Runnable extractRunnableFromExecutor() {
@@ -122,8 +122,8 @@ public class AsyncEventHandlerTest {
 		return someEvent("some-base-url", "some-event-id");
 	}
 
-	private EventInfo someEvent(String baseUrl, String eventId) {
+	private EventInfo someEvent(String baseUrl, String eventToken) {
 		MarketInfo marketplace = new MarketInfo("some-partner", baseUrl);
-		return EventInfo.builder().marketplace(marketplace).id(eventId).build();
+		return EventInfo.builder().marketplace(marketplace).id(eventToken).build();
 	}
 }

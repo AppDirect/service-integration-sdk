@@ -44,20 +44,20 @@ public class AppmarketEventClient {
 	 * AppMarket that the processing of a given event by the connector has been completed
 	 *
 	 * @param baseAppmarketUrl host on which the marketplace is running
-	 * @param eventId          the id of the event we would like to resolve
+	 * @param eventToken          the id of the event we would like to resolve
 	 * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
 	 *                         processing has been successful or not.
 	 * @param key              the client key used to sign the resolve request
 	 */
-	public void resolve(String baseAppmarketUrl, String eventId, APIResult result, String key) {
-		String url = eventResolutionEndpoint(baseAppmarketUrl, eventId);
+	public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, String key) {
+		String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
 		restClientFactory.restOperationsForProfile(key, secret).postForObject(url, result, String.class);
-		log.info("Resolved event with eventId={} with apiResult={}", eventId, result);
+		log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
 	}
 
-	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventId) {
-		return format("%s/api/integration/v1/events/%s/result", baseAppmarketUrl, eventId);
+	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventToken) {
+		return format("%s/api/integration/v1/events/%s/result", baseAppmarketUrl, eventToken);
 	}
 }

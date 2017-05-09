@@ -46,6 +46,15 @@ public class SubscriptionClosedParserTest {
 	}
 
 	private EventInfo.EventInfoBuilder someEventFor(String accountId) {
-		return EventInfo.builder().payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(accountId).build()).build());
+		return EventInfo.builder()
+				.marketplace(new MarketInfo("APPDIRECT", "http://example.com"))
+				.payload(
+						EventPayload.builder()
+							.account(
+									AccountInfo.builder()
+									.accountIdentifier(accountId)
+									.build()
+							).build()
+				);
 	}
 }

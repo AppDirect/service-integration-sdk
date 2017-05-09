@@ -21,16 +21,20 @@ public class AddonSubscriptionCancelEventParserTest {
 		String expectedConsumerKey = "expectedConsumerKey";
 		String expectedAddonAccountIdentifier = "expectedAddonAccountIdentifier";
 		String expectedParentAccountIdentifier = "expectedParentAccountIdentifier";
+		String expectedEventId = "expectedEventId";
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = null;
-		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag);
+		String expectedBaseUrl = "http://www.example.com";
+		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
 			expectedAddonAccountIdentifier,
 			expectedParentAccountIdentifier,
 			expectedConsumerKey,
 			expectedParameters,
-			expectedFlag
+			expectedFlag,
+			expectedEventId,
+			expectedBaseUrl
 		);
 
 		//When
@@ -48,14 +52,18 @@ public class AddonSubscriptionCancelEventParserTest {
 		String expectedParentAccountIdentifier = "expectedParentAccountIdentifier";
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = STATELESS;
-		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag);
+		String expectedEventId = "expectedEventId";
+		String expectedBaseUrl = "http://www.example.com";
+		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
 			expectedAddonAccountIdentifier,
 			expectedParentAccountIdentifier,
 			expectedConsumerKey,
 			expectedParameters,
-			expectedFlag
+			expectedFlag,
+			expectedEventId,
+			expectedBaseUrl
 		);
 
 		//When
@@ -65,9 +73,12 @@ public class AddonSubscriptionCancelEventParserTest {
 		assertThat(parsedEvent).isEqualTo(expectedEvent);
 	}
 
-	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag) {
+	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag, String eventToken, String baseUrl) {
 		return EventInfo.builder()
 			.flag(eventFlag)
+			.marketplace(
+				new MarketInfo("APPDIRECT", baseUrl)
+			)
 			.payload(
 				EventPayload.builder()
 					.account(
@@ -76,7 +87,9 @@ public class AddonSubscriptionCancelEventParserTest {
 							.parentAccountIdentifier(parentAccountIdentifier)
 							.build()
 					).build()
-			).build();
+			)
+			.id(eventToken)
+			.build();
 	}
 
 }

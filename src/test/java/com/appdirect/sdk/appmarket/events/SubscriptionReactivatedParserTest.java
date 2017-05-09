@@ -46,6 +46,8 @@ public class SubscriptionReactivatedParserTest {
 	}
 
 	private EventInfo.EventInfoBuilder someEventFor(String accountId) {
-		return EventInfo.builder().payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(accountId).build()).build());
+		return EventInfo.builder()
+					.marketplace(new MarketInfo("", ""))
+					.payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(accountId).build()).build());
 	}
 }

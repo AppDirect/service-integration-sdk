@@ -18,7 +18,10 @@ public class SubscriptionOrderTest {
 				OrderInfo.builder().build(),
 				"partner",
 				"appUuid",
-				null);
+				null,
+				null,
+				null
+		);
 
 		assertThat(event.getQueryParameters()).isNotNull().isEmpty();
 	}

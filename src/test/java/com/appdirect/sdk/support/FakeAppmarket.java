@@ -68,8 +68,8 @@ public class FakeAppmarket {
 		server.createContext("/api/integration/v1/events/", new OauthSecuredHandler(oauthInTheHeader) {
 			@Override
 			byte[] buildJsonResponse(URI requestUri) throws IOException {
-				String eventId = requestUri.getPath().split("/")[5];
-				markEventAsResolved(eventId);
+				String eventToken = requestUri.getPath().split("/")[5];
+				markEventAsResolved(eventToken);
 				return "".getBytes(UTF_8);
 			}
 		});
@@ -103,9 +103,9 @@ public class FakeAppmarket {
 		return new ArrayList<>(resolvedEvents);
 	}
 
-	private void markEventAsResolved(String eventId) {
+	private void markEventAsResolved(String eventToken) {
 		synchronized (resolvedEventsLock) {
-			resolvedEvents.add(eventId);
+			resolvedEvents.add(eventToken);
 			resolvedEventsLock.notify();
 		}
 	}

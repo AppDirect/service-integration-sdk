@@ -10,13 +10,21 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class SubscriptionChange extends EventWithConsumerKeyQueryParametersAndEventFlag {
+public class SubscriptionChange extends EventWithContext {
 	private final UserInfo owner;
 	private final OrderInfo order;
 	private final AccountInfo account;
 
-	public SubscriptionChange(String consumerKeyUsedByTheRequest, UserInfo owner, OrderInfo order, AccountInfo account, Map<String, String[]> queryParameters, EventFlag flag) {
-		super(consumerKeyUsedByTheRequest, queryParameters, flag);
+	public SubscriptionChange(String consumerKeyUsedByTheRequest,
+							  UserInfo owner,
+							  OrderInfo order,
+							  AccountInfo account,
+							  Map<String, String[]> queryParameters,
+							  EventFlag flag,
+							  String eventToken,
+							  String marketplaceUrl) {
+
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.owner = owner;
 		this.order = order;
 		this.account = account;

@@ -19,7 +19,8 @@ public class SubscriptionDeactivatedParserTest {
 		String testConsumerKey = "testConsumerKey";
 		String testAccountIdentifier = "testAccountIdentifier";
 		AccountStatus testAccountStatus = SUSPENDED;
-		EventInfo testEventInfo = createSubscriptionDeactivatedEvent(testAccountIdentifier, testAccountStatus);
+		String testBaseUrl = "http://example.com";
+		EventInfo testEventInfo = createSubscriptionDeactivatedEvent(testAccountIdentifier, testAccountStatus, testBaseUrl);
 
 		Map<String, String[]> testQueryParams = oneQueryParam("hello", "world");
 
@@ -34,8 +35,9 @@ public class SubscriptionDeactivatedParserTest {
 		assertThat(parsedEvent.getQueryParameters()).isEqualTo(testQueryParams);
 	}
 
-	private EventInfo createSubscriptionDeactivatedEvent(String testAccountIdentifier, AccountStatus testAccountStatus) {
+	private EventInfo createSubscriptionDeactivatedEvent(String testAccountIdentifier, AccountStatus testAccountStatus, String baseMarketplaceUrl) {
 		return EventInfo.builder()
+				.marketplace(new MarketInfo("APPDIRECT", baseMarketplaceUrl))
 				.flag(DEVELOPMENT)
 				.payload(EventPayload.builder()
 					.account(

@@ -20,6 +20,7 @@ public class SubscriptionChangeEventParserTest {
 		AccountInfo expectedAccountInfo = AccountInfo.builder().build();
 		OrderInfo expectedOrderInfo = OrderInfo.builder().build();
 		EventInfo testEventInfo = EventInfo.builder()
+				.marketplace(new MarketInfo("", ""))
 				.flag(DEVELOPMENT)
 				.creator(expectedCreatorDetails)
 				.payload(EventPayload.builder()

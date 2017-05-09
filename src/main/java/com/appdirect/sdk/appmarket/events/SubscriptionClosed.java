@@ -16,11 +16,17 @@ import lombok.EqualsAndHashCode;
  * @see <a href="https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#notice-types">SUBSCRIPTION_NOTICE types</a>
  */
 @EqualsAndHashCode(callSuper = true)
-public class SubscriptionClosed extends EventWithConsumerKeyQueryParametersAndEventFlag {
+public class SubscriptionClosed extends EventWithContext {
 	private final AccountInfo accountInfo;
 
-	public SubscriptionClosed(String consumerKeyUsedByTheRequest, AccountInfo accountInfo, Map<String, String[]> queryParameters, EventFlag flag) {
-		super(consumerKeyUsedByTheRequest, queryParameters, flag);
+	public SubscriptionClosed(String consumerKeyUsedByTheRequest,
+							  AccountInfo accountInfo,
+							  Map<String, String[]> queryParameters,
+							  EventFlag flag,
+							  String eventToken,
+							  String marketplaceUrl) {
+
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.accountInfo = accountInfo;
 	}
 
