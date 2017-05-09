@@ -15,6 +15,8 @@ import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
+import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationConfiguration;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
@@ -33,7 +35,7 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
  * mandatory and optional ones.
  */
 @SpringBootApplication
-@Import(ConnectorSdkConfiguration.class)
+@Import({ConnectorSdkConfiguration.class, DomainDnsVerificationConfiguration.class})
 public class FullConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
@@ -62,7 +64,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionChange> mySubscriptionChangeHandler() {
 		return event -> success(
-			format("SUB_CHANGE for accountId=%s has been processed, %dGB has been requested.", event.getAccount().getAccountIdentifier(), event.getOrder().getItems().get(0).getQuantity())
+				format("SUB_CHANGE for accountId=%s has been processed, %dGB has been requested.", event.getAccount().getAccountIdentifier(), event.getOrder().getItems().get(0).getQuantity())
 		);
 	}
 
@@ -81,7 +83,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionDeactivated> mySubscriptionDeactivatedHandler() {
 		return event -> success(
-			format("SUB_DEACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+				format("SUB_DEACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 
@@ -89,7 +91,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionReactivated> mySubscriptionReactivatedHandler() {
 		return event -> success(
-			format("SUB_REACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+				format("SUB_REACTIVATED %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 
@@ -97,7 +99,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionUpcomingInvoice> mySubscriptionUpcomingNoticeHandler() {
 		return event -> success(
-			format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
+				format("SUB_INVOICE %s has been processed, for real.", event.getAccountInfo().getAccountIdentifier())
 		);
 	}
 
@@ -117,7 +119,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<UserAssignment> myUserAssignmentDevHandler() {
 		return event -> success(
-			format("USER_ASSIGN for user %s for account %s has been processed, for real.", event.getAssignedUser().getUuid(), event.getAccountId())
+				format("USER_ASSIGN for user %s for account %s has been processed, for real.", event.getAssignedUser().getUuid(), event.getAccountId())
 		);
 	}
 
@@ -125,8 +127,14 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<UserUnassignment> myUserUnassignmentDevHandler() {
 		return event -> success(
-			format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUserId(), event.getAccountId())
+				format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUserId(), event.getAccountId())
 		);
+	}
+
+	@Primary
+	@Bean
+	public DomainDnVerificationInfoHandler domainDnVerificationInfoHandler() {
+		return new TestDomainDnsVerificationInfoHandler();
 	}
 
 	private void sleepForOneSecond_toTriggerRaceCondition_thatModifiedSharedQueryParams() {

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DomainDnsVerificationInfoController {
 
-	private final DomainDnVerificationInfoHandler verificationInfoHandler;
+	private final DomainDnVerificationInfoHandler handler;
 
-	public DomainDnsVerificationInfoController(DomainDnVerificationInfoHandler verificationInfoHandler) {
-		this.verificationInfoHandler = verificationInfoHandler;
+	DomainDnsVerificationInfoController(DomainDnVerificationInfoHandler handler) {
+		this.handler = handler;
 	}
 
 	@RequestMapping(
@@ -24,7 +24,6 @@ public class DomainDnsVerificationInfoController {
 	public TXTDnsRecord readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
 														@PathVariable("domain") String domain) {
 
-
-		return verificationInfoHandler.readOwnershipVerificationRecord(customerId, domain);
+		return handler.readOwnershipVerificationRecord(customerId, domain);
 	}
 }

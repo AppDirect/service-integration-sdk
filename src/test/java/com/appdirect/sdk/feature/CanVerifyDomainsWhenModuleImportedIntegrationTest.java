@@ -1,7 +1,6 @@
 package com.appdirect.sdk.feature;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import java.util.Arrays;
@@ -14,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.domain.TXTDnsRecord;
@@ -26,7 +23,7 @@ import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FullConnector.class, webEnvironment = RANDOM_PORT)
-public class NoDomainVerificationByDefaultIntegrationTest {
+public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 	@LocalServerPort
 	private int localConnectorPort;
 	@Autowired
@@ -63,16 +60,13 @@ public class NoDomainVerificationByDefaultIntegrationTest {
 				new HashSet<>(expectedEntries));
 
 		//When
-		Throwable throwable = catchThrowable(() ->
-				restTemplate.getForObject(
-						ownershipProofEndpoint(testCustomerId, testDomain),
-						TXTDnsRecord.class
-				)
+		TXTDnsRecord actualRecord = restTemplate.getForObject(
+				ownershipProofEndpoint(testCustomerId, testDomain),
+				TXTDnsRecord.class
 		);
 
 		//Then
-		assertThat(throwable).isInstanceOf(HttpClientErrorException.class);
-		assertThat(((HttpClientErrorException) throwable).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(actualRecord).isEqualTo(expectedRecord);
 	}
 
 	public String ownershipProofEndpoint(String customerId, String domain) {
