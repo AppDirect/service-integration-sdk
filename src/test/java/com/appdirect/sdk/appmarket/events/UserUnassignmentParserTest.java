@@ -49,7 +49,7 @@ public class UserUnassignmentParserTest {
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
 	}
 
-	private EventInfo userUnassignmentEvent(String accountIdentifier, String userIdentifier, String eventId, String baseUrl) {
+	private EventInfo userUnassignmentEvent(String accountIdentifier, String userIdentifier, String eventToken, String baseUrl) {
 		return EventInfo.builder()
 			.type(EventType.USER_ASSIGNMENT)
 			.marketplace(new MarketInfo("APPDIRECT", baseUrl))
@@ -61,7 +61,7 @@ public class UserUnassignmentParserTest {
 					.uuid(userIdentifier)
 					.build())
 				.build())
-			.id(eventId)
+			.id(eventToken)
 			.build();
 	}
 }

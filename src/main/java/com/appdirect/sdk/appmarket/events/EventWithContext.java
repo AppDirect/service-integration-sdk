@@ -26,7 +26,7 @@ public abstract class EventWithContext {
 	private final Map<String, String[]> queryParameters;
 	@Getter(AccessLevel.NONE)
 	private final EventFlag flag;
-	private final String eventId;
+	private final String eventToken;
 	private final String marketplaceUrl;
 
 	/**

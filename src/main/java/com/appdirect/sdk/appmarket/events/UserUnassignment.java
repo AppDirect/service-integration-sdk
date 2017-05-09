@@ -18,10 +18,10 @@ public class UserUnassignment extends EventWithContext {
 					 String consumerKey,
 					 Map<String, String[]> queryParameters,
 					 EventFlag eventFlag,
-					 String eventId,
+					 String eventToken,
 					 String marketplaceUrl) {
 
-		super(consumerKey, queryParameters, eventFlag, eventId, marketplaceUrl);
+		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
 		this.unassignedUserId = unassignedUserId;
 		this.accountId = accountId;
 	}

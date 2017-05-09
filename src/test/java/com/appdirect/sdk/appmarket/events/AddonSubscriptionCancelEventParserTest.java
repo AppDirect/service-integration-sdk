@@ -73,7 +73,7 @@ public class AddonSubscriptionCancelEventParserTest {
 		assertThat(parsedEvent).isEqualTo(expectedEvent);
 	}
 
-	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag, String eventId, String baseUrl) {
+	private EventInfo addonCancelEvent(String accountIdentifier, String parentAccountIdentifier, EventFlag eventFlag, String eventToken, String baseUrl) {
 		return EventInfo.builder()
 			.flag(eventFlag)
 			.marketplace(
@@ -88,7 +88,7 @@ public class AddonSubscriptionCancelEventParserTest {
 							.build()
 					).build()
 			)
-			.id(eventId)
+			.id(eventToken)
 			.build();
 	}
 

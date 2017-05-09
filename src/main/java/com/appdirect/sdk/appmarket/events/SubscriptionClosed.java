@@ -23,10 +23,10 @@ public class SubscriptionClosed extends EventWithContext {
 							  AccountInfo accountInfo,
 							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
-							  String eventId,
+							  String eventToken,
 							  String marketplaceUrl) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.accountInfo = accountInfo;
 	}
 

@@ -17,10 +17,10 @@ public class SubscriptionCancel extends EventWithContext {
 							  String accountIdentifier,
 							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
-							  String eventId,
+							  String eventToken,
 							  String marketplaceUrl) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.accountIdentifier = accountIdentifier;
 	}
 }

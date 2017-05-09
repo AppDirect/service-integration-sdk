@@ -50,7 +50,7 @@ public class UserAssignmentParserTest {
 		assertThat(parsedRichEvent).isEqualTo(expectedRichEvent);
 	}
 
-	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo, String eventId, String baseUrl) {
+	private EventInfo userAssignmentEvent(String accountIdentifier, UserInfo userInfo, String eventToken, String baseUrl) {
 		return EventInfo.builder()
 			.type(EventType.USER_ASSIGNMENT)
 			.marketplace(new MarketInfo("APPDIRECT", baseUrl))
@@ -60,7 +60,7 @@ public class UserAssignmentParserTest {
 					.build())
 				.user(userInfo)
 				.build())
-			.id(eventId)
+			.id(eventToken)
 			.build();
 	}
 }

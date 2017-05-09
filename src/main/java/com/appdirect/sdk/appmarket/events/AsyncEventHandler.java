@@ -40,10 +40,10 @@ class AsyncEventHandler {
 			try {
 				result = eventHandler.handle(eventInfo, eventContext);
 			} catch (DeveloperServiceException e) {
-				log.error("Exception while attempting to process an event. eventId={}", eventInfo.getId(), e);
+				log.error("Exception while attempting to process an event. eventToken={}", eventInfo.getId(), e);
 				result = e.getResult();
 			} catch (Exception e) {
-				log.error("Exception while attempting to process an event. eventId={}", eventInfo.getId(), e);
+				log.error("Exception while attempting to process an event. eventToken={}", eventInfo.getId(), e);
 				result = failure(UNKNOWN_ERROR, e.getMessage());
 			}
 
@@ -52,7 +52,7 @@ class AsyncEventHandler {
 			}
 		});
 		return asyncEventResult(
-			format("Event with eventId=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
+			format("Event with eventToken=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
 		);
 	}
 }

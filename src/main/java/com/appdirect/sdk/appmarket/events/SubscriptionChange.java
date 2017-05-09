@@ -21,10 +21,10 @@ public class SubscriptionChange extends EventWithContext {
 							  AccountInfo account,
 							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
-							  String eventId,
+							  String eventToken,
 							  String marketplaceUrl) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.owner = owner;
 		this.order = order;
 		this.account = account;
