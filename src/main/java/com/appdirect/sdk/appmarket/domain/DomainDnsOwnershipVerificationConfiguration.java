@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Provides the dependencies necessary for a connector for domain linking functionality.
- * This configuration has to be explicitly imported by the SDK client, the same as the 
+ * This configuration has to be explicitly imported by the SDK client, the same as the
  * {@link com.appdirect.sdk.ConnectorSdkConfiguration} class.
  */
 @Configuration
