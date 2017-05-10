@@ -33,6 +33,6 @@ public class DomainDnsVerificationInfoControllerTest {
 
 		//Then
 		verify(mockDnsVerificationInfoHandler)
-				.readOwnershipVerificationRecord(eq(testCustomerId), eq(testDomain));
+				.readOwnershipVerificationRecords(eq(testCustomerId), eq(testDomain));
 	}
 }
