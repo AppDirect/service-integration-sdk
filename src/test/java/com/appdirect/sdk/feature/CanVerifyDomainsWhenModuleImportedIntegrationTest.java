@@ -3,10 +3,6 @@ package com.appdirect.sdk.feature;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
-import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
 import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
 
@@ -53,15 +48,10 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		String testCustomerId = "testCustomerId";
 		String testDomain = "example.com";
 
-		List<TxtRecordItem> expectedEntries = Arrays.asList(
-				new TxtRecordItem("customerIdentifier", testCustomerId),
-				new TxtRecordItem("domain", testDomain)
-		);
-
 		TxtDnsRecord expectedTxtRecord = new TxtDnsRecord(
 				"@",
 				3600,
-				new HashSet<>(expectedEntries));
+				"key1=value1");
 		MxDnsRecord expectedMxRecord = new MxDnsRecord(
 				"@",
 				3600,

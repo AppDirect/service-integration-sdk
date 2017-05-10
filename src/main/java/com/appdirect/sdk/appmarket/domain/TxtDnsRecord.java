@@ -1,7 +1,5 @@
 package com.appdirect.sdk.appmarket.domain;
 
-import java.util.Set;
-
 import lombok.Value;
 
 /**
@@ -11,5 +9,5 @@ import lombok.Value;
 public final class TxtDnsRecord {
 	String name;
 	int ttl;
-	Set<TxtRecordItem> text;
+	String text;
 }
