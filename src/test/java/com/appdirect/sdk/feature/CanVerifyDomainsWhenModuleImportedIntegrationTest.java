@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
@@ -63,15 +64,15 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 				new HashSet<>(expectedEntries));
 
 		//When
-		ResponseEntity<Set<TxtDnsRecord>> actualRecord = restTemplate.exchange(
+		ResponseEntity<DnsOwnershipVerificationRecords> actualRecord = restTemplate.exchange(
 				ownershipProofEndpoint(testCustomerId, testDomain), 
 				HttpMethod.GET, 
 				null, 
-				new ParameterizedTypeReference<Set<TxtDnsRecord>>() {}
+				new ParameterizedTypeReference<DnsOwnershipVerificationRecords>() {}
 				);
 
 		//Then
-		assertThat(actualRecord.getBody()).containsExactly(expectedRecord);
+		assertThat(actualRecord.getBody().getTxt()).containsExactly(expectedRecord);
 	}
 
 	public String ownershipProofEndpoint(String customerId, String domain) {
