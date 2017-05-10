@@ -6,7 +6,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
+import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
@@ -58,21 +58,29 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 				new TxtRecordItem("domain", testDomain)
 		);
 
-		TxtDnsRecord expectedRecord = new TxtDnsRecord(
+		TxtDnsRecord expectedTxtRecord = new TxtDnsRecord(
 				"@",
 				3600,
 				new HashSet<>(expectedEntries));
+		MxDnsRecord expectedMxRecord = new MxDnsRecord(
+				"@",
+				3600,
+				1,
+				"abc.example.com."
+		);
 
 		//When
 		ResponseEntity<DnsOwnershipVerificationRecords> actualRecord = restTemplate.exchange(
-				ownershipProofEndpoint(testCustomerId, testDomain), 
-				HttpMethod.GET, 
-				null, 
-				new ParameterizedTypeReference<DnsOwnershipVerificationRecords>() {}
-				);
+				ownershipProofEndpoint(testCustomerId, testDomain),
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<DnsOwnershipVerificationRecords>() {
+				}
+		);
 
 		//Then
-		assertThat(actualRecord.getBody().getTxt()).containsExactly(expectedRecord);
+		assertThat(actualRecord.getBody().getTxt()).containsExactly(expectedTxtRecord);
+		assertThat(actualRecord.getBody().getMx()).containsExactly(expectedMxRecord);
 	}
 
 	public String ownershipProofEndpoint(String customerId, String domain) {

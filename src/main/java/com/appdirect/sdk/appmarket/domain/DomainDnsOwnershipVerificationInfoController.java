@@ -3,18 +3,16 @@ package com.appdirect.sdk.appmarket.domain;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-import java.util.Set;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class DomainDnsVerificationInfoController {
+public class DomainDnsOwnershipVerificationInfoController {
 
 	private final DomainDnVerificationInfoHandler handler;
 
-	DomainDnsVerificationInfoController(DomainDnVerificationInfoHandler handler) {
+	DomainDnsOwnershipVerificationInfoController(DomainDnVerificationInfoHandler handler) {
 		this.handler = handler;
 	}
 
@@ -24,7 +22,7 @@ public class DomainDnsVerificationInfoController {
 			produces = APPLICATION_JSON_VALUE
 	)
 	public DnsOwnershipVerificationRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
-															 @PathVariable("domain") String domain) {
+																		   @PathVariable("domain") String domain) {
 
 		return handler.readOwnershipVerificationRecords(customerId, domain);
 	}

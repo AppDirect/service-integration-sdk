@@ -16,7 +16,7 @@ import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
-import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationConfiguration;
+import com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
@@ -35,7 +35,7 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
  * mandatory and optional ones.
  */
 @SpringBootApplication
-@Import({ConnectorSdkConfiguration.class, DomainDnsVerificationConfiguration.class})
+@Import({ConnectorSdkConfiguration.class, DomainDnsOwnershipVerificationConfiguration.class})
 public class FullConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {

@@ -3,9 +3,11 @@ package com.appdirect.sdk.feature.sample_connector.full;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
 import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
+import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
 
@@ -16,6 +18,20 @@ import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
 public class TestDomainDnsVerificationInfoHandler implements DomainDnVerificationInfoHandler {
 	@Override
 	public DnsOwnershipVerificationRecords readOwnershipVerificationRecords(String customerId, String domain) {
+		Set<TxtDnsRecord> txtDnsRecords = generateTestTxtRecords(customerId, domain);
+		Set<MxDnsRecord> mxDnsRecords = generateTestMxDnsRecords();
+
+		return new DnsOwnershipVerificationRecords(txtDnsRecords, mxDnsRecords);
+	}
+
+	private Set<MxDnsRecord> generateTestMxDnsRecords() {
+		MxDnsRecord mxRecord = new MxDnsRecord("@", 3600, 1, "abc.example.com.");
+		Set<MxDnsRecord> mxDnsRecords = new HashSet<>();
+		mxDnsRecords.add(mxRecord);
+		return mxDnsRecords;
+	}
+
+	private Set<TxtDnsRecord> generateTestTxtRecords(String customerId, String domain) {
 		List<TxtRecordItem> expectedEntries = Arrays.asList(
 				new TxtRecordItem("customerIdentifier", customerId),
 				new TxtRecordItem("domain", domain)
@@ -28,6 +44,6 @@ public class TestDomainDnsVerificationInfoHandler implements DomainDnVerificatio
 
 		HashSet<TxtDnsRecord> txtDnsRecords = new HashSet<>();
 		txtDnsRecords.add(txtDnsRecord);
-		return new DnsOwnershipVerificationRecords(txtDnsRecords);
+		return txtDnsRecords;
 	}
 }

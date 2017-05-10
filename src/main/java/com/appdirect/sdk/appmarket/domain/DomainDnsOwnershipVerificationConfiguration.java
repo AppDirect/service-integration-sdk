@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
  * {@link com.appdirect.sdk.ConnectorSdkConfiguration} class.
  */
 @Configuration
-public class DomainDnsVerificationConfiguration {
+public class DomainDnsOwnershipVerificationConfiguration {
 
 	@Bean
-	public DomainDnsVerificationInfoController domainDnsVerificationInfoController(DomainDnVerificationInfoHandler handler) {
-		return new DomainDnsVerificationInfoController(handler);
+	public DomainDnsOwnershipVerificationInfoController domainDnsVerificationInfoController(DomainDnVerificationInfoHandler handler) {
+		return new DomainDnsOwnershipVerificationInfoController(handler);
 	}
 }

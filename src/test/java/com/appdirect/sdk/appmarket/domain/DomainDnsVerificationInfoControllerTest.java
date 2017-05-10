@@ -15,11 +15,11 @@ public class DomainDnsVerificationInfoControllerTest {
 	@Mock
 	private DomainDnVerificationInfoHandler mockDnsVerificationInfoHandler;
 
-	private DomainDnsVerificationInfoController tested;
+	private DomainDnsOwnershipVerificationInfoController tested;
 
 	@Before
 	public void setUp() throws Exception {
-		tested = new DomainDnsVerificationInfoController(mockDnsVerificationInfoHandler);
+		tested = new DomainDnsOwnershipVerificationInfoController(mockDnsVerificationInfoHandler);
 	}
 
 	@Test
