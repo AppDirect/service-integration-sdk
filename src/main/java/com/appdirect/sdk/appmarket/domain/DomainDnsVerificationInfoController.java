@@ -23,7 +23,7 @@ public class DomainDnsVerificationInfoController {
 			value = "/api/v1/integration/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord",
 			produces = APPLICATION_JSON_VALUE
 	)
-	public Set<TxtDnsRecord> readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
+	public DnsOwnershipVerificationRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
 															 @PathVariable("domain") String domain) {
 
 		return handler.readOwnershipVerificationRecords(customerId, domain);

@@ -3,8 +3,8 @@ package com.appdirect.sdk.feature.sample_connector.full;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
 import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
@@ -15,7 +15,7 @@ import com.appdirect.sdk.appmarket.domain.TxtRecordItem;
  */
 public class TestDomainDnsVerificationInfoHandler implements DomainDnVerificationInfoHandler {
 	@Override
-	public Set<TxtDnsRecord> readOwnershipVerificationRecords(String customerId, String domain) {
+	public DnsOwnershipVerificationRecords readOwnershipVerificationRecords(String customerId, String domain) {
 		List<TxtRecordItem> expectedEntries = Arrays.asList(
 				new TxtRecordItem("customerIdentifier", customerId),
 				new TxtRecordItem("domain", domain)
@@ -26,8 +26,8 @@ public class TestDomainDnsVerificationInfoHandler implements DomainDnVerificatio
 				3600,
 				new HashSet<>(expectedEntries));
 
-		HashSet<TxtDnsRecord> records = new HashSet<>();
-		records.add(txtDnsRecord);
-		return records;
+		HashSet<TxtDnsRecord> txtDnsRecords = new HashSet<>();
+		txtDnsRecords.add(txtDnsRecord);
+		return new DnsOwnershipVerificationRecords(txtDnsRecords);
 	}
 }
