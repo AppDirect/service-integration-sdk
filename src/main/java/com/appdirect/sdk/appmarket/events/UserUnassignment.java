@@ -13,7 +13,7 @@ public class UserUnassignment extends EventWithContext {
 	@Getter
 	private final String accountId;
 
-	UserUnassignment(String unassignedUserId,
+	public UserUnassignment(String unassignedUserId,
 					 String accountId,
 					 String consumerKey,
 					 Map<String, String[]> queryParameters,
