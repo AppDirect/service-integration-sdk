@@ -1,5 +1,7 @@
 # service-integration-sdk
 
+[![Build Status](https://travis-ci.org/AppDirect/service-integration-sdk.svg?branch=master)](https://travis-ci.org/AppDirect/service-integration-sdk)
+
 ## Overview
 Represents a collection of utilities meant to facilitate the implementation of custom connectors. 
 A connector is a stand-alone application that handles integration events from the AppDirect marketplace and takes 
