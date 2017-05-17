@@ -180,10 +180,10 @@
   </build>
 
   <distributionManagement>
-      <snapshotRepository>
-          <id>snapshots</id>
-          <name>oss-jfrog-artifactory-snapshots</name>
-          <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-      </snapshotRepository>
+    <repository>
+      <id>bintray-appdirect-opensource-maven</id>
+      <name>appdirect-opensource-maven</name>
+      <url>https://api.bintray.com/maven/appdirect-opensource/maven/service-integration-sdk/;publish=1</url>
+    </repository>
   </distributionManagement>
 </project>
