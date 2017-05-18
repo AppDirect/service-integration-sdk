@@ -1,3 +1,9 @@
 language: java
 jdk:
   - oraclejdk8
+deploy:
+  on:
+    tags: true
+  skip_cleanup: true
+  provider: script
+  script: mvn deploy --settings settings.xml
