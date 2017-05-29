@@ -15,6 +15,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
+import static com.appdirect.sdk.appmarket.events.AppmarketEventController.MDC_UUID_KEY;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.ACCOUNT_NOT_FOUND;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
@@ -33,6 +34,7 @@ import java.util.concurrent.Executor;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
+import org.slf4j.MDC;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
@@ -123,6 +125,29 @@ public class AsyncEventHandlerTest {
 
 		verify(appmarketEventClient).resolve(anyString(), anyString(), eq(failure(UNKNOWN_ERROR, "some argument error")), anyString());
 		verify(mockLog).error("Exception while attempting to process an event. eventToken={}", "some-event-id", theThrownException);
+	}
+
+	@Test
+	public void forwardsAnyUUIDInMDC() throws Exception {
+
+		SDKEventHandler someEventHandler = mock(SDKEventHandler.class);
+		EventInfo eventToHandle = someEvent();
+		EventHandlingContext theContext = defaultEventContext();
+		String uuid = givenMDCHasUUID();
+
+		asyncEventHandler.handle(someEventHandler, eventToHandle, theContext);
+
+		AsyncEventHandler.EventHandlerTask eventHandlerTask = (AsyncEventHandler.EventHandlerTask) extractRunnableFromExecutor();
+		eventHandlerTask.run();
+
+		verify(someEventHandler).handle(eventToHandle, theContext);
+		assertThat(eventHandlerTask.getRequestUUID()).isEqualTo(uuid);
+	}
+
+	private String givenMDCHasUUID() {
+		String uuid = "some_uuid";
+		MDC.put(MDC_UUID_KEY, uuid);
+		return uuid;
 	}
 
 	private Runnable extractRunnableFromExecutor() {

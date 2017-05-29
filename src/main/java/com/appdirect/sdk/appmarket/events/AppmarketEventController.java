@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,8 @@ class AppmarketEventController {
 
 	private final AppmarketEventService appmarketEventService;
 	private final OAuthKeyExtractor keyExtractor;
+	public static final String X_REQUEST_ID_HEADER = "x-request-id";
+	public static final String MDC_UUID_KEY = "uuid";
 
 	AppmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor keyExtractor) {
 		this.appmarketEventService = appmarketEventService;
@@ -50,6 +53,8 @@ class AppmarketEventController {
 	 */
 	@RequestMapping(method = GET, value = "/api/v1/integration/processEvent", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<APIResult> processEvent(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl) {
+
+		processHeaders(request);
 		String keyUsedToSignRequest = keyExtractor.extractFrom(request);
 		log.info("eventUrl={} signed with consumerKey={}", eventUrl, keyUsedToSignRequest);
 
@@ -57,6 +62,11 @@ class AppmarketEventController {
 
 		log.info("apiResult={}", result);
 		return new ResponseEntity<>(result, httpStatusOf(result));
+	}
+
+	private void processHeaders(HttpServletRequest request) {
+		String header = request.getHeader(X_REQUEST_ID_HEADER);
+		MDC.put(MDC_UUID_KEY, header);
 	}
 
 	private EventHandlingContext eventExecutionContext(HttpServletRequest request, String keyUsedToSignRequest) {
