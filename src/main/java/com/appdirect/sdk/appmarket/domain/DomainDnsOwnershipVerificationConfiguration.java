@@ -16,6 +16,8 @@ package com.appdirect.sdk.appmarket.domain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
+
 /**
  * Provides the dependencies necessary for a connector for domain linking functionality.
  * This configuration has to be explicitly imported by the SDK client, the same as the
@@ -25,7 +27,9 @@ import org.springframework.context.annotation.Configuration;
 public class DomainDnsOwnershipVerificationConfiguration {
 
 	@Bean
-	public DomainDnsOwnershipVerificationInfoController domainDnsVerificationInfoController(DomainDnVerificationInfoHandler handler) {
-		return new DomainDnsOwnershipVerificationInfoController(handler);
+	public DomainOwnershipController domainDnsVerificationInfoController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
+																		 DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
+																		 OAuthKeyExtractor keyExtractor) {
+		return new DomainOwnershipController(domainDnsVerificationInfoHandler, domainOwnershipVerificationHandler, keyExtractor);
 	}
 }

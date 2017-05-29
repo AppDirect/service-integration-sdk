@@ -17,15 +17,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
-import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
+import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationInfoHandler;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 
 /**
- * Mock implementation of the {@link DomainDnVerificationInfoHandler} used in the integration tests:
+ * Mock implementation of the {@link com.appdirect.sdk.appmarket.domain.DomainDnsVerificationInfoHandler} used in the integration tests:
  * returns a DNS record that returns the parameters passed to the method
  */
-public class TestDomainDnsVerificationInfoHandler implements DomainDnVerificationInfoHandler {
+public class TestDomainDnsVerificationInfoHandler implements DomainDnsVerificationInfoHandler {
 	@Override
 	public DnsOwnershipVerificationRecords readOwnershipVerificationRecords(String customerId, String domain) {
 		Set<TxtDnsRecord> txtDnsRecords = generateTestTxtRecords(customerId, domain);

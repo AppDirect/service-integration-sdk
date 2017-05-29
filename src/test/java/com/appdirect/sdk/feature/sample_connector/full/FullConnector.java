@@ -28,8 +28,10 @@ import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
 import com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration;
+import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationInfoHandler;
+import com.appdirect.sdk.appmarket.domain.DomainOwnershipVerificationHandler;
+import com.appdirect.sdk.appmarket.domain.DomainVerificationNotificationClient;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
@@ -42,6 +44,7 @@ import com.appdirect.sdk.appmarket.events.SubscriptionUpcomingInvoice;
 import com.appdirect.sdk.appmarket.events.UserAssignment;
 import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
+import com.appdirect.sdk.web.RestOperationsFactory;
 
 /**
  * Sample connector that supports all of the supported events, both the
@@ -146,8 +149,20 @@ public class FullConnector {
 
 	@Primary
 	@Bean
-	public DomainDnVerificationInfoHandler domainDnVerificationInfoHandler() {
+	public DomainDnsVerificationInfoHandler domainDnVerificationInfoHandler() {
 		return new TestDomainDnsVerificationInfoHandler();
+	}
+
+	@Bean
+	public DomainVerificationNotificationClient domainVerificationNotificationClient(RestOperationsFactory restOperationsFactory,
+																					 DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		return new DomainVerificationNotificationClient(restOperationsFactory, credentialsSupplier);
+	}
+
+	@Primary
+	@Bean
+	public DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient) {
+		return new TestDomainOwnershipVerificationHandler(domainVerificationNotificationClient);
 	}
 
 	private void sleepForOneSecond_toTriggerRaceCondition_thatModifiedSharedQueryParams() {

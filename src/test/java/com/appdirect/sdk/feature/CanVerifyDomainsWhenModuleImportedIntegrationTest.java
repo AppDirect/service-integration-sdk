@@ -15,7 +15,14 @@ package com.appdirect.sdk.feature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +39,7 @@ import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
+import com.appdirect.sdk.support.FakeAppmarket;
 import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
 
 @RunWith(SpringRunner.class)
@@ -45,6 +53,7 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 	private static String testOauthKey;
 	private static String testOauthSecret;
 	private static RestTemplate restTemplate;
+	private FakeAppmarket fakeAppmarket;
 
 	static {
 		testOauthKey = "isv-key";
@@ -53,10 +62,25 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 	}
 
 	private static final String DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE =
-			"http://localhost:%d/api/v1/integration/customers/%s/domains/%s/ownershipProofRecord";
+			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/ownershipProofRecord";
+	private static final String DOMAIN_OWNERSHIP_VERIFICATION_ENDPOINT_TEMPLATE =
+			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/ownershipVerification";
+	private static final String APPMARKET_DOMAIN_VERIFICATION_CALLBACK_TEMPLATE =
+			"/api/integration/v1/customers/%s/domains/%s/verificationStatus";
+
+	@Before
+	public void setup() throws IOException {
+		fakeAppmarket = FakeAppmarket.create(findAvailableTcpPort(), testOauthKey, testOauthSecret).start();
+	}
+
+	@After
+	public void stop() throws Exception {
+		fakeAppmarket.stop();
+	}
+
 
 	@Test
-	public void testValidateOwnership_whenCalled_txtRecordIsReturned() throws Exception {
+	public void testGetOwnershipProofRecord_whenCalled_txtRecordIsReturned() throws Exception {
 		//Given
 		String testCustomerId = "testCustomerId";
 		String testDomain = "example.com";
@@ -74,7 +98,7 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 
 		//When
 		ResponseEntity<DnsOwnershipVerificationRecords> actualRecord = restTemplate.exchange(
-				ownershipProofEndpoint(testCustomerId, testDomain),
+				formatEndpoint(DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
 				HttpMethod.GET,
 				null,
 				new ParameterizedTypeReference<DnsOwnershipVerificationRecords>() {
@@ -86,7 +110,24 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		assertThat(actualRecord.getBody().getMx()).containsExactly(expectedMxRecord);
 	}
 
-	public String ownershipProofEndpoint(String customerId, String domain) {
-		return String.format(DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE, localConnectorPort, customerId, domain);
+	@Test
+	public void testValidateOwnership() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		String appmarketCallbackPath = formatEndpoint(APPMARKET_DOMAIN_VERIFICATION_CALLBACK_TEMPLATE, testCustomerId, testDomain);
+		fakeAppmarket.sendTriggerDomainVerificationTo(
+				formatEndpoint(DOMAIN_OWNERSHIP_VERIFICATION_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
+				appmarketCallbackPath
+		);
+
+		fakeAppmarket.waitForDomainVerifications(1);
+		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo(appmarketCallbackPath);
+		assertThat(fakeAppmarket.domainVerificationStatuses().get(0).isVerified()).isTrue();
+	}
+
+	public String formatEndpoint(String endpointTemplate, Object... attributes) {
+		return String.format(endpointTemplate, attributes);
 	}
 }

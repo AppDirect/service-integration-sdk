@@ -15,9 +15,11 @@ package com.appdirect.sdk.appmarket.domain;
 
 /**
  * SDK clients must implement this interface in their {@link org.springframework.context.ApplicationContext}
- * if they are using the {@link DomainDnsOwnershipVerificationConfiguration}. The implementation of this class specifies the
- * {@link TxtDnsRecord} that is returned to the monolith upon querying.
+ * if they are using the {@link com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration}.
+ * The implementation is responsible to verify the domain ownership.
+ * Use {@link com.appdirect.sdk.appmarket.domain.DomainVerificationNotificationClient} to return the
+ * verification status.
  */
-public interface DomainDnVerificationInfoHandler {
-	DnsOwnershipVerificationRecords readOwnershipVerificationRecords(String customerId, String domain);
+public interface DomainOwnershipVerificationHandler {
+	void verifyDomainOwnership(String customerId, String domain, String callbackUrl, String key);
 }
