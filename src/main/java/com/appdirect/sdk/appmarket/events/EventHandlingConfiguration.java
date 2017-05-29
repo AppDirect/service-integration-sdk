@@ -14,7 +14,7 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.CONFIGURATION_ERROR;
-import static com.appdirect.sdk.utils.MdcExecutorService.newMdcWorkStealingPool;
+import static com.appdirect.sdk.executor.MdcExecutorService.newMdcWorkStealingPool;
 import static java.lang.String.format;
 
 import java.util.concurrent.ExecutorService;
