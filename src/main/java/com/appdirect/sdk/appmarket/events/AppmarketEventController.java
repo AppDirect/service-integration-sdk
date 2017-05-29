@@ -37,8 +37,8 @@ class AppmarketEventController {
 
 	private final AppmarketEventService appmarketEventService;
 	private final OAuthKeyExtractor keyExtractor;
-	public static final String X_REQUEST_ID_HEADER = "x-request-id";
-	public static final String MDC_UUID_KEY = "uuid";
+	public static final String REQUEST_ID_HEADER = "x-request-id";
+	public static final String MDC_REQUEST_ID_KEY = "requestId";
 
 	AppmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor keyExtractor) {
 		this.appmarketEventService = appmarketEventService;
@@ -54,7 +54,7 @@ class AppmarketEventController {
 	@RequestMapping(method = GET, value = "/api/v1/integration/processEvent", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<APIResult> processEvent(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl) {
 
-		processHeaders(request);
+		storeRequestIdInLogContext(request);
 		String keyUsedToSignRequest = keyExtractor.extractFrom(request);
 		log.info("eventUrl={} signed with consumerKey={}", eventUrl, keyUsedToSignRequest);
 
@@ -64,9 +64,9 @@ class AppmarketEventController {
 		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
 
-	private void processHeaders(HttpServletRequest request) {
-		String header = request.getHeader(X_REQUEST_ID_HEADER);
-		MDC.put(MDC_UUID_KEY, header);
+	private void storeRequestIdInLogContext(HttpServletRequest request) {
+		String header = request.getHeader(REQUEST_ID_HEADER);
+		MDC.put(MDC_REQUEST_ID_KEY, header);
 	}
 
 	private EventHandlingContext eventExecutionContext(HttpServletRequest request, String keyUsedToSignRequest) {

@@ -14,8 +14,8 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.CONFIGURATION_ERROR;
+import static com.appdirect.sdk.utils.MdcExecutorService.newMdcWorkStealingPool;
 import static java.lang.String.format;
-import static java.util.concurrent.Executors.newWorkStealingPool;
 
 import java.util.concurrent.ExecutorService;
 
@@ -48,7 +48,7 @@ public class EventHandlingConfiguration {
 
 	@Bean(destroyMethod = "shutdown")
 	public ExecutorService defaultExecutorService() {
-		return newWorkStealingPool();
+		return newMdcWorkStealingPool();
 	}
 
 	@Bean
