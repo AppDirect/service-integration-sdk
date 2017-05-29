@@ -5,15 +5,15 @@ import java.util.concurrent.ForkJoinPool;
 
 import org.slf4j.MDC;
 
-public class MdcExecutorService extends ForkJoinPool {
+public class MdcForkJoinPool extends ForkJoinPool {
 
-	private MdcExecutorService(int parallelism, ForkJoinWorkerThreadFactory defaultForkJoinWorkerThreadFactory, Thread.UncaughtExceptionHandler handler, boolean asyncMode) {
+	private MdcForkJoinPool(int parallelism, ForkJoinWorkerThreadFactory defaultForkJoinWorkerThreadFactory, Thread.UncaughtExceptionHandler handler, boolean asyncMode) {
 
 		super(parallelism, defaultForkJoinWorkerThreadFactory, handler, asyncMode);
 	}
 
-	public static MdcExecutorService newMdcWorkStealingPool() {
-		return new MdcExecutorService(Runtime.getRuntime().availableProcessors(), ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, true);
+	public static MdcForkJoinPool newMdcWorkStealingPool() {
+		return new MdcForkJoinPool(Runtime.getRuntime().availableProcessors(), ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, true);
 	}
 
 	@Override
