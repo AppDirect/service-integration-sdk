@@ -14,8 +14,8 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.CONFIGURATION_ERROR;
-import static com.appdirect.sdk.executor.MdcForkJoinPool.newMdcWorkStealingPool;
 import static java.lang.String.format;
+import static java.util.concurrent.Executors.newWorkStealingPool;
 
 import java.util.concurrent.ExecutorService;
 
@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
+import com.appdirect.sdk.executor.MdcExecutor;
 
 @Configuration
 @RequiredArgsConstructor
@@ -48,27 +49,27 @@ public class EventHandlingConfiguration {
 
 	@Bean(destroyMethod = "shutdown")
 	public ExecutorService defaultExecutorService() {
-		return newMdcWorkStealingPool();
+		return new MdcExecutor(newWorkStealingPool());
 	}
 
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
-			new Events(),
-			new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
-			new ParseAndHandleWrapper<>(new SubscriptionOrderEventParser(), subscriptionOrderHandler),
-			new ParseAndHandleWrapper<>(new SubscriptionCancelEventParser(), subscriptionCancelHandler),
-			new ParseAndHandleWrapper<>(new SubscriptionChangeEventParser(), subscriptionChangeHandler),
-			new ParseAndHandleWrapper<>(new SubscriptionDeactivatedParser(), subscriptionDeactivatedHandler),
-			new ParseAndHandleWrapper<>(new SubscriptionReactivatedParser(), subscriptionReactivatedHandler),
-			new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
-			new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
-			new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
-			new ParseAndHandleWrapper<>(new AddonSubscriptionCancelEventParser(), addonSubscriptionCancelHandler),
-			new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
-			new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
-			unknownEventHandler(),
-			new AddonEventDetector()
+				new Events(),
+				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
+				new ParseAndHandleWrapper<>(new SubscriptionOrderEventParser(), subscriptionOrderHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionCancelEventParser(), subscriptionCancelHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionChangeEventParser(), subscriptionChangeHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionDeactivatedParser(), subscriptionDeactivatedHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionReactivatedParser(), subscriptionReactivatedHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
+				new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
+				new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
+				new ParseAndHandleWrapper<>(new AddonSubscriptionCancelEventParser(), addonSubscriptionCancelHandler),
+				new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
+				new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
+				unknownEventHandler(),
+				new AddonEventDetector()
 		);
 	}
 }
