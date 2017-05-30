@@ -140,7 +140,7 @@ public class FullConnector {
 	@Bean
 	public AppmarketEventHandler<UserUnassignment> myUserUnassignmentDevHandler() {
 		return event -> success(
-				format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUserId(), event.getAccountId())
+				format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUser().getUuid(), event.getAccountId())
 		);
 	}
 
