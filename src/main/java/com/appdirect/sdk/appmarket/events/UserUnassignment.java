@@ -26,13 +26,13 @@ public class UserUnassignment extends EventWithContext {
 	@Getter
 	private final String accountId;
 
-	public UserUnassignment(UserInfo unassignedUser,
-                          String accountId,
-                          String consumerKey,
-                          Map<String, String[]> queryParameters,
-                          EventFlag eventFlag,
-                          String eventToken,
-                          String marketplaceUrl) {
+    public UserUnassignment(UserInfo unassignedUser,
+                            String accountId,
+                            String consumerKey,
+                            Map<String, String[]> queryParameters,
+                            EventFlag eventFlag,
+                            String eventToken,
+                            String marketplaceUrl) {
 
 		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
 		this.unassignedUser = unassignedUser;
