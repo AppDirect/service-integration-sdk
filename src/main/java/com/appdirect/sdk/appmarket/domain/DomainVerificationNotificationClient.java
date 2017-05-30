@@ -21,7 +21,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 /**
- * This class will notifies the monolith about the domain verification status.
+ * This class will notifies the AppMarket about the domain verification status.
  */
 @Slf4j
 public class DomainVerificationNotificationClient {
