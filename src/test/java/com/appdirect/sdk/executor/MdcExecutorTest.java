@@ -11,9 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.MDC;
@@ -23,11 +23,14 @@ public class MdcExecutorTest {
 
 	@Spy
 	private ExecutorService underlying = new ForkJoinPool();
-	@InjectMocks
-	private MdcExecutor mdcExecutor = new MdcExecutor(underlying);
+	private MdcExecutor mdcExecutor;
 
 	private Map<String, String> mdcContext = aDummyMdcContext();
 
+	@Before
+	public void init() {
+		mdcExecutor = new MdcExecutor(underlying);
+	}
 	@Test
 	public void shouldDelegateShutdownToUnderlying() throws Exception {
 		//When
@@ -166,6 +169,20 @@ public class MdcExecutorTest {
 	}
 
 	@Test
+	public void shouldDelegateExecuteToUnderlying() throws Exception {
+		//Given
+		CustomRunnable task = new CustomRunnable();
+
+		// When
+		setMdcContext(mdcContext);
+		mdcExecutor.execute(task);
+		waitForExecutionToFinish();
+
+		//Then
+		assertThat(task.getLocalMdcContext()).isEqualTo(mdcContext);
+	}
+
+	@Test
 	public void shouldDelegateInvokeAnyCallableWithTimeoutToUnderlying() throws Exception {
 		//Given
 		CustomCallable callable1 = new CustomCallable();
@@ -178,20 +195,6 @@ public class MdcExecutorTest {
 
 		//Then
 		assertThat(invokeAny).isEqualTo(mdcContext);
-	}
-
-	@Test
-	public void shouldDelegateExecuteToUnderlying() throws Exception {
-		//Given
-		CustomRunnable task = new CustomRunnable();
-
-		// When
-		setMdcContext(mdcContext);
-		mdcExecutor.execute(task);
-		waitForExecutionToFinish();
-
-		//Then
-		assertThat(task.getLocalMdcContext()).isEqualTo(mdcContext);
 	}
 
 	private void setMdcContext(Map<String, String> stringStringMap) {
