@@ -55,21 +55,21 @@ public class EventHandlingConfiguration {
 	@Bean
 	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventDispatcher(
-				new Events(),
-				new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
-				new ParseAndHandleWrapper<>(new SubscriptionOrderEventParser(), subscriptionOrderHandler),
-				new ParseAndHandleWrapper<>(new SubscriptionCancelEventParser(), subscriptionCancelHandler),
-				new ParseAndHandleWrapper<>(new SubscriptionChangeEventParser(), subscriptionChangeHandler),
-				new ParseAndHandleWrapper<>(new SubscriptionDeactivatedParser(), subscriptionDeactivatedHandler),
-				new ParseAndHandleWrapper<>(new SubscriptionReactivatedParser(), subscriptionReactivatedHandler),
-				new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
-				new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
-				new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
-				new ParseAndHandleWrapper<>(new AddonSubscriptionCancelEventParser(), addonSubscriptionCancelHandler),
-				new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
-				new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
-				unknownEventHandler(),
-				new AddonEventDetector()
+			new Events(),
+			new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
+			new ParseAndHandleWrapper<>(new SubscriptionOrderEventParser(), subscriptionOrderHandler),
+			new ParseAndHandleWrapper<>(new SubscriptionCancelEventParser(), subscriptionCancelHandler),
+			new ParseAndHandleWrapper<>(new SubscriptionChangeEventParser(), subscriptionChangeHandler),
+			new ParseAndHandleWrapper<>(new SubscriptionDeactivatedParser(), subscriptionDeactivatedHandler),
+			new ParseAndHandleWrapper<>(new SubscriptionReactivatedParser(), subscriptionReactivatedHandler),
+			new ParseAndHandleWrapper<>(new SubscriptionClosedParser(), subscriptionClosedHandler),
+			new ParseAndHandleWrapper<>(new SubscriptionUpcomingInvoiceParser(), subscriptionUpcomingInvoiceHandler),
+			new ParseAndHandleWrapper<>(new AddonSubscriptionOrderEventParser(), addonSubscriptionOrderHandler),
+			new ParseAndHandleWrapper<>(new AddonSubscriptionCancelEventParser(), addonSubscriptionCancelHandler),
+			new ParseAndHandleWrapper<>(new UserAssignmentParser(), userAssignmentHandler),
+			new ParseAndHandleWrapper<>(new UserUnassignmentParser(), userUnassignmentHandler),
+			unknownEventHandler(),
+			new AddonEventDetector()
 		);
 	}
 }

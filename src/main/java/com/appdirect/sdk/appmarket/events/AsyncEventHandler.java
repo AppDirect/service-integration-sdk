@@ -65,7 +65,7 @@ class AsyncEventHandler {
 			}
 		});
 		return asyncEventResult(
-				format("Event with eventToken=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
+			format("Event with eventToken=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
 		);
 	}
 }
