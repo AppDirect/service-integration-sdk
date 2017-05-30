@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import org.slf4j.MDC;
 
@@ -114,10 +115,6 @@ public class MdcExecutor implements ExecutorService {
 	}
 
 	private <T> Collection<? extends Callable<T>> wrap(Collection<? extends Callable<T>> tasks, Map<String, String> context) {
-		List<Callable<T>> result = new ArrayList<>();
-		for (Callable<T> task : tasks) {
-			result.add(wrap(task, context));
-		}
-		return result;
+		return tasks.stream().map(it -> wrap(it, context)).collect(Collectors.toList());
 	}
 }
