@@ -18,7 +18,7 @@ import static com.appdirect.sdk.appmarket.events.APIResult.failure;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +27,15 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
 
 class AsyncEventHandler {
 	private final Logger log;
-	private final ExecutorService executorService;
+	private final Executor executor;
 	private final AppmarketEventClient appmarketEventClient;
 
-	AsyncEventHandler(ExecutorService executorService, AppmarketEventClient appmarketEventClient) {
-		this(executorService, appmarketEventClient, LoggerFactory.getLogger(AsyncEventHandler.class));
+	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient) {
+		this(executor, appmarketEventClient, LoggerFactory.getLogger(AsyncEventHandler.class));
 	}
 
-	AsyncEventHandler(ExecutorService executorService, AppmarketEventClient appmarketEventClient, Logger log) {
-		this.executorService = executorService;
+	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, Logger log) {
+		this.executor = executor;
 		this.appmarketEventClient = appmarketEventClient;
 		this.log = log;
 	}
@@ -48,7 +48,7 @@ class AsyncEventHandler {
 	 * @return and {@link APIResult} instance representing the response to be returned to the event notification.
 	 */
 	APIResult handle(SDKEventHandler eventHandler, EventInfo eventInfo, EventHandlingContext eventContext) {
-		executorService.submit(() -> {
+		executor.execute(() -> {
 			APIResult result;
 			try {
 				result = eventHandler.handle(eventInfo, eventContext);

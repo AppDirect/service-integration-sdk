@@ -1,5 +1,6 @@
 package com.appdirect.sdk.executor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -18,16 +19,6 @@ public class MdcExecutor implements ExecutorService {
 
 	public MdcExecutor(ExecutorService underlying) {
 		this.underlying = underlying;
-	}
-
-	@Override
-	public Future<?> submit(Runnable task) {
-		return underlying.submit(wrap(task, MDC.getCopyOfContextMap()));
-	}
-
-	@Override
-	public void execute(Runnable task) {
-		underlying.execute(task);
 	}
 
 	@Override
@@ -57,32 +48,43 @@ public class MdcExecutor implements ExecutorService {
 
 	@Override
 	public <T> Future<T> submit(Callable<T> task) {
-		return underlying.submit(task);
+		return underlying.submit(wrap(task, MDC.getCopyOfContextMap()));
 	}
 
 	@Override
 	public <T> Future<T> submit(Runnable task, T result) {
-		return underlying.submit(task, result);
+		return underlying.submit(wrap(task, MDC.getCopyOfContextMap()), result);
+	}
+
+	@Override
+	public Future<?> submit(Runnable task) {
+		return underlying.submit(wrap(task, MDC.getCopyOfContextMap()));
 	}
 
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
-		return underlying.invokeAll(tasks);
+
+		return underlying.invokeAll(wrap(tasks, MDC.getCopyOfContextMap()));
 	}
 
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException {
-		return underlying.invokeAll(tasks, timeout, unit);
+		return underlying.invokeAll(wrap(tasks, MDC.getCopyOfContextMap()), timeout, unit);
 	}
 
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-		return underlying.invokeAny(tasks);
+		return underlying.invokeAny(wrap(tasks, MDC.getCopyOfContextMap()));
 	}
 
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		return underlying.invokeAny(tasks, timeout, unit);
+		return underlying.invokeAny(wrap(tasks, MDC.getCopyOfContextMap()), timeout, unit);
+	}
+
+	@Override
+	public void execute(Runnable command) {
+		underlying.execute(wrap(command, MDC.getCopyOfContextMap()));
 	}
 
 	private Runnable wrap(Runnable runnable, Map<String, String> context) {
@@ -96,5 +98,26 @@ public class MdcExecutor implements ExecutorService {
 				MDC.clear();
 			}
 		};
+	}
+
+	private <T> Callable<T> wrap (Callable<T> task, Map<String, String> context) {
+		return () -> {
+			if (context != null) {
+				MDC.setContextMap(context);
+			}
+			try {
+				return task.call();
+			} finally {
+				MDC.clear();
+			}
+		};
+	}
+
+	private <T> Collection<? extends Callable<T>> wrap(Collection<? extends Callable<T>> tasks, Map<String, String> context) {
+		List<Callable<T>> result = new ArrayList<>();
+		for (Callable<T> task : tasks) {
+			result.add(wrap(task, context));
+		}
+		return result;
 	}
 }
