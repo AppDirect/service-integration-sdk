@@ -20,6 +20,7 @@ package com.appdirect.sdk.appmarket.domain;
  * Use {@link com.appdirect.sdk.appmarket.domain.DomainVerificationNotificationClient} to return the
  * verification status.
  */
+@FunctionalInterface
 public interface DomainOwnershipVerificationHandler {
 	void verifyDomainOwnership(String customerId, String domain, String callbackUrl, String key);
 }

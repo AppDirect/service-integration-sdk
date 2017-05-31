@@ -18,6 +18,7 @@ package com.appdirect.sdk.appmarket.domain;
  * if they are using the {@link DomainDnsOwnershipVerificationConfiguration}. The implementation of this class specifies the
  * {@link TxtDnsRecord} that is returned to the monolith upon querying.
  */
+@FunctionalInterface
 public interface DomainDnsVerificationInfoHandler {
 	DnsOwnershipVerificationRecords readOwnershipVerificationRecords(String customerId, String domain);
 }
