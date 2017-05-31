@@ -28,8 +28,6 @@ import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.domain.DomainDnVerificationInfoHandler;
-import com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.AddonSubscriptionOrder;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
@@ -42,13 +40,14 @@ import com.appdirect.sdk.appmarket.events.SubscriptionUpcomingInvoice;
 import com.appdirect.sdk.appmarket.events.UserAssignment;
 import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
+import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration;
 
 /**
  * Sample connector that supports all of the supported events, both the
  * mandatory and optional ones.
  */
 @SpringBootApplication
-@Import({ConnectorSdkConfiguration.class, DomainDnsOwnershipVerificationConfiguration.class})
+@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class})
 public class FullConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
@@ -142,12 +141,6 @@ public class FullConnector {
 		return event -> success(
 				format("USER_UNASSIGN for user %s for account %s has been processed, for real.", event.getUnassignedUser().getUuid(), event.getAccountId())
 		);
-	}
-
-	@Primary
-	@Bean
-	public DomainDnVerificationInfoHandler domainDnVerificationInfoHandler() {
-		return new TestDomainDnsVerificationInfoHandler();
 	}
 
 	private void sleepForOneSecond_toTriggerRaceCondition_thatModifiedSharedQueryParams() {

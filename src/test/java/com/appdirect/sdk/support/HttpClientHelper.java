@@ -16,6 +16,7 @@ package com.appdirect.sdk.support;
 
 import static java.util.Arrays.asList;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.http.HttpHeaders;
@@ -38,6 +39,11 @@ public class HttpClientHelper {
 	}
 
 	public static HttpGet get(String endpoint, String... params) throws URISyntaxException {
+		URI uri = buildURI(endpoint, params);
+		return new HttpGet(uri);
+	}
+
+	public static URI buildURI(String endpoint, String[] params) throws URISyntaxException {
 		if (params.length % 2 != 0) {
 			throw new IllegalArgumentException("pass params in name=value form");
 		}
@@ -46,6 +52,6 @@ public class HttpClientHelper {
 		for (int i = 0; i < params.length; i = i + 2) {
 			builder.addParameter(params[i], params[i + 1]).build();
 		}
-		return new HttpGet(builder.build());
+		return builder.build();
 	}
 }

@@ -16,6 +16,7 @@ package com.appdirect.sdk.support;
 import static com.appdirect.sdk.support.ContentOf.resourceAsString;
 import static com.appdirect.sdk.support.ContentOf.streamAsString;
 import static com.appdirect.sdk.support.HttpClientHelper.anAppmarketHttpClient;
+import static com.appdirect.sdk.support.HttpClientHelper.buildURI;
 import static com.appdirect.sdk.support.HttpClientHelper.get;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
@@ -37,8 +38,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 
+import com.appdirect.sdk.appmarket.domain.DomainVerificationStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -55,6 +59,8 @@ public class FakeAppmarket {
 	private final List<String> allRequestPaths;
 	private final List<String> resolvedEvents;
 	private final Object resolvedEventsLock = new Object();
+	private final List<DomainVerificationStatus> domainVerificationStatuses;
+	private final Object domainVerificationStatusesLock = new Object();
 	private String lastRequestBody;
 	private Throwable backgroundThreadException;
 
@@ -69,6 +75,7 @@ public class FakeAppmarket {
 		this.isvSecret = isvSecret;
 		this.allRequestPaths = new ArrayList<>();
 		this.resolvedEvents = new ArrayList<>();
+		this.domainVerificationStatuses = new ArrayList<>();
 	}
 
 	public FakeAppmarket start() {
@@ -83,6 +90,19 @@ public class FakeAppmarket {
 			byte[] buildJsonResponse(URI requestUri) throws IOException {
 				String eventToken = requestUri.getPath().split("/")[5];
 				markEventAsResolved(eventToken);
+				return "".getBytes(UTF_8);
+			}
+		});
+		server.createContext("/api/integration/v1/customers/", new OauthSecuredHandler(oauthInTheHeader) {
+			@Override
+			byte[] buildJsonResponse(URI requestUri) throws IOException {
+				String body = new String(lastRequestBody);
+				ObjectMapper objectMapper = new ObjectMapper();
+				DomainVerificationStatus domainVerificationStatus = objectMapper.readValue(body, DomainVerificationStatus.class);
+				synchronized (resolvedEventsLock) {
+					domainVerificationStatuses.add(domainVerificationStatus);
+					resolvedEventsLock.notify();
+				}
 				return "".getBytes(UTF_8);
 			}
 		});
@@ -114,6 +134,10 @@ public class FakeAppmarket {
 
 	public List<String> resolvedEvents() {
 		return new ArrayList<>(resolvedEvents);
+	}
+
+	public List<DomainVerificationStatus> domainVerificationStatuses() {
+		return new ArrayList<>(domainVerificationStatuses);
 	}
 
 	private void markEventAsResolved(String eventToken) {
@@ -150,6 +174,14 @@ public class FakeAppmarket {
 		return httpClient.execute(request);
 	}
 
+	public HttpResponse sendTriggerDomainVerificationTo(String connectorDomainVerificationUrl, String appmarketCallbackPath) throws Exception {
+		List<String> allParams = new ArrayList<>();
+		allParams.add("callbackUrl");
+		allParams.add(baseAppmarketUrl() + appmarketCallbackPath);
+
+		return sendSignedPostRequestTo(buildURI(connectorDomainVerificationUrl, allParams.toArray(new String[]{})).toURL().toString(), new StringEntity(""));
+	}
+
 	private String baseAppmarketUrl() {
 		return "http://localhost:" + server.getAddress().getPort();
 	}
@@ -174,6 +206,21 @@ public class FakeAppmarket {
 
 			if (tries == maxNumberOfTries) {
 				throw new TimeoutException("Could not find " + desiredNumberOfResolvedEvents + " resolved event after trying for " + maxNumberOfTries * timeoutOfOneTryMs + "ms. | resolvedEvents: " + resolvedEvents);
+			}
+		}
+	}
+
+	public void waitForDomainVerifications(int desiredNumberOfDomainVerificationStatuses) throws Exception {
+		long maxNumberOfTries = 100, timeoutOfOneTryMs = 50;
+		synchronized (domainVerificationStatusesLock) {
+			int tries = 0;
+			while (domainVerificationStatuses.size() < desiredNumberOfDomainVerificationStatuses && tries < maxNumberOfTries) {
+				tries++;
+				domainVerificationStatusesLock.wait(timeoutOfOneTryMs);
+			}
+
+			if (tries == maxNumberOfTries) {
+				throw new TimeoutException("Could not find " + desiredNumberOfDomainVerificationStatuses + " domain verifications after trying for " + maxNumberOfTries * timeoutOfOneTryMs + "ms. | domainVerificationStatuses: " + domainVerificationStatuses);
 			}
 		}
 	}

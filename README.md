@@ -48,6 +48,11 @@ to your event type.
 For specific information regarding the different event types and the responses that you need to send back to the 
 AppDirect marketplace when event processing is complete, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Event-Descriptions)
 
+## Domain association
+Some products require to be associated to one or multiple domains. 
+
+For more details. see the [domain association](https://github.com/AppDirect/service-integration-sdk/wiki/Domain-association) section.
+
 ## Exposed endpoints
 Using the SDK enables several REST points on your connector application. For details, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints)
 

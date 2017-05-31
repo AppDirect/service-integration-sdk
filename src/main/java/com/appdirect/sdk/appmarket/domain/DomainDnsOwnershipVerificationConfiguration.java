@@ -16,16 +16,34 @@ package com.appdirect.sdk.appmarket.domain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.web.RestOperationsFactory;
+import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
+
 /**
  * Provides the dependencies necessary for a connector for domain linking functionality.
  * This configuration has to be explicitly imported by the SDK client, the same as the
  * {@link com.appdirect.sdk.ConnectorSdkConfiguration} class.
+ * This configuration should be imported if the SDK client required to associate domains to the subscription.
  */
 @Configuration
-public class DomainDnsOwnershipVerificationConfiguration {
+public abstract class DomainDnsOwnershipVerificationConfiguration {
+	@Bean
+	public abstract DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler();
 
 	@Bean
-	public DomainDnsOwnershipVerificationInfoController domainDnsVerificationInfoController(DomainDnVerificationInfoHandler handler) {
-		return new DomainDnsOwnershipVerificationInfoController(handler);
+	public abstract DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient);
+
+	@Bean
+	public DomainOwnershipController domainDnsVerificationInfoController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
+																		 DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
+																		 OAuthKeyExtractor keyExtractor) {
+		return new DomainOwnershipController(domainDnsVerificationInfoHandler, domainOwnershipVerificationHandler, keyExtractor);
+	}
+
+	@Bean
+	public DomainVerificationNotificationClient domainVerificationNotificationClient(RestOperationsFactory restClientFactory,
+																					 DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		return new DomainVerificationNotificationClient(restClientFactory, credentialsSupplier);
 	}
 }
