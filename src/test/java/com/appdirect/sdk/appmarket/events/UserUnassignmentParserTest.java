@@ -38,11 +38,12 @@ public class UserUnassignmentParserTest {
 		String expectedAssignedUserId = "expectedAssignedUserId";
 		String expectedConsumerKey = "expectedConsumerKey";
 		HashMap<String, String[]> expectedQueryParams = new HashMap<>();
+		UserInfo userInfo = UserInfo.builder().uuid(expectedAssignedUserId).build();
 		EventFlag expectedEventFlag = null;
 		String expectedEventId = "expectedEventId";
 		String expectedBaseUrl = "http://www.example.com";
 		UserUnassignment expectedRichEvent = new UserUnassignment(
-				expectedAssignedUserId, 
+				userInfo,
 				expectedAccountId, 
 				expectedConsumerKey, 
 				expectedQueryParams, 

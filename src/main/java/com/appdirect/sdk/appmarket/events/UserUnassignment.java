@@ -21,21 +21,21 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class UserUnassignment extends EventWithContext {
 	@Getter
-	private final String unassignedUserId;
+	private final UserInfo unassignedUser;
 
 	@Getter
 	private final String accountId;
 
-	public UserUnassignment(String unassignedUserId,
-					 String accountId,
-					 String consumerKey,
-					 Map<String, String[]> queryParameters,
-					 EventFlag eventFlag,
-					 String eventToken,
-					 String marketplaceUrl) {
+    public UserUnassignment(UserInfo unassignedUser,
+                            String accountId,
+                            String consumerKey,
+                            Map<String, String[]> queryParameters,
+                            EventFlag eventFlag,
+                            String eventToken,
+                            String marketplaceUrl) {
 
 		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
-		this.unassignedUserId = unassignedUserId;
+		this.unassignedUser = unassignedUser;
 		this.accountId = accountId;
 	}
 }
