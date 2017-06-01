@@ -17,6 +17,8 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +40,7 @@ public class AppmarketOrderValidationController {
 			consumes = APPLICATION_FORM_URLENCODED_VALUE,
 			produces = APPLICATION_JSON_VALUE
 	)
-	ValidationResponse validateOrderFields(@RequestBody MultiValueMap<String, String> body) {
+	ValidationResponse validateOrderFields(HttpServletRequest request, @RequestBody MultiValueMap<String, String> body) {
 		return validationHandler.validateOrderFields(body.toSingleValueMap());
 	}
 }
