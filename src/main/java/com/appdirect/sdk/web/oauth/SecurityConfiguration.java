@@ -70,6 +70,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return filter;
 	}
 
+	@Bean
+	public RequestIdFilter requestIdFilter() {
+		return new RequestIdFilter();
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -83,6 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests().anyRequest().authenticated()
 					.and()
-				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(requestIdFilter(), OAuthSignatureCheckingFilter.class);
 	}
 }

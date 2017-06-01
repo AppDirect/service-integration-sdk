@@ -29,15 +29,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.util.MultiValueMap;
 
-import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationController;
-import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationHandler;
-
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketOrderValidationControllerTest {
 
 	@Mock
 	private AppmarketOrderValidationHandler mockValidationHandler;
-
 	private AppmarketOrderValidationController tested;
 
 	@Before
