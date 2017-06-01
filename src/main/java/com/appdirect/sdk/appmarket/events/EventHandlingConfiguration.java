@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
+import com.appdirect.sdk.executor.MdcExecutor;
 
 @Configuration
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class EventHandlingConfiguration {
 
 	@Bean(destroyMethod = "shutdown")
 	public ExecutorService defaultExecutorService() {
-		return newWorkStealingPool();
+		return new MdcExecutor(newWorkStealingPool());
 	}
 
 	@Bean

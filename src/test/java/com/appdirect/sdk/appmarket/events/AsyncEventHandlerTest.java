@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -38,7 +39,7 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
 
 public class AsyncEventHandlerTest {
 
-	private Executor executor = mock(Executor.class);
+	private Executor executor = mock(ExecutorService.class);
 	private AppmarketEventClient appmarketEventClient = mock(AppmarketEventClient.class);
 	private Logger mockLog = mock(Logger.class);
 	private AsyncEventHandler asyncEventHandler = new AsyncEventHandler(executor, appmarketEventClient, mockLog);
