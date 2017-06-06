@@ -14,8 +14,6 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
-import static com.appdirect.sdk.appmarket.events.AppmarketEventController.MDC_REQUEST_ID_KEY;
-import static com.appdirect.sdk.appmarket.events.AppmarketEventController.REQUEST_ID_HEADER;
 import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
@@ -76,19 +73,6 @@ public class AppmarketEventControllerTest {
 
 		assertThat(response.getBody()).isEqualTo(aHugeSuccess);
 		assertThat(response.getStatusCode()).isEqualTo(OK);
-	}
-
-	@Test
-	public void processEvent_includeXRequestIdHeaderInMDC_whenAvailable() throws Exception {
-		//Given
-		String uuid = "some_uuid";
-		HttpServletRequest request = aRequestContainingHeader(REQUEST_ID_HEADER, uuid);
-
-		//When
-		controller.processEvent(request, "some-event-url");
-
-		//Then
-		assertThat(MDC.get(MDC_REQUEST_ID_KEY)).isEqualTo(uuid);
 	}
 
 	private HttpServletRequest aRequestContainingHeader(String key, String value) {

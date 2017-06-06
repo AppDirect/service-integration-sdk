@@ -48,7 +48,7 @@ public class DomainOwnershipController {
 			value = "/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord",
 			produces = APPLICATION_JSON_VALUE
 	)
-	public DnsOwnershipVerificationRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
+	public DnsOwnershipVerificationRecords readOwnershipVerificationRecord(HttpServletRequest request, @PathVariable("customerIdentifier") String customerId,
 																		   @PathVariable("domain") String domain) {
 
 		return domainDnsVerificationInfoHandler.readOwnershipVerificationRecords(customerId, domain);

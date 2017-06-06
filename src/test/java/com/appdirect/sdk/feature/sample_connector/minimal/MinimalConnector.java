@@ -25,6 +25,7 @@ import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
+import com.appdirect.sdk.support.DummyRestController;
 
 /**
  * Sample connector that only supports the mandatory events, not the
@@ -46,5 +47,10 @@ public class MinimalConnector {
 	@Bean
 	public AppmarketEventHandler<SubscriptionCancel> subscriptionCancelHandler() {
 		return event -> success("Mandatory SUB_CANCEL has been processed");
+	}
+
+	@Bean
+	public DummyRestController dummyRestController() {
+		return new DummyRestController();
 	}
 }

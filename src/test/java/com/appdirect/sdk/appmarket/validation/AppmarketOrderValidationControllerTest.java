@@ -22,6 +22,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,14 +31,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.util.MultiValueMap;
 
-import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationController;
-import com.appdirect.sdk.appmarket.validation.AppmarketOrderValidationHandler;
-
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketOrderValidationControllerTest {
 
 	@Mock
 	private AppmarketOrderValidationHandler mockValidationHandler;
+	@Mock
+	HttpServletRequest aRequest;
 
 	private AppmarketOrderValidationController tested;
 
@@ -54,7 +55,7 @@ public class AppmarketOrderValidationControllerTest {
 		when(testParams.toSingleValueMap())
 				.thenReturn(expectedParamsMap);
 		//When
-		tested.validateOrderFields(testParams);
+		tested.validateOrderFields(aRequest, testParams);
 
 		//Then
 		verify(mockValidationHandler)

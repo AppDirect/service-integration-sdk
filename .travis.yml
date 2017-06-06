@@ -6,4 +6,4 @@ deploy:
     tags: true
   skip_cleanup: true
   provider: script
-  script: mvn source:jar deploy --settings settings.xml
+  script: mvn source:jar javadoc:jar deploy --settings settings.xml

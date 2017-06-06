@@ -19,6 +19,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import javax.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +50,7 @@ public class AppmarketMigrationController {
 	 * otherwise.
 	 */
 	@RequestMapping(method = POST, value = "/api/v1/migration/validateCustomerAccount", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-	public Callable<APIResult> validateISVCustomerAccount(@RequestBody Map<String, String> isvCustomerAccountData) {
+	public Callable<APIResult> validateISVCustomerAccount(HttpServletRequest request, @RequestBody Map<String, String> isvCustomerAccountData) {
 		return () -> migrationService.validateCustomerAccount(isvCustomerAccountData);
 	}
 
@@ -61,7 +63,7 @@ public class AppmarketMigrationController {
 	 * otherwise.
 	 */
 	@RequestMapping(method = POST, value = "/api/v1/migration/validateSubscription", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-	public Callable<APIResult> validateISVSubscription(@RequestBody Map<String, String> isvSubscriptionData) {
+	public Callable<APIResult> validateISVSubscription(HttpServletRequest request, @RequestBody Map<String, String> isvSubscriptionData) {
 		return () -> migrationService.validateSubscription(isvSubscriptionData);
 	}
 }

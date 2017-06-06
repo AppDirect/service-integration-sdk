@@ -15,6 +15,7 @@ package com.appdirect.sdk;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
 import com.appdirect.sdk.appmarket.events.AppmarketCommunicationConfiguration;
@@ -23,6 +24,7 @@ import com.appdirect.sdk.appmarket.events.DeveloperExceptionHandler;
 import com.appdirect.sdk.appmarket.events.EventHandlingConfiguration;
 import com.appdirect.sdk.appmarket.migration.DefaultMigrationHandlers;
 import com.appdirect.sdk.appmarket.validation.DefaultValidationHandlers;
+import com.appdirect.sdk.utils.RestControllerAspect;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
@@ -33,6 +35,7 @@ import com.appdirect.sdk.web.oauth.SecurityConfiguration;
  * {@link org.springframework.context.ApplicationContext} in order to be able to make use of the SDK.
  */
 @Configuration
+@EnableAspectJAutoProxy
 @Import({
 		JacksonConfiguration.class,
 		SecurityConfiguration.class,
@@ -59,4 +62,8 @@ public class ConnectorSdkConfiguration {
 		return new DeveloperExceptionHandler();
 	}
 
+	@Bean
+	public RestControllerAspect restControllerAspect () {
+		return new RestControllerAspect();
+	}
 }

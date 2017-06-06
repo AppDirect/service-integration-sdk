@@ -35,6 +35,8 @@ public class DomainOwnershipControllerTest {
 	private DomainOwnershipVerificationHandler domainOwnershipVerificationHandler;
 	@Mock
 	private OAuthKeyExtractor keyExtractor;
+	@Mock
+	HttpServletRequest aRequest;
 
 	private DomainOwnershipController tested;
 
@@ -50,7 +52,7 @@ public class DomainOwnershipControllerTest {
 		String testDomain = "example.com";
 
 		//When
-		tested.readOwnershipVerificationRecord(testCustomerId, testDomain);
+		tested.readOwnershipVerificationRecord(aRequest, testCustomerId, testDomain);
 
 		//Then
 		verify(mockDnsVerificationInfoHandler).readOwnershipVerificationRecords(testCustomerId, testDomain);
