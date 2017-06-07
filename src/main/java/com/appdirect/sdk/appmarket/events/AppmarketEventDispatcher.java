@@ -13,6 +13,8 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.EventType.ADDON_CANCEL;
+import static com.appdirect.sdk.appmarket.events.EventType.ADDON_ORDER;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CANCEL;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_CHANGE;
 import static com.appdirect.sdk.appmarket.events.EventType.SUBSCRIPTION_NOTICE;
@@ -101,6 +103,8 @@ class AppmarketEventDispatcher {
 		eventsToHandlers.put(SUBSCRIPTION_NOTICE, () -> subscriptionNoticeHandlerFor(rawEvent.getPayload().getNotice().getType()));
 		eventsToHandlers.put(USER_ASSIGNMENT, () -> userAssignmentHandler);
 		eventsToHandlers.put(USER_UNASSIGNMENT, () -> userUnassignmentHandler);
+		eventsToHandlers.put(ADDON_ORDER, () -> addonSubscriptionOrderHandler);
+		eventsToHandlers.put(ADDON_CANCEL, () -> addonSubscriptionCancelHandler);
 
 		return eventsToHandlers.getOrDefault(rawEvent.getType(), () -> unknownEventHandler).get();
 	}

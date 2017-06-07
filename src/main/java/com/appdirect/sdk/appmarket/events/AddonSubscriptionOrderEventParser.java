@@ -23,7 +23,7 @@ class AddonSubscriptionOrderEventParser implements EventParser<AddonSubscription
 				eventInfo.getPayload().getCompany(),
 				eventInfo.getPayload().getOrder(),
 				eventInfo.getMarketplace().getPartner(),
-				eventInfo.getPayload().getAccount().getParentAccountIdentifier(),
+				eventInfo.getPayload().getAccount().getAccountIdentifier(),
 				eventContext.getQueryParameters(),
 				eventInfo.getId(),
 				eventInfo.getMarketplace().getBaseUrl()

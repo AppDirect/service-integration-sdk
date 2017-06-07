@@ -118,6 +118,6 @@ public class AddonSubscriptionOrderEventParserTest {
 	}
 
 	private AccountInfo someAccount(String parentAccountId) {
-		return AccountInfo.builder().parentAccountIdentifier(parentAccountId).build();
+		return AccountInfo.builder().accountIdentifier(parentAccountId).build();
 	}
 }
