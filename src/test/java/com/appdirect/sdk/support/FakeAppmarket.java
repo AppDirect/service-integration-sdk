@@ -20,6 +20,7 @@ import static com.appdirect.sdk.support.HttpClientHelper.buildURI;
 import static com.appdirect.sdk.support.HttpClientHelper.get;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,6 +33,7 @@ import java.util.function.Predicate;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -40,6 +42,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicHeader;
 
 import com.appdirect.sdk.appmarket.domain.DomainVerificationStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -156,11 +159,16 @@ public class FakeAppmarket {
 		return sendSignedRequestTo(connectorEventEndpointUrl, allParams);
 	}
 
-	public HttpResponse sendSignedRequestTo(String connectorEventEndpointUrl, List<String> allParams) throws Exception {
+	public HttpResponse callDummyRestController(String dummyControllerEndpointUrl, BasicHeader... header) throws Exception {
+		return sendSignedRequestTo(dummyControllerEndpointUrl, emptyList(), header);
+	}
+
+	public HttpResponse sendSignedRequestTo(String connectorEventEndpointUrl, List<String> allParams, Header... headers) throws Exception {
 		CloseableHttpClient httpClient = anAppmarketHttpClient();
 		HttpGet request = get(connectorEventEndpointUrl, allParams.toArray(new String[]{}));
 
 		oauthSign(request);
+		addHeaders(request, headers);
 
 		return httpClient.execute(request);
 	}
@@ -193,6 +201,12 @@ public class FakeAppmarket {
 	private void oauthSign(HttpRequest request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException {
 		OAuthConsumer consumer = new CommonsHttpOAuthConsumer(isvKey, isvSecret);
 		consumer.sign(request);
+	}
+
+	private void addHeaders(HttpGet request, Header[] headers) {
+		for (Header header : headers) {
+			request.addHeader(header);
+		}
 	}
 
 	public void waitForResolvedEvents(int desiredNumberOfResolvedEvents) throws Exception {
