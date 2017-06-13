@@ -56,8 +56,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
-			value = "/customers/{customerIdentifier}/domains/{domain}/ownershipVerification",
-			produces = APPLICATION_JSON_VALUE
+			value = "/customers/{customerIdentifier}/domains/{domain}/ownershipVerification"
 	)
 	@ResponseStatus(value = ACCEPTED)
 	public void verifyDomainOwnership(HttpServletRequest request,
