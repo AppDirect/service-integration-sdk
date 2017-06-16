@@ -16,6 +16,8 @@ package com.appdirect.sdk.appmarket.events;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents one of the subtypes of the Subscription Notice event sent by the App Market.
@@ -27,8 +29,10 @@ import lombok.EqualsAndHashCode;
  * @see <a href="https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#notice-types">SUBSCRIPTION_NOTICE types</a>
  */
 @EqualsAndHashCode(callSuper = true)
+@Getter
+@NoArgsConstructor
 public class SubscriptionDeactivated extends EventWithContext {
-	private final AccountInfo accountInfo;
+	private AccountInfo accountInfo;
 
 	public SubscriptionDeactivated(String consumerKeyUsedByTheRequest,
 								   AccountInfo accountInfo,
@@ -39,9 +43,5 @@ public class SubscriptionDeactivated extends EventWithContext {
 
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.accountInfo = accountInfo;
-	}
-
-	public AccountInfo getAccountInfo() {
-		return accountInfo;
 	}
 }

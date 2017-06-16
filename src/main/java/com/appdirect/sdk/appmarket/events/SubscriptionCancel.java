@@ -16,15 +16,17 @@ package com.appdirect.sdk.appmarket.events;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * A developer-facing event representing cancellation of an account requested by the AppMarket
  */
-@Value
+@Getter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class SubscriptionCancel extends EventWithContext {
-	private final String accountIdentifier;
+	private String accountIdentifier;
 
 	public SubscriptionCancel(String consumerKeyUsedByTheRequest,
 							  String accountIdentifier,
