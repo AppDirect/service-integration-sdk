@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class UserSyncApiResult {
-	private HttpStatus status;
 	private String code;
 	private String message;
 }

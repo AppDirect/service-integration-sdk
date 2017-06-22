@@ -6,8 +6,8 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-/*
-Internal class to the SDK. Populated to form the request body of User Sync requests
+/**
+ * Internal class to the SDK. Populated to form the request body of User Sync requests
  */
 @Data
 @Builder
