@@ -19,10 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
 
+import com.appdirect.sdk.exception.UserSyncException;
+import com.appdirect.sdk.exception.UserSyncTooManyRequestsException;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 /**
  * This class defines method for performing HTTP requests for User Sync against an AppMarket instance
+ * @throws {@link UserSyncException} Appmarket has failed to sync the user
+ * @throws {@link UserSyncTooManyRequestsException} Appmarket not processing requests due to high volume of requests
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -39,9 +43,9 @@ public class UserSyncApiClient {
 		userSyncRequestPayload.setType(USER_SYNC_PAYLOAD_TYPE);
 		userSyncRequestPayload.setOperation(UserSyncRequestPayloadOperation.ASSIGN.toString());
 
-		ResponseEntity<UserSyncApiResult> apiResult = restClientFactory
+		ResponseEntity<String> apiResult = restClientFactory
 				.restOperationsForProfile(oauthKey, oauthSecret)
-				.postForEntity(url, userSyncRequestPayload, UserSyncApiResult.class);
+				.postForEntity(url, userSyncRequestPayload, String.class);
 		log.info("Received response={} for sync assign api", apiResult);
 	}
 
@@ -52,17 +56,21 @@ public class UserSyncApiClient {
 		userSyncRequestPayload.setType(USER_SYNC_PAYLOAD_TYPE);
 		userSyncRequestPayload.setOperation(UserSyncRequestPayloadOperation.UNASSIGN.toString());
 
-		ResponseEntity<UserSyncApiResult> apiResult = restClientFactory
+		ResponseEntity<String> apiResult = restClientFactory
 				.restOperationsForProfile(oauthKey, oauthSecret)
-				.postForEntity(url, userSyncRequestPayload, UserSyncApiResult.class);
+				.postForEntity(url, userSyncRequestPayload, String.class);
 		log.info("Received response={} for sync un-assign api", apiResult);
 	}
 
 	private UserSyncRequestPayload buildUserSyncRequestPayload(SyncedUser syncedUser) {
-		return UserSyncRequestPayload.builder().
-				userIdentifier(syncedUser.getUserIdentifier()).userName(syncedUser.getUserName())
-				.accountIdentifier(syncedUser.getAccountIdentifier()).developerIdentifier(syncedUser.getDeveloperIdentifier())
+		return UserSyncRequestPayload.builder()
+				.userIdentifier(syncedUser.getUserIdentifier())
+				.userName(syncedUser.getUserName())
+				.accountIdentifier(syncedUser.getAccountIdentifier())
+				.developerIdentifier(syncedUser.getDeveloperIdentifier())
 				.email(syncedUser.getEmail())
-				.firstName(syncedUser.getFirstName()).lastName(syncedUser.getLastName()).build();
+				.firstName(syncedUser.getFirstName())
+				.lastName(syncedUser.getLastName())
+				.build();
 	}
 }

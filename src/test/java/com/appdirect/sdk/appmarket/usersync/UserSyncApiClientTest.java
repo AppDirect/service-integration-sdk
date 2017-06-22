@@ -1,3 +1,17 @@
+/*
+ * Copyright 2017 AppDirect, Inc. and/or its affiliates
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.appdirect.sdk.appmarket.usersync;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -36,35 +50,30 @@ public class UserSyncApiClientTest {
 	@Test
 	public void postUserAssignment_returnsAccepted() throws Exception {
 		//Given
-		UserSyncApiResult userSyncApiResult = UserSyncApiResult.builder().build();
 		ArgumentCaptor<UserSyncRequestPayload> captor = ArgumentCaptor.forClass(UserSyncRequestPayload.class);
 
 		when(restOperationsFactory.restOperationsForProfile(OAUTH_KEY, OAUTH_SECRET))
 				.thenReturn(restOperations);
-		when(restOperations.postForEntity(anyString(), any(UserSyncRequestPayload.class), any())).thenReturn(ResponseEntity.accepted().body(userSyncApiResult));
+		when(restOperations.postForEntity(anyString(), any(UserSyncRequestPayload.class), any())).thenReturn(ResponseEntity.accepted().body(null));
 
 		//When
 		userSyncApiClient.syncUserAssignment(BASE_URL, OAUTH_KEY, OAUTH_SECRET, syncedUser);
 
 		//Then
 		verify(restOperations, Mockito.times(1)).postForEntity(anyString(), captor.capture(), any());
+		UserSyncRequestPayload expected = createExpectedPayload(syncedUser, UserSyncRequestPayloadOperation.ASSIGN);
 		UserSyncRequestPayload result = captor.getValue();
-		assertThat(result.getAccountIdentifier()).isEqualTo(syncedUser.getAccountIdentifier());
-		assertThat(result.getDeveloperIdentifier()).isEqualTo(syncedUser.getDeveloperIdentifier());
-		assertThat(result.getEmail()).isEqualTo(syncedUser.getEmail());
-		assertThat(result.getType()).isEqualTo("ASSIGNMENT");
-		assertThat(result.getOperation()).isEqualTo(UserSyncRequestPayloadOperation.ASSIGN.toString());
+		assertThat(result).isEqualTo(expected);
 	}
 
 	@Test
 	public void postUserUnAssignment_returnsAccepted() throws Exception {
 		//Given
-		UserSyncApiResult userSyncApiResult = UserSyncApiResult.builder().build();
 		ArgumentCaptor<UserSyncRequestPayload> captor = ArgumentCaptor.forClass(UserSyncRequestPayload.class);
 
 		when(restOperationsFactory.restOperationsForProfile(OAUTH_KEY, OAUTH_SECRET))
 				.thenReturn(restOperations);
-		when(restOperations.postForEntity(anyString(), any(UserSyncRequestPayload.class), any())).thenReturn(ResponseEntity.accepted().body(userSyncApiResult));
+		when(restOperations.postForEntity(anyString(), any(UserSyncRequestPayload.class), any())).thenReturn(ResponseEntity.accepted().body(null));
 
 		//When
 		userSyncApiClient.syncUserUnAssignment(BASE_URL, OAUTH_KEY, OAUTH_SECRET, syncedUser);
@@ -72,12 +81,9 @@ public class UserSyncApiClientTest {
 		//Then
 		verify(restOperations, Mockito.times(1)).postForEntity(anyString(), captor.capture(), any());
 		UserSyncRequestPayload result = captor.getValue();
-		assertThat(result.getAccountIdentifier()).isEqualTo(syncedUser.getAccountIdentifier());
-		assertThat(result.getDeveloperIdentifier()).isEqualTo(syncedUser.getDeveloperIdentifier());
-		assertThat(result.getType()).isEqualTo("ASSIGNMENT");
-		assertThat(result.getOperation()).isEqualTo(UserSyncRequestPayloadOperation.UNASSIGN.toString());
+		UserSyncRequestPayload expected = createExpectedPayload(syncedUser, UserSyncRequestPayloadOperation.UNASSIGN);
+		assertThat(result).isEqualTo(expected);
 	}
-
 
 	private SyncedUser createSyncedUser() {
 		SyncedUser syncedUser = new SyncedUser();
@@ -86,5 +92,16 @@ public class UserSyncApiClientTest {
 		syncedUser.setEmail("email@email.org");
 		syncedUser.setUserIdentifier("userId");
 		return syncedUser;
+	}
+
+	private UserSyncRequestPayload createExpectedPayload(SyncedUser syncedUser, UserSyncRequestPayloadOperation operation) {
+		return UserSyncRequestPayload.builder()
+				.accountIdentifier(syncedUser.getAccountIdentifier())
+				.developerIdentifier(syncedUser.getDeveloperIdentifier())
+				.email(syncedUser.getEmail())
+				.type("ASSIGNMENT")
+				.userIdentifier(syncedUser.getUserIdentifier())
+				.operation(operation.toString())
+				.build();
 	}
 }

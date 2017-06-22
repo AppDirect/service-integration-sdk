@@ -22,13 +22,15 @@ import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
 import com.appdirect.sdk.appmarket.migration.SubscriptionValidationHandler;
 import com.appdirect.sdk.web.RestOperationsFactory;
+import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 @Configuration
 public class AppmarketCommunicationConfiguration {
+
 	@Bean
-	public AppmarketEventClient appmarketEventFetcher(RestOperationsFactory restOperationsFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new AppmarketEventClient(restOperationsFactory, credentialsSupplier);
+	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		return new AppmarketEventClient(restOperationsFactory(), credentialsSupplier);
 	}
 
 	@Bean
@@ -52,5 +54,20 @@ public class AppmarketCommunicationConfiguration {
 	@Bean
 	public AppmarketMigrationController appmarketMigrationController(AppmarketMigrationService appmarketMigrationService) {
 		return new AppmarketMigrationController(appmarketMigrationService);
+	}
+
+	@Bean
+	public RestOperationsFactory restOperationsFactory() {
+		return new RestOperationsFactory(appmarketEventConsumerExceptionHandler());
+	}
+
+	@Bean
+	public AppmarketEventClientExceptionHandler appmarketEventConsumerExceptionHandler() {
+		return new AppmarketEventClientExceptionHandler();
+	}
+
+	@Bean
+	public DeveloperExceptionHandler developerExceptionHandler() {
+		return new DeveloperExceptionHandler();
 	}
 }

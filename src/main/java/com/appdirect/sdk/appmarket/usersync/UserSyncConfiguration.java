@@ -24,7 +24,7 @@ import com.appdirect.sdk.web.exception.UserSyncApiExceptionHandler;
 public class UserSyncConfiguration {
 
 	@Bean
-	UserSyncApiExceptionHandler userSyncApiExceptionHandler() {
+	public UserSyncApiExceptionHandler userSyncApiExceptionHandler() {
 		return new UserSyncApiExceptionHandler();
 	}
 
@@ -34,7 +34,7 @@ public class UserSyncConfiguration {
 	}
 
 	@Bean
-	UserSyncApiClient userSyncApiClient() {
+	public UserSyncApiClient userSyncApiClient() {
 		return new UserSyncApiClient(userSyncRestOperationsFactory());
 	}
 }
