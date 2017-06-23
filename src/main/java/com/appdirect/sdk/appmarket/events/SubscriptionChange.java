@@ -16,17 +16,19 @@ package com.appdirect.sdk.appmarket.events;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Developer-facing event representing updates to an account requested by the AppMarket
  */
-@Value
+@Getter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class SubscriptionChange extends EventWithContext {
-	private final UserInfo owner;
-	private final OrderInfo order;
-	private final AccountInfo account;
+	private UserInfo owner;
+	private OrderInfo order;
+	private AccountInfo account;
 
 	public SubscriptionChange(String consumerKeyUsedByTheRequest,
 							  UserInfo owner,

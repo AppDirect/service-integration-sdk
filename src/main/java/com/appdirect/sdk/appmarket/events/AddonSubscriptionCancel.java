@@ -16,16 +16,18 @@ package com.appdirect.sdk.appmarket.events;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * A developer-facing event representing cancellation of an addon account requested by the AppMarket
  */
-@Value
+@Getter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class AddonSubscriptionCancel extends EventWithContext {
-	private final String accountIdentifier;
-	private final String parentAccountIdentifier;
+	private String accountIdentifier;
+	private String parentAccountIdentifier;
 
 	public AddonSubscriptionCancel(String accountIdentifier,
 								   String parentAccountIdentifier,

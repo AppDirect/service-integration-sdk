@@ -19,9 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * abstract event type that offers the consumer key used by the request publishing the event,
@@ -29,18 +30,19 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @EqualsAndHashCode
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class EventWithContext {
 	/**
 	 * Returns the consumer key that was used by the appmarket to publish this event.
 	 * You can use this to determine which product is the originator of this event.
 	 */
-	private final String consumerKeyUsedByTheRequest;
-	private final Map<String, String[]> queryParameters;
+	private String consumerKeyUsedByTheRequest;
+	private Map<String, String[]> queryParameters;
 	@Getter(AccessLevel.NONE)
-	private final EventFlag flag;
-	private final String eventToken;
-	private final String marketplaceUrl;
+	private EventFlag flag;
+	private String eventToken;
+	private String marketplaceUrl;
 
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.

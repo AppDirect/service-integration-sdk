@@ -19,19 +19,21 @@ import java.util.Optional;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * Developer-facing event creation of an account requested by the AppMarket
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class SubscriptionOrder extends EventWithContext {
-	private final UserInfo purchaserInfo;
-	private final Map<String, String> configuration;
-	private final CompanyInfo companyInfo;
-	private final OrderInfo orderInfo;
-	private final String partner;
-	private final String applicationUuid;
+	private UserInfo purchaserInfo;
+	private Map<String, String> configuration;
+	private CompanyInfo companyInfo;
+	private OrderInfo orderInfo;
+	private String partner;
+	private String applicationUuid;
 
 	public SubscriptionOrder(String consumerKeyUsedByTheRequest,
 							 EventFlag flag,
