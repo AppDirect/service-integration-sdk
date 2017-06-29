@@ -25,8 +25,8 @@ import com.appdirect.sdk.web.RestOperationsFactory;
 
 /**
  * This class defines method for performing HTTP requests for User Sync against an AppMarket instance
- * @throws {@link UserSyncException} Appmarket has failed to sync the user
- * @throws {@link UserSyncTooManyRequestsException} Appmarket not processing requests due to high volume of requests
+ * {@link UserSyncException} Appmarket has failed to sync the user
+ * {@link UserSyncTooManyRequestsException} Appmarket not processing requests due to high volume of requests
  */
 @Slf4j
 @RequiredArgsConstructor
