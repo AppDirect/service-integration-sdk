@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd $TRAVIS_BUILD_DIR 
+
 #Note: All environment variables not defined in this build are assumed to be already present. Check your Travis build settings
 export BINTRAY_REPOSITORY_NAME="maven"
 export BINTRAY_PACKAGE_NAME="service-integration-sdk"
