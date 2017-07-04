@@ -8,7 +8,7 @@ export BINTRAY_PACKAGE_NAME="service-integration-sdk"
 export BINTRAY_PACKAGE_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v "^\[" | grep -v "Listening")
 
 echo "Publishing build artifacts to Bintray..."
-mvn source:jar javadoc:jar deploy --settings settings.xml
+mvn source:jar javadoc:jar deploy -DskipTests --settings settings.xml
 
 echo "Syncing project version ${BINTRAY_PACKAGE_VERSION} with maven central ..."
 export BINTRAY_REQUEST_URL="https://api.bintray.com/maven_central_sync/appdirect-opensource/${BINTRAY_REPOSITORY_NAME}/${BINTRAY_PACKAGE_NAME}/versions/${BINTRAY_PACKAGE_VERSION}"
