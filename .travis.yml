@@ -2,7 +2,13 @@ language: java
 
 jdk: oraclejdk8
 
+cache:
+  directories:
+  - $HOME/.m2
+
 before_script: chmod +x ./src/script/*.sh
+
+script: echo "Skipping build"
 
 deploy:
   on:
