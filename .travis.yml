@@ -9,9 +9,8 @@ deploy:
     tags: true
   skip_cleanup: true
   provider: script
-  script: 
-    - ./src/script/publish_build_artifacts.sh
-    - ./src/script/sync_bintray_to_maven_central.sh
+  script: ./src/script/publish_build_artifacts.sh && \
+          ./src/script/sync_bintray_to_maven_central.sh
 
 notifications:
   slack:
