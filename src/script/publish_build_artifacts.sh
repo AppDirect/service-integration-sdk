@@ -5,7 +5,7 @@ cd ${TRAVIS_BUILD_DIR}
 #Note: All environment variables not defined in this build are assumed to be already present. Check your Travis build settings
 export BINTRAY_REPOSITORY_NAME="maven"
 export BINTRAY_PACKAGE_NAME="service-integration-sdk"
-export BINTRAY_PACKAGE_VERSION="1.28"
+export BINTRAY_PACKAGE_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml | sed 's/;$//')
 
 echo "Publishing build artifacts to Bintray..."
 mvn source:jar javadoc:jar deploy -DskipTests=true --settings settings.xml
