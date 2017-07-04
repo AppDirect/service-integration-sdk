@@ -1,7 +1,9 @@
 language: java
-jdk:
-  - oraclejdk8
+
+jdk: oraclejdk8
+
 before_script: chmod +x ./src/script/*.sh
+
 deploy:
   on:
     tags: true
@@ -10,6 +12,7 @@ deploy:
   script: 
     - ./src/script/publish_build_artifacts.sh
     - ./src/script/sync_bintray_to_maven_central.sh
+
 notifications:
   slack:
     secure: TKvm3ENQuk09ogERLNTZi4l3YFTdYgyJ2LbSWwCM/WEA3LJ9mdPALwlEf4uUaBbpvFa7AEnnAtJCXc6nLa8GwXvGQI6es5uXIUXUwX9CLlrEYvAYGmKzpv8W+oNidHco4rSE+2xn0AdMxgHjSNpFrMXt6vUuMX9nd5VZKWrY8NT55pMqxeUdlb0PSZ1uLFNYin2kWsRv5pJo6mwfrVlcrILcdSW+c2JM2empXTbdUUeUKufyR3EZzNJpHI3ljRVV3HKwaLPOMuODun3WSqILnw3Y/tLCIUCAgkkgknRTc85LpOMCfS3aoHbXkKvv72fldsixbpZF/FIemoUhHYwaBoPcPv3fuOGRVnFqI3ThBE93BKSnh+ZHLHMGddYr4Ls+RygLM7N+Ntt0bbrxTLWvnzhxpz9nq9Vr0ByXCNepFRpFeei0iOPEHxvM7Tm0XC/7vMSR6uodyVZVMf+xAcd3ZgHqYBLVoAxaegVN5zpnupWWvEb8ulIGowp4hGL4KhE3Ta+vLUyOv0gLOduBAF8+JtQ0uiS4pWD6rXB7W8pMRTO5t4lvhbtOY2nmkMvo+zwIUgIL5iRqbQMSx4H1HJ0vdeOnQcOGhaHI4Ashm8EWUeIGlyd8jmzAz9IRghvN1+hBhaj5dVVbSqI5alqFbEC2eXEcOWqQ675hz3TSNZhjSfE=
