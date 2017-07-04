@@ -1,12 +1,15 @@
 language: java
+
 jdk:
   - oraclejdk8
+
 deploy:
   on:
     tags: true
   skip_cleanup: true
   provider: script
   script: mvn source:jar javadoc:jar deploy --settings settings.xml
+
 notifications:
   slack:
     secure: c+OEYo7uksZfTQeI4OZwpoSMXaQBFsJA8r36VFmmJcYGktEGP1YnToXLDwqfjnrCA9KwjnjAAReNPd+Nr84DNg5wopksiGv1xO1VO5EGBWnx5NA0hbRp7EyPJ8zGI56IPMHxX8LWC2Fnj6C9RaBPkwFMxZj0iNH8nNE+onBW3tDbiCFCx+v3xEA2qP7MCPhN+lUQANOOIecImvmhGHDPBlGtSHdCx9YZeLKhQrVn/VGiWPVTYSZm1IrJB9FBvwpp8ccVrJxy+AEC/lDXN5qNZmQSosmX0dHHC7TpOgVQ/I1h1tLroVoniyEJ2D4NVVgS2fo4JpklGlBr5YFuZM4YtdkuUI+YMKVERSoSALxfqjVNsYeIY87v295KGb7/eg/a4X36I/ot7eENwVfa7W7W6oSynKCKzjcY48ZP0m54gJzJkzxq0rIht6uGlEw4Z5dLWXBU45YWiLAu9GWqnhuJ9DZbALl3myjlskwOYb11ZDhdPwWECXbarH4rnLqwbv4dXSs8TxsoKvLZcmVBAfaRBLJJE1Ll8bhbRngbnshkjEW0FbD5qJpNRSNzx+yf2wLxZ/TNiSCYmtwuUKnKcmKWwMzpkBN/Y4XYe+DvdYPJjt8oRGnxAghxVNdeoUItCBNYoXnW7l4hnTjw2oMXMF97rK/LltbhrvH8EMxoNiI7VYU=
