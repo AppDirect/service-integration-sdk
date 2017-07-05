@@ -6,13 +6,12 @@ cd ${TRAVIS_BUILD_DIR}
 export BINTRAY_REPOSITORY_NAME="maven"
 export BINTRAY_PACKAGE_NAME="service-integration-sdk"
 export BINTRAY_PACKAGE_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml | sed 's/;$//')
+export BINTRAY_REQUEST_URL="https://api.bintray.com/maven_central_sync/${CI_DEPLOY_USERNAME}/${BINTRAY_REPOSITORY_NAME}/${BINTRAY_PACKAGE_NAME}/versions/${BINTRAY_PACKAGE_VERSION}"
 
 echo "Publishing build artifacts to Bintray..."
-mvn source:jar javadoc:jar deploy -DskipTests=true --settings settings.xml
-
-echo "Syncing project version ${BINTRAY_PACKAGE_VERSION} with maven central ..."
-export BINTRAY_REQUEST_URL="https://api.bintray.com/maven_central_sync/appdirect-opensource/${BINTRAY_REPOSITORY_NAME}/${BINTRAY_PACKAGE_NAME}/versions/${BINTRAY_PACKAGE_VERSION}"
-echo "Bintray request URL: [$BINTRAY_REQUEST_URL]"
+mvn source:jar javadoc:jar deploy -DskipTests=true --settings settings.xml && \
+echo "Syncing project version ${BINTRAY_PACKAGE_VERSION} with maven central ..." && \
+echo "Bintray request URL: [$BINTRAY_REQUEST_URL]" && \
 curl -i \
 	--user ${CI_DEPLOY_USERNAME}:${CI_DEPLOY_PASSWORD} \
 	--header "Accept: application/json" \
