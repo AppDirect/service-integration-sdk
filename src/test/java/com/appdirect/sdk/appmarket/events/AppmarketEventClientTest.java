@@ -27,10 +27,11 @@ import org.springframework.web.client.RestTemplate;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
-import com.appdirect.sdk.web.RestOperationsFactory;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
+
 
 public class AppmarketEventClientTest {
-	private RestOperationsFactory restOperationsFactory;
+	private RestTemplateFactory restTemplateFactory;
 	private RestTemplate restOperations;
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
@@ -38,11 +39,10 @@ public class AppmarketEventClientTest {
 
 	@Before
 	public void setUp() throws Exception {
-		restOperationsFactory = mock(RestOperationsFactory.class);
 		restOperations = mock(RestTemplate.class);
 		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
-
-		testedFetcher = new AppmarketEventClient(restOperationsFactory, credentialsSupplier);
+		restTemplateFactory = mock(RestTemplateFactory.class);
+		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier);
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
 	}
@@ -55,7 +55,7 @@ public class AppmarketEventClientTest {
 		String testSecret = "testSecret";
 		EventInfo testEventInfo = EventInfo.builder().build();
 
-		when(restOperationsFactory.restOperationsForProfile(testKey, testSecret))
+		when(restTemplateFactory.getOAuthRestTemplate(testKey, testSecret))
 				.thenReturn(restOperations);
 		when(restOperations.getForObject(testUrl, EventInfo.class))
 				.thenReturn(testEventInfo);
@@ -72,7 +72,7 @@ public class AppmarketEventClientTest {
 
 	@Test
 	public void resolveEvent_callsPost_onTheRightUrl() throws Exception {
-		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
+		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restOperations);
 		APIResult resultToSend = success("async is resolved");
 
 		testedFetcher.resolve("http://base.com", "id-of-the-event", resultToSend, "some-key");
@@ -83,7 +83,7 @@ public class AppmarketEventClientTest {
 	@Test
 	public void resolveSamlIdp() {
 		// Given
-		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
+		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restOperations);
 
 		// When
 		testedFetcher.resolveSamlIdp("http://base.com/saml/18749910", "some-key");

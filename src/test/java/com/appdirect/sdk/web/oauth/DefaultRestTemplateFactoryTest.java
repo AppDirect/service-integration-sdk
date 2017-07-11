@@ -9,45 +9,34 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.appdirect.sdk.web;
+package com.appdirect.sdk.web.oauth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RestOperationsFactoryTest {
-	
-	@Mock
-	private AppmarketEventClientExceptionHandler appmarketEventClientExceptionHandler;
-
-	private RestOperationsFactory testRestOperationsFactory;
+public class DefaultRestTemplateFactoryTest {
+	private DefaultRestTemplateFactoryImpl defaultOAuthRestTemplateFactoryImpl;
 
 	@Before
-	public void setUp() throws Exception {
-		testRestOperationsFactory = new RestOperationsFactory(appmarketEventClientExceptionHandler);
+	public void setUp() {
+		defaultOAuthRestTemplateFactoryImpl = new DefaultRestTemplateFactoryImpl(new AppmarketEventClientExceptionHandler());
 	}
 
 	@Test
-	public void restOperationsForProfile() throws Exception {
-		//Given
-		String testKey = "testKey";
-		String testSecret = "testSecret";
-
+	public void testGetRestTemplate_ReturnsOauthSignedRequestFactory() throws Exception {
 		//When
-		RestTemplate restClient = testRestOperationsFactory.restOperationsForProfile(testKey, testSecret);
-
+		RestTemplate restTemplate = defaultOAuthRestTemplateFactoryImpl.getOAuthRestTemplate("some-key", "some-secret");
+		ClientHttpRequestFactory clientHttpRequestFactory = restTemplate.getRequestFactory();
 		//Then
-		assertThat(restClient.getErrorHandler()).isEqualTo(appmarketEventClientExceptionHandler);
+		assertThat(clientHttpRequestFactory).isInstanceOf(OAuthSignedClientHttpRequestFactory.class);
 	}
-
 }

@@ -21,19 +21,18 @@ import lombok.extern.slf4j.Slf4j;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
-import com.appdirect.sdk.web.RestOperationsFactory;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
 /**
  * This class defines method for performing HTTP requests against an AppMarket instance
  */
 @Slf4j
 public class AppmarketEventClient {
-
-	private final RestOperationsFactory restClientFactory;
+	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
-	AppmarketEventClient(RestOperationsFactory restClientFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		this.restClientFactory = restClientFactory;
+	AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		this.restTemplateFactory = restTemplateFactory;
 		this.credentialsSupplier = credentialsSupplier;
 	}
 
@@ -46,8 +45,8 @@ public class AppmarketEventClient {
 	 */
 	EventInfo fetchEvent(String url, Credentials credentials) {
 		log.debug("Consuming event from url={}", url);
-		EventInfo fetchedEvent = restClientFactory
-				.restOperationsForProfile(credentials.developerKey, credentials.developerSecret)
+		EventInfo fetchedEvent = restTemplateFactory
+				.getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret)
 				.getForObject(url, EventInfo.class);
 		fetchedEvent.setId(extractId(url));
 		return fetchedEvent;
@@ -67,14 +66,14 @@ public class AppmarketEventClient {
 		String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
-		restClientFactory.restOperationsForProfile(key, secret).postForObject(url, result, String.class);
+		restTemplateFactory.getOAuthRestTemplate(key, secret).postForObject(url, result, String.class);
 		log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
 	}
 
 	public ServiceProviderInformation resolveSamlIdp(String url, String key) {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
-		return restClientFactory.restOperationsForProfile(key, secret).getForObject(url, ServiceProviderInformation.class);
+		return restTemplateFactory.getOAuthRestTemplate(key, secret).getForObject(url, ServiceProviderInformation.class);
 	}
 
 	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventToken) {

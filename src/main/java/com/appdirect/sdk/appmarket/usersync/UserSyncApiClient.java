@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.appdirect.sdk.exception.UserSyncException;
 import com.appdirect.sdk.exception.UserSyncTooManyRequestsException;
-import com.appdirect.sdk.web.RestOperationsFactory;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
 /**
  * This class defines method for performing HTTP requests for User Sync against an AppMarket instance
@@ -31,7 +31,7 @@ import com.appdirect.sdk.web.RestOperationsFactory;
 @Slf4j
 @RequiredArgsConstructor
 public class UserSyncApiClient {
-	private final RestOperationsFactory restClientFactory;
+	private final RestTemplateFactory restTemplateFactory;
 	private final String USER_SYNC_ASSIGN_API_ENDPOINT = "%s/api/sync/v1/tasks";
 	private final String USER_SYNC_PAYLOAD_TYPE = "ASSIGNMENT";
 
@@ -43,8 +43,8 @@ public class UserSyncApiClient {
 		userSyncRequestPayload.setType(USER_SYNC_PAYLOAD_TYPE);
 		userSyncRequestPayload.setOperation(UserSyncRequestPayloadOperation.ASSIGN.toString());
 
-		ResponseEntity<String> apiResult = restClientFactory
-				.restOperationsForProfile(oauthKey, oauthSecret)
+		ResponseEntity<String> apiResult = restTemplateFactory
+				.getOAuthRestTemplate(oauthKey, oauthSecret)
 				.postForEntity(url, userSyncRequestPayload, String.class);
 		log.info("Received response={} for sync assign api", apiResult);
 	}
@@ -56,8 +56,8 @@ public class UserSyncApiClient {
 		userSyncRequestPayload.setType(USER_SYNC_PAYLOAD_TYPE);
 		userSyncRequestPayload.setOperation(UserSyncRequestPayloadOperation.UNASSIGN.toString());
 
-		ResponseEntity<String> apiResult = restClientFactory
-				.restOperationsForProfile(oauthKey, oauthSecret)
+		ResponseEntity<String> apiResult = restTemplateFactory
+				.getOAuthRestTemplate(oauthKey, oauthSecret)
 				.postForEntity(url, userSyncRequestPayload, String.class);
 		log.info("Received response={} for sync un-assign api", apiResult);
 	}

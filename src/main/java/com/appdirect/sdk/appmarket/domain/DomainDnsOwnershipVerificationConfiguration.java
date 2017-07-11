@@ -17,9 +17,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
+import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
 /**
  * Provides the dependencies necessary for a connector for domain linking functionality.
@@ -44,11 +45,11 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 
 	@Bean
 	public DomainVerificationNotificationClient domainVerificationNotificationClient(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new DomainVerificationNotificationClient(restOperationsFactory(), credentialsSupplier);
+		return new DomainVerificationNotificationClient(restTemplateFactory(), credentialsSupplier);
 	}
 
 	@Bean
-	public RestOperationsFactory restOperationsFactory() {
-		return new RestOperationsFactory(new AppmarketEventClientExceptionHandler());
+	public RestTemplateFactory restTemplateFactory() {
+		return new DefaultRestTemplateFactoryImpl(new AppmarketEventClientExceptionHandler());
 	}
 }

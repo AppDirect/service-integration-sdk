@@ -9,24 +9,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package com.appdirect.sdk.web;
+package com.appdirect.sdk.web.oauth;
 
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
-import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
-
-public class RestOperationsFactory {
+public class DefaultRestTemplateFactoryImpl implements RestTemplateFactory {
 	private final ResponseErrorHandler errorHandler;
 
-	public RestOperationsFactory(ResponseErrorHandler errorHandler) {
+	public DefaultRestTemplateFactoryImpl(ResponseErrorHandler errorHandler) {
 		this.errorHandler = errorHandler;
 	}
 
-	public RestTemplate restOperationsForProfile(String key, String secret) {
+	@Override
+	public RestTemplate getOAuthRestTemplate(String key, String secret) {
 		RestTemplate restTemplate = new RestTemplate(new OAuthSignedClientHttpRequestFactory(key, secret));
 		restTemplate.setErrorHandler(errorHandler);
 		return restTemplate;
