@@ -23,6 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
+import com.appdirect.sdk.web.oauth.DefaultOAuthRestTemplateFactoryImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestOperationsFactoryTest {
@@ -34,7 +35,7 @@ public class RestOperationsFactoryTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testRestOperationsFactory = new RestOperationsFactory(appmarketEventClientExceptionHandler);
+		testRestOperationsFactory = new RestOperationsFactory(appmarketEventClientExceptionHandler, new DefaultOAuthRestTemplateFactoryImpl());
 	}
 
 	@Test

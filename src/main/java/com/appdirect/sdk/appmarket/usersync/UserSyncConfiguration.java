@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.exception.UserSyncApiExceptionHandler;
+import com.appdirect.sdk.web.oauth.UserSyncOAuthRestTemplateFactoryImpl;
 
 @Configuration
 public class UserSyncConfiguration {
@@ -30,7 +31,7 @@ public class UserSyncConfiguration {
 
 	@Bean
 	public RestOperationsFactory userSyncRestOperationsFactory() {
-		return new RestOperationsFactory(userSyncApiExceptionHandler());
+		return new RestOperationsFactory(userSyncApiExceptionHandler(), new UserSyncOAuthRestTemplateFactoryImpl());
 	}
 
 	@Bean
