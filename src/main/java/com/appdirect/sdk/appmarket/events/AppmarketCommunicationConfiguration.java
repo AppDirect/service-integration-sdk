@@ -24,6 +24,7 @@ import com.appdirect.sdk.appmarket.migration.SubscriptionValidationHandler;
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
+import com.appdirect.sdk.web.oauth.DefaultOAuthRestTemplateFactoryImpl;
 
 @Configuration
 public class AppmarketCommunicationConfiguration {
@@ -58,7 +59,7 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public RestOperationsFactory restOperationsFactory() {
-		return new RestOperationsFactory(appmarketEventConsumerExceptionHandler());
+		return new RestOperationsFactory(appmarketEventConsumerExceptionHandler(), new DefaultOAuthRestTemplateFactoryImpl());
 	}
 
 	@Bean

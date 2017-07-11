@@ -20,6 +20,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
+import com.appdirect.sdk.web.oauth.DefaultOAuthRestTemplateFactoryImpl;
 
 /**
  * Provides the dependencies necessary for a connector for domain linking functionality.
@@ -49,6 +50,6 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 
 	@Bean
 	public RestOperationsFactory restOperationsFactory() {
-		return new RestOperationsFactory(new AppmarketEventClientExceptionHandler());
+		return new RestOperationsFactory(new AppmarketEventClientExceptionHandler(), new DefaultOAuthRestTemplateFactoryImpl());
 	}
 }

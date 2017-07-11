@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
+import com.appdirect.sdk.exception.UserSyncApiErrorResponseBody;
 import com.appdirect.sdk.exception.UserSyncException;
 import com.appdirect.sdk.exception.UserSyncTooManyRequestsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,13 +48,11 @@ public class UserSyncApiExceptionHandler implements ResponseErrorHandler {
 			throw new UserSyncTooManyRequestsException(clientHttpResponse.getStatusText());
 		}
 
-		if (clientHttpResponse.getBody() == null) {
-			throw new UserSyncException(UNKNOWN_ERROR, "");
-		}
-
 		try {
 			String error = IOUtils.toString(clientHttpResponse.getBody(), CharEncoding.UTF_8);
-			throw objectMapper.readValue(error, UserSyncException.class);
+			log.error("Response error details={} ", error);
+			UserSyncApiErrorResponseBody errorResponseBody = objectMapper.readValue(error, UserSyncApiErrorResponseBody.class);
+			throw new UserSyncException(errorResponseBody.getCode(), errorResponseBody.getMessage());
 		} catch (JsonProcessingException e) {
 			String formatString = String.format("Wrong format of the error returned in UserSync Response statusCode=%s statusText=%s",	clientHttpResponse.getStatusCode(),	clientHttpResponse.getStatusText());
 			log.error(formatString, e);

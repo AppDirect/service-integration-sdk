@@ -16,18 +16,19 @@ package com.appdirect.sdk.web;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
-import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
+import com.appdirect.sdk.web.oauth.OAuthRestTemplateFactory;
 
 public class RestOperationsFactory {
 	private final ResponseErrorHandler errorHandler;
+	private final OAuthRestTemplateFactory oauthRestTemplateFactory;
 
-	public RestOperationsFactory(ResponseErrorHandler errorHandler) {
+	public RestOperationsFactory(ResponseErrorHandler errorHandler, OAuthRestTemplateFactory oauthRestTemplateFactory) {
 		this.errorHandler = errorHandler;
+		this.oauthRestTemplateFactory = oauthRestTemplateFactory;
 	}
 
 	public RestTemplate restOperationsForProfile(String key, String secret) {
-		RestTemplate restTemplate = new RestTemplate(new OAuthSignedClientHttpRequestFactory(key, secret));
+		RestTemplate restTemplate = oauthRestTemplateFactory.getRestTemplate(key, secret);
 		restTemplate.setErrorHandler(errorHandler);
 		return restTemplate;
 	}
