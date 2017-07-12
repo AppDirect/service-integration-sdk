@@ -13,11 +13,15 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import org.springframework.hateoas.Link;
 
 /**
  * Representation of the JSON payload of an event received from the AppMarket.
@@ -36,4 +40,5 @@ class EventInfo {
 	private EventPayload payload;
 	private String returnUrl;
 	@Setter private String id;
+	private List<Link> links;
 }
