@@ -13,12 +13,16 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import org.springframework.hateoas.Link;
+
 /**
  * To see what is mandatory or not, consult https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#attributes
  */
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
 	public SubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
+		String samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
+
 		return new SubscriptionOrder(
 				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getFlag(),
@@ -30,7 +34,8 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 				eventInfo.getApplicationUuid(),
 				eventContext.getQueryParameters(),
 				eventInfo.getId(),
-				eventInfo.getMarketplace().getBaseUrl()
+				eventInfo.getMarketplace().getBaseUrl(),
+				samlIdpUrl
 		);
 	}
 }

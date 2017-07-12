@@ -10,36 +10,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.appdirect.sdk.appmarket.saml;
 
-package com.appdirect.sdk.appmarket.events;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
-import org.springframework.hateoas.Link;
 
 /**
- * Representation of the JSON payload of an event received from the AppMarket.
- * SDK internal, a user of the SDK should never interact with those directly.
+ * Represents a SAML relying party attribute as a key value pair
  */
 @Getter
-@ToString
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 @Builder
-class EventInfo {
-	private EventType type;
-	private MarketInfo marketplace;
-	private String applicationUuid;
-	private EventFlag flag;
-	private UserInfo creator;
-	private EventPayload payload;
-	private String returnUrl;
-	@Setter private String id;
-	@Builder.Default private List<Link> links = new ArrayList<>();
+@AllArgsConstructor
+public class SamlRelyingPartyAttribute {
+	@NotNull
+	private String type;
+	@NotNull
+	private String value;
 }

@@ -16,6 +16,7 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 public class AppmarketEventClientTest {
@@ -76,5 +78,17 @@ public class AppmarketEventClientTest {
 		testedFetcher.resolve("http://base.com", "id-of-the-event", resultToSend, "some-key");
 
 		verify(restOperations).postForObject("http://base.com/api/integration/v1/events/id-of-the-event/result", resultToSend, String.class);
+	}
+
+	@Test
+	public void resolveSamlIdp() {
+		// Given
+		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
+
+		// When
+		testedFetcher.resolveSamlIdp("http://base.com/saml/18749910", "some-key");
+
+		// Then
+		verify(restOperations, times(1)).getForObject("http://base.com/saml/18749910", ServiceProviderInformation.class);
 	}
 }

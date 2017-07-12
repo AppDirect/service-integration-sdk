@@ -34,6 +34,7 @@ public class SubscriptionOrder extends EventWithContext {
 	private OrderInfo orderInfo;
 	private String partner;
 	private String applicationUuid;
+	private String samlIdpUrl;
 
 	public SubscriptionOrder(String consumerKeyUsedByTheRequest,
 							 EventFlag flag,
@@ -45,7 +46,8 @@ public class SubscriptionOrder extends EventWithContext {
 							 String applicationUuid,
 							 Map<String, String[]> queryParameters,
 							 String eventToken,
-							 String marketplaceUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
+							 String marketplaceUrl,
+							 String samlIdpUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.purchaserInfo = purchaserInfo;
@@ -54,6 +56,7 @@ public class SubscriptionOrder extends EventWithContext {
 		this.orderInfo = orderInfo;
 		this.partner = partner;
 		this.applicationUuid = applicationUuid;
+		this.samlIdpUrl = samlIdpUrl;
 	}
 
 	public Map<String, String> getConfiguration() {
@@ -62,5 +65,9 @@ public class SubscriptionOrder extends EventWithContext {
 
 	public Optional<String> getApplicationUuid() {
 		return Optional.ofNullable(applicationUuid);
+	}
+
+	public Optional<String> getSamlIdpUrl() {
+		return Optional.ofNullable(samlIdpUrl);
 	}
 }

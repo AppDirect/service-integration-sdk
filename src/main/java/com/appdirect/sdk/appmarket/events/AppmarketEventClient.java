@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
 import com.appdirect.sdk.web.RestOperationsFactory;
 
 /**
@@ -68,6 +69,12 @@ public class AppmarketEventClient {
 
 		restClientFactory.restOperationsForProfile(key, secret).postForObject(url, result, String.class);
 		log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
+	}
+
+	public ServiceProviderInformation resolveSamlIdp(String url, String key) {
+		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
+
+		return restClientFactory.restOperationsForProfile(key, secret).getForObject(url, ServiceProviderInformation.class);
 	}
 
 	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventToken) {
