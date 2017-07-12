@@ -71,8 +71,9 @@ public class AppmarketEventClient {
 		log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
 	}
 
-	public ServiceProviderInformation resolveSamlIdpInfo(String url, String key) {
+	public ServiceProviderInformation resolveSamlIdp(String url, String key) {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
+
 		return restClientFactory.restOperationsForProfile(key, secret).getForObject(url, ServiceProviderInformation.class);
 	}
 

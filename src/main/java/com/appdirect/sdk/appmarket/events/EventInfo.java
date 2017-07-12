@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -40,5 +41,5 @@ class EventInfo {
 	private EventPayload payload;
 	private String returnUrl;
 	@Setter private String id;
-	private List<Link> links;
+	@Builder.Default private List<Link> links = new ArrayList<>();
 }

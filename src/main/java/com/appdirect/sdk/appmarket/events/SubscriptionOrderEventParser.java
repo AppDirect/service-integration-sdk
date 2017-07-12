@@ -33,7 +33,7 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 				eventContext.getQueryParameters(),
 				eventInfo.getId(),
 				eventInfo.getMarketplace().getBaseUrl(),
-				eventInfo.getLinks() == null ? null : eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null)
+				eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null)
 		);
 	}
 }
