@@ -29,16 +29,8 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class SamlRelyingPartyAttribute {
-
-	/**
-	 * Type
-	 */
 	@NotNull
 	private String type;
-
-	/**
-	 * Value
-	 */
 	@NotNull
 	private String value;
 }

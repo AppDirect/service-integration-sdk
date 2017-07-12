@@ -21,6 +21,8 @@ import org.springframework.hateoas.Link;
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
 	public SubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
+		String samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
+
 		return new SubscriptionOrder(
 				eventContext.getConsumerKeyUsedByTheRequest(),
 				eventInfo.getFlag(),
@@ -33,7 +35,7 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 				eventContext.getQueryParameters(),
 				eventInfo.getId(),
 				eventInfo.getMarketplace().getBaseUrl(),
-				eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null)
+				samlIdpUrl
 		);
 	}
 }

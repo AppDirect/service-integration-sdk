@@ -82,10 +82,13 @@ public class AppmarketEventClientTest {
 
 	@Test
 	public void resolveSamlIdp() {
+		// Given
 		when(restOperationsFactory.restOperationsForProfile("some-key", "some-secret")).thenReturn(restOperations);
 
+		// When
 		testedFetcher.resolveSamlIdp("http://base.com/saml/18749910", "some-key");
 
+		// Then
 		verify(restOperations, times(1)).getForObject("http://base.com/saml/18749910", ServiceProviderInformation.class);
 	}
 }
