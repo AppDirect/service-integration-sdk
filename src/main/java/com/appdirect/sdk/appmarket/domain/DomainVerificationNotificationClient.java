@@ -18,25 +18,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.RestOperationsFactory;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
 /**
  * This class will notifies the AppMarket about the domain verification status.
  */
 @Slf4j
 public class DomainVerificationNotificationClient {
-	private final RestOperationsFactory restClientFactory;
+	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
-	public DomainVerificationNotificationClient(RestOperationsFactory restClientFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		this.restClientFactory = restClientFactory;
+	public DomainVerificationNotificationClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		this.restTemplateFactory = restTemplateFactory;
 		this.credentialsSupplier = credentialsSupplier;
 	}
 
 	public void resolveDomainVerification(String callbackUrl, String key, boolean isVerified) {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
-
-		ResponseEntity<String> result = restClientFactory.restOperationsForProfile(key, secret).postForEntity(callbackUrl, new DomainVerificationStatus(isVerified), String.class);
+		ResponseEntity<String> result = restTemplateFactory.getOAuthRestTemplate(key, secret).postForEntity(callbackUrl, new DomainVerificationStatus(isVerified), String.class);
 		log.info("Domain verification callbackUrl={} called with status={}", callbackUrl, result.getStatusCodeValue());
 	}
 }

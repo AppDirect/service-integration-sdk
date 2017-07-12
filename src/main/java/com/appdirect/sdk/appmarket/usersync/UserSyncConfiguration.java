@@ -17,8 +17,9 @@ package com.appdirect.sdk.appmarket.usersync;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.appdirect.sdk.web.RestOperationsFactory;
 import com.appdirect.sdk.web.exception.UserSyncApiExceptionHandler;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
+import com.appdirect.sdk.web.oauth.UserSyncRestTemplateFactoryImpl;
 
 @Configuration
 public class UserSyncConfiguration {
@@ -29,12 +30,12 @@ public class UserSyncConfiguration {
 	}
 
 	@Bean
-	public RestOperationsFactory userSyncRestOperationsFactory() {
-		return new RestOperationsFactory(userSyncApiExceptionHandler());
+	public RestTemplateFactory restTemplateFactory() {
+		return new UserSyncRestTemplateFactoryImpl();
 	}
 
 	@Bean
 	public UserSyncApiClient userSyncApiClient() {
-		return new UserSyncApiClient(userSyncRestOperationsFactory());
+		return new UserSyncApiClient(restTemplateFactory());
 	}
 }

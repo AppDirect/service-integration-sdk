@@ -1,0 +1,11 @@
+{
+  "type": "ASSIGNMENT",
+  "operation": "ASSIGN",
+  "accountIdentifier": "160744112",
+  "developerIdentifier": "6b4bd452-895d-4098-aa56-e6046b238e0f",
+  "userIdentifier": "513",
+  "userName": "tester1",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "tester1@goog-test.junittest.appdirect.co"
+}
