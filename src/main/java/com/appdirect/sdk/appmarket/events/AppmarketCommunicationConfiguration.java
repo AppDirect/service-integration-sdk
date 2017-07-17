@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,20 +26,21 @@ import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class AppmarketCommunicationConfiguration {
 
 	@Bean
-	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier);
+	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+													  @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
+		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean
-	public AppmarketEventService appmarketEventService(
-		DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-		AppmarketEventDispatcher eventDispatcher,
-		AppmarketEventClient appmarketEventClient) {
+	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+													   AppmarketEventDispatcher eventDispatcher,
+													   AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 	}
 
@@ -48,7 +50,7 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler customerAccountValidationHandler, SubscriptionValidationHandler subscriptionValidationHandler) {
+	public AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler customerAccountValidationHandler, SubscriptionValidationHandler subscriptionValidationHandler) {
 		return new AppmarketMigrationService(customerAccountValidationHandler, subscriptionValidationHandler);
 	}
 

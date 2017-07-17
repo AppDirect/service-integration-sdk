@@ -53,7 +53,7 @@ public class ErrorHandlingIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/nonExistant/v1/events/order");
 
 		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"NOT_FOUND\",\"message\":\"Failed to fetch event: Not Found\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Failed to fetch event: Not Found\",\"errorCode\":\"NOT_FOUND\"}");
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ErrorHandlingIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendSignedRequestTo(connectorEventEndpoint(), asList("eventUrl", "http://does-not.exists"));
 
 		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"UNKNOWN_ERROR\",\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists; nested exception is java.net.UnknownHostException: does-not.exists\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists; nested exception is java.net.UnknownHostException: does-not.exists\",\"errorCode\":\"UNKNOWN_ERROR\"}");
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ErrorHandlingIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendEventTo(connectorEventEndpoint(), "/v1/events/subscription-closed", "failThisCall", "true");
 
 		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"OPERATION_CANCELLED\",\"message\":\"You made this call fail\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"You made this call fail\",\"errorCode\":\"OPERATION_CANCELLED\"}");
 	}
 
 	private String connectorEventEndpoint() {

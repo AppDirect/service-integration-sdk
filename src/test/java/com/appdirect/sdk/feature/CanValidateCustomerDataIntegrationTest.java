@@ -71,7 +71,7 @@ public class CanValidateCustomerDataIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + CUSTOMER_ACCOUNT_API_END_POINT, new StringEntity(jsonData, ContentType.APPLICATION_JSON));
 
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"errorCode\":\"CONFIGURATION_ERROR\",\"message\":\"Customer account validation is not supported.\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Customer account validation is not supported.\",\"errorCode\":\"CONFIGURATION_ERROR\"}");
 	}
 
 	@Test

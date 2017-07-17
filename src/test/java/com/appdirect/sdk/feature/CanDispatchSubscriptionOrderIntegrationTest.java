@@ -72,7 +72,7 @@ public class CanDispatchSubscriptionOrderIntegrationTest {
 		fakeAppmarket.waitForResolvedEvents(1);
 		assertThat(fakeAppmarket.resolvedEvents()).contains("subscription-order-without-creator");
 		assertThat(fakeAppmarket.allRequestPaths()).last().isEqualTo("/api/integration/v1/events/subscription-order-without-creator/result");
-		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":false,\"errorCode\":\"USER_NOT_FOUND\",\"message\":\"You should always have a creator\"}");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":false,\"message\":\"You should always have a creator\",\"errorCode\":\"USER_NOT_FOUND\"}");
 	}
 
 	private String connectorEventEndpoint() {
