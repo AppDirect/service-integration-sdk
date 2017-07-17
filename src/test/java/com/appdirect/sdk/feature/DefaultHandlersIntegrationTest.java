@@ -52,7 +52,7 @@ public class DefaultHandlersIntegrationTest {
 		fakeAppmarket.waitForResolvedEvents(1);
 		assertThat(fakeAppmarket.resolvedEvents()).contains("user-assign");
 
-		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":false,\"errorCode\":\"CONFIGURATION_ERROR\",\"message\":\"This event type (USER_ASSIGNMENT) is not supported by this connector.\"}");
+		assertThat(fakeAppmarket.lastRequestBody()).isEqualTo("{\"success\":false,\"message\":\"This event type (USER_ASSIGNMENT) is not supported by this connector.\",\"errorCode\":\"CONFIGURATION_ERROR\"}");
 	}
 
 	private String connectorEventEndpoint() {

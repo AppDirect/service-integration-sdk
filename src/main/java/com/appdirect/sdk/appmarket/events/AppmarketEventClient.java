@@ -38,11 +38,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AppmarketEventClient {
 	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	private final ObjectMapper jackson = new ObjectMapper();
+	private final ObjectMapper jackson;
 
-	AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+	AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, ObjectMapper jackson) {
 		this.restTemplateFactory = restTemplateFactory;
 		this.credentialsSupplier = credentialsSupplier;
+		this.jackson = jackson;
 	}
 
 	/**
@@ -77,8 +78,10 @@ public class AppmarketEventClient {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
 		final RestTemplate restTemplate = restTemplateFactory.getOAuthRestTemplate(key, secret);
+
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+
 		final HttpEntity<String> requestEntity = new HttpEntity<>(jackson.writeValueAsString(result), requestHeaders);
 
 		restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);

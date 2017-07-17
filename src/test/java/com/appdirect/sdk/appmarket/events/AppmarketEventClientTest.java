@@ -15,6 +15,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -22,27 +23,32 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AppmarketEventClientTest {
 	private RestTemplateFactory restTemplateFactory;
 	private RestTemplate restOperations;
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-
 	private AppmarketEventClient testedFetcher;
+	private ObjectMapper jackson = new ObjectMapper();
 
 	@Before
 	public void setUp() throws Exception {
 		restOperations = mock(RestTemplate.class);
 		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
 		restTemplateFactory = mock(RestTemplateFactory.class);
-		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier);
+
+		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier, jackson);
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
 	}
@@ -73,11 +79,25 @@ public class AppmarketEventClientTest {
 	@Test
 	public void resolveEvent_callsPost_onTheRightUrl() throws Exception {
 		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restOperations);
-		APIResult resultToSend = success("async is resolved");
+		APIResult expectedApiResult = success("async is resolved");
 
-		testedFetcher.resolve("http://base.com", "id-of-the-event", resultToSend, "some-key");
+		final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+		testedFetcher.resolve("http://base.com", "id-of-the-event", expectedApiResult, "some-key");
 
-		verify(restOperations).postForObject("http://base.com/api/integration/v1/events/id-of-the-event/result", resultToSend, String.class);
+		verify(restOperations)
+				.exchange(
+						eq("http://base.com/api/integration/v1/events/id-of-the-event/result"),
+						eq(HttpMethod.POST),
+						httpEntityArgumentCaptor.capture(),
+						eq(String.class)
+				);
+
+		final HttpEntity actualEntity = httpEntityArgumentCaptor.getValue();
+		final APIResult actualApiResult = jackson.readValue((String) actualEntity.getBody(), APIResult.class);
+
+		assertThat(actualEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(actualApiResult.getMessage()).isEqualTo(expectedApiResult.getMessage());
+		assertThat(actualApiResult.isSuccess()).isEqualTo(expectedApiResult.isSuccess());
 	}
 
 	@Test

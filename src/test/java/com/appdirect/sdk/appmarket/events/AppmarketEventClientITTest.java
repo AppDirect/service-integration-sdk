@@ -45,7 +45,7 @@ public class AppmarketEventClientITTest {
 	}
 
 	@Test
-	public void whenResolvingEvent_thenACorrectJsonPayloadShouldBeSentToTheAppMarket() throws Exception {
+	public void whenResolvingEvent_thenACorrectJsonPayloadShouldBeSentToTheAppMarket_withOauthHeaders() throws Exception {
 		//Given
 		String testEventToken = UUID.randomUUID().toString();
 		APIResult testApiResult = APIResult.failure(ErrorCode.UNKNOWN_ERROR, "kaboom");

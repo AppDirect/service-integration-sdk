@@ -25,13 +25,15 @@ import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class AppmarketCommunicationConfiguration {
 
 	@Bean
-	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier);
+	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+													  ObjectMapper mapper) {
+		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean

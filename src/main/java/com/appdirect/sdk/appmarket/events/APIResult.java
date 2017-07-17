@@ -20,6 +20,7 @@ import lombok.ToString;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The payload that is sent back to the AppMarket in response to an event
@@ -43,7 +44,8 @@ public class APIResult {
 		this.errorCode = errorCode;
 	}
 
-	public APIResult(boolean success, String message) {
+	public APIResult(@JsonProperty("success") boolean success, 
+					 @JsonProperty("message") String message) {
 		this.success = success;
 		this.message = message;
 	}
