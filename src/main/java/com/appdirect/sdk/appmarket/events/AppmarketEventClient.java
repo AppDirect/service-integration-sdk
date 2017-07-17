@@ -16,12 +16,20 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.utils.EventIdExtractor.extractId;
 import static java.lang.String.format;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class defines method for performing HTTP requests against an AppMarket instance
@@ -30,6 +38,7 @@ import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 public class AppmarketEventClient {
 	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	private final ObjectMapper jackson = new ObjectMapper();
 
 	AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
 		this.restTemplateFactory = restTemplateFactory;
@@ -57,16 +66,23 @@ public class AppmarketEventClient {
 	 * AppMarket that the processing of a given event by the connector has been completed
 	 *
 	 * @param baseAppmarketUrl host on which the marketplace is running
-	 * @param eventToken          the id of the event we would like to resolve
+	 * @param eventToken       the id of the event we would like to resolve
 	 * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
 	 *                         processing has been successful or not.
 	 * @param key              the client key used to sign the resolve request
 	 */
+	@SneakyThrows
 	public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, String key) {
 		String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
-		restTemplateFactory.getOAuthRestTemplate(key, secret).postForObject(url, result, String.class);
+		final RestTemplate restTemplate = restTemplateFactory.getOAuthRestTemplate(key, secret);
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+		final HttpEntity<String> requestEntity = new HttpEntity<>(jackson.writeValueAsString(result), requestHeaders);
+
+		restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+
 		log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
 	}
 
