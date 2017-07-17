@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,7 +33,7 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-													  ObjectMapper mapper) {
+													  @Qualifier("jacksonObjectMapper") ObjectMapper mapper) {
 		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier, mapper);
 	}
 
