@@ -40,7 +40,7 @@ public class AppmarketEventClientTest {
 	private RestTemplate restOperations;
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private AppmarketEventClient testedFetcher;
-	private ObjectMapper jackson = new ObjectMapper();
+	private ObjectMapper jsonMapper = new ObjectMapper();
 
 	@Before
 	public void setUp() throws Exception {
@@ -48,7 +48,7 @@ public class AppmarketEventClientTest {
 		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
 		restTemplateFactory = mock(RestTemplateFactory.class);
 
-		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier, jackson);
+		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier, jsonMapper);
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
 	}
@@ -93,7 +93,7 @@ public class AppmarketEventClientTest {
 				);
 
 		final HttpEntity actualEntity = httpEntityArgumentCaptor.getValue();
-		final APIResult actualApiResult = jackson.readValue((String) actualEntity.getBody(), APIResult.class);
+		final APIResult actualApiResult = jsonMapper.readValue((String) actualEntity.getBody(), APIResult.class);
 
 		assertThat(actualEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 		assertThat(actualApiResult.getMessage()).isEqualTo(expectedApiResult.getMessage());

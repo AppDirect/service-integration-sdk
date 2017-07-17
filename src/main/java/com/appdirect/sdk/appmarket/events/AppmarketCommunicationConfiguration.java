@@ -33,15 +33,14 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-													  @Qualifier("jacksonObjectMapper") ObjectMapper mapper) {
+													  @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
 		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean
-	public AppmarketEventService appmarketEventService(
-		DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-		AppmarketEventDispatcher eventDispatcher,
-		AppmarketEventClient appmarketEventClient) {
+	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+													   AppmarketEventDispatcher eventDispatcher,
+													   AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 	}
 
@@ -51,7 +50,7 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public  AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler customerAccountValidationHandler, SubscriptionValidationHandler subscriptionValidationHandler) {
+	public AppmarketMigrationService appmarketMigrationService(CustomerAccountValidationHandler customerAccountValidationHandler, SubscriptionValidationHandler subscriptionValidationHandler) {
 		return new AppmarketMigrationService(customerAccountValidationHandler, subscriptionValidationHandler);
 	}
 

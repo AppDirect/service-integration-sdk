@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,7 +45,8 @@ public class APIResult {
 		this.errorCode = errorCode;
 	}
 
-	public APIResult(@JsonProperty("success") boolean success, 
+	@JsonCreator
+	public APIResult(@JsonProperty("success") boolean success,
 					 @JsonProperty("message") String message) {
 		this.success = success;
 		this.message = message;
