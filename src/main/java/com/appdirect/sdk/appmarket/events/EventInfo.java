@@ -41,11 +41,11 @@ class EventInfo {
 	private UserInfo creator;
 	private EventPayload payload;
 	private String returnUrl;
-	@Setter private String id;
+	@Setter
+	private String id;
 	@Builder.Default
-//	@JsonProperty(required = true) 
 	private List<Link> links = new ArrayList<>();
-	
+
 	public List<Link> getLinks() {
 		return Optional.ofNullable(links).orElseGet(ArrayList::new);
 	}
