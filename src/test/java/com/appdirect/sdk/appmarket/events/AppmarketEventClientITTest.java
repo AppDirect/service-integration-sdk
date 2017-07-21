@@ -4,11 +4,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static java.lang.String.format;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import java.nio.charset.Charset;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import wiremock.com.google.common.io.Resources;
@@ -42,6 +45,34 @@ public class AppmarketEventClientITTest {
 	@Before
 	public void setUp() throws Exception {
 		mockAppMarketUrl = new URIBuilder().setScheme("http").setHost("localhost").setPort(mockHttpServer.port()).build().toString();
+	}
+
+	@Test
+	public void testFetchEvent_whenEventPayloadHasNoLinks_thenGetLinksReturnsEmptyList() throws Exception {
+		//Given
+		String testKey = "adeveloperkey";
+		String testSecret = "verysecretpassword";
+		Credentials testCredentials = new Credentials(testKey, testSecret);
+		final String expectedCallbackPayload = Resources.toString(Resources.getResource("events/subscription-order-without-links.json"), Charset.forName("UTF-8"));
+		final String testEventFetchUrl = String.format("%s/fetch/event", mockAppMarketUrl);
+
+		mockHttpServer
+				.givenThat(
+						get(
+								urlEqualTo("/fetch/event")
+						).willReturn(
+								aResponse()
+										.withStatus(200)
+										.withBody(expectedCallbackPayload)
+										.withHeader("Content-Type", "application/json")
+						)
+				);
+
+		//When
+		final EventInfo eventInfo = appmarketEventClient.fetchEvent(testEventFetchUrl, testCredentials);
+
+		//Then
+		assertThat(eventInfo.getLinks()).isNotNull();
 	}
 
 	@Test

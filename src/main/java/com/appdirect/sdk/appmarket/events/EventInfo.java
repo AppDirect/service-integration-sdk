@@ -15,6 +15,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,12 @@ class EventInfo {
 	private UserInfo creator;
 	private EventPayload payload;
 	private String returnUrl;
-	@Setter private String id;
-	@Builder.Default private List<Link> links = new ArrayList<>();
+	@Setter
+	private String id;
+	@Builder.Default
+	private List<Link> links = new ArrayList<>();
+
+	public List<Link> getLinks() {
+		return Optional.ofNullable(links).orElseGet(ArrayList::new);
+	}
 }
