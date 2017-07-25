@@ -1,6 +1,7 @@
 # service-integration-sdk
 
 [![Build Status](https://travis-ci.org/AppDirect/service-integration-sdk.svg?branch=master)](https://travis-ci.org/AppDirect/service-integration-sdk)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk)
 
 ## Overview
 Represents a collection of utilities meant to facilitate the implementation of custom connectors. 
