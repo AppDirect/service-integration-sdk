@@ -17,6 +17,7 @@ import static com.appdirect.sdk.utils.EventIdExtractor.extractId;
 import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
@@ -61,7 +61,7 @@ public class AppmarketEventClient {
 				.getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
 
 		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setAccept(singletonList(MediaType.APPLICATION_JSON));
+		requestHeaders.setAccept(singletonList(APPLICATION_JSON));
 		final HttpEntity<String> requestEntity = new HttpEntity<>("", requestHeaders);
 
 		EventInfo fetchedEvent = restTemplate
@@ -90,7 +90,7 @@ public class AppmarketEventClient {
 		final RestTemplate restTemplate = restTemplateFactory.getOAuthRestTemplate(key, secret);
 
 		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+		requestHeaders.setContentType(APPLICATION_JSON);
 
 		final HttpEntity<String> requestEntity = new HttpEntity<>(jsonMapper.writeValueAsString(result), requestHeaders);
 
