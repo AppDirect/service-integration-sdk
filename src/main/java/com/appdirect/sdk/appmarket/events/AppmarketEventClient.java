@@ -15,6 +15,8 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.utils.EventIdExtractor.extractId;
 import static java.lang.String.format;
+import static java.util.Collections.singletonList;
+import static org.springframework.http.HttpMethod.GET;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -55,9 +57,17 @@ public class AppmarketEventClient {
 	 */
 	EventInfo fetchEvent(String url, Credentials credentials) {
 		log.debug("Consuming event from url={}", url);
-		EventInfo fetchedEvent = restTemplateFactory
-				.getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret)
-				.getForObject(url, EventInfo.class);
+		final RestTemplate restTemplate = restTemplateFactory
+				.getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
+
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setAccept(singletonList(MediaType.APPLICATION_JSON));
+		final HttpEntity<String> requestEntity = new HttpEntity<>("", requestHeaders);
+
+		EventInfo fetchedEvent = restTemplate
+				.exchange(url, GET, requestEntity, EventInfo.class)
+				.getBody();
+
 		fetchedEvent.setId(extractId(url));
 		return fetchedEvent;
 	}

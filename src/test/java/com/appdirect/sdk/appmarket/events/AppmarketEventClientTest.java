@@ -14,6 +14,7 @@
 package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -25,8 +26,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
@@ -60,20 +64,39 @@ public class AppmarketEventClientTest {
 		String testKey = "testKey";
 		String testSecret = "testSecret";
 		EventInfo testEventInfo = EventInfo.builder().build();
+		HttpEntity<String> expectedEntity = expectedGetEntity();
+		when(
+				restTemplateFactory.getOAuthRestTemplate(testKey, testSecret)
+		).thenReturn(
+				restOperations
+		);
+		when(
+				restOperations.exchange(
+						testUrl, 
+						HttpMethod.GET,
+						expectedEntity,
+						EventInfo.class
+				)
+		).thenReturn(
+				new ResponseEntity<>(testEventInfo, HttpStatus.OK)
+		);
 
-		when(restTemplateFactory.getOAuthRestTemplate(testKey, testSecret))
-				.thenReturn(restOperations);
-		when(restOperations.getForObject(testUrl, EventInfo.class))
-				.thenReturn(testEventInfo);
 		String testDeveloperKey = "testKey";
 		String testDeveloperSecret = "testSecret";
 		Credentials testCredentials = new Credentials(testDeveloperKey, testDeveloperSecret);
+
 		//When
 		EventInfo fetchedEvent = testedFetcher.fetchEvent(testUrl, testCredentials);
 
 		//Then
 		assertThat(fetchedEvent).isEqualTo(testEventInfo);
 		assertThat(fetchedEvent.getId()).isEqualTo("the-id-inferred-from-url");
+	}
+
+	private HttpEntity<String> expectedGetEntity() {
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setAccept(singletonList(MediaType.APPLICATION_JSON));
+		return new HttpEntity<>("", requestHeaders);
 	}
 
 	@Test
