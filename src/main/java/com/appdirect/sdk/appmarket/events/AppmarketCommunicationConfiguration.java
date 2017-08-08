@@ -23,6 +23,7 @@ import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
 import com.appdirect.sdk.appmarket.migration.SubscriptionValidationHandler;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
+import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
@@ -32,15 +33,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AppmarketCommunicationConfiguration {
 
 	@Bean
+	public AppmarketBillingClient appmarketBillingReporter(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+																												@Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
+		return new AppmarketBillingClient(billingRestTemplateFactory(), credentialsSupplier, mapper);
+	}
+
+	@Bean
 	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-													  @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
+																										@Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
 		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-													   AppmarketEventDispatcher eventDispatcher,
-													   AppmarketEventClient appmarketEventClient) {
+																										 AppmarketEventDispatcher eventDispatcher,
+																										 AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 	}
 
@@ -62,6 +69,11 @@ public class AppmarketCommunicationConfiguration {
 	@Bean
 	public RestTemplateFactory restTemplateFactory() {
 		return new DefaultRestTemplateFactoryImpl(new AppmarketEventClientExceptionHandler());
+	}
+
+	@Bean
+	public ReportUsageRestTemplateFactoryImpl billingRestTemplateFactory() {
+		return new ReportUsageRestTemplateFactoryImpl();
 	}
 
 	@Bean

@@ -11,23 +11,26 @@
  * limitations under the License.
  */
 
-package com.appdirect.sdk.appmarket.events;
+package com.appdirect.sdk.exception;
 
-import java.math.BigDecimal;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
-@Getter
-@ToString
-@AllArgsConstructor
-@Builder
-public class UsageItem {
-	private PricingUnit unit;
-	private String customUnit;
-	private BigDecimal quantity;
-	private BigDecimal price;
-	private String description;
+import com.appdirect.sdk.appmarket.events.APIResult;
+import com.appdirect.sdk.appmarket.events.ErrorCode;
+
+public class ReportUsageException extends RuntimeException {
+	private static final long serialVersionUID = -2876780750463782519L;
+
+	@Getter
+	private final APIResult result;
+
+	public ReportUsageException(String message) {
+		super(message);
+		this.result = new APIResult(false, message);
+	}
+
+	public ReportUsageException(ErrorCode errorCode, String message) {
+		super(message);
+		this.result = APIResult.failure(errorCode, message);
+	}
 }

@@ -13,8 +13,6 @@
 
 package com.appdirect.sdk.appmarket.events;
 
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,10 +22,6 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @Builder
-public class UsageItem {
-	private PricingUnit unit;
-	private String customUnit;
-	private BigDecimal quantity;
-	private BigDecimal price;
-	private String description;
+public class AddonInstanceInfo {
+	private String id;
 }
