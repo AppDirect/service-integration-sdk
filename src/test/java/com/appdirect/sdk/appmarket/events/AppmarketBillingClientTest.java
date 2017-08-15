@@ -40,20 +40,18 @@ import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AppmarketBillingClientTest {
 	@Mock
 	private RestTemplate restTemplate;
-	private AppmarketBillingClient appmarketBillingClient;
 	@Mock
-	private ReportUsageRestTemplateFactoryImpl restTemplateFactory;
+	private RestTemplateFactory restTemplateFactory;
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	private AccountInfo accountInfo;
-	private AddonInstanceInfo addonInstanceInfo;
-	private UsageItem usageItem;
+
+	private AppmarketBillingClient appmarketBillingClient;
 	private ObjectMapper jsonMapper;
 
 	@Before
@@ -66,41 +64,17 @@ public class AppmarketBillingClientTest {
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
 
-		accountInfo = AccountInfo.builder().accountIdentifier("account-identifier")
-			.parentAccountIdentifier("parent-account-identifier")
-			.status(AccountStatus.ACTIVE)
-			.build();
-
-		addonInstanceInfo = AddonInstanceInfo.builder().id("1").build();
-
-		usageItem = UsageItem.builder().customUnit("custom-unit")
-			.description("description")
-			.price(BigDecimal.ONE)
-			.quantity(BigDecimal.ONE)
-			.unit(PricingUnit.UNIT)
-			.build();
+		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restTemplate);
 	}
 
 	@Test
 	public void billUsage_callsPost_onTheRightUrl() throws Exception {
 
-		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restTemplate);
-
-		List<UsageItem> usageLists = Lists.newArrayList();
-		usageLists.add(usageItem);
-
-		UsageBean usageBean = UsageBean.builder().account(accountInfo)
-			.addonInstance(addonInstanceInfo)
-			.currency(Currency.getInstance(Locale.CANADA))
-			.date(Date.from(Instant.EPOCH))
-			.items(usageLists)
-			.build();
+		Usage usage = initializeUsage();
 
 		final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
-		UsageBean resourceUsageBean = jsonMapper.readValue(resourceAsString("events/usage-report-bill-request.json"), UsageBean.class);
-
-		appmarketBillingClient.billUsage("http://base.com", "some-key", usageBean);
+		appmarketBillingClient.billUsage("http://base.com", "some-key", usage);
 
 		verify(restTemplate).postForObject(eq("http://base.com/api/integration/v1/billing/usage"), httpEntityArgumentCaptor.capture(), eq(APIResult.class));
 
@@ -110,12 +84,44 @@ public class AppmarketBillingClientTest {
 
 		assertThat(actualEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 
-		UsageBean actualUsageBean = jsonMapper.readValue(actualEntity.getBody().toString(), UsageBean.class);
+		Usage resourceUsage = jsonMapper.readValue(resourceAsString("events/usage-report-bill-request.json"), Usage.class);
+		Usage actualUsage = jsonMapper.readValue(actualEntity.getBody().toString(), Usage.class);
 
-		assertThat(actualUsageBean.getAccount()).isEqualTo(resourceUsageBean.getAccount());
-		assertThat(actualUsageBean.getAddonInstance().getId()).isEqualTo(resourceUsageBean.getAddonInstance().getId());
-		assertThat(actualUsageBean.getCurrency()).isEqualTo(resourceUsageBean.getCurrency());
-		assertThat(actualUsageBean.getDate()).isEqualTo(resourceUsageBean.getDate());
-		assertThat(actualUsageBean.getItems().get(0).getCustomUnit()).isEqualTo(resourceUsageBean.getItems().get(0).getCustomUnit());
+		assertThat(actualUsage.getAccount()).isEqualTo(resourceUsage.getAccount());
+		assertThat(actualUsage.getAddonInstance().getId()).isEqualTo(resourceUsage.getAddonInstance().getId());
+		assertThat(actualUsage.getCurrency()).isEqualTo(resourceUsage.getCurrency());
+		assertThat(actualUsage.getDate()).isEqualTo(resourceUsage.getDate());
+		assertThat(actualUsage.getItems().get(0).getCustomUnit()).isEqualTo(resourceUsage.getItems().get(0).getCustomUnit());
+	}
+
+	private Usage initializeUsage() {
+		final AccountInfo accountInfo = AccountInfo.builder()
+			.accountIdentifier("account-identifier")
+			.parentAccountIdentifier("parent-account-identifier")
+			.status(AccountStatus.ACTIVE)
+			.build();
+
+		final AddonInstanceInfo addonInstanceInfo = AddonInstanceInfo.builder()
+			.id("1")
+			.build();
+
+		final UsageItem usageItem = UsageItem.builder()
+			.customUnit("custom-unit")
+			.description("description")
+			.price(BigDecimal.ONE)
+			.quantity(BigDecimal.ONE)
+			.unit(PricingUnit.UNIT)
+			.build();
+
+		List<UsageItem> usageLists = Lists.newArrayList();
+		usageLists.add(usageItem);
+
+		return Usage.builder()
+			.account(accountInfo)
+			.addonInstance(addonInstanceInfo)
+			.currency(Currency.getInstance(Locale.CANADA))
+			.date(Date.from(Instant.EPOCH))
+			.items(usageLists)
+			.build();
 	}
 }

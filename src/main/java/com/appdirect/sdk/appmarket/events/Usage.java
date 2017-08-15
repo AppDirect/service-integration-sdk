@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @Builder
-public class UsageBean {
+public class Usage {
 	private AccountInfo account;
 	private AddonInstanceInfo addonInstance;
 	private List<UsageItem> items;

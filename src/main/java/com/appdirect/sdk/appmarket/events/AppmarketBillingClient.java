@@ -24,7 +24,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
+import com.appdirect.sdk.exception.ReportUsageException;
+import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -32,25 +33,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Slf4j
 public class AppmarketBillingClient {
-	private final ReportUsageRestTemplateFactoryImpl restTemplateFactory;
+	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final ObjectMapper jsonMapper;
 
-	AppmarketBillingClient(ReportUsageRestTemplateFactoryImpl restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, ObjectMapper jsonMapper) {
+	AppmarketBillingClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, ObjectMapper jsonMapper) {
 		this.restTemplateFactory = restTemplateFactory;
 		this.credentialsSupplier = credentialsSupplier;
 		this.jsonMapper = jsonMapper;
 	}
 
 	/**
-	 * Calls the Billing API REST endpoint against an AppMarket instance to bill usage.
+	 * Calls the Billing API REST endpoint against an AppMarket instance to bill usage
 	 *
 	 * @param baseAppmarketUrl to which the POST is sent
-	 * @param key key to sign the request
-	 * @return APIResult sent to the AppMarket
+	 * @param key              to sign the request
+	 * @param usage            to be billed
+	 *
+	 * @return an {@link APIResult} instance representing the marketplace response
+	 * <p>
+	 * throws an {@link ReportUsageException} to the client with an error code and a status:
+	 * -> Configuration Error: The JSON sent to the marketplace had wrong parameters.
+	 * -> User Not Found:      One of the Usage parameters was not found. Probably the accountIdentifier.
+	 * -> Unknown Error:       Error on marketplace side.
 	 */
+
 	@SneakyThrows
-	public APIResult billUsage(String baseAppmarketUrl, String key, UsageBean usageBean) {
+	public APIResult billUsage(String baseAppmarketUrl, String key, Usage usage) {
 
 		String url = UriComponentsBuilder.fromHttpUrl(baseAppmarketUrl)
 			.pathSegment("api", "integration", "v1", "billing", "usage")
@@ -62,7 +71,7 @@ public class AppmarketBillingClient {
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(APPLICATION_JSON);
 
-		final HttpEntity<String> requestEntity = new HttpEntity<>(jsonMapper.writeValueAsString(usageBean), requestHeaders);
+		final HttpEntity<String> requestEntity = new HttpEntity<>(jsonMapper.writeValueAsString(usage), requestHeaders);
 
 		return restTemplate.postForObject(url, requestEntity, APIResult.class);
 	}

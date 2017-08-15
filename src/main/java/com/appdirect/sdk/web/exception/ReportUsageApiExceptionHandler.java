@@ -13,14 +13,15 @@
 
 package com.appdirect.sdk.web.exception;
 
-import static com.appdirect.sdk.appmarket.events.ErrorCode.NOT_FOUND;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.CONFIGURATION_ERROR;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
 import java.io.IOException;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
@@ -28,6 +29,9 @@ import com.appdirect.sdk.exception.ReportUsageException;
 
 @Slf4j
 public class ReportUsageApiExceptionHandler implements ResponseErrorHandler {
+
+	private final String notFound = "user not found.";
+	private final String badRequest = "usage missing data.";
 
 	@Override
 	public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
@@ -37,15 +41,17 @@ public class ReportUsageApiExceptionHandler implements ResponseErrorHandler {
 	@Override
 	public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
 		log.error("Response error: statusCode={} statusText={}", clientHttpResponse.getStatusCode(), clientHttpResponse.getStatusText());
-		if (HttpStatus.NOT_FOUND.equals(clientHttpResponse.getStatusCode())) {
-			throw new ReportUsageException(NOT_FOUND, errorMessage(clientHttpResponse.getStatusText()));
-		} else {
-			throw new ReportUsageException(errorMessage(clientHttpResponse.getStatusText()));
+		switch (clientHttpResponse.getStatusCode()) {
+			case NOT_FOUND:
+				throw new ReportUsageException(USER_NOT_FOUND, errorMessage(notFound));
+			case BAD_REQUEST:
+				throw new ReportUsageException(CONFIGURATION_ERROR, errorMessage(badRequest));
+			default:
+				throw new ReportUsageException(UNKNOWN_ERROR, errorMessage(clientHttpResponse.getStatusText()));
 		}
 	}
 
 	private String errorMessage(String status) throws IOException {
 		return format("Failed to report usage: %s", status);
 	}
-
 }
