@@ -30,8 +30,8 @@ import com.appdirect.sdk.exception.ReportUsageException;
 @Slf4j
 public class ReportUsageApiExceptionHandler implements ResponseErrorHandler {
 
-	private final String notFound = "user not found.";
-	private final String badRequest = "usage missing data.";
+	private static final String MESSAGE_NOT_FOUND = "User not found.";
+	private static final String MESSAGE_BAD_REQUEST = "Usage missing data.";
 
 	@Override
 	public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
@@ -43,9 +43,9 @@ public class ReportUsageApiExceptionHandler implements ResponseErrorHandler {
 		log.error("Response error: statusCode={} statusText={}", clientHttpResponse.getStatusCode(), clientHttpResponse.getStatusText());
 		switch (clientHttpResponse.getStatusCode()) {
 			case NOT_FOUND:
-				throw new ReportUsageException(USER_NOT_FOUND, errorMessage(notFound));
+				throw new ReportUsageException(USER_NOT_FOUND, errorMessage(MESSAGE_NOT_FOUND));
 			case BAD_REQUEST:
-				throw new ReportUsageException(CONFIGURATION_ERROR, errorMessage(badRequest));
+				throw new ReportUsageException(CONFIGURATION_ERROR, errorMessage(MESSAGE_BAD_REQUEST));
 			default:
 				throw new ReportUsageException(UNKNOWN_ERROR, errorMessage(clientHttpResponse.getStatusText()));
 		}

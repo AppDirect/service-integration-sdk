@@ -13,6 +13,9 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import static com.appdirect.sdk.appmarket.events.ErrorCode.CONFIGURATION_ERROR;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
+import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -21,6 +24,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import java.math.BigDecimal;
@@ -41,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.appdirect.sdk.exception.ReportUsageException;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import wiremock.com.google.common.io.Resources;
@@ -65,7 +70,7 @@ public class AppmarketBillingClientITTest {
 	@Test
 	public void whenBillingUsage_thenACorrectJsonPayloadShouldBeSentToTheAppMarket_withOauthHeaders() throws Exception {
 		//Given
-		String testuserKey = "testKey";
+		String testUserKey = "testKey";
 		Usage testUsage = initializeUsage();
 		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
 
@@ -81,7 +86,7 @@ public class AppmarketBillingClientITTest {
 			);
 
 		//When
-		appmarketBillingClient.billUsage(mockAppMarketUrl, testuserKey, testUsage);
+		appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage);
 
 		//Then
 		mockHttpServer
@@ -96,6 +101,75 @@ public class AppmarketBillingClientITTest {
 					"Content-Type", equalTo("application/json")
 				)
 			);
+	}
+
+	@Test
+	public void whenBillingUsage_notFoundResponse_thenUserNotFoundExceptionIsThrown() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(eventResolutionEntpointUrl)
+				).willReturn(
+					aResponse().withStatus(404)
+				)
+			);
+
+		//Then
+		assertThatThrownBy(() -> appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage))
+			.isInstanceOf(ReportUsageException.class)
+			.hasMessage("Failed to report usage: User not found.")
+			.hasFieldOrPropertyWithValue("result.errorCode", USER_NOT_FOUND);
+	}
+
+	@Test
+	public void whenBillingUsage_BadRequestResponse_thenConfigurationErrorExceptionIsThrown() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(eventResolutionEntpointUrl)
+				).willReturn(
+					aResponse().withStatus(400)
+				)
+			);
+
+		//Then
+		assertThatThrownBy(() -> appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage))
+			.isInstanceOf(ReportUsageException.class)
+			.hasMessage("Failed to report usage: Usage missing data.")
+			.hasFieldOrPropertyWithValue("result.errorCode", CONFIGURATION_ERROR);
+	}
+
+	@Test
+	public void whenBillingUsage_InternalServerErrorResponse_thenUnknownErrorExceptionIsThrown() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(eventResolutionEntpointUrl)
+				).willReturn(
+					aResponse().withStatus(500)
+				)
+			);
+
+		//Then
+		assertThatThrownBy(() -> appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage))
+			.isInstanceOf(ReportUsageException.class)
+			.hasMessage("Failed to report usage: Server Error")
+			.hasFieldOrPropertyWithValue("result.errorCode", UNKNOWN_ERROR);
 	}
 
 	private Usage initializeUsage() {

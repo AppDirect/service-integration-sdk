@@ -17,14 +17,10 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@ToString
-@AllArgsConstructor
+@Data
 @Builder
 public class Usage {
 	private AccountInfo account;

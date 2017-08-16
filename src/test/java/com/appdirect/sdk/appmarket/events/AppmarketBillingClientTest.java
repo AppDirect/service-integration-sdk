@@ -69,13 +69,15 @@ public class AppmarketBillingClientTest {
 
 	@Test
 	public void billUsage_callsPost_onTheRightUrl() throws Exception {
-
+		//Given
 		Usage usage = initializeUsage();
 
 		final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
 
+		//When
 		appmarketBillingClient.billUsage("http://base.com", "some-key", usage);
 
+		//Then
 		verify(restTemplate).postForObject(eq("http://base.com/api/integration/v1/billing/usage"), httpEntityArgumentCaptor.capture(), eq(APIResult.class));
 
 		verify(restTemplateFactory).getOAuthRestTemplate("some-key", "some-secret");
@@ -84,14 +86,10 @@ public class AppmarketBillingClientTest {
 
 		assertThat(actualEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 
-		Usage resourceUsage = jsonMapper.readValue(resourceAsString("events/usage-report-bill-request.json"), Usage.class);
+		Usage expectedUsage = jsonMapper.readValue(resourceAsString("events/usage-report-bill-request.json"), Usage.class);
 		Usage actualUsage = jsonMapper.readValue(actualEntity.getBody().toString(), Usage.class);
 
-		assertThat(actualUsage.getAccount()).isEqualTo(resourceUsage.getAccount());
-		assertThat(actualUsage.getAddonInstance().getId()).isEqualTo(resourceUsage.getAddonInstance().getId());
-		assertThat(actualUsage.getCurrency()).isEqualTo(resourceUsage.getCurrency());
-		assertThat(actualUsage.getDate()).isEqualTo(resourceUsage.getDate());
-		assertThat(actualUsage.getItems().get(0).getCustomUnit()).isEqualTo(resourceUsage.getItems().get(0).getCustomUnit());
+		assertThat(actualUsage.equals(expectedUsage));
 	}
 
 	private Usage initializeUsage() {
