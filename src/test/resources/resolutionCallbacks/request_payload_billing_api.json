@@ -1,0 +1,21 @@
+{
+  "account": {
+    "accountIdentifier": "account-identifier",
+    "status": "ACTIVE",
+    "parentAccountIdentifier": "parent-account-identifier"
+  },
+  "addonInstance": {
+    "id": "1"
+  },
+  "items": [
+    {
+      "unit": "UNIT",
+      "customUnit": "custom-unit",
+      "quantity": 1,
+      "price": 1,
+      "description": "description"
+    }
+  ],
+  "currency" : "CAD",
+  "date" : "1970-01-01T00:00:00.000+0000"
+}
