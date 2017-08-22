@@ -53,17 +53,16 @@ public class AppmarketBillingClient {
 	 * @return an {@link APIResult} instance representing the marketplace response
 	 * <p>
 	 * throws an {@link ReportUsageException} to the client with an error code and a status:
-	 * -> Configuration Error: The JSON sent to the marketplace had wrong parameters.
-	 * -> User Not Found:      One of the Usage parameters was not found. Probably the accountIdentifier.
-	 * -> Unknown Error:       Error on marketplace side.
+	 * Configuration Error: The JSON sent to the marketplace had wrong parameters.
+	 * User Not Found:      One of the Usage parameters was not found. Probably the accountIdentifier.
+	 * Unknown Error:       Error on marketplace side.
 	 */
-
 	@SneakyThrows
 	public APIResult billUsage(String baseAppmarketUrl, String key, Usage usage) {
 
 		String url = UriComponentsBuilder.fromHttpUrl(baseAppmarketUrl)
-			.pathSegment("api", "integration", "v1", "billing", "usage")
-			.build().toString();
+				.pathSegment("api", "integration", "v1", "billing", "usage")
+				.build().toString();
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
 		final RestTemplate restTemplate = restTemplateFactory.getOAuthRestTemplate(key, secret);
