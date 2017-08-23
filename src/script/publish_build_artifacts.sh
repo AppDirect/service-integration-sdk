@@ -9,7 +9,7 @@ export BINTRAY_PACKAGE_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[l
 export BINTRAY_REQUEST_URL="https://api.bintray.com/maven_central_sync/${CI_DEPLOY_USERNAME}/${BINTRAY_REPOSITORY_NAME}/${BINTRAY_PACKAGE_NAME}/versions/${BINTRAY_PACKAGE_VERSION}"
 
 echo "Publishing build artifacts to Bintray..."
-mvn source:jar javadoc:jar deploy -DskipTests=true --settings settings.xml && \
+mvn deploy -DskipTests=true --settings settings.xml && \
 echo "Syncing project version ${BINTRAY_PACKAGE_VERSION} with maven central ..." && \
 echo "Bintray request URL: [$BINTRAY_REQUEST_URL]" && \
 curl -i \
