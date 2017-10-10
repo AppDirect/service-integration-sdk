@@ -20,6 +20,7 @@ import com.appdirect.sdk.appmarket.events.AppmarketCommunicationConfiguration;
 import com.appdirect.sdk.appmarket.events.DefaultEventHandlersForOptionalEvents;
 import com.appdirect.sdk.appmarket.events.EventHandlingConfiguration;
 import com.appdirect.sdk.appmarket.migration.DefaultMigrationHandlers;
+import com.appdirect.sdk.appmarket.restrictions.RestrictionConfiguration;
 import com.appdirect.sdk.appmarket.usersync.UserSyncConfiguration;
 import com.appdirect.sdk.appmarket.validation.DefaultValidationHandlers;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
@@ -38,7 +39,8 @@ import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 		AppmarketCommunicationConfiguration.class,
 		DefaultMigrationHandlers.class,
 		DefaultValidationHandlers.class,
-		UserSyncConfiguration.class
+		UserSyncConfiguration.class,
+		RestrictionConfiguration.class
 })
 public class ConnectorSdkConfiguration {
 }
