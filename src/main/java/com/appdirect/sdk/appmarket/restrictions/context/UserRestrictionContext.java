@@ -16,22 +16,20 @@ package com.appdirect.sdk.appmarket.restrictions.context;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class UserRestrictionContext {
-	private final String firstName;
-	private final String lastName;
-	private final String userUuid;
-	private final List<String> roles;
+	private String firstName;
+	private String lastName;
+	private String userUuid;
+	private List<String> roles;
 }

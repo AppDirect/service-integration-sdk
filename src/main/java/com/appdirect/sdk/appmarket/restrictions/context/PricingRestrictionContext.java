@@ -16,10 +16,9 @@ package com.appdirect.sdk.appmarket.restrictions.context;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -29,8 +28,7 @@ import com.appdirect.sdk.appmarket.events.PricingDuration;
 @ToString
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
+@NoArgsConstructor
 public class PricingRestrictionContext {
 	private String editionUuid;
 	private PricingDuration pricingDuration;
