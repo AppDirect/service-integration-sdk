@@ -13,14 +13,19 @@
 
 package com.appdirect.sdk.appmarket.events;
 
-import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.util.Arrays.array;
 
+import java.util.Map;
+
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import wiremock.com.google.common.collect.Maps;
 
 public class SubscriptionChangeEventParserTest {
 
@@ -52,5 +57,25 @@ public class SubscriptionChangeEventParserTest {
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-magic-key");
 		assertThat(parsedEvent.isDevelopment()).isTrue();
 		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("param1", array("value12")));
+	}
+
+	@Test
+	public void parses_config_fromPayload() throws Exception {
+		//Given
+		Map<String, String> configuration = Maps.newHashMap();
+		configuration.put("firstKey", "ein");
+		configuration.put("secondKey", "zwei");
+		EventInfo testEventInfo = EventInfo.builder()
+				.marketplace(new MarketInfo("testMP", ""))
+				.payload(EventPayload.builder()
+						.configuration(configuration)
+						.build())
+				.build();
+
+		//When
+		SubscriptionChange parsedEvent = testedParser.parse(testEventInfo, eventContext("the-magic-key"));
+
+		//Then
+		Assertions.assertThat(parsedEvent.getConfiguration()).contains(entry("firstKey", "ein"), entry("secondKey", "zwei"));
 	}
 }
