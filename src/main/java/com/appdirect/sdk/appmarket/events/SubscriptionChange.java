@@ -29,11 +29,13 @@ public class SubscriptionChange extends EventWithContext {
 	private UserInfo owner;
 	private OrderInfo order;
 	private AccountInfo account;
+	private Map<String, String> configuration;
 
 	public SubscriptionChange(String consumerKeyUsedByTheRequest,
 							  UserInfo owner,
 							  OrderInfo order,
 							  AccountInfo account,
+							  Map<String, String> configuration,
 							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
 							  String eventToken,
@@ -43,5 +45,6 @@ public class SubscriptionChange extends EventWithContext {
 		this.owner = owner;
 		this.order = order;
 		this.account = account;
+		this.configuration = configuration;
 	}
 }
