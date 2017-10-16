@@ -14,12 +14,12 @@
 
 package com.appdirect.sdk.appmarket.restrictions;
 
-import com.appdirect.sdk.appmarket.restrictions.context.RestrictionContext;
+import com.appdirect.sdk.appmarket.restrictions.context.RestrictionInfo;
 
 /**
  * This is the interface you need to implement to apply restrictions on a product
  */
 @FunctionalInterface
 public interface RestrictionHandler {
-	RestrictionResponse getRestrictions(RestrictionContext restrictionContext, String partner);
+	RestrictionResponse getRestrictions(RestrictionInfo restrictionInfo, String partner);
 }

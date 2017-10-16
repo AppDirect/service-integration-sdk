@@ -14,7 +14,6 @@
 
 package com.appdirect.sdk.appmarket.restrictions.context;
 
-
 import java.util.List;
 
 import lombok.EqualsAndHashCode;
@@ -23,19 +22,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import com.appdirect.sdk.appmarket.restrictions.OperationType;
+import com.appdirect.sdk.appmarket.events.PricingDuration;
 
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
 @NoArgsConstructor
-public class RestrictionContext {
-	private List<EditionRestrictionContext> editionRestrictionContexts;
-	private List<UserRestrictionContext> userRestrictionContexts;
-	private String applicationUuid;
-	private OperationType operation;
-	private String externalVendorId;
-	private String companyUuid;
-	private String locale;
+public class PricingRestrictionInfo {
+	private String editionUuid;
+	private PricingDuration pricingDuration;
+	private List<QuantityRestrictionInfo> quantityInfo;
 }
+

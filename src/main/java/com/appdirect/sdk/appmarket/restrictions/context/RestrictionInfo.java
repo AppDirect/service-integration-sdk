@@ -14,6 +14,7 @@
 
 package com.appdirect.sdk.appmarket.restrictions.context;
 
+
 import java.util.List;
 
 import lombok.EqualsAndHashCode;
@@ -22,14 +23,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.appdirect.sdk.appmarket.restrictions.OperationType;
+
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserRestrictionContext {
-	private String firstName;
-	private String lastName;
-	private String userUuid;
-	private List<String> roles;
+public class RestrictionInfo {
+	private List<EditionRestrictionInfo> editionInfo;
+	private List<UserRestrictionInfo> userInfo;
+	private String applicationUuid;
+	private OperationType operation;
+	private String externalVendorId;
+	private String companyUuid;
+	private String locale;
 }

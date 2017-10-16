@@ -27,7 +27,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.appdirect.sdk.appmarket.restrictions.context.RestrictionContext;
+import com.appdirect.sdk.appmarket.restrictions.context.RestrictionInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestrictionControllerTest {
@@ -42,10 +42,10 @@ public class RestrictionControllerTest {
 
 	@Test
 	public void testGetRestrictions() throws Exception {
-		RestrictionContext restrictionContext = mock(RestrictionContext.class);
+		RestrictionInfo restrictionInfo = mock(RestrictionInfo.class);
 		RestrictionResponse restrictionResponse = mock(RestrictionResponse.class);
-		when(restrictionHandler.getRestrictions(Matchers.any(RestrictionContext.class), Matchers.matches("appdirect"))).thenReturn(restrictionResponse);
-		restrictionController.getRestrictions(restrictionContext, "appdirect").call();
-		verify(restrictionHandler, times(1)).getRestrictions(Matchers.any(RestrictionContext.class), Matchers.anyString());
+		when(restrictionHandler.getRestrictions(Matchers.any(RestrictionInfo.class), Matchers.matches("appdirect"))).thenReturn(restrictionResponse);
+		restrictionController.getRestrictions(restrictionInfo, "appdirect").call();
+		verify(restrictionHandler, times(1)).getRestrictions(Matchers.any(RestrictionInfo.class), Matchers.anyString());
 	}
 }

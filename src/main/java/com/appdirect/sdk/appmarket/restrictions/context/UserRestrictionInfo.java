@@ -27,8 +27,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EditionRestrictionContext {
-	private String editionCode;
-	private String editionUuid;
-	private List<PricingRestrictionContext> pricingRestrictionContexts;
+public class UserRestrictionInfo {
+	private String firstName;
+	private String lastName;
+	private String userUuid;
+	private List<String> roles;
 }

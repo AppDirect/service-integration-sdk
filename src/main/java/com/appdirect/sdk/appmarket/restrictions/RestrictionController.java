@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appdirect.sdk.appmarket.restrictions.context.RestrictionContext;
+import com.appdirect.sdk.appmarket.restrictions.context.RestrictionInfo;
 
 /**
  * Defines the endpoint for enforcing restrictions on their products
@@ -40,7 +40,7 @@ public class RestrictionController {
 			value = "/api/v1/restrictions",
 			produces = APPLICATION_JSON_VALUE,
 			consumes = APPLICATION_JSON_VALUE)
-	public Callable<RestrictionResponse> getRestrictions(@RequestBody RestrictionContext restrictionContext, @RequestParam("partner") String partner) {
-		return () -> restrictionHandler.getRestrictions(restrictionContext, partner);
+	public Callable<RestrictionResponse> getRestrictions(@RequestBody RestrictionInfo restrictionInfo, @RequestParam("partner") String partner) {
+		return () -> restrictionHandler.getRestrictions(restrictionInfo, partner);
 	}
 }

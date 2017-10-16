@@ -27,7 +27,7 @@ import com.appdirect.sdk.appmarket.events.PricingUnit;
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuantityRestrictionContext {
+public class QuantityRestrictionInfo {
 	private PricingUnit pricingUnit;
 	private int quantity;
 }

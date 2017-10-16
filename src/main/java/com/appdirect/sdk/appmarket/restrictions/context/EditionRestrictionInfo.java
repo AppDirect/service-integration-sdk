@@ -22,15 +22,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import com.appdirect.sdk.appmarket.events.PricingDuration;
-
 @EqualsAndHashCode
 @ToString
 @Getter
 @Setter
 @NoArgsConstructor
-public class PricingRestrictionContext {
+public class EditionRestrictionInfo {
+	private String editionCode;
 	private String editionUuid;
-	private PricingDuration pricingDuration;
-	private List<QuantityRestrictionContext> quantityRestrictionContexts;
+	private List<PricingRestrictionInfo> pricingInfo;
 }
