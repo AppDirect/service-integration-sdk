@@ -14,6 +14,7 @@
 
 package com.appdirect.sdk.appmarket.restrictions.context;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ import com.appdirect.sdk.appmarket.events.PricingUnit;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class QuantityRestrictionInfo {
 	private PricingUnit pricingUnit;
 	private int quantity;

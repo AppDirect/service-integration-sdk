@@ -17,6 +17,8 @@ package com.appdirect.sdk.appmarket.restrictions.context;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +32,8 @@ import com.appdirect.sdk.appmarket.restrictions.OperationType;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RestrictionInfo {
 	private List<EditionRestrictionInfo> editionInfo;
 	private List<UserRestrictionInfo> userInfo;

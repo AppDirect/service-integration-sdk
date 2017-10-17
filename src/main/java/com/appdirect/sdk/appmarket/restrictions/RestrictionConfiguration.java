@@ -28,7 +28,7 @@ public class RestrictionConfiguration {
 	@Bean
 	public RestrictionHandler restrictionHandler() {
 		return (restrictionContext, partner) -> {
-			throw new UnsupportedOperationException(String.format("Restriction Service for partner %s is not supported by this connector", partner));
+			throw new UnsupportedOperationException(String.format("Restriction Service for partner %s is not supported.", partner));
 		};
 	}
 }
