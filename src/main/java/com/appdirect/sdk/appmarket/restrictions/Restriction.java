@@ -14,6 +14,7 @@
 
 package com.appdirect.sdk.appmarket.restrictions;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Setter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Restriction {
@@ -33,6 +35,5 @@ public class Restriction {
 	private String editionUuid;
 	private OperationType operation;
 	private String editionPricingUuid;
-	private RestrictionCode restrictionCode;
-	private String restrictionMessage;
+	private RestrictionDetails details;
 }

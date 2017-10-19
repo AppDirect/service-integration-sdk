@@ -14,11 +14,20 @@
 
 package com.appdirect.sdk.appmarket.restrictions;
 
-public enum RestrictionCode {
-	TERMS_OF_SERVICE_NOT_ACCEPTED,
-	UPGRADE_OF_PLAN_NOT_ALLOWED,
-	DOWNGRADE_OF_PLAN_NOT_ALLOWED,
-	SEAT_CHANGE_NOT_ALLOWED,
-	INSUFFICIENT_PERMISSIONS,
-	INVALID_EDITION
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@Builder
+public class RestrictionDetails {
+	private RestrictionCode code;
+	private String message;
 }
