@@ -13,12 +13,15 @@
 
 package com.appdirect.sdk.appmarket.events;
 
-import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.support.QueryParameters.oneQueryParam;
 import static org.assertj.core.api.Assertions.entry;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.util.Arrays.array;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -32,6 +35,9 @@ public class SubscriptionChangeEventParserTest {
 		UserInfo expectedCreatorDetails = UserInfo.builder().build();
 		AccountInfo expectedAccountInfo = AccountInfo.builder().build();
 		OrderInfo expectedOrderInfo = OrderInfo.builder().build();
+		Map<String, String> configuration = new HashMap<>();
+		configuration.put("key1", "val1");
+		configuration.put("key2", "val2");
 		EventInfo testEventInfo = EventInfo.builder()
 				.marketplace(new MarketInfo("", ""))
 				.flag(DEVELOPMENT)
@@ -39,6 +45,7 @@ public class SubscriptionChangeEventParserTest {
 				.payload(EventPayload.builder()
 						.account(expectedAccountInfo)
 						.order(expectedOrderInfo)
+						.configuration(configuration)
 						.build())
 				.build();
 
@@ -52,5 +59,6 @@ public class SubscriptionChangeEventParserTest {
 		assertThat(parsedEvent.getConsumerKeyUsedByTheRequest()).isEqualTo("the-magic-key");
 		assertThat(parsedEvent.isDevelopment()).isTrue();
 		assertThat(parsedEvent.getQueryParameters()).containsOnly(entry("param1", array("value12")));
+		assertThat(parsedEvent.getConfiguration()).isEqualTo(configuration);
 	}
 }
