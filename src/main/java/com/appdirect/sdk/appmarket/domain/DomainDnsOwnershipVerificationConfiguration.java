@@ -37,10 +37,14 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 	public abstract DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient);
 
 	@Bean
+	public abstract DomainAdditionHandler domainAdditionHandler();
+
+	@Bean
 	public DomainOwnershipController domainDnsVerificationInfoController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
 																		 DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
+																		 DomainAdditionHandler domainAdditionHandler,
 																		 OAuthKeyExtractor keyExtractor) {
-		return new DomainOwnershipController(domainDnsVerificationInfoHandler, domainOwnershipVerificationHandler, keyExtractor);
+		return new DomainOwnershipController(domainDnsVerificationInfoHandler, domainOwnershipVerificationHandler, domainAdditionHandler, keyExtractor);
 	}
 
 	@Bean

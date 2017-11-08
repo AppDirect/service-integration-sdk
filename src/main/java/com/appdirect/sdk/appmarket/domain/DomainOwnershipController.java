@@ -14,6 +14,7 @@
 package com.appdirect.sdk.appmarket.domain;
 
 import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -21,6 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,12 +36,16 @@ public class DomainOwnershipController {
 
 	private final DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler;
 	private final DomainOwnershipVerificationHandler domainOwnershipVerificationHandler;
+	private final DomainAdditionHandler domainAdditionHandler;
 	private final OAuthKeyExtractor keyExtractor;
 
 	DomainOwnershipController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
-							  DomainOwnershipVerificationHandler domainOwnershipVerificationHandler, OAuthKeyExtractor keyExtractor) {
+							  DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
+							  DomainAdditionHandler domainAdditionHandler,
+							  OAuthKeyExtractor keyExtractor) {
 		this.domainDnsVerificationInfoHandler = domainDnsVerificationInfoHandler;
 		this.domainOwnershipVerificationHandler = domainOwnershipVerificationHandler;
+		this.domainAdditionHandler = domainAdditionHandler;
 		this.keyExtractor = keyExtractor;
 	}
 
@@ -68,4 +74,14 @@ public class DomainOwnershipController {
 		domainOwnershipVerificationHandler.verifyDomainOwnership(customerId, domain, callbackUrl, key);
 	}
 
+	@RequestMapping(
+			method = POST,
+			value = "/customers/{customerIdentifier}/domains"
+	)
+	@ResponseStatus(value = OK)
+	public void addDomain(@PathVariable("customerIdentifier") String customerId,
+						  @RequestBody DomainAdditionPayload domainAdditionPayload) {
+
+		domainAdditionHandler.addDomain(customerId, domainAdditionPayload.getDomainName());
+	}
 }

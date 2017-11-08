@@ -15,12 +15,14 @@ package com.appdirect.sdk.feature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
 import java.io.IOException;
+import java.net.URI;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
+import javax.xml.ws.Response;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,17 +32,21 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
+import com.appdirect.sdk.appmarket.domain.DomainAdditionPayload;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
 import com.appdirect.sdk.support.FakeAppmarket;
 import com.appdirect.sdk.web.oauth.OAuthSignedClientHttpRequestFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FullConnector.class, webEnvironment = RANDOM_PORT)
@@ -49,6 +55,8 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 	private int localConnectorPort;
 	@Autowired
 	private ApplicationContext applicationContext;
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	private static String testOauthKey;
 	private static String testOauthSecret;
@@ -61,6 +69,8 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		restTemplate = new RestTemplate(new OAuthSignedClientHttpRequestFactory(testOauthKey, testOauthSecret));
 	}
 
+	private static final String DOMAIN_ADDITION_ENDPOINT_TEMPLATE =
+			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains";
 	private static final String DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE =
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/ownershipProofRecord";
 	private static final String DOMAIN_OWNERSHIP_VERIFICATION_ENDPOINT_TEMPLATE =
@@ -125,6 +135,21 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		fakeAppmarket.waitForDomainVerifications(1);
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo(appmarketCallbackPath);
 		assertThat(fakeAppmarket.domainVerificationStatuses().get(0).isVerified()).isTrue();
+	}
+
+	@Test
+	public void testAddDomain() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		ResponseEntity<Void> actual = restTemplate.postForEntity(
+				formatEndpoint(DOMAIN_ADDITION_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
+				new DomainAdditionPayload("domain2.com"),
+				Void.class
+		);
+
+		assertThat(actual.getStatusCode()).isEqualTo(OK);
 	}
 
 	public String formatEndpoint(String endpointTemplate, Object... attributes) {
