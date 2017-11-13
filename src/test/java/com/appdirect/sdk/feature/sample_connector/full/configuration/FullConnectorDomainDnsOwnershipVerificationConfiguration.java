@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
+import com.appdirect.sdk.appmarket.domain.DomainAdditionHandler;
 import com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationInfoHandler;
 import com.appdirect.sdk.appmarket.domain.DomainOwnershipVerificationHandler;
@@ -18,6 +19,11 @@ public class FullConnectorDomainDnsOwnershipVerificationConfiguration extends Do
 	@Override
 	public DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient) {
 		return (customerId, domain, callbackUrl, key) -> domainVerificationNotificationClient.resolveDomainVerification(callbackUrl, key, true);
+	}
+
+	@Override
+	public DomainAdditionHandler domainAdditionHandler() {
+		return (customerId, domain) -> {};
 	}
 
 	@Override
