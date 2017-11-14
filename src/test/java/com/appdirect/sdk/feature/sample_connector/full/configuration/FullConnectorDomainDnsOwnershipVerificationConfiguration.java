@@ -10,6 +10,7 @@ import com.appdirect.sdk.appmarket.domain.DomainAdditionHandler;
 import com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationInfoHandler;
 import com.appdirect.sdk.appmarket.domain.DomainOwnershipVerificationHandler;
+import com.appdirect.sdk.appmarket.domain.DomainRemovalHandler;
 import com.appdirect.sdk.appmarket.domain.DomainVerificationNotificationClient;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
@@ -23,6 +24,11 @@ public class FullConnectorDomainDnsOwnershipVerificationConfiguration extends Do
 
 	@Override
 	public DomainAdditionHandler domainAdditionHandler() {
+		return (customerId, domain) -> {};
+	}
+
+	@Override
+	public DomainRemovalHandler domainRemovalHandler() {
 		return (customerId, domain) -> {};
 	}
 

@@ -14,14 +14,12 @@
 package com.appdirect.sdk.feature;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.util.SocketUtils.findAvailableTcpPort;
 
 import java.io.IOException;
-import java.net.URI;
-
-import javax.xml.ws.Response;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,9 +30,7 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -71,6 +67,8 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 
 	private static final String DOMAIN_ADDITION_ENDPOINT_TEMPLATE =
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains";
+	private static final String DOMAIN_REMOVAL_ENDPOINT_TEMPLATE =
+			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s";
 	private static final String DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE =
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/ownershipProofRecord";
 	private static final String DOMAIN_OWNERSHIP_VERIFICATION_ENDPOINT_TEMPLATE =
@@ -127,12 +125,15 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		String testDomain = "example.com";
 
 		String appmarketCallbackPath = formatEndpoint(APPMARKET_DOMAIN_VERIFICATION_CALLBACK_TEMPLATE, testCustomerId, testDomain);
+
+		//When
 		fakeAppmarket.sendTriggerDomainVerificationTo(
 				formatEndpoint(DOMAIN_OWNERSHIP_VERIFICATION_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
 				appmarketCallbackPath
 		);
-
 		fakeAppmarket.waitForDomainVerifications(1);
+
+		//Then
 		assertThat(fakeAppmarket.lastRequestPath()).isEqualTo(appmarketCallbackPath);
 		assertThat(fakeAppmarket.domainVerificationStatuses().get(0).isVerified()).isTrue();
 	}
@@ -143,13 +144,27 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		String testCustomerId = "testCustomerId";
 		String testDomain = "example.com";
 
+		//When
 		ResponseEntity<Void> actual = restTemplate.postForEntity(
 				formatEndpoint(DOMAIN_ADDITION_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
 				new DomainAdditionPayload("domain2.com"),
 				Void.class
 		);
 
+		//Then
 		assertThat(actual.getStatusCode()).isEqualTo(OK);
+	}
+
+	@Test
+	public void testRemoveDomain() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		//Then
+		assertThatCode(() -> restTemplate.delete(
+				formatEndpoint(DOMAIN_REMOVAL_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain)))
+		.doesNotThrowAnyException();
 	}
 
 	public String formatEndpoint(String endpointTemplate, Object... attributes) {
