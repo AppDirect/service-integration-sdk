@@ -19,5 +19,3 @@ curl -i \
 	--request POST \
 	--data '{"username": "'${SONAR_USER}'", "password": "'${SONAR_USER_PASSWORD}'", "close": "1"}' \
 	${BINTRAY_REQUEST_URL}
-
-

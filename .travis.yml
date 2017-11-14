@@ -1,5 +1,10 @@
 language: java
 
+addons:
+  apt:
+    packages:
+    - libxml2-utils
+
 jdk: oraclejdk8
 
 script: mvn source:jar javadoc:jar test -B
