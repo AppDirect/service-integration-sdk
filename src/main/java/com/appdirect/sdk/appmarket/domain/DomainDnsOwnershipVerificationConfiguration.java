@@ -40,11 +40,20 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 	public abstract DomainAdditionHandler domainAdditionHandler();
 
 	@Bean
+	public abstract DomainRemovalHandler domainRemovalHandler();
+
+	@Bean
 	public DomainOwnershipController domainDnsVerificationInfoController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
 																		 DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
 																		 DomainAdditionHandler domainAdditionHandler,
+																		 DomainRemovalHandler domainRemovalHandler,
 																		 OAuthKeyExtractor keyExtractor) {
-		return new DomainOwnershipController(domainDnsVerificationInfoHandler, domainOwnershipVerificationHandler, domainAdditionHandler, keyExtractor);
+		return new DomainOwnershipController(
+				domainDnsVerificationInfoHandler,
+				domainOwnershipVerificationHandler,
+				domainAdditionHandler,
+				domainRemovalHandler,
+				keyExtractor);
 	}
 
 	@Bean

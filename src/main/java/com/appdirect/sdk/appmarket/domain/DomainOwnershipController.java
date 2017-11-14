@@ -16,6 +16,7 @@ package com.appdirect.sdk.appmarket.domain;
 import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -37,15 +38,18 @@ public class DomainOwnershipController {
 	private final DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler;
 	private final DomainOwnershipVerificationHandler domainOwnershipVerificationHandler;
 	private final DomainAdditionHandler domainAdditionHandler;
+	private final DomainRemovalHandler domainRemovalHandler;
 	private final OAuthKeyExtractor keyExtractor;
 
 	DomainOwnershipController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
 							  DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
 							  DomainAdditionHandler domainAdditionHandler,
+							  DomainRemovalHandler domainRemovalHandler,
 							  OAuthKeyExtractor keyExtractor) {
 		this.domainDnsVerificationInfoHandler = domainDnsVerificationInfoHandler;
 		this.domainOwnershipVerificationHandler = domainOwnershipVerificationHandler;
 		this.domainAdditionHandler = domainAdditionHandler;
+		this.domainRemovalHandler = domainRemovalHandler;
 		this.keyExtractor = keyExtractor;
 	}
 
@@ -83,5 +87,16 @@ public class DomainOwnershipController {
 						  @RequestBody DomainAdditionPayload domainAdditionPayload) {
 
 		domainAdditionHandler.addDomain(customerId, domainAdditionPayload.getDomainName());
+	}
+
+	@RequestMapping(
+			method = DELETE,
+			value = "/customers/{customerIdentifier}/domains/{domainName}"
+	)
+	@ResponseStatus(value = OK)
+	public void removeDomain(@PathVariable("customerIdentifier") String customerId,
+						  @PathVariable("domainName") String domainName) {
+
+		domainRemovalHandler.removeDomain(customerId, domainName);
 	}
 }

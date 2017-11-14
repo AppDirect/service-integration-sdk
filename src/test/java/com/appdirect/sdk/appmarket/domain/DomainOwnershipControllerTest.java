@@ -36,13 +36,19 @@ public class DomainOwnershipControllerTest {
 	@Mock
 	private DomainAdditionHandler domainAdditionHandler;
 	@Mock
+	private DomainRemovalHandler domainRemovalHandler;
+	@Mock
 	private OAuthKeyExtractor keyExtractor;
 
 	private DomainOwnershipController tested;
 
 	@Before
 	public void setUp() throws Exception {
-		tested = new DomainOwnershipController(mockDnsVerificationInfoHandler, domainOwnershipVerificationHandler, domainAdditionHandler, keyExtractor);
+		tested = new DomainOwnershipController(mockDnsVerificationInfoHandler,
+				domainOwnershipVerificationHandler,
+				domainAdditionHandler,
+				domainRemovalHandler,
+				keyExtractor);
 	}
 
 	@Test
@@ -87,5 +93,18 @@ public class DomainOwnershipControllerTest {
 
 		//Then
 		verify(domainAdditionHandler).addDomain(testCustomerId, testDomain);
+	}
+
+	@Test
+	public void testRemoveDomain_whenCalled_thenControllerForwardsToTheUnderlyingHandler() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		//When
+		tested.removeDomain(testCustomerId, testDomain);
+
+		//Then
+		verify(domainRemovalHandler).removeDomain(testCustomerId, testDomain);
 	}
 }
