@@ -24,6 +24,7 @@ import org.springframework.security.oauth.provider.ConsumerDetailsService;
 import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth.provider.OAuthProviderSupport;
 import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSupport;
+import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -62,8 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public OAuthSignatureCheckingFilter oAuthSignatureCheckingFilter() {
-		OAuthSignatureCheckingFilter filter = new OAuthSignatureCheckingFilter();
+	public ProtectedResourceProcessingFilter oAuthSignatureCheckingFilter() {
+		ProtectedResourceProcessingFilter filter = new ProtectedResourceProcessingFilter();
 		filter.setConsumerDetailsService(consumerDetailsService());
 		filter.setTokenServices(oauthProviderTokenServices());
 		filter.setAuthenticationEntryPoint(oAuthProcessingFilterEntryPoint());
@@ -89,6 +90,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().anyRequest().authenticated()
 					.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(requestIdFilter(), OAuthSignatureCheckingFilter.class);
+				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class);
 	}
 }
