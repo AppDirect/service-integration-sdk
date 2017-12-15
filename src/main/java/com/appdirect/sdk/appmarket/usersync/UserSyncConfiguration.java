@@ -30,12 +30,12 @@ public class UserSyncConfiguration {
 	}
 
 	@Bean
-	public RestTemplateFactory restTemplateFactory() {
+	public RestTemplateFactory userSyncRestTemplateFactory() {
 		return new UserSyncRestTemplateFactoryImpl();
 	}
 
 	@Bean
 	public UserSyncApiClient userSyncApiClient() {
-		return new UserSyncApiClient(restTemplateFactory());
+		return new UserSyncApiClient(userSyncRestTemplateFactory());
 	}
 }

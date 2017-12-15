@@ -41,7 +41,7 @@ public class AppmarketCommunicationConfiguration {
 	@Bean
 	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
 																										@Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
-		return new AppmarketEventClient(restTemplateFactory(), credentialsSupplier, mapper);
+		return new AppmarketEventClient(appMarketRestTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean
@@ -67,7 +67,7 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public RestTemplateFactory restTemplateFactory() {
+	public RestTemplateFactory appMarketRestTemplateFactory() {
 		return new DefaultRestTemplateFactoryImpl(new AppmarketEventClientExceptionHandler());
 	}
 
