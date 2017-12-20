@@ -58,11 +58,11 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 
 	@Bean
 	public DomainVerificationNotificationClient domainVerificationNotificationClient(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new DomainVerificationNotificationClient(restTemplateFactory(), credentialsSupplier);
+		return new DomainVerificationNotificationClient(domainRestTemplateFactory(), credentialsSupplier);
 	}
 
 	@Bean
-	public RestTemplateFactory restTemplateFactory() {
+	public RestTemplateFactory domainRestTemplateFactory() {
 		return new DefaultRestTemplateFactoryImpl(new AppmarketEventClientExceptionHandler());
 	}
 }
