@@ -28,6 +28,7 @@ import com.appdirect.sdk.appmarket.events.APIResult;
 public class AppmarketMigrationService {
 	private final CustomerAccountValidationHandler customerAccountValidationHandler;
 	private final SubscriptionValidationHandler subscriptionValidationHandler;
+	private final SubscriptionMigrationHandler subscriptionMigrationHandler;
 
 	public APIResult validateCustomerAccount(Map<String, String> customerAccountData) {
 		return customerAccountValidationHandler.validate(customerAccountData);
@@ -35,5 +36,9 @@ public class AppmarketMigrationService {
 
 	public APIResult validateSubscription(Map<String, String> subscriptionData) {
 		return subscriptionValidationHandler.validate(subscriptionData);
+	}
+
+	public APIResult migrate(Subscription subscription) {
+		return subscriptionMigrationHandler.handle(subscription);
 	}
 }

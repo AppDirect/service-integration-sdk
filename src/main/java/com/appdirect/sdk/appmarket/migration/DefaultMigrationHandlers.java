@@ -28,4 +28,9 @@ public class DefaultMigrationHandlers {
 	public SubscriptionValidationHandler subscriptionValidatorHandler() {
 		return subscriptionData -> APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Subscription validation is not supported.");
 	}
+
+	@Bean
+	public SubscriptionMigrationHandler subscriptionMigrationHandler() {
+		return subscription -> APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Subscription migration is not supported.");
+	}
 }
