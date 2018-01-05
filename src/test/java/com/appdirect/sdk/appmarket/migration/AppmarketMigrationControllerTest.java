@@ -14,6 +14,7 @@
 package com.appdirect.sdk.appmarket.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Mockito.when;
 
@@ -79,5 +80,25 @@ public class AppmarketMigrationControllerTest {
 
 		assertThat(apiResult.isSuccess()).isFalse();
 		assertThat(apiResult.getMessage()).isEqualTo("Failure in validation");
+	}
+
+	@Test
+	public void migrateISVSubscription_success() throws Exception {
+		when(migrationService.migrate(any(Subscription.class))).thenReturn(APIResult.success("Success"));
+		Callable<APIResult> result = migrationController.migrate(new Subscription());
+		APIResult apiResult = result.call();
+
+		assertThat(apiResult.isSuccess()).isTrue();
+		assertThat(apiResult.getMessage()).isEqualTo("Success");
+	}
+
+	@Test
+	public void migrationISVSubscription_failure() throws Exception {
+		when(migrationService.migrate(any(Subscription.class))).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Migration Failed"));
+		Callable<APIResult> result = migrationController.migrate(new Subscription());
+		APIResult apiResult = result.call();
+
+		assertThat(apiResult.isSuccess()).isFalse();
+		assertThat(apiResult.getMessage()).isEqualTo("Migration Failed");
 	}
 }

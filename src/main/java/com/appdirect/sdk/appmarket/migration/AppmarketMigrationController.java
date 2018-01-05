@@ -64,4 +64,15 @@ public class AppmarketMigrationController {
 	public Callable<APIResult> validateISVSubscription(@RequestBody Map<String, String> isvSubscriptionData) {
 		return () -> migrationService.validateSubscription(isvSubscriptionData);
 	}
+
+	/**
+	 * Migrate a subscription which is already validated by {@link AppmarketMigrationController#validateISVSubscription(Map)}
+	 *
+	 * @param subscription the subscription record to be migrated
+	 * @return an {@link APIResult#success(String)} in case the migration is successful and a {@link APIResult#failure(ErrorCode, String)}
+	 */
+	@RequestMapping(method = POST, value = "/api/v1/migration/subscription", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	public Callable<APIResult> migrate(@RequestBody Subscription subscription) {
+		return () -> migrationService.migrate(subscription);
+	}
 }
