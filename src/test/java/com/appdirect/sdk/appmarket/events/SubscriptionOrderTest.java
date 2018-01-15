@@ -28,7 +28,7 @@ public class SubscriptionOrderTest {
 				UserInfo.builder().build(),
 				new HashMap<>(),
 				CompanyInfo.builder().build(),
-				OrderInfo.builder().build(),
+				AccountInfo.builder().build(), OrderInfo.builder().build(),
 				"partner",
 				"appUuid",
 				null,

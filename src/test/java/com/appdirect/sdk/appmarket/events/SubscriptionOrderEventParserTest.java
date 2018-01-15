@@ -47,6 +47,15 @@ public class SubscriptionOrderEventParserTest {
 	}
 
 	@Test
+	public void parse_setsTheAccountInfo_fromThePayload() throws Exception {
+		EventInfo rawEventWithAcccountInfo = eventWithAccountInfo("my-account").build();
+
+		SubscriptionOrder parsedEvent = parser.parse(rawEventWithAcccountInfo, defaultEventContext());
+
+		assertThat(parsedEvent.getAccountInfo().getAccountIdentifier()).isEqualTo("my-account");
+	}
+
+	@Test
 	public void parse_setsTheConfiguration_fromThePayload() throws Exception {
 		EventInfo rawEventWithConfig = eventWithConfig(config("one", "apple", "two", "apples")).build();
 
@@ -125,6 +134,10 @@ public class SubscriptionOrderEventParserTest {
 
 	private EventInfoBuilder eventWithCompanyInfo(String companyName) {
 		return someEvent().payload(EventPayload.builder().company(CompanyInfo.builder().name(companyName).build()).build());
+	}
+
+	private EventInfoBuilder eventWithAccountInfo(String uuid) {
+		return someEvent().payload(EventPayload.builder().account(AccountInfo.builder().accountIdentifier(uuid).build()).build());
 	}
 
 	private EventInfoBuilder someEvent() {
