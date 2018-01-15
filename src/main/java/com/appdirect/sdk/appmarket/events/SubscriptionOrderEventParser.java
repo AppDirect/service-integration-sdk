@@ -29,6 +29,7 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 				eventInfo.getCreator(),
 				eventInfo.getPayload().getConfiguration(),
 				eventInfo.getPayload().getCompany(),
+				eventInfo.getPayload().getAccount(),
 				eventInfo.getPayload().getOrder(),
 				eventInfo.getMarketplace().getPartner(),
 				eventInfo.getApplicationUuid(),
