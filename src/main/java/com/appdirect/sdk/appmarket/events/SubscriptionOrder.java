@@ -31,7 +31,6 @@ public class SubscriptionOrder extends EventWithContext {
 	private UserInfo purchaserInfo;
 	private Map<String, String> configuration;
 	private CompanyInfo companyInfo;
-	private AccountInfo accountInfo;
 	private OrderInfo orderInfo;
 	private String partner;
 	private String applicationUuid;
@@ -42,7 +41,6 @@ public class SubscriptionOrder extends EventWithContext {
 							 UserInfo purchaserInfo,
 							 Map<String, String> configuration,
 							 CompanyInfo companyInfo,
-							 AccountInfo accountInfo,
 							 OrderInfo orderInfo,
 							 String partner,
 							 String applicationUuid,
@@ -55,7 +53,6 @@ public class SubscriptionOrder extends EventWithContext {
 		this.purchaserInfo = purchaserInfo;
 		this.configuration = configuration;
 		this.companyInfo = companyInfo;
-		this.accountInfo = accountInfo;
 		this.orderInfo = orderInfo;
 		this.partner = partner;
 		this.applicationUuid = applicationUuid;
