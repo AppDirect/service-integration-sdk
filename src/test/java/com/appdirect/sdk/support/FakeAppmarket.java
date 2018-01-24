@@ -37,6 +37,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -170,6 +171,14 @@ public class FakeAppmarket {
 		oauthSign(request);
 		addHeaders(request, headers);
 
+		return httpClient.execute(request);
+	}
+
+	public HttpResponse sendSignedDeleteRequestTo(String url) throws Exception {
+		CloseableHttpClient httpClient = anAppmarketHttpClient();
+		HttpDelete request = new HttpDelete(new URIBuilder(url).build());
+
+		oauthSign(request);
 		return httpClient.execute(request);
 	}
 
