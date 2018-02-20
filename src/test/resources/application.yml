@@ -1,0 +1,9 @@
+openid.identityUrl: http://fake.url
+authentication:
+  roles:
+    admin:
+      - ROLE_ONE
+      - ROLE_TWO
+    user:
+      - ROLE_THREE
+      - ROLE_FOUR
