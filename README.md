@@ -25,6 +25,7 @@ instructions we are going to assume that you're using [Apache Maven](https://mav
 * Provides you with objects modelling the responses needed to be sent to the marketplace, so that you can specify 
 what response is sent back to the AppDirect marketplace once the processing of a given integration event is complete
 * Automatic OAuth signing of messages to the marketplace
+* Provides the ability to use AppMarket as an IdP to sign in to your connector
 
 ## Sample client application 
 An sample connector implemented with the SDK can be found [here](https://github.com/AppDirect/chatty-pie-connector)

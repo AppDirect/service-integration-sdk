@@ -19,6 +19,7 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
+import com.appdirect.sdk.security.openid.configuration.OpenIdSsoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -47,7 +48,8 @@ import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnect
  * mandatory and optional ones.
  */
 @SpringBootApplication
-@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class})
+@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class,
+		OpenIdSsoConfiguration.class})
 public class FullConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
