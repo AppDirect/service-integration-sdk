@@ -27,5 +27,6 @@ public enum PricingUnit {
 	PROVIDER,
 	MANAGER,
 	EMPLOYEE,
+	INSTANCE,
 	NOT_APPLICABLE
 }
