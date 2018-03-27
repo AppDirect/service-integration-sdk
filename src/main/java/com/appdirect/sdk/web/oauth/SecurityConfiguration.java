@@ -13,6 +13,14 @@
 
 package com.appdirect.sdk.web.oauth;
 
+import static java.util.Arrays.asList;
+import static org.springframework.util.CollectionUtils.isEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,12 +38,19 @@ import org.springframework.security.oauth.provider.token.OAuthProviderTokenServi
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+
+	@Bean
+	public OpenIdCustomUrlPattern openIdUrlPatterns() {
+		return new OpenIdCustomUrlPattern();
+	}
 
 	@Bean
 	public ConsumerDetailsService consumerDetailsService() {
@@ -78,13 +93,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		String[] securedUrlPatterns = createSecuredUrlPatterns();
+
 		http
 				.authorizeRequests()
 				.antMatchers("/unsecured/**")
 				.permitAll()
 					.and()
 				.requestMatchers()
-					.antMatchers("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**", "/api/v1/dummy/**")
+					.antMatchers(securedUrlPatterns)
 					.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 					.and()
@@ -93,5 +110,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class);
+	}
+
+	private String[] createSecuredUrlPatterns() {
+		OpenIdCustomUrlPattern openIdCustomUrlPattern = openIdUrlPatterns();
+		List<String> securedPaths = new ArrayList<>(asList("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**"));
+		log.debug("Found custom secured paths: {}", openIdCustomUrlPattern.getPatterns());
+		if (!isEmpty(openIdCustomUrlPattern.getPatterns())) {
+			securedPaths.addAll(openIdCustomUrlPattern.getPatterns());
+		}
+		log.debug("Configuring the following paths as secured: {}", securedPaths);
+		return securedPaths.toArray(new String[securedPaths.size()]);
 	}
 }
