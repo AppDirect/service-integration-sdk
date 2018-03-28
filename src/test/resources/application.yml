@@ -1,4 +1,8 @@
-openid.identityUrl: http://fake.url
+openid:
+  identityUrl: http://fake.url
+  secured.url.patterns:
+    - /api/v1/dummy/**
+
 authentication:
   roles:
     admin:
