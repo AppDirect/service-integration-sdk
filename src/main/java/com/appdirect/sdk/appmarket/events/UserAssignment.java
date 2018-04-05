@@ -17,20 +17,22 @@ import java.util.Map;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class UserAssignment extends EventWithContext {
-	private final UserInfo assignedUser;
-	private final String accountId;
+	private UserInfo assignedUser;
+	private String accountId;
 
 	public UserAssignment(UserInfo assignedUser,
-						  String accountId,
-						  String consumerKey,
-						  Map<String, String[]> queryParameters,
-						  EventFlag eventFlag,
-						  String eventToken,
-						  String marketplaceUrl) {
+	                      String accountId,
+	                      String consumerKey,
+	                      Map<String, String[]> queryParameters,
+	                      EventFlag eventFlag,
+	                      String eventToken,
+	                      String marketplaceUrl) {
 
 		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
 		this.assignedUser = assignedUser;

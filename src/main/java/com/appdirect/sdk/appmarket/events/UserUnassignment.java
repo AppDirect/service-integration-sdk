@@ -17,22 +17,22 @@ import java.util.Map;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class UserUnassignment extends EventWithContext {
-	@Getter
-	private final UserInfo unassignedUser;
+	private UserInfo unassignedUser;
+	private String accountId;
 
-	@Getter
-	private final String accountId;
-
-    public UserUnassignment(UserInfo unassignedUser,
-                            String accountId,
-                            String consumerKey,
-                            Map<String, String[]> queryParameters,
-                            EventFlag eventFlag,
-                            String eventToken,
-                            String marketplaceUrl) {
+	public UserUnassignment(UserInfo unassignedUser,
+	                        String accountId,
+	                        String consumerKey,
+	                        Map<String, String[]> queryParameters,
+	                        EventFlag eventFlag,
+	                        String eventToken,
+	                        String marketplaceUrl) {
 
 		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
 		this.unassignedUser = unassignedUser;
