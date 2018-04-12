@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddonSubscriptionOrder extends EventWithContext {
 	private UserInfo purchaserInfo;
+	private Map<String, String> configuration;
 	private CompanyInfo companyInfo;
 	private OrderInfo orderInfo;
 	private String partner;
@@ -37,6 +38,7 @@ public class AddonSubscriptionOrder extends EventWithContext {
 	public AddonSubscriptionOrder(String consumerKeyUsedByTheRequest,
 								  EventFlag flag,
 								  UserInfo purchaserInfo,
+								  Map<String, String> configuration,
 								  CompanyInfo companyInfo,
 								  OrderInfo orderInfo,
 								  String partner,
@@ -47,6 +49,7 @@ public class AddonSubscriptionOrder extends EventWithContext {
 
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
 		this.purchaserInfo = purchaserInfo;
+		this.configuration = configuration;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
 		this.partner = partner;
