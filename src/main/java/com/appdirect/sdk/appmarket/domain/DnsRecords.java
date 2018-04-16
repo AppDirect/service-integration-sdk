@@ -13,14 +13,20 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
+import static java.util.Collections.emptySet;
+
+import java.util.Set;
+
 import lombok.Value;
 
-/**
- * Represents a TXT DNS record.
- */
 @Value
-public final class TxtDnsRecord {
-	private String name;
-	private int ttl;
-	private String text;
+public class DnsRecords {
+	Set<TxtDnsRecord> txt;
+	Set<MxDnsRecord> mx;
+	Set<CNameDnsRecord> cname;
+	Set<SrvDnsRecord> srv;
+
+	public static DnsRecords empty() {
+		return new DnsRecords(emptySet(), emptySet(), emptySet(), emptySet());
+	}
 }

@@ -13,23 +13,44 @@
 
 package com.appdirect.sdk.feature.sample_connector.full.configuration;
 
+import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
 import static org.mockito.Mockito.spy;
 
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
+import com.appdirect.sdk.appmarket.domain.DnsRecords;
 import com.appdirect.sdk.appmarket.domain.DomainAdditionHandler;
 import com.appdirect.sdk.appmarket.domain.DomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.appmarket.domain.DomainDnsVerificationInfoHandler;
 import com.appdirect.sdk.appmarket.domain.DomainOwnershipVerificationHandler;
 import com.appdirect.sdk.appmarket.domain.DomainRemovalHandler;
+import com.appdirect.sdk.appmarket.domain.DomainServiceConfigurationHandler;
 import com.appdirect.sdk.appmarket.domain.DomainVerificationNotificationClient;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
 
 public class FullConnectorDomainDnsOwnershipVerificationConfiguration extends DomainDnsOwnershipVerificationConfiguration {
+
+	public static final TxtDnsRecord OWNERSHIP_VERIFICATION_TXT_RECORD = new TxtDnsRecord(
+		"@",
+		3600,
+		"key1=ownership");
+	public static final MxDnsRecord OWNERSHIP_VERIFICATION_MX_RECORD = new MxDnsRecord("@",
+		3600,
+		1,
+		"abc.ownership.com.");
+
+	public static final MxDnsRecord SERVICE_CONFIGURATION_MX_RECORD = new MxDnsRecord("@",
+		3600,
+		1,
+		"abc.serviceConfig.com.");
+	public static final TxtDnsRecord SERVICE_CONFIGURATION_TXT_RECORD = new TxtDnsRecord(
+		"@",
+		3600,
+		"key1=serviceConfig");
+
 
 	@Override
 	public DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient) {
@@ -48,22 +69,16 @@ public class FullConnectorDomainDnsOwnershipVerificationConfiguration extends Do
 
 	@Override
 	public DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler() {
-		return (customerId, domain) -> new DnsOwnershipVerificationRecords(generateTestTxtRecords(customerId, domain), generateTestMxDnsRecords());
+		return (customerId, domain) -> new DnsRecords(generateRecord(OWNERSHIP_VERIFICATION_TXT_RECORD), generateRecord(OWNERSHIP_VERIFICATION_MX_RECORD), emptySet(), emptySet());
 	}
 
-	private Set<MxDnsRecord> generateTestMxDnsRecords() {
-		return Stream.of(new MxDnsRecord("@",
-			3600,
-			1,
-			"abc.example.com."))
-			.collect(toSet());
+	@Override
+	public DomainServiceConfigurationHandler domainServiceConfigurationHandler() {
+		return (customerId, domain) -> new DnsRecords(generateRecord(SERVICE_CONFIGURATION_TXT_RECORD), generateRecord(SERVICE_CONFIGURATION_MX_RECORD), emptySet(), emptySet());
 	}
 
-	private Set<TxtDnsRecord> generateTestTxtRecords(String customerId, String domain) {
-		return Stream.of(new TxtDnsRecord(
-			"@",
-			3600,
-			"key1=value1"))
+	private <T> Set<T> generateRecord(T record) {
+		return Stream.of(record)
 			.collect(toSet());
 	}
 

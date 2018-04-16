@@ -13,8 +13,12 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
+import static com.appdirect.sdk.appmarket.domain.DomainOwnershipController.OWNERSHIP_PROOF_DNS_OPERATION_TYPE;
+import static com.appdirect.sdk.appmarket.domain.DomainOwnershipController.SERVICE_CONFIGURATION_DNS_OPERATION_TYPE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +36,8 @@ public class DomainOwnershipControllerTest {
 	@Mock
 	private DomainDnsVerificationInfoHandler mockDnsVerificationInfoHandler;
 	@Mock
+	private DomainServiceConfigurationHandler mockedDomainServiceConfigurationHandler;
+	@Mock
 	private DomainOwnershipVerificationHandler domainOwnershipVerificationHandler;
 	@Mock
 	private DomainAdditionHandler domainAdditionHandler;
@@ -45,6 +51,7 @@ public class DomainOwnershipControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		tested = new DomainOwnershipController(mockDnsVerificationInfoHandler,
+			mockedDomainServiceConfigurationHandler,
 				domainOwnershipVerificationHandler,
 				domainAdditionHandler,
 				domainRemovalHandler,
@@ -62,6 +69,51 @@ public class DomainOwnershipControllerTest {
 
 		//Then
 		verify(mockDnsVerificationInfoHandler).readOwnershipVerificationRecords(testCustomerId, testDomain);
+	}
+
+	@Test
+	public void testReadDnsRecord_whenCalledWithTypeOwnershipProof_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		//When
+		tested.readDnsRecord(testCustomerId, testDomain, OWNERSHIP_PROOF_DNS_OPERATION_TYPE);
+
+		//Then
+		verify(mockDnsVerificationInfoHandler).readOwnershipVerificationRecords(testCustomerId, testDomain);
+	}
+
+	@Test
+	public void testReadDnsRecord_whenCalledWithTypeServiceConfiguration_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		//When
+		tested.readDnsRecord(testCustomerId, testDomain, SERVICE_CONFIGURATION_DNS_OPERATION_TYPE);
+
+		//Then
+		verify(mockedDomainServiceConfigurationHandler).readServiceConfigurationRecords(testCustomerId, testDomain);
+	}
+
+	@Test
+	public void testReadDnsRecord_whenCalledWithUnkownType_thenReturnsEmptyDnsRecords() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		//When
+		final DnsRecords records = tested.readDnsRecord(testCustomerId, testDomain, "IamNotAValidType");
+
+		//Then
+		verifyZeroInteractions(mockDnsVerificationInfoHandler);
+		verifyZeroInteractions(mockedDomainServiceConfigurationHandler);
+		assertThat(records).isNotNull();
+		assertThat(records.getMx()).isEmpty();
+		assertThat(records.getTxt()).isEmpty();
+		assertThat(records.getCname()).isEmpty();
+		assertThat(records.getSrv()).isEmpty();
 	}
 
 	@Test

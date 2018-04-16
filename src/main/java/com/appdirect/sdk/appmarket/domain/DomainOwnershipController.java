@@ -35,33 +35,64 @@ import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 @RequestMapping("/api/v1/domainassociation")
 public class DomainOwnershipController {
 
+	public static final String OWNERSHIP_PROOF_DNS_OPERATION_TYPE = "ownershipProof";
+	public static final String SERVICE_CONFIGURATION_DNS_OPERATION_TYPE = "configuration";
+
 	private final DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler;
+	private final DomainServiceConfigurationHandler domainServiceConfigurationHandler;
 	private final DomainOwnershipVerificationHandler domainOwnershipVerificationHandler;
 	private final DomainAdditionHandler domainAdditionHandler;
 	private final DomainRemovalHandler domainRemovalHandler;
 	private final OAuthKeyExtractor keyExtractor;
 
 	DomainOwnershipController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
-							  DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
-							  DomainAdditionHandler domainAdditionHandler,
-							  DomainRemovalHandler domainRemovalHandler,
-							  OAuthKeyExtractor keyExtractor) {
+														DomainServiceConfigurationHandler domainServiceConfigurationHandler,
+														DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
+														DomainAdditionHandler domainAdditionHandler,
+														DomainRemovalHandler domainRemovalHandler,
+														OAuthKeyExtractor keyExtractor) {
 		this.domainDnsVerificationInfoHandler = domainDnsVerificationInfoHandler;
+		this.domainServiceConfigurationHandler = domainServiceConfigurationHandler;
 		this.domainOwnershipVerificationHandler = domainOwnershipVerificationHandler;
 		this.domainAdditionHandler = domainAdditionHandler;
 		this.domainRemovalHandler = domainRemovalHandler;
 		this.keyExtractor = keyExtractor;
 	}
 
+
+	/**
+	 * @deprecated
+	 * Use readDnsRecord with the type OWNERSHIP_PROOF_DNS_OPERATION_TYPE instead.
+	 */
+	@Deprecated
 	@RequestMapping(
 			method = GET,
 			value = "/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord",
 			produces = APPLICATION_JSON_VALUE
 	)
-	public DnsOwnershipVerificationRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
-																		   @PathVariable("domain") String domain) {
+	public DnsRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
+																										@PathVariable("domain") String domain) {
 
-		return domainDnsVerificationInfoHandler.readOwnershipVerificationRecords(customerId, domain);
+		return readDnsRecord(customerId, domain, OWNERSHIP_PROOF_DNS_OPERATION_TYPE);
+	}
+
+	@RequestMapping(
+		method = GET,
+		value = "/customers/{customerIdentifier}/domains/{domain}/dns",
+		produces = APPLICATION_JSON_VALUE
+	)
+	public DnsRecords readDnsRecord(
+		@PathVariable("customerIdentifier") String customerId,
+		@PathVariable("domain") String domain,
+		@RequestParam("type") String type) {
+
+		if (SERVICE_CONFIGURATION_DNS_OPERATION_TYPE.equalsIgnoreCase(type)) {
+			return domainServiceConfigurationHandler.readServiceConfigurationRecords(customerId, domain);
+		} else if (OWNERSHIP_PROOF_DNS_OPERATION_TYPE.equalsIgnoreCase(type)) {
+			return domainDnsVerificationInfoHandler.readOwnershipVerificationRecords(customerId, domain);
+		} else {
+			return DnsRecords.empty();
+		}
 	}
 
 	@RequestMapping(
