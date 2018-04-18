@@ -13,7 +13,6 @@
 
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,7 +28,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubscriptionOrder extends EventWithContext {
 	private UserInfo purchaserInfo;
-	private Map<String, String> configuration;
 	private CompanyInfo companyInfo;
 	private OrderInfo orderInfo;
 	private String partner;
@@ -49,18 +47,13 @@ public class SubscriptionOrder extends EventWithContext {
 							 String marketplaceUrl,
 							 String samlIdpUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
 		this.purchaserInfo = purchaserInfo;
-		this.configuration = configuration;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
 		this.partner = partner;
 		this.applicationUuid = applicationUuid;
 		this.samlIdpUrl = samlIdpUrl;
-	}
-
-	public Map<String, String> getConfiguration() {
-		return new HashMap<>(configuration);
 	}
 
 	public Optional<String> getApplicationUuid() {
