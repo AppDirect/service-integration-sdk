@@ -32,9 +32,10 @@ public class UserAssignment extends EventWithContext {
 	                      Map<String, String[]> queryParameters,
 	                      EventFlag eventFlag,
 	                      String eventToken,
-	                      String marketplaceUrl) {
+	                      String marketplaceUrl,
+	                      Map<String, String> configuration) {
 
-		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
+		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl, configuration);
 		this.assignedUser = assignedUser;
 		this.accountId = accountId;
 	}

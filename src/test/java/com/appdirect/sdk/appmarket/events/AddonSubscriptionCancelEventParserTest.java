@@ -38,6 +38,7 @@ public class AddonSubscriptionCancelEventParserTest {
 		Map<String, String[]> expectedParameters = new HashMap<>();
 		EventFlag expectedFlag = null;
 		String expectedBaseUrl = "http://www.example.com";
+		Map<String, String> expectedConfiguration = new HashMap<>();
 		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
@@ -47,7 +48,8 @@ public class AddonSubscriptionCancelEventParserTest {
 			expectedParameters,
 			expectedFlag,
 			expectedEventId,
-			expectedBaseUrl
+			expectedBaseUrl,
+			expectedConfiguration
 		);
 
 		//When
@@ -67,6 +69,7 @@ public class AddonSubscriptionCancelEventParserTest {
 		EventFlag expectedFlag = STATELESS;
 		String expectedEventId = "expectedEventId";
 		String expectedBaseUrl = "http://www.example.com";
+		Map<String, String> expectedConfiguration = new HashMap<>();
 		EventInfo testEvent = addonCancelEvent(expectedAddonAccountIdentifier, expectedParentAccountIdentifier, expectedFlag, expectedEventId, expectedBaseUrl);
 		EventHandlingContext testEventContext = EventHandlingContexts.eventContext(expectedConsumerKey, expectedParameters);
 		AddonSubscriptionCancel expectedEvent = new AddonSubscriptionCancel(
@@ -76,7 +79,8 @@ public class AddonSubscriptionCancelEventParserTest {
 			expectedParameters,
 			expectedFlag,
 			expectedEventId,
-			expectedBaseUrl
+			expectedBaseUrl,
+			expectedConfiguration
 		);
 
 		//When

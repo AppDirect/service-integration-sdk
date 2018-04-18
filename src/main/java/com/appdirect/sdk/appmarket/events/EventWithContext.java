@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * abstract event type that offers the consumer key used by the request publishing the event,
@@ -43,6 +44,8 @@ public abstract class EventWithContext {
 	private EventFlag flag;
 	private String eventToken;
 	private String marketplaceUrl;
+	@NonNull
+	private Map<String, String> configuration = new HashMap<>();
 
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.
