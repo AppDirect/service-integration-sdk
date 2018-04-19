@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,6 +55,23 @@ public class SubscriptionOrder extends EventWithContext {
 		this.partner = partner;
 		this.applicationUuid = applicationUuid;
 		this.samlIdpUrl = samlIdpUrl;
+	}
+
+	@Deprecated
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest,
+							 EventFlag flag,
+							 UserInfo purchaserInfo,
+							 CompanyInfo companyInfo,
+							 OrderInfo orderInfo,
+							 String partner,
+							 String applicationUuid,
+							 Map<String, String[]> queryParameters,
+							 String eventToken,
+							 String marketplaceUrl,
+							 String samlIdpUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
+
+		this(consumerKeyUsedByTheRequest, flag, purchaserInfo, new HashMap<>(), companyInfo, orderInfo, partner,
+			 applicationUuid, queryParameters, eventToken, marketplaceUrl, samlIdpUrl);
 	}
 
 	public Optional<String> getApplicationUuid() {

@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
@@ -41,5 +42,18 @@ public class AddonSubscriptionCancel extends EventWithContext {
 		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
 		this.accountIdentifier = accountIdentifier;
 		this.parentAccountIdentifier = parentAccountIdentifier;
+	}
+
+	@Deprecated
+	public AddonSubscriptionCancel(String accountIdentifier,
+								   String parentAccountIdentifier,
+								   String consumerKeyUsedByTheRequest,
+								   Map<String, String[]> queryParameters,
+								   EventFlag flag,
+								   String eventToken,
+								   String marketplaceUrl) {
+
+		this(accountIdentifier, parentAccountIdentifier, consumerKeyUsedByTheRequest, queryParameters,
+			 flag, eventToken, marketplaceUrl, new HashMap<>());
 	}
 }
