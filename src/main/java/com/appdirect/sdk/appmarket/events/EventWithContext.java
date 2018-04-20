@@ -23,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /**
  * abstract event type that offers the consumer key used by the request publishing the event,
@@ -44,9 +43,8 @@ public abstract class EventWithContext {
 	private EventFlag flag;
 	private String eventToken;
 	private String marketplaceUrl;
-	@NonNull
 	private Map<String, String> configuration = new HashMap<>();
-
+	
 	/**
 	 * Returns the query parameters that were passed to the endpoint when this event was received.
 	 * i.e. calling <code>/processEvent?eventUrl=some-url&amp;themeColor=yellow&amp;themeColor=red</code> would yield
@@ -55,7 +53,16 @@ public abstract class EventWithContext {
 	 * @return an unmodifiable view of the query parameters map.
 	 */
 	public Map<String, String[]> getQueryParameters() {
-		return new HashMap<>(queryParameters == null ? new HashMap<>() : queryParameters);
+	    return new HashMap<>(queryParameters == null ? new HashMap<>() : queryParameters);
+	}
+
+	/**
+	 * Returns the configuration that was passed to the endpoint when this event was received.
+	 *
+	 * @return an unmodifiable view of the configuration map.
+	 */
+	public Map<String, String> getConfiguration() {
+		return new HashMap<>(configuration == null ? new HashMap<>() : configuration);
 	}
 
 	/**
