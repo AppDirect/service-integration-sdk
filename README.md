@@ -4,7 +4,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk)
 
 ## Overview
-Use the SDK to quickly integrate your application with the AppDirect platform. Use the Developer SDK to create a connector and use that connector to connect to the AppDirect ecosystem.
+Integrate your application with the AppDirect platform. Create a connector using the Developer SDK and use that connector to connect to the AppDirect ecosystem.
 
 For more details, see the documents in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
 
@@ -27,7 +27,7 @@ If you would like to build and run your own connector based on Chatty Pie see [h
 To incorporate the SDK into your application please see  [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started).
 
 ## Event Handling
-Using the SDK enables your application to handle AppDirect marketplace integration events. You have full control
+The SDK enables your application to handle AppDirect marketplace integration events. You have full control
 of the logic that your connector will execute when an integration events. See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started)
 page for more information on how to implement your integration event handlers.
 
