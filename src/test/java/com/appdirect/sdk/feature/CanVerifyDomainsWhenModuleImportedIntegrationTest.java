@@ -13,6 +13,12 @@
 
 package com.appdirect.sdk.feature;
 
+import static com.appdirect.sdk.appmarket.domain.DomainOwnershipController.OWNERSHIP_PROOF_DNS_OPERATION_TYPE;
+import static com.appdirect.sdk.appmarket.domain.DomainOwnershipController.SERVICE_CONFIGURATION_DNS_OPERATION_TYPE;
+import static com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration.OWNERSHIP_VERIFICATION_MX_RECORD;
+import static com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration.OWNERSHIP_VERIFICATION_TXT_RECORD;
+import static com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration.SERVICE_CONFIGURATION_MX_RECORD;
+import static com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration.SERVICE_CONFIGURATION_TXT_RECORD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -35,7 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.appmarket.domain.DnsOwnershipVerificationRecords;
+import com.appdirect.sdk.appmarket.domain.DnsRecords;
 import com.appdirect.sdk.appmarket.domain.DomainAdditionPayload;
 import com.appdirect.sdk.appmarket.domain.MxDnsRecord;
 import com.appdirect.sdk.appmarket.domain.TxtDnsRecord;
@@ -69,8 +75,10 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains";
 	private static final String DOMAIN_REMOVAL_ENDPOINT_TEMPLATE =
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s";
-	private static final String DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE =
+	private static final String DEPRECIATED_DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE =
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/ownershipProofRecord";
+	private static final String READ_DNS_RECORDS_ENDPOINT_TEMPLATE =
+		"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/dns?type=%s";
 	private static final String DOMAIN_OWNERSHIP_VERIFICATION_ENDPOINT_TEMPLATE =
 			"http://localhost:%d/api/v1/domainassociation/customers/%s/domains/%s/ownershipVerification";
 	private static final String APPMARKET_DOMAIN_VERIFICATION_CALLBACK_TEMPLATE =
@@ -86,36 +94,30 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		fakeAppmarket.stop();
 	}
 
-
 	@Test
-	public void testGetOwnershipProofRecord_whenCalled_txtRecordIsReturned() throws Exception {
+	public void testGetOwnershipProofRecord_whenCalled_recordAreReturned() throws Exception {
 		//Given
 		String testCustomerId = "testCustomerId";
 		String testDomain = "example.com";
 
-		TxtDnsRecord expectedTxtRecord = new TxtDnsRecord(
-				"@",
-				3600,
-				"key1=value1");
-		MxDnsRecord expectedMxRecord = new MxDnsRecord(
-				"@",
-				3600,
-				1,
-				"abc.example.com."
-		);
-
 		//When
-		ResponseEntity<DnsOwnershipVerificationRecords> actualRecord = restTemplate.exchange(
-				formatEndpoint(DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
+		ResponseEntity<DnsRecords> actualRecord = restTemplate.exchange(
+				formatEndpoint(DEPRECIATED_DOMAIN_OWNERSHIP_PROOF_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain),
 				HttpMethod.GET,
 				null,
-				new ParameterizedTypeReference<DnsOwnershipVerificationRecords>() {
+				new ParameterizedTypeReference<DnsRecords>() {
 				}
 		);
 
 		//Then
-		assertThat(actualRecord.getBody().getTxt()).containsExactly(expectedTxtRecord);
-		assertThat(actualRecord.getBody().getMx()).containsExactly(expectedMxRecord);
+		assertThat(actualRecord.getBody().getTxt()).containsExactly(OWNERSHIP_VERIFICATION_TXT_RECORD);
+		assertThat(actualRecord.getBody().getMx()).containsExactly(OWNERSHIP_VERIFICATION_MX_RECORD);
+	}
+
+	@Test
+	public void testReadDnsRecords() throws Exception {
+		testReadDnsRecords_whenCalled_recordsAreReturned(OWNERSHIP_PROOF_DNS_OPERATION_TYPE, OWNERSHIP_VERIFICATION_TXT_RECORD, OWNERSHIP_VERIFICATION_MX_RECORD);
+		testReadDnsRecords_whenCalled_recordsAreReturned(SERVICE_CONFIGURATION_DNS_OPERATION_TYPE, SERVICE_CONFIGURATION_TXT_RECORD, SERVICE_CONFIGURATION_MX_RECORD);
 	}
 
 	@Test
@@ -167,7 +169,26 @@ public class CanVerifyDomainsWhenModuleImportedIntegrationTest {
 		.doesNotThrowAnyException();
 	}
 
-	public String formatEndpoint(String endpointTemplate, Object... attributes) {
+	private String formatEndpoint(String endpointTemplate, Object... attributes) {
 		return String.format(endpointTemplate, attributes);
+	}
+
+	private void testReadDnsRecords_whenCalled_recordsAreReturned(String serviceConfigurationDnsOperationType, TxtDnsRecord txtRecord, MxDnsRecord mxRecord) {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+
+		//When
+		ResponseEntity<DnsRecords> actualRecord = restTemplate.exchange(
+			formatEndpoint(READ_DNS_RECORDS_ENDPOINT_TEMPLATE, localConnectorPort, testCustomerId, testDomain, serviceConfigurationDnsOperationType),
+			HttpMethod.GET,
+			null,
+			new ParameterizedTypeReference<DnsRecords>() {
+			}
+		);
+
+		//Then
+		assertThat(actualRecord.getBody().getTxt()).containsExactly(txtRecord);
+		assertThat(actualRecord.getBody().getMx()).containsExactly(mxRecord);
 	}
 }

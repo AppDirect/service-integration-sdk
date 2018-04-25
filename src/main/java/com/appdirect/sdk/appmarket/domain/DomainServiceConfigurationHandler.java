@@ -13,14 +13,12 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
-import lombok.Value;
-
 /**
- * Represents a TXT DNS record.
+ * SDK clients must implement this interface in their {@link org.springframework.context.ApplicationContext}
+ * if they are using the {@link DomainDnsOwnershipVerificationConfiguration}. The implementation of this class specifies the
+ * {@link DnsRecords} that is returned to the monolith upon querying.
  */
-@Value
-public final class TxtDnsRecord {
-	private String name;
-	private int ttl;
-	private String text;
+@FunctionalInterface
+public interface DomainServiceConfigurationHandler {
+	DnsRecords readServiceConfigurationRecords(String customerId, String domain);
 }

@@ -13,12 +13,13 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
-import java.util.Set;
-
 import lombok.Value;
 
 @Value
-public class DnsOwnershipVerificationRecords {
-	Set<TxtDnsRecord> txt;
-	Set<MxDnsRecord> mx;
+public final class SrvDnsRecord {
+	private String name;
+	private String service;
+	private String protocol;
+	private Integer port;
+	private Integer weight;
 }

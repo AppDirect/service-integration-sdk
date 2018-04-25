@@ -15,12 +15,8 @@ package com.appdirect.sdk.appmarket.domain;
 
 import lombok.Value;
 
-/**
- * Represents a TXT DNS record.
- */
 @Value
-public final class TxtDnsRecord {
+public final class CNameDnsRecord {
 	private String name;
-	private int ttl;
-	private String text;
+	private String alias;
 }

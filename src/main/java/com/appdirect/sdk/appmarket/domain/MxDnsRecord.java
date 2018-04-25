@@ -21,8 +21,8 @@ import lombok.Value;
  */
 @Value
 public final class MxDnsRecord {
-	String destinationDomain;
-	int ttlInSeconds;
-	int preferenceNumber;
-	String mailServerName;
+	private String destinationDomain;
+	private int ttlInSeconds;
+	private int preferenceNumber;
+	private String mailServerName;
 }

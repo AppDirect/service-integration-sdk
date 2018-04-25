@@ -34,8 +34,10 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 	public abstract DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler();
 
 	@Bean
-	public abstract DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient);
+	public abstract DomainServiceConfigurationHandler domainServiceConfigurationHandler();
 
+	@Bean
+	public abstract DomainOwnershipVerificationHandler domainOwnershipVerificationHandler(DomainVerificationNotificationClient domainVerificationNotificationClient);
 	@Bean
 	public abstract DomainAdditionHandler domainAdditionHandler();
 
@@ -44,16 +46,17 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 
 	@Bean
 	public DomainOwnershipController domainDnsVerificationInfoController(DomainDnsVerificationInfoHandler domainDnsVerificationInfoHandler,
-																		 DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
-																		 DomainAdditionHandler domainAdditionHandler,
-																		 DomainRemovalHandler domainRemovalHandler,
-																		 OAuthKeyExtractor keyExtractor) {
-		return new DomainOwnershipController(
-				domainDnsVerificationInfoHandler,
-				domainOwnershipVerificationHandler,
-				domainAdditionHandler,
-				domainRemovalHandler,
-				keyExtractor);
+																																			 DomainServiceConfigurationHandler domainServiceConfigurationHandler,
+																																			 DomainOwnershipVerificationHandler domainOwnershipVerificationHandler,
+																																			 DomainAdditionHandler domainAdditionHandler,
+																																			 DomainRemovalHandler domainRemovalHandler,
+																																			 OAuthKeyExtractor keyExtractor) {
+		return new DomainOwnershipController(domainDnsVerificationInfoHandler,
+			domainServiceConfigurationHandler,
+			domainOwnershipVerificationHandler,
+			domainAdditionHandler,
+			domainRemovalHandler,
+			keyExtractor);
 	}
 
 	@Bean
