@@ -4,64 +4,50 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk)
 
 ## Overview
-Represents a collection of utilities meant to facilitate the implementation of custom connectors. 
-A connector is a stand-alone application that handles integration events from the AppDirect marketplace and takes 
-care of the necessary interaction with an external vendor system in order to complete the request. 
-
-Essentially a connector is an adapter that allows the marketplace to interact with all external vendor systems 
-in a consistent manner.
+Use the SDK to quickly integrate your application with the AppDirect platform. Use the Developer SDK to create a connector and use that connector to connect to the AppDirect ecosystem.
 
 For more details, see the documents in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
 
 ## Prerequisites
 * Java 8 or higher
-* Your connector application should be implemented using [Spring Boot](https://projects.spring.io/spring-boot/)
-* A build tool capable of building and running Spring Boot applications. Although you have several options, in the following
-instructions we are going to assume that you're using [Apache Maven](https://maven.apache.org/)
+* Build your connector using [Spring Boot](https://projects.spring.io/spring-boot/)
 
 ## Features
-* Automatic parsing of incoming market integration events
-* Automatic OAuth authentication of messages using signed fetch
-* Provides you with objects modelling the responses needed to be sent to the marketplace, so that you can specify 
-what response is sent back to the AppDirect marketplace once the processing of a given integration event is complete
-* Automatic OAuth signing of messages to the marketplace
-* Provides the ability to use AppMarket as an IdP to sign in to your connector
+* Automatic parsing of incoming AppDirect distribution API calls
+* Automatic OAuth authentication for all API events to and from the AppDirect platform
+* Provides handlers for your events* Automatic OAuth signing of messages to the marketplace
+* Allows you to use AppMarket as an IdP to sign in to your connector
 
 ## Sample client application 
-An sample connector implemented with the SDK can be found [here](https://github.com/AppDirect/chatty-pie-connector)
-Please refer to the documentation of the connector for instructions on building / running it.
+AppDirect developed the Chatty Pie connector as an example of a connector that can be implemented with the SDK. It is a lightweight chat room application. The chatty pie connector was built to handle all AppDirect Distribution API events including creating new customers, developer accounts, assignments, and changes to a subscription. 
+If you would like to build and run your own connector based on Chatty Pie see [here](https://github.com/AppDirect/chatty-pie-connector)
+
 
 ## Getting Started
 To incorporate the SDK into your application please see  [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started).
 
 ## Event Handling
-Using the SDK enables your application to handle the following AppDirect marketplace integration events. You have full control
+Using the SDK enables your application to handle AppDirect marketplace integration events. You have full control
 of the logic that your connector will execute when an integration events. See the [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started)
 page for more information on how to implement your integration event handlers.
 
-For more information on AppDirect marketplace integration events, and what each one is used for see the AppDirect marketplace documentation
-[here](https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events)
+For more information about AppDirect marketplace integration events, see the AppDirect Documentation Center
+[here](https://help.appdirect.com/appdistrib/Default.htm#Dev-DistributionGuide/en-subs-event-notifs.html%3FTocPath%3DIntegrate%2520with%2520AppDirect%7CEvent%2520notifications%7CSubscription%2520event%2520notifications%7C_____0/?location%20=%20appdistribution)
 
-Keep in mind that the SDK parses the raw event payloads provided by the AppDirect marketplace (the one described in 
-the AppDirect developer documentation above) and creates an event-specific Java object that is specific to the type
-of the event. So, as a developer, you would receive a payload containing only the information that is relevant 
-to your event type.
+The SDK parses the raw event payloads provided by the AppDirect marketplace and creates an event specific Java object that is specific to the type
+of event. This ensures you receive a payload containing the information that is relevant to your event type.
 
 For specific information regarding the different event types and the responses that you need to send back to the 
 AppDirect marketplace when event processing is complete, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Event-Descriptions)
 
 ## Domain association
-Some products require to be associated to one or multiple domains. 
+Some products must be associated with one or multiple domains. 
 
-For more details. see the [domain association](https://github.com/AppDirect/service-integration-sdk/wiki/Domain-association) section.
+For more information see the [domain management](https://github.com/AppDirect/service-integration-sdk/wiki/Domain-management) section.
 
 ## Exposed endpoints
-Using the SDK enables several REST points on your connector application. For details, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints)
+Using the SDK enables several REST points on your connector application. For more information, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints)
 
 ## Building the SDK library locally
 * `mvn clean javadoc:jar source:jar install`
 
-## Regular dependencies version update
-Use the following to verify that you are using the latest versions of your sdk dependencies
-* `mvn versions:update-parent`
-* `mvn versions:use-latest-releases`
