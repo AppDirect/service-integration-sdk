@@ -6,7 +6,7 @@
 ## Overview
 Integrate your application with the AppDirect platform. Create a connector using the Developer SDK and use that connector to connect to the AppDirect ecosystem.
 
-For more details, see the documents in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki)
+For more details, see the documents in our [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki).
 
 ## Prerequisites
 * Java 8 or higher
