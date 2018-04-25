@@ -20,7 +20,7 @@ For more details, see the documents in our [GitHub wiki](https://github.com/AppD
 
 ## Sample client application 
 AppDirect developed the Chatty Pie connector as an example of a connector that can be implemented with the SDK. It is a lightweight chat room application. The chatty pie connector was built to handle all AppDirect Distribution API events including creating new customers, developer accounts, assignments, and changes to a subscription. 
-To build and run your own connector based on Chatty Pie see [here](https://github.com/AppDirect/chatty-pie-connector)
+To build and run your own connector based on Chatty Pie see [here](https://github.com/AppDirect/chatty-pie-connector).
 
 
 ## Getting Started
@@ -44,7 +44,7 @@ AppDirect marketplace when event processing is complete, see [here](https://gith
 Some products must be associated with one or multiple domains. For more information see the [Domain management](https://github.com/AppDirect/service-integration-sdk/wiki/Domain-management) section.
 
 ## Exposed endpoints
-Using the SDK enables several REST points on your connector application. For more information, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints).
+Use the SDK to enable REST points on your connector application. For more information, see [here](https://github.com/AppDirect/service-integration-sdk/wiki/Exposed-endpoints).
 
 ## Building the SDK library locally
 * `mvn clean javadoc:jar source:jar install`
