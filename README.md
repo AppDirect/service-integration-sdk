@@ -31,7 +31,7 @@ of the logic that your connector will execute when an integration events. See th
 page for more information on how to implement your integration event handlers.
 
 For more information about AppDirect marketplace integration events, see the AppDirect Documentation Center
-[here](https://help.appdirect.com/appdistrib/Default.htm#Dev-DistributionGuide/en-subs-event-notifs.html%3FTocPath%3DIntegrate%2520with%2520AppDirect%7CEvent%2520notifications%7CSubscription%2520event%2520notifications%7C_____0/?location%20=%20appdistribution).
+[Subscription event notifications](https://help.appdirect.com/appdistrib/Default.htm#Dev-DistributionGuide/en-subs-event-notifs.html%3FTocPath%3DIntegrate%2520with%2520AppDirect%7CEvent%2520notifications%7CSubscription%2520event%2520notifications%7C_____0/?location%20=%20appdistribution).
 
 The SDK parses the raw event payloads provided by the AppDirect marketplace and creates an event specific Java object that is specific to the type
 of event. This ensures you receive a payload containing the information that is relevant to your event type.
