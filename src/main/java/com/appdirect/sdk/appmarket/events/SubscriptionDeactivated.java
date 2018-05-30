@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @NoArgsConstructor
-public class SubscriptionDeactivated extends EventWithContext {
+public class SubscriptionDeactivated extends EventWithContextWithConfiguration {
 	private AccountInfo accountInfo;
 
 	public SubscriptionDeactivated(String consumerKeyUsedByTheRequest,

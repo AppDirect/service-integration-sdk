@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class UserAssignment extends EventWithContext {
+public class UserAssignment extends EventWithContextWithConfiguration {
 	private UserInfo assignedUser;
 	private String accountId;
 

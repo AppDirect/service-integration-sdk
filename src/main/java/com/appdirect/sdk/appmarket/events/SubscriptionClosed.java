@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @NoArgsConstructor
-public class SubscriptionClosed extends EventWithContext {
+public class SubscriptionClosed extends EventWithContextWithConfiguration {
 	private AccountInfo accountInfo;
 
 	public SubscriptionClosed(String consumerKeyUsedByTheRequest,

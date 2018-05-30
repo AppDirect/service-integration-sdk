@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddonSubscriptionOrder extends EventWithContext {
+public class AddonSubscriptionOrder extends EventWithContextWithConfiguration {
 	private UserInfo purchaserInfo;
 	private CompanyInfo companyInfo;
 	private OrderInfo orderInfo;

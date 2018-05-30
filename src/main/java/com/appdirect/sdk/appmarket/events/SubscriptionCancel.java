@@ -13,7 +13,6 @@
 
 package com.appdirect.sdk.appmarket.events;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
@@ -34,22 +33,9 @@ public class SubscriptionCancel extends EventWithContext {
 							  Map<String, String[]> queryParameters,
 							  EventFlag flag,
 							  String eventToken,
-							  String marketplaceUrl,
-							  Map<String, String> configuration) {
-
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
-		this.accountIdentifier = accountIdentifier;
-	}
-
-	@Deprecated
-	public SubscriptionCancel(String consumerKeyUsedByTheRequest,
-							  String accountIdentifier,
-							  Map<String, String[]> queryParameters,
-							  EventFlag flag,
-							  String eventToken,
 							  String marketplaceUrl) {
 
-		this(consumerKeyUsedByTheRequest, accountIdentifier, queryParameters,
-			 flag, eventToken, marketplaceUrl, new HashMap<>());
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+		this.accountIdentifier = accountIdentifier;
 	}
 }

@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @NoArgsConstructor
-public class SubscriptionReactivated extends EventWithContext {
+public class SubscriptionReactivated extends EventWithContextWithConfiguration {
 	private AccountInfo accountInfo;
 
 	public SubscriptionReactivated(String consumerKeyUsedByTheRequest,

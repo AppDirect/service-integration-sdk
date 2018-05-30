@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class AddonSubscriptionCancel extends EventWithContext {
+public class AddonSubscriptionCancel extends EventWithContextWithConfiguration {
 	private String accountIdentifier;
 	private String parentAccountIdentifier;
 
