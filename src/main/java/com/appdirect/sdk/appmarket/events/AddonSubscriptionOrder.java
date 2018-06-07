@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddonSubscriptionOrder extends EventWithContext {
+public class AddonSubscriptionOrder extends EventWithContextWithConfiguration {
 	private UserInfo purchaserInfo;
 	private CompanyInfo companyInfo;
 	private OrderInfo orderInfo;
@@ -43,9 +44,30 @@ public class AddonSubscriptionOrder extends EventWithContext {
 								  String parentAccountIdentifier,
 								  Map<String, String[]> queryParameters,
 								  String eventToken,
+								  String marketplaceUrl,
+								  Map<String, String> configuration) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
+
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
+		this.purchaserInfo = purchaserInfo;
+		this.companyInfo = companyInfo;
+		this.orderInfo = orderInfo;
+		this.partner = partner;
+		this.parentAccountIdentifier = parentAccountIdentifier;
+	}
+
+	@Deprecated
+	public AddonSubscriptionOrder(String consumerKeyUsedByTheRequest,
+								  EventFlag flag,
+								  UserInfo purchaserInfo,
+								  CompanyInfo companyInfo,
+								  OrderInfo orderInfo,
+								  String partner,
+								  String parentAccountIdentifier,
+								  Map<String, String[]> queryParameters,
+								  String eventToken,
 								  String marketplaceUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, new HashMap<>());
 		this.purchaserInfo = purchaserInfo;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;

@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class UserAssignment extends EventWithContext {
+public class UserAssignment extends EventWithContextWithConfiguration {
 	private UserInfo assignedUser;
 	private String accountId;
 
@@ -32,10 +33,24 @@ public class UserAssignment extends EventWithContext {
 	                      Map<String, String[]> queryParameters,
 	                      EventFlag eventFlag,
 	                      String eventToken,
-	                      String marketplaceUrl) {
+	                      String marketplaceUrl,
+	                      Map<String, String> configuration) {
 
-		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl);
+		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl, configuration);
 		this.assignedUser = assignedUser;
 		this.accountId = accountId;
+	}
+
+	@Deprecated
+	public UserAssignment(UserInfo assignedUser,
+	                      String accountId,
+	                      String consumerKey,
+	                      Map<String, String[]> queryParameters,
+	                      EventFlag eventFlag,
+	                      String eventToken,
+	                      String marketplaceUrl) {
+
+		this(assignedUser, consumerKey, consumerKey, queryParameters,
+		     eventFlag, eventToken, marketplaceUrl, new HashMap<>());
 	}
 }

@@ -22,7 +22,8 @@ class SubscriptionUpcomingInvoiceParser implements EventParser<SubscriptionUpcom
 				eventContext.getQueryParameters(),
 				eventInfo.getFlag(),
 				eventInfo.getId(),
-				eventInfo.getMarketplace().getBaseUrl()
+				eventInfo.getMarketplace().getBaseUrl(),
+				eventInfo.getPayload().getConfiguration()
 		);
 	}
 }

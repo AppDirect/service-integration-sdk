@@ -42,6 +42,7 @@ public class UserUnassignmentParserTest {
 		EventFlag expectedEventFlag = null;
 		String expectedEventId = "expectedEventId";
 		String expectedBaseUrl = "http://www.example.com";
+		HashMap<String, String> expectedConfiguration= new HashMap<>();
 		UserUnassignment expectedRichEvent = new UserUnassignment(
 				userInfo,
 				expectedAccountId, 
@@ -49,7 +50,8 @@ public class UserUnassignmentParserTest {
 				expectedQueryParams, 
 				expectedEventFlag, 
 				expectedEventId, 
-				expectedBaseUrl
+				expectedBaseUrl,
+				expectedConfiguration
 		);
 
 		EventInfo testEventInfo = userUnassignmentEvent(expectedAccountId, expectedAssignedUserId, expectedEventId, expectedBaseUrl);

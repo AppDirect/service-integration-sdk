@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.EqualsAndHashCode;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @NoArgsConstructor
-public class SubscriptionReactivated extends EventWithContext {
+public class SubscriptionReactivated extends EventWithContextWithConfiguration {
 	private AccountInfo accountInfo;
 
 	public SubscriptionReactivated(String consumerKeyUsedByTheRequest,
@@ -36,8 +37,20 @@ public class SubscriptionReactivated extends EventWithContext {
 								   Map<String, String[]> queryParameters,
 								   EventFlag flag,
 								   String eventToken,
-								   String marketplaceUrl) {
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+								   String marketplaceUrl,
+								   Map<String, String> configuration) {
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
 		this.accountInfo = accountInfo;
 	}
+
+	@Deprecated
+	public SubscriptionReactivated(String consumerKeyUsedByTheRequest,
+								   AccountInfo accountInfo,
+								   Map<String, String[]> queryParameters,
+								   EventFlag flag,
+								   String eventToken,
+								   String marketplaceUrl) {
+		this(consumerKeyUsedByTheRequest, accountInfo, queryParameters,
+			  flag, eventToken, marketplaceUrl, new HashMap<>());
+  	}
 }

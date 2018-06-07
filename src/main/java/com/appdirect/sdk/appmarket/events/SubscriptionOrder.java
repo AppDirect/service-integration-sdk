@@ -27,9 +27,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class SubscriptionOrder extends EventWithContext {
+public class SubscriptionOrder extends EventWithContextWithConfiguration {
 	private UserInfo purchaserInfo;
-	private Map<String, String> configuration;
 	private CompanyInfo companyInfo;
 	private OrderInfo orderInfo;
 	private String partner;
@@ -49,9 +48,8 @@ public class SubscriptionOrder extends EventWithContext {
 							 String marketplaceUrl,
 							 String samlIdpUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
 		this.purchaserInfo = purchaserInfo;
-		this.configuration = configuration;
 		this.companyInfo = companyInfo;
 		this.orderInfo = orderInfo;
 		this.partner = partner;
@@ -59,8 +57,21 @@ public class SubscriptionOrder extends EventWithContext {
 		this.samlIdpUrl = samlIdpUrl;
 	}
 
-	public Map<String, String> getConfiguration() {
-		return new HashMap<>(configuration);
+	@Deprecated
+	public SubscriptionOrder(String consumerKeyUsedByTheRequest,
+							 EventFlag flag,
+							 UserInfo purchaserInfo,
+							 CompanyInfo companyInfo,
+							 OrderInfo orderInfo,
+							 String partner,
+							 String applicationUuid,
+							 Map<String, String[]> queryParameters,
+							 String eventToken,
+							 String marketplaceUrl,
+							 String samlIdpUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
+
+		this(consumerKeyUsedByTheRequest, flag, purchaserInfo, new HashMap<>(), companyInfo, orderInfo, partner,
+			 applicationUuid, queryParameters, eventToken, marketplaceUrl, samlIdpUrl);
 	}
 
 	public Optional<String> getApplicationUuid() {

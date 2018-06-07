@@ -16,17 +16,21 @@ package com.appdirect.sdk.appmarket.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
+import com.appdirect.sdk.appmarket.events.EventPayload.EventPayloadBuilder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
  * Represents the value of the "payload" element in an {@link EventInfo}
  */
+@JsonDeserialize(builder = EventPayloadBuilder.class)
 @Getter
 @ToString
-@AllArgsConstructor
 @Builder
 class EventPayload {
 	private UserInfo user;
@@ -34,5 +38,10 @@ class EventPayload {
 	private AccountInfo account;
 	private OrderInfo order;
 	private NoticeInfo notice;
+	@NonNull
+	@Builder.Default
 	private Map<String, String> configuration = new HashMap<>();
+
+	@JsonPOJOBuilder(withPrefix = "")
+	public static final class EventPayloadBuilder {}
 }
