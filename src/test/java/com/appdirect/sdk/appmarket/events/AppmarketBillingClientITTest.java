@@ -61,6 +61,8 @@ public class AppmarketBillingClientITTest {
 
 	@Autowired
 	private AppmarketBillingClient appmarketBillingClient;
+	public static final String EVENT_RESOLUTION_ENTPOINT_URL = "/api/integration/v1/billing/usage?async=false";
+	public static final String EVENT_RESOLUTION_ENTPOINT_URL_ASYNC = "/api/integration/v1/billing/usage?async=true";
 
 	@Before
 	public void setUp() throws Exception {
@@ -72,14 +74,13 @@ public class AppmarketBillingClientITTest {
 		//Given
 		String testUserKey = "testKey";
 		Usage testUsage = initializeUsage();
-		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
 
 		final String expectedCallbackPayload = Resources.toString(Resources.getResource("resolutionCallbacks/request_payload_billing_api.json"), Charset.forName("UTF-8"));
 
 		mockHttpServer
 			.givenThat(
 				post(
-					urlEqualTo(eventResolutionEntpointUrl)
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL)
 				).willReturn(
 					aResponse().withStatus(200)
 				)
@@ -92,7 +93,7 @@ public class AppmarketBillingClientITTest {
 		mockHttpServer
 			.verify(
 				postRequestedFor(
-					urlEqualTo(eventResolutionEntpointUrl)
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL)
 				).withRequestBody(
 					equalToJson(expectedCallbackPayload)
 				).withHeader(
@@ -108,12 +109,11 @@ public class AppmarketBillingClientITTest {
 		//Given
 		String testUserKey = "testKey";
 		Usage testUsage = initializeUsage();
-		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
 
 		mockHttpServer
 			.givenThat(
 				post(
-					urlEqualTo(eventResolutionEntpointUrl)
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL)
 				).willReturn(
 					aResponse().withStatus(404)
 				)
@@ -131,12 +131,11 @@ public class AppmarketBillingClientITTest {
 		//Given
 		String testUserKey = "testKey";
 		Usage testUsage = initializeUsage();
-		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
 
 		mockHttpServer
 			.givenThat(
 				post(
-					urlEqualTo(eventResolutionEntpointUrl)
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL)
 				).willReturn(
 					aResponse().withStatus(400)
 				)
@@ -154,12 +153,11 @@ public class AppmarketBillingClientITTest {
 		//Given
 		String testUserKey = "testKey";
 		Usage testUsage = initializeUsage();
-		final String eventResolutionEntpointUrl = "/api/integration/v1/billing/usage";
 
 		mockHttpServer
 			.givenThat(
 				post(
-					urlEqualTo(eventResolutionEntpointUrl)
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL)
 				).willReturn(
 					aResponse().withStatus(500)
 				)
@@ -171,6 +169,108 @@ public class AppmarketBillingClientITTest {
 			.hasMessage("Failed to report usage: Server Error")
 			.hasFieldOrPropertyWithValue("result.errorCode", UNKNOWN_ERROR);
 	}
+
+	@Test
+	public void whenBillingUsageAsync_thenACorrectJsonPayloadShouldBeSentToTheAppMarket_withOauthHeaders() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+
+		final String expectedCallbackPayload = Resources.toString(Resources.getResource("resolutionCallbacks/request_payload_billing_api.json"), Charset.forName("UTF-8"));
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL_ASYNC)
+				).willReturn(
+					aResponse().withStatus(200)
+				)
+			);
+
+		//When
+		appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage, true);
+
+		//Then
+		mockHttpServer
+			.verify(
+				postRequestedFor(
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL_ASYNC)
+				).withRequestBody(
+					equalToJson(expectedCallbackPayload)
+				).withHeader(
+					"Authorization", containing("OAuth oauth_consumer_key=")
+				).withHeader(
+					"Content-Type", equalTo("application/json")
+				)
+			);
+	}
+
+	@Test
+	public void whenBillingUsageAsync_notFoundResponse_thenUserNotFoundExceptionIsThrown() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL_ASYNC)
+				).willReturn(
+					aResponse().withStatus(404)
+				)
+			);
+
+		//Then
+		assertThatThrownBy(() -> appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage, true))
+			.isInstanceOf(ReportUsageException.class)
+			.hasMessage("Failed to report usage: User not found.")
+			.hasFieldOrPropertyWithValue("result.errorCode", USER_NOT_FOUND);
+	}
+
+	@Test
+	public void whenBillingUsageAsync_BadRequestResponse_thenConfigurationErrorExceptionIsThrown() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL_ASYNC)
+				).willReturn(
+					aResponse().withStatus(400)
+				)
+			);
+
+		//Then
+		assertThatThrownBy(() -> appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage, true))
+			.isInstanceOf(ReportUsageException.class)
+			.hasMessage("Failed to report usage: Usage missing data.")
+			.hasFieldOrPropertyWithValue("result.errorCode", CONFIGURATION_ERROR);
+	}
+
+	@Test
+	public void whenBillingUsageAsync_InternalServerErrorResponse_thenUnknownErrorExceptionIsThrown() throws Exception {
+		//Given
+		String testUserKey = "testKey";
+		Usage testUsage = initializeUsage();
+
+		mockHttpServer
+			.givenThat(
+				post(
+					urlEqualTo(EVENT_RESOLUTION_ENTPOINT_URL_ASYNC)
+				).willReturn(
+					aResponse().withStatus(500)
+				)
+			);
+
+		//Then
+		assertThatThrownBy(() -> appmarketBillingClient.billUsage(mockAppMarketUrl, testUserKey, testUsage, true))
+			.isInstanceOf(ReportUsageException.class)
+			.hasMessage("Failed to report usage: Server Error")
+			.hasFieldOrPropertyWithValue("result.errorCode", UNKNOWN_ERROR);
+	}
+
 
 	private Usage initializeUsage() {
 		final AccountInfo accountInfo = AccountInfo.builder()
