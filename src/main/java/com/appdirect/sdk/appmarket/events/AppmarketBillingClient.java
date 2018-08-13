@@ -58,10 +58,31 @@ public class AppmarketBillingClient {
 	 * Unknown Error:       Error on marketplace side.
 	 */
 	@SneakyThrows
-	public APIResult billUsage(String baseAppmarketUrl, String key, Usage usage) {
+	public APIResult billUsage(String baseAppmarketUrl, String key, Usage usage){
+		return billUsage(baseAppmarketUrl,key,usage, false);
+	}
+
+	/**
+	 * Calls the Billing API REST endpoint against an AppMarket instance to bill usage
+	 *
+	 * @param baseAppmarketUrl to which the POST is sent
+	 * @param key              to sign the request
+	 * @param usage            to be billed
+	 * @param isAsync					 to send async
+	 *
+	 * @return an {@link APIResult} instance representing the marketplace response
+	 * <p>
+	 * throws an {@link ReportUsageException} to the client with an error code and a status:
+	 * Configuration Error: The JSON sent to the marketplace had wrong parameters.
+	 * User Not Found:      One of the Usage parameters was not found. Probably the accountIdentifier.
+	 * Unknown Error:       Error on marketplace side.
+	 */
+	@SneakyThrows
+	public APIResult billUsage(String baseAppmarketUrl, String key, Usage usage, boolean isAsync) {
 
 		String url = UriComponentsBuilder.fromHttpUrl(baseAppmarketUrl)
 				.pathSegment("api", "integration", "v1", "billing", "usage")
+				.queryParam("async", isAsync)
 				.build().toString();
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 

@@ -78,7 +78,32 @@ public class AppmarketBillingClientTest {
 		appmarketBillingClient.billUsage("http://base.com", "some-key", usage);
 
 		//Then
-		verify(restTemplate).postForObject(eq("http://base.com/api/integration/v1/billing/usage"), httpEntityArgumentCaptor.capture(), eq(APIResult.class));
+		verify(restTemplate).postForObject(eq("http://base.com/api/integration/v1/billing/usage?async=false"), httpEntityArgumentCaptor.capture(), eq(APIResult.class));
+
+		verify(restTemplateFactory).getOAuthRestTemplate("some-key", "some-secret");
+
+		final HttpEntity actualEntity = httpEntityArgumentCaptor.getValue();
+
+		assertThat(actualEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+
+		Usage expectedUsage = jsonMapper.readValue(resourceAsString("events/usage-report-bill-request.json"), Usage.class);
+		Usage actualUsage = jsonMapper.readValue(actualEntity.getBody().toString(), Usage.class);
+
+		assertThat(actualUsage.equals(expectedUsage));
+	}
+
+	@Test
+	public void billUsageAsync_callsPost_onTheRightUrl() throws Exception {
+		//Given
+		Usage usage = initializeUsage();
+
+		final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+
+		//When
+		appmarketBillingClient.billUsage("http://base.com", "some-key", usage, true);
+
+		//Then
+		verify(restTemplate).postForObject(eq("http://base.com/api/integration/v1/billing/usage?async=true"), httpEntityArgumentCaptor.capture(), eq(APIResult.class));
 
 		verify(restTemplateFactory).getOAuthRestTemplate("some-key", "some-secret");
 
