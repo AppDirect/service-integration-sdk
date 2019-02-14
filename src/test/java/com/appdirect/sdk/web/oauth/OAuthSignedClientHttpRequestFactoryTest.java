@@ -71,6 +71,15 @@ public class OAuthSignedClientHttpRequestFactoryTest {
 				.hasCauseExactlyInstanceOf(OAuthMessageSignerException.class);
 	}
 
+	@Test
+	public void prepareConnection_acceptsRedirects() throws Exception {
+		HttpURLConnection connection = connectionTo("http://some-domain.com/?p1=v1");
+
+		requestFactory.prepareConnection(connection, "POST");
+
+		verify(connection).setInstanceFollowRedirects(true);
+	}
+
 	private HttpURLConnection connectionTo(String url) throws IOException {
 		HttpURLConnection connection = mock(HttpURLConnection.class);
 		when(connection.getURL()).thenReturn(URI.create(url).toURL());
