@@ -44,6 +44,9 @@ public class OAuthSignedClientHttpRequestFactory extends SimpleClientHttpRequest
 	@Override
 	protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
 		super.prepareConnection(connection, httpMethod);
+
+		connection.setInstanceFollowRedirects(true);
+
 		try {
 			consumer.sign(connection);
 			log.debug("Signed request to {}", connection.getURL());
