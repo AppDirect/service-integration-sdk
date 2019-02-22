@@ -19,4 +19,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class VendorRequiredFieldResponse {
 
 	private List<Form> forms;
+
+	private int order;
 }
