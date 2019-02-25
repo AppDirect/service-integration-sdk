@@ -29,8 +29,7 @@ public class VendorRequiredFieldController {
 
 	@RequestMapping(method = GET,
 		value = "/api/v1/admin/requiredFields",
-		produces = APPLICATION_JSON_VALUE,
-		consumes = APPLICATION_JSON_VALUE)
+		produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorRequiredFieldResponse> getRequiredFields(@RequestParam(value = "sku") String sku, @RequestParam(value = "flowType") FlowType flowType, @RequestParam(value = "operationType") OperationType operationType) {
 		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType);
 	}
