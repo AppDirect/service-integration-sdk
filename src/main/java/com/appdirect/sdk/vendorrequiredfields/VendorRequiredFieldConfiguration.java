@@ -3,6 +3,8 @@ package com.appdirect.sdk.vendorrequiredfields;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.appdirect.sdk.vendorrequiredfields.model.FlowType;
+
 
 @Configuration
 public class VendorRequiredFieldConfiguration {
@@ -14,8 +16,8 @@ public class VendorRequiredFieldConfiguration {
 
 	@Bean
 	public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
-		return () -> {
-			throw new UnsupportedOperationException(String.format("Vendor required field Service for partner %s is not supported."));
+		return (String sku, FlowType flowType) -> {
+			throw new UnsupportedOperationException(String.format("Vendor required field Service for sku=%s and flow type=%s is not supported.", sku, flowType));
 		};
 	}
 }

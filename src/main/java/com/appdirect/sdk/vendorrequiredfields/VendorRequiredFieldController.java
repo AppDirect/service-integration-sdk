@@ -7,9 +7,14 @@ import java.util.concurrent.Callable;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.appdirect.sdk.vendorrequiredfields.converter.FlowTypeConverter;
+import com.appdirect.sdk.vendorrequiredfields.model.FlowType;
 import com.appdirect.sdk.vendorrequiredfields.model.VendorRequiredFieldResponse;
 
 /**
@@ -21,10 +26,15 @@ public class VendorRequiredFieldController {
 	private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
 
 	@RequestMapping(method = GET,
-		value = "/api/v1/restrictions",
+		value = "/api/v1/admin/requiredFields",
 		produces = APPLICATION_JSON_VALUE,
 		consumes = APPLICATION_JSON_VALUE)
-	public Callable<VendorRequiredFieldResponse> getRequiredFields() {
-		return () -> vendorRequiredFieldHandler.getRequiredFields();
+	public Callable<VendorRequiredFieldResponse> getRequiredFields(@RequestParam(value = "sku") String sku, @RequestParam(value = "flowType") FlowType flowType) {
+		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType);
+	}
+
+	@InitBinder
+	public void initBinder(final WebDataBinder webdataBinder) {
+		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
 	}
 }
