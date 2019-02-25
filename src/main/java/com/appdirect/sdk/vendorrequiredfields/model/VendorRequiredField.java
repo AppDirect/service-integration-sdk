@@ -13,4 +13,5 @@ public class VendorRequiredField {
 	private String toolTip;
 	private String subTitle;
 	private boolean required;
+	private String prePopulatedValue;
 }
