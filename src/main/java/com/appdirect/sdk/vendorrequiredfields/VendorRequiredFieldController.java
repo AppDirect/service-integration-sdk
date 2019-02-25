@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appdirect.sdk.vendorrequiredfields.converter.FlowTypeConverter;
+import com.appdirect.sdk.vendorrequiredfields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorrequiredfields.model.FlowType;
+import com.appdirect.sdk.vendorrequiredfields.model.OperationType;
 import com.appdirect.sdk.vendorrequiredfields.model.VendorRequiredFieldResponse;
 
 /**
@@ -29,12 +31,13 @@ public class VendorRequiredFieldController {
 		value = "/api/v1/admin/requiredFields",
 		produces = APPLICATION_JSON_VALUE,
 		consumes = APPLICATION_JSON_VALUE)
-	public Callable<VendorRequiredFieldResponse> getRequiredFields(@RequestParam(value = "sku") String sku, @RequestParam(value = "flowType") FlowType flowType) {
+	public Callable<VendorRequiredFieldResponse> getRequiredFields(@RequestParam(value = "sku") String sku, @RequestParam(value = "flowType") FlowType flowType, @RequestParam(value = "operationType") OperationType operationType) {
 		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType);
 	}
 
 	@InitBinder
 	public void initBinder(final WebDataBinder webdataBinder) {
 		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
+		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
 	}
 }
