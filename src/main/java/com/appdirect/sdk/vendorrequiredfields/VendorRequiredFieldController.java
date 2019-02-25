@@ -32,7 +32,7 @@ public class VendorRequiredFieldController {
 		produces = APPLICATION_JSON_VALUE,
 		consumes = APPLICATION_JSON_VALUE)
 	public Callable<VendorRequiredFieldResponse> getRequiredFields(@RequestParam(value = "sku") String sku, @RequestParam(value = "flowType") FlowType flowType, @RequestParam(value = "operationType") OperationType operationType) {
-		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType);
+		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType);
 	}
 
 	@InitBinder

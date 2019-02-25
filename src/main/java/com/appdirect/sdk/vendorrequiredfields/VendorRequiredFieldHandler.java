@@ -1,6 +1,7 @@
 package com.appdirect.sdk.vendorrequiredfields;
 
 import com.appdirect.sdk.vendorrequiredfields.model.FlowType;
+import com.appdirect.sdk.vendorrequiredfields.model.OperationType;
 import com.appdirect.sdk.vendorrequiredfields.model.VendorRequiredFieldResponse;
 
 /**
@@ -8,5 +9,5 @@ import com.appdirect.sdk.vendorrequiredfields.model.VendorRequiredFieldResponse;
  */
 @FunctionalInterface
 public interface VendorRequiredFieldHandler {
-	VendorRequiredFieldResponse getRequiredFields(String sku, FlowType flowType);
+	VendorRequiredFieldResponse getRequiredFields(String sku, FlowType flowType, OperationType operationType);
 }
