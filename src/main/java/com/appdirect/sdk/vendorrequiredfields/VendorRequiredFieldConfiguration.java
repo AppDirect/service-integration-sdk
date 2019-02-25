@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import com.appdirect.sdk.vendorrequiredfields.model.FlowType;
 import com.appdirect.sdk.vendorrequiredfields.model.OperationType;
 
-
 @Configuration
 public class VendorRequiredFieldConfiguration {
 
