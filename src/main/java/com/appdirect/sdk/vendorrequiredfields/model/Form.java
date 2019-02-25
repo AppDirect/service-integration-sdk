@@ -10,6 +10,5 @@ import lombok.Setter;
 public class Form {
 
 	private List<VendorRequiredField> fields;
-
 	private int order;
 }
