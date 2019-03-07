@@ -5,10 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class VendorRequiredField {
 
 	private FieldType fieldType;
@@ -19,4 +22,14 @@ public class VendorRequiredField {
 	private boolean required;
 	private String prePopulatedValue;
 	private int order;
+
+	public VendorRequiredField(String fieldType, String inputCode, String inputTitle, String toolTip, String subTitle, boolean required, int order) {
+		this.fieldType = FieldType.valueOf(fieldType);
+		this.inputCode = inputCode;
+		this.inputTitle = inputTitle;
+		this.toolTip = toolTip;
+		this.subTitle = subTitle;
+		this.required = required;
+		this.order = order;
+	}
 }
