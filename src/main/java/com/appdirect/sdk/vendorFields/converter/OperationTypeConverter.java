@@ -1,8 +1,8 @@
-package com.appdirect.sdk.vendorrequiredfields.converter;
+package com.appdirect.sdk.vendorFields.converter;
 
 import java.beans.PropertyEditorSupport;
 
-import com.appdirect.sdk.vendorrequiredfields.model.OperationType;
+import com.appdirect.sdk.vendorFields.fields.model.OperationType;
 
 public class OperationTypeConverter extends PropertyEditorSupport {
 
