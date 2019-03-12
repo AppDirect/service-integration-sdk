@@ -2,7 +2,7 @@ package com.appdirect.sdk.vendorFields.converter;
 
 import java.beans.PropertyEditorSupport;
 
-import com.appdirect.sdk.vendorFields.fields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 
 public class OperationTypeConverter extends PropertyEditorSupport {
 

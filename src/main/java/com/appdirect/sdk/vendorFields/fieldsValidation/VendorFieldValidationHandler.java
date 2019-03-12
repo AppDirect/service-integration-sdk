@@ -1,13 +1,13 @@
-package com.appdirect.sdk.vendorFields.validation;
+package com.appdirect.sdk.vendorFields.fieldsValidation;
 
 import java.util.Map;
 
-import com.appdirect.sdk.vendorFields.validation.model.FlowType;
-import com.appdirect.sdk.vendorFields.validation.model.OperationType;
-import com.appdirect.sdk.vendorFields.validation.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.fieldsValidation.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 
 /**
- * This is the interface you need to implement to apply vendor required fields on a product
+ * This is the interface you need to implement to apply vendor required requiredFields on a product
  */
 @FunctionalInterface
 public interface VendorFieldValidationHandler {

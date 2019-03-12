@@ -2,7 +2,7 @@ package com.appdirect.sdk.vendorFields.converter;
 
 import java.beans.PropertyEditorSupport;
 
-import com.appdirect.sdk.vendorFields.fields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.FlowType;
 
 public class FlowTypeConverter extends PropertyEditorSupport {
 

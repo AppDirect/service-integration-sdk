@@ -44,7 +44,7 @@ public class AppmarketMigrationController {
 	 * input of a migration and indicate if it can be migrated.
 	 *
 	 * @param isvCustomerAccountData A single migration record that is to be validated
-	 * @return an {@link APIResult#success(String)} in case the validation is successful and a {@link APIResult#failure(ErrorCode, String)}
+	 * @return an {@link APIResult#success(String)} in case the fieldsValidation is successful and a {@link APIResult#failure(ErrorCode, String)}
 	 * otherwise.
 	 */
 	@RequestMapping(method = POST, value = "/api/v1/migration/validateCustomerAccount", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -57,7 +57,7 @@ public class AppmarketMigrationController {
 	 * input of a migration and indicate if it can be migrated.
 	 *
 	 * @param isvSubscriptionData the subscription record to be migrated
-	 * @return an {@link APIResult#success(String)} in case the validation is successful and a {@link APIResult#failure(ErrorCode, String)}
+	 * @return an {@link APIResult#success(String)} in case the fieldsValidation is successful and a {@link APIResult#failure(ErrorCode, String)}
 	 * otherwise.
 	 */
 	@RequestMapping(method = POST, value = "/api/v1/migration/validateSubscription", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
