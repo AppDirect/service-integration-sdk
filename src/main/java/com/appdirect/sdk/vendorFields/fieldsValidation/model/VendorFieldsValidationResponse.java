@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.validation.model;
+package com.appdirect.sdk.vendorFields.fieldsValidation.model;
 
 
 import java.util.List;

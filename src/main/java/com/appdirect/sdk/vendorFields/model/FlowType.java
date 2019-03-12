@@ -8,15 +8,15 @@ public enum FlowType {
 
 	private String value;
 
-	private FlowType(String value) {
+	FlowType(String value) {
 		this.value = value;
 	}
 
 	public static FlowType fromValue(String value) {
 		return Stream.of(values())
-			.filter(flowType -> flowType.value.equalsIgnoreCase(value))
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				"Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values())));
+				.filter(flowType -> flowType.value.equalsIgnoreCase(value))
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException(
+						"Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values())));
 	}
 }

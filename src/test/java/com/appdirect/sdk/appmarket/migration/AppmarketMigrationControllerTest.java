@@ -74,12 +74,12 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerSubscription_failure() throws Exception {
-		when(migrationService.validateSubscription(anyMapOf(String.class, String.class))).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Failure in validation"));
+		when(migrationService.validateSubscription(anyMapOf(String.class, String.class))).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Failure in fieldsValidation"));
 		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
 		APIResult apiResult = result.call();
 
 		assertThat(apiResult.isSuccess()).isFalse();
-		assertThat(apiResult.getMessage()).isEqualTo("Failure in validation");
+		assertThat(apiResult.getMessage()).isEqualTo("Failure in fieldsValidation");
 	}
 
 	@Test

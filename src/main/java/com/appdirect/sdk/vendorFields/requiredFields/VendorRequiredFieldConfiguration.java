@@ -1,10 +1,10 @@
-package com.appdirect.sdk.vendorFields.fields;
+package com.appdirect.sdk.vendorFields.requiredFields;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.appdirect.sdk.vendorFields.fields.model.FlowType;
-import com.appdirect.sdk.vendorFields.fields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 
 @Configuration
 public class VendorRequiredFieldConfiguration {

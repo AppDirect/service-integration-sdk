@@ -1,11 +1,11 @@
-package com.appdirect.sdk.vendorFields.fields;
+package com.appdirect.sdk.vendorFields.requiredFields;
 
-import com.appdirect.sdk.vendorFields.fields.model.FlowType;
-import com.appdirect.sdk.vendorFields.fields.model.OperationType;
-import com.appdirect.sdk.vendorFields.fields.model.VendorRequiredFieldsResponse;
+import com.appdirect.sdk.vendorFields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.requiredFields.model.VendorRequiredFieldsResponse;
 
 /**
- * This is the interface you need to implement to apply vendor required fields on a product
+ * This is the interface you need to implement to apply vendor required requiredFields on a product
  */
 @FunctionalInterface
 public interface VendorRequiredFieldHandler {
