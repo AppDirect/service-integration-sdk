@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorrequiredfields.model;
+package com.appdirect.sdk.vendorFields.fields.model;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Builder
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VendorRequiredFieldResponse {
+public class VendorRequiredFieldsResponse {
 
 	private List<Form> forms;
 }
