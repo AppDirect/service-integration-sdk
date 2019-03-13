@@ -6,8 +6,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import lombok.RequiredArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +24,16 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
  * Defines the endpoint for enforcing vendor required requiredFields on their products
  */
 @RestController
-@RequiredArgsConstructor
 public class VendorFieldValidationController {
 	private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
+	@Autowired
+	public VendorFieldValidationController(VendorFieldValidationHandler handler) {
+		this.vendorFieldValidationHandler = handler;
+	}
+
 	@RequestMapping(method = POST,
-			value = "/api/v1/admin/internal/vendorvalidations/",
+			value = "/api/v1/admin/vendorvalidations/",
 			produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestParam(value = "sku") String sku,
 																   @RequestParam(value = "flowType") FlowType flowType,

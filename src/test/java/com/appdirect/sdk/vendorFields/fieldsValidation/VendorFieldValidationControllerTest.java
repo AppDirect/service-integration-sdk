@@ -52,7 +52,6 @@ public class VendorFieldValidationControllerTest {
 		tested.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate);
 
 		//Then
-		verify(mockVendorFieldValidationHandler).validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate);
 		VendorFieldsValidationResponse controllerResponse = tested.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate).call();
 		assertThat(controllerResponse).isEqualTo(response);
 	}

@@ -71,7 +71,7 @@ public class CanValidateCustomerDataIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendSignedPostRequestTo(baseConnectorUrl() + CUSTOMER_ACCOUNT_API_END_POINT, new StringEntity(jsonData, ContentType.APPLICATION_JSON));
 
 		assertThat(response.getStatusLine().getStatusCode()).isEqualTo(HttpStatus.SC_OK);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Customer account fieldsValidation is not supported.\",\"errorCode\":\"CONFIGURATION_ERROR\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Customer account validation is not supported.\",\"errorCode\":\"CONFIGURATION_ERROR\"}");
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class CanValidateCustomerDataIntegrationTest {
 		Map<String, Object>result = objectMapper.readValue(response.getEntity().getContent(), HashMap.class);
 		assertThat(result.size()).isEqualTo(3);
 		assertThat(result.get("errorCode")).isEqualTo("CONFIGURATION_ERROR");
-		assertThat(result.get("message")).isEqualTo("Subscription fieldsValidation is not supported.");
+		assertThat(result.get("message")).isEqualTo("Subscription validation is not supported.");
 		assertThat(result.get("success")).isEqualTo(false);
 	}
 
