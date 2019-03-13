@@ -18,7 +18,7 @@ public class VendorFieldConfiguration {
 	@Bean
 	public VendorFieldValidationHandler vendorFieldValidationHandler() {
 		return (String sku, FlowType flowType, OperationType operationType, Map<String, String> fieldValues) -> {
-			throw new UnsupportedOperationException(String.format("Vendor Fields Validation Service for sku=%s, flow type=%s and operation type=%s is not supported.", sku, flowType, operationType));
+			throw new UnsupportedOperationException(String.format("Vendor Fields Validation Service for sku=%s, flowType=%s and operationType=%s is not supported.", sku, flowType, operationType));
 		};
 	}
 }
