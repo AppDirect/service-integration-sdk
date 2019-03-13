@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import com.appdirect.sdk.vendorFields.requiredFields.model.VendorRequiredFieldsR
 @RestController
 @RequiredArgsConstructor
 public class VendorRequiredFieldController {
+	@Autowired
 	private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
 
 	@RequestMapping(method = GET,
