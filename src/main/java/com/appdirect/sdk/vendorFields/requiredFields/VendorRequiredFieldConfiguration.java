@@ -8,12 +8,6 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
 
 @Configuration
 public class VendorRequiredFieldConfiguration {
-
-	@Bean
-	public VendorRequiredFieldController vendorRequiredFieldController(VendorRequiredFieldHandler vendorRequiredFieldHandler) {
-		return new VendorRequiredFieldController(vendorRequiredFieldHandler);
-	}
-
 	@Bean
 	public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
 		return (String sku, FlowType flowType, OperationType operationType) -> {

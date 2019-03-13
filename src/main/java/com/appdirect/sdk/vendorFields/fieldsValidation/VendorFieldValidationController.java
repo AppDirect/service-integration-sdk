@@ -35,7 +35,7 @@ public class VendorFieldValidationController {
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestParam(value = "sku") String sku,
 																   @RequestParam(value = "flowType") FlowType flowType,
 																   @RequestParam(value = "operationType") OperationType operationType,
-																   @RequestBody Map<String, String> fieldValues){
+																   @RequestBody Map<String, String> fieldValues) {
 		return () -> vendorFieldValidationHandler.validateFields(sku, flowType, operationType, fieldValues);
 	}
 
