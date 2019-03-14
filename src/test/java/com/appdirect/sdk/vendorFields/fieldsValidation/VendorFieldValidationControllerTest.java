@@ -1,7 +1,6 @@
 package com.appdirect.sdk.vendorFields.fieldsValidation;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.validateMockitoUsage;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,12 +13,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.appdirect.sdk.vendorFields.fieldsValidation.model.VendorFieldValidation;
-import com.appdirect.sdk.vendorFields.fieldsValidation.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController;
+import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 
@@ -28,12 +28,12 @@ public class VendorFieldValidationControllerTest {
 	@Mock
 	private VendorFieldValidationHandler mockVendorFieldValidationHandler;
 
-	private VendorFieldValidationController tested;
+	private VendorFieldValidationController vendorFieldValidationController;
 
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		tested = new VendorFieldValidationController(mockVendorFieldValidationHandler);
+		vendorFieldValidationController = new VendorFieldValidationController(mockVendorFieldValidationHandler);
 	}
 
 	@Test
@@ -49,10 +49,9 @@ public class VendorFieldValidationControllerTest {
 		//When
 		when(mockVendorFieldValidationHandler.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate))
 				.thenReturn(response);
-		tested.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate);
 
 		//Then
-		VendorFieldsValidationResponse controllerResponse = tested.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate).call();
+		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate).call();
 		assertThat(controllerResponse).isEqualTo(response);
 	}
 }

@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.model;
+package com.appdirect.sdk.vendorFields.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
+import com.appdirect.sdk.vendorFields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
+import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 
 /**
  * Defines the endpoint for enforcing vendor required requiredFields on their products

@@ -1,8 +1,8 @@
-package com.appdirect.sdk.vendorFields.fieldsValidation;
+package com.appdirect.sdk.vendorFields.handler;
 
 import java.util.Map;
 
-import com.appdirect.sdk.vendorFields.fieldsValidation.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 

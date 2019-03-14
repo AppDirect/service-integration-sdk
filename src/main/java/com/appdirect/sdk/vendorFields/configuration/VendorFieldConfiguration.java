@@ -1,10 +1,11 @@
-package com.appdirect.sdk.vendorFields.fieldsValidation;
+package com.appdirect.sdk.vendorFields.configuration;
 
 import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 
