@@ -1,7 +1,6 @@
 package com.appdirect.sdk.vendorFields.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -16,13 +15,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController;
-import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VendorFieldValidationControllerTest {

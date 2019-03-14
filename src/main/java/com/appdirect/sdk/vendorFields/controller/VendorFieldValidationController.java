@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 
 /**
  * Defines the endpoint for enforcing vendor required requiredFields on their products
