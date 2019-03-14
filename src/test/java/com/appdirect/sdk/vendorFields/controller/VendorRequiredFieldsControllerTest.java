@@ -13,12 +13,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.OperationType;
-import com.appdirect.sdk.vendorFields.controller.VendorRequiredFieldController;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.model.FieldType;
+import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.Form;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 
