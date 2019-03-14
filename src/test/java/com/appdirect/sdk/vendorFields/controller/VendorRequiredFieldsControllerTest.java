@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.requiredFields;
+package com.appdirect.sdk.vendorFields.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

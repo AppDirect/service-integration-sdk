@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
@@ -41,7 +42,13 @@ public class VendorFieldValidationController {
 																   @RequestParam(value = "flowType") FlowType flowType,
 																   @RequestParam(value = "operationType") OperationType operationType,
 																   @RequestBody Map<String, String> fieldValues) {
-		return () -> vendorFieldValidationHandler.validateFields(sku, flowType, operationType, fieldValues);
+		VendorFieldsValidationRequest vendorFieldsValidationRequest = VendorFieldsValidationRequest.builder()
+				.fieldValues(fieldValues)
+				.flowType(flowType)
+				.operationType(operationType)
+				.sku(sku)
+				.build();
+		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
 	}
 
 	@InitBinder

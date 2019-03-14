@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.fieldsValidation;
+package com.appdirect.sdk.vendorFields.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController;
 import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
@@ -45,9 +46,15 @@ public class VendorFieldValidationControllerTest {
 		VendorFieldValidation validation = new VendorFieldValidation("EMAIL", "must contain @");
 		validations.add(validation);
 		VendorFieldsValidationResponse response = new VendorFieldsValidationResponse(validations);
+		VendorFieldsValidationRequest vendorFieldsValidationRequest = VendorFieldsValidationRequest.builder()
+				.fieldValues(fieldsToValidate)
+				.flowType(FlowType.RESELLER_FLOW)
+				.operationType(OperationType.SUBSCRIPTION_CHANGE)
+				.sku(sku)
+				.build();
 
 		//When
-		when(mockVendorFieldValidationHandler.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate))
+		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest))
 				.thenReturn(response);
 
 		//Then
