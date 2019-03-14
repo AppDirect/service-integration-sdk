@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.fieldsValidation.model;
+package com.appdirect.sdk.vendorFields.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
