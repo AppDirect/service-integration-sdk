@@ -34,6 +34,7 @@ public class VendorFieldValidationController {
 
 	@RequestMapping(method = POST,
 			value = "/api/v1/admin/vendorvalidations/",
+			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestParam(value = "sku") String sku,
 																   @RequestParam(value = "flowType") FlowType flowType,
