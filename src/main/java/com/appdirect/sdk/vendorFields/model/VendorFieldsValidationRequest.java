@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorFieldsValidationRequest {
+	String partner;
 	String sku;
 	FlowType flowType;
 	OperationType operationType;
