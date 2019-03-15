@@ -39,6 +39,7 @@ public class VendorFieldValidationControllerTest {
 	public void testValidateFields_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
 		//Given
 		String sku = "SKU";
+		String partner = "CANCOM";
 		Map<String, String> fieldsToValidate = new HashMap<>();
 		List<VendorFieldValidation> validations = new ArrayList<>();
 		VendorFieldValidation validation = new VendorFieldValidation("EMAIL", "must contain @");
@@ -49,6 +50,7 @@ public class VendorFieldValidationControllerTest {
 				.flowType(FlowType.RESELLER_FLOW)
 				.operationType(OperationType.SUBSCRIPTION_CHANGE)
 				.sku(sku)
+				.partner(partner)
 				.build();
 
 		//When
@@ -56,7 +58,7 @@ public class VendorFieldValidationControllerTest {
 				.thenReturn(response);
 
 		//Then
-		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, fieldsToValidate).call();
+		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, partner, fieldsToValidate).call();
 		assertThat(controllerResponse).isEqualTo(response);
 	}
 }

@@ -41,12 +41,14 @@ public class VendorFieldValidationController {
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestParam(value = "sku") String sku,
 																   @RequestParam(value = "flowType") FlowType flowType,
 																   @RequestParam(value = "operationType") OperationType operationType,
+																   @RequestParam(value = "partner") String partner,
 																   @RequestBody Map<String, String> fieldValues) {
 		VendorFieldsValidationRequest vendorFieldsValidationRequest = VendorFieldsValidationRequest.builder()
 				.fieldValues(fieldValues)
 				.flowType(flowType)
 				.operationType(operationType)
 				.sku(sku)
+				.partner(partner)
 				.build();
 		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
 	}
