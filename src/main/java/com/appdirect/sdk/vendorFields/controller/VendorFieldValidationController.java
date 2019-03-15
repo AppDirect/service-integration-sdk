@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.appdirect.sdk.appmarket.migration.Subscription;
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
@@ -41,14 +42,14 @@ public class VendorFieldValidationController {
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestParam(value = "sku") String sku,
 																   @RequestParam(value = "flowType") FlowType flowType,
 																   @RequestParam(value = "operationType") OperationType operationType,
-																   @RequestParam(value = "partner") String partner,
+																   @RequestBody Subscription subscription,
 																   @RequestBody Map<String, String> fieldValues) {
 		VendorFieldsValidationRequest vendorFieldsValidationRequest = VendorFieldsValidationRequest.builder()
 				.fieldValues(fieldValues)
 				.flowType(flowType)
 				.operationType(operationType)
 				.sku(sku)
-				.partner(partner)
+				.subscription(subscription)
 				.build();
 		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
 	}

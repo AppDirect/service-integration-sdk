@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import com.appdirect.sdk.appmarket.migration.Subscription;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorFieldsValidationRequest {
-	String partner;
+	Subscription subscription;
 	String sku;
 	FlowType flowType;
 	OperationType operationType;
