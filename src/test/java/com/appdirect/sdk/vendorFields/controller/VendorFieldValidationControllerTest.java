@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.appdirect.sdk.appmarket.migration.Subscription;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
@@ -44,13 +45,14 @@ public class VendorFieldValidationControllerTest {
 		List<VendorFieldValidation> validations = new ArrayList<>();
 		VendorFieldValidation validation = new VendorFieldValidation("EMAIL", "must contain @");
 		validations.add(validation);
+		Subscription subscription = new Subscription();
 		VendorFieldsValidationResponse response = new VendorFieldsValidationResponse(validations);
 		VendorFieldsValidationRequest vendorFieldsValidationRequest = VendorFieldsValidationRequest.builder()
 				.fieldValues(fieldsToValidate)
 				.flowType(FlowType.RESELLER_FLOW)
 				.operationType(OperationType.SUBSCRIPTION_CHANGE)
 				.sku(sku)
-				.partner(partner)
+				.subscription(subscription)
 				.build();
 
 		//When
@@ -58,7 +60,7 @@ public class VendorFieldValidationControllerTest {
 				.thenReturn(response);
 
 		//Then
-		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, partner, fieldsToValidate).call();
+		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, subscription, fieldsToValidate).call();
 		assertThat(controllerResponse).isEqualTo(response);
 	}
 }
