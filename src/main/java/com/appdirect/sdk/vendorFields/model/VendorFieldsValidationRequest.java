@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import com.appdirect.sdk.appmarket.migration.Subscription;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
@@ -14,9 +13,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorFieldsValidationRequest {
-	Subscription subscription;
-	String sku;
-	FlowType flowType;
-	OperationType operationType;
-	Map<String, String> fieldValues;
+	private String partner;
+	private String applicationIdentifier;
+	private String editionID;
+	private String sku;  // TODO do we actually need this? isn't the edition id enough
+	private FlowType flowType;
+	private OperationType operationType;
+	private Map<String, String> fieldValues;
 }
