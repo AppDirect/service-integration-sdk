@@ -23,8 +23,10 @@ import com.appdirect.sdk.appmarket.migration.DefaultMigrationHandlers;
 import com.appdirect.sdk.appmarket.restrictions.RestrictionConfiguration;
 import com.appdirect.sdk.appmarket.usersync.UserSyncConfiguration;
 import com.appdirect.sdk.appmarket.validation.DefaultValidationHandlers;
-import com.appdirect.sdk.web.config.MvcConfiguration;
+import com.appdirect.sdk.vendorFields.configuration.VendorFieldConfiguration;
+import com.appdirect.sdk.vendorFields.configuration.VendorRequiredFieldConfiguration;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
+import com.appdirect.sdk.web.config.MvcConfiguration;
 import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 
 /**
@@ -42,7 +44,9 @@ import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 		DefaultMigrationHandlers.class,
 		DefaultValidationHandlers.class,
 		UserSyncConfiguration.class,
-		RestrictionConfiguration.class
+		RestrictionConfiguration.class,
+		VendorFieldConfiguration.class,
+		VendorRequiredFieldConfiguration.class
 })
 public class ConnectorSdkConfiguration {
 }

@@ -14,9 +14,9 @@ public enum OperationType {
 
 	public static OperationType fromValue(String value) {
 		return Stream.of(values())
-			.filter(operationType -> operationType.value.equalsIgnoreCase(value))
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException(
-				"Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values())));
+				.filter(operationType -> operationType.value.equalsIgnoreCase(value))
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException(
+						"Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values())));
 	}
 }

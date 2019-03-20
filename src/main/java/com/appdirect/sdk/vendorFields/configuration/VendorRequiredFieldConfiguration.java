@@ -3,12 +3,19 @@ package com.appdirect.sdk.vendorFields.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.appdirect.sdk.vendorFields.controller.VendorRequiredFieldController;
+import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
-import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 
 @Configuration
 public class VendorRequiredFieldConfiguration {
+
+	@Bean
+	public VendorRequiredFieldController vendorRequiredFieldController(VendorRequiredFieldHandler vendorRequiredFieldHandler) {
+		return new VendorRequiredFieldController(vendorRequiredFieldHandler);
+	}
+
 	@Bean
 	public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
 		return (String sku, FlowType flowType, OperationType operationType) -> {
