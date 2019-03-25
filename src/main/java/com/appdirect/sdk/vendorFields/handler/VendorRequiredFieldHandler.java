@@ -1,5 +1,7 @@
 package com.appdirect.sdk.vendorFields.handler;
 
+import java.util.Locale;
+
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
@@ -9,5 +11,5 @@ import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
  */
 @FunctionalInterface
 public interface VendorRequiredFieldHandler {
-	VendorRequiredFieldsResponse getRequiredFields(String sku, FlowType flowType, OperationType operationType);
+	VendorRequiredFieldsResponse getRequiredFields(String sku, FlowType flowType, OperationType operationType, Locale locale);
 }
