@@ -3,6 +3,9 @@ package com.appdirect.sdk.vendorFields.model;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import lombok.Getter;
+
+@Getter
 public enum FlowType {
 	END_USER_FLOW("END_USER_FLOW"), RESELLER_FLOW("RESELLER_FLOW");
 

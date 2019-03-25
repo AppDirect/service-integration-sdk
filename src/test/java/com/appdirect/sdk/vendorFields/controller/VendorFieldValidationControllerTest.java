@@ -3,10 +3,7 @@ package com.appdirect.sdk.vendorFields.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +18,7 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
+import com.google.inject.internal.Maps;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VendorFieldValidationControllerTest {
@@ -38,27 +36,27 @@ public class VendorFieldValidationControllerTest {
 	@Test
 	public void testValidateFields_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
 		//Given
-		Map<String, String> fieldsToValidate = new HashMap<>();
-		List<VendorFieldValidation> validations = new ArrayList<>();
-		VendorFieldValidation validation = new VendorFieldValidation("EMAIL", "must contain @");
-		validations.add(validation);
-		VendorFieldsValidationResponse response = new VendorFieldsValidationResponse(validations);
+		VendorFieldsValidationResponse response = VendorFieldsValidationResponse.builder()
+				.validations(Collections.singletonList(VendorFieldValidation.builder()
+						.fieldName("EMAIL")
+						.errorMessage("must contain @")
+						.build()))
+				.build();
 		VendorFieldsValidationRequest vendorFieldsValidationRequest = VendorFieldsValidationRequest.builder()
-				.fieldValues(fieldsToValidate)
+				.fieldValues(Maps.newHashMap())
 				.flowType(FlowType.RESELLER_FLOW)
 				.operationType(OperationType.SUBSCRIPTION_CHANGE)
 				.sku("SKU")
 				.partner("APPDIRECT")
 				.applicationIdentifier("APPLICATION_SKU")
-				.editionID("TEST_EDITION")
 				.build();
-
-		//When
 		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest))
 				.thenReturn(response);
+		//When
+		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(vendorFieldsValidationRequest).call();
 
 		//Then
-		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(vendorFieldsValidationRequest).call();
 		assertThat(controllerResponse).isEqualTo(response);
 	}
 }
+
