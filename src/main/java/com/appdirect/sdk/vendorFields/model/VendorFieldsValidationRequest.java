@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class VendorFieldsValidationRequest {
 	private String partner;
 	private String applicationIdentifier;
-	private String editionID;
-	private String sku;  // TODO do we actually need this? isn't the edition id enough
+	private String sku;
 	private FlowType flowType;
 	private OperationType operationType;
 	private Map<String, String> fieldValues;

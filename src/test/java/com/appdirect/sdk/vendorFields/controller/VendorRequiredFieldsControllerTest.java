@@ -3,8 +3,7 @@ package com.appdirect.sdk.vendorFields.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,30 +36,27 @@ public class VendorRequiredFieldsControllerTest {
 	@Test
 	public void testValidateFields_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
 		//Given
-		String sku = "SKU";
-		List<VendorRequiredField> validations = new ArrayList<>();
-		VendorRequiredField validation = new VendorRequiredField().builder()
-				.fieldType(FieldType.COUNTRY)
-				.inputCode("ABCDE")
-				.inputTitle("COUNTRY")
-				.order(1)
-				.prePopulatedValue("GERMANY")
-				.required(true)
-				.subTitle("REGION")
-				.toolTip("place your country")
+		Form form = Form.builder()
+				.fields(Collections.singletonList(VendorRequiredField.builder()
+						.fieldType(FieldType.COUNTRY)
+						.inputCode("ABCDE")
+						.inputTitle("COUNTRY")
+						.order(1)
+						.prePopulatedValue("GERMANY")
+						.required(true)
+						.subTitle("REGION")
+						.toolTip("place your country")
+						.build()))
+				.order(4)
 				.build();
-		validations.add(validation);
-		Form form = new Form(validations, 4);
-		List<Form> formList = new ArrayList();
-		formList.add(form);
-		VendorRequiredFieldsResponse response = new VendorRequiredFieldsResponse(formList);
-
-		//When
-		when(mockVendorRequiredFieldHandler.getRequiredFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE))
+		VendorRequiredFieldsResponse response = new VendorRequiredFieldsResponse(Collections.singletonList(form));
+		when(mockVendorRequiredFieldHandler.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE))
 				.thenReturn(response);
 
+		//When
+		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE).call();
+
 		//Then
-		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController.getRequiredFields(sku, FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE).call();
 		assertThat(controllerResponse).isEqualTo(response);
 	}
 }

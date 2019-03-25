@@ -29,7 +29,6 @@ import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admin")
 @Slf4j
-
 public class VendorFieldValidationController {
 	private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
@@ -38,7 +37,7 @@ public class VendorFieldValidationController {
 			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest) {
-		log.info("Calling validate fields API with sku:{}, flowType:{}, operationType{}, partner:{}, applicationIdentifier:{}",
+		log.info("Calling validate fields API with sku={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}",
 				vendorFieldsValidationRequest.getSku(),
 				vendorFieldsValidationRequest.getFlowType(),
 				vendorFieldsValidationRequest.getOperationType(),
