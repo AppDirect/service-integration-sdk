@@ -1,5 +1,7 @@
 package com.appdirect.sdk.vendorFields.configuration;
 
+import java.util.Locale;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,8 +20,13 @@ public class VendorRequiredFieldConfiguration {
 
 	@Bean
 	public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
-		return (String sku, FlowType flowType, OperationType operationType) -> {
-			throw new UnsupportedOperationException(String.format("Vendor required field Service for sku=%s, flow type=%s and operation type=%s is not supported.", sku, flowType, operationType));
+		return (String sku, FlowType flowType, OperationType operationType, Locale locale) -> {
+			throw new UnsupportedOperationException(String.format(
+					"Vendor required field Service for sku=%s, flow type=%s, operation type=%s and locale=%s is not supported.",
+					sku,
+					flowType,
+					operationType,
+					locale));
 		};
 	}
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,11 +51,11 @@ public class VendorRequiredFieldsControllerTest {
 				.order(4)
 				.build();
 		VendorRequiredFieldsResponse response = new VendorRequiredFieldsResponse(Collections.singletonList(form));
-		when(mockVendorRequiredFieldHandler.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE))
+		when(mockVendorRequiredFieldHandler.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, Locale.CANADA))
 				.thenReturn(response);
 
 		//When
-		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE).call();
+		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, Locale.CANADA.toLanguageTag()).call();
 
 		//Then
 		assertThat(controllerResponse).isEqualTo(response);

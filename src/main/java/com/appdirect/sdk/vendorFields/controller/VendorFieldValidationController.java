@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,15 +26,15 @@ import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 /**
  * Defines the endpoint for validating the fields with the vendor
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/admin")
-@Slf4j
 public class VendorFieldValidationController {
+	@Autowired
 	private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
 	@RequestMapping(method = POST,
-			value = "/vendorValidations",
+			value = "/api/v1/admin/vendorValidations",
 			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest) {

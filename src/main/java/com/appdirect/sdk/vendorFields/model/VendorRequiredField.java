@@ -1,5 +1,7 @@
 package com.appdirect.sdk.vendorFields.model;
 
+import java.util.Locale;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorRequiredField {
-
+	private Locale locale;
 	private FieldType fieldType;
 	private String inputCode;
 	private String inputTitle;

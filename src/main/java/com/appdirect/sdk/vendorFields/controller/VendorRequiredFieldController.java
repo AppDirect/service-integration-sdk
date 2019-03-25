@@ -3,9 +3,11 @@ package com.appdirect.sdk.vendorFields.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,6 +26,7 @@ import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 /**
  * Defines the endpoint for enforcing vendor required requiredFields on their products
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class VendorRequiredFieldController {
@@ -33,8 +36,18 @@ public class VendorRequiredFieldController {
 	@RequestMapping(method = GET,
 			value = "/api/v1/admin/requiredFields",
 			produces = APPLICATION_JSON_VALUE)
-	public Callable<VendorRequiredFieldsResponse> getRequiredFields(@RequestParam(value = "sku") String sku, @RequestParam(value = "flowType") FlowType flowType, @RequestParam(value = "operationType") OperationType operationType) {
-		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType);
+	public Callable<VendorRequiredFieldsResponse> getRequiredFields(@RequestParam(value = "sku") String sku,
+																	@RequestParam(value = "flowType") FlowType flowType,
+																	@RequestParam(value = "operationType") OperationType operationType,
+																	@RequestParam(value = "locale") String locale) {
+		log.info("Calling required fields API with sku={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}",
+				sku,
+				flowType,
+				operationType,
+				locale
+		);
+
+		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType, Locale.forLanguageTag(locale));
 	}
 
 	@InitBinder
