@@ -63,7 +63,7 @@ public class VendorRequiredFieldsControllerTest {
 						"SKU",
 						FlowType.RESELLER_FLOW,
 						OperationType.SUBSCRIPTION_CHANGE,
-						Locale.CANADA.toLanguageTag()).call();
+						Locale.CANADA).call();
 
 		//Then
 		assertThat(controllerResponse).isEqualTo(response);
