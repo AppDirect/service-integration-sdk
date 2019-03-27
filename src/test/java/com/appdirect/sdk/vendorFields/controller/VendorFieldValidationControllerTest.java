@@ -53,7 +53,8 @@ public class VendorFieldValidationControllerTest {
 		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest))
 				.thenReturn(response);
 		//When
-		VendorFieldsValidationResponse controllerResponse = vendorFieldValidationController.validateFields(vendorFieldsValidationRequest).call();
+		VendorFieldsValidationResponse controllerResponse =
+				vendorFieldValidationController.validateFields(vendorFieldsValidationRequest).call();
 
 		//Then
 		assertThat(controllerResponse).isEqualTo(response);

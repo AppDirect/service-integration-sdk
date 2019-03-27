@@ -51,11 +51,19 @@ public class VendorRequiredFieldsControllerTest {
 				.order(4)
 				.build();
 		VendorRequiredFieldsResponse response = new VendorRequiredFieldsResponse(Collections.singletonList(form));
-		when(mockVendorRequiredFieldHandler.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, Locale.CANADA))
-				.thenReturn(response);
+		when(mockVendorRequiredFieldHandler.getRequiredFields(
+				"SKU",
+				FlowType.RESELLER_FLOW,
+				OperationType.SUBSCRIPTION_CHANGE,
+				Locale.CANADA)).thenReturn(response);
 
 		//When
-		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController.getRequiredFields("SKU", FlowType.RESELLER_FLOW, OperationType.SUBSCRIPTION_CHANGE, Locale.CANADA.toLanguageTag()).call();
+		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController
+				.getRequiredFields(
+						"SKU",
+						FlowType.RESELLER_FLOW,
+						OperationType.SUBSCRIPTION_CHANGE,
+						Locale.CANADA.toLanguageTag()).call();
 
 		//Then
 		assertThat(controllerResponse).isEqualTo(response);
