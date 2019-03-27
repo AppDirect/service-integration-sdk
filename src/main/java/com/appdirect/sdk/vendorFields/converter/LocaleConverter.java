@@ -1,11 +1,11 @@
 package com.appdirect.sdk.vendorFields.converter;
 
 import java.beans.PropertyEditorSupport;
-import java.util.Locale;
 
+import org.apache.commons.lang3.LocaleUtils;
 
 public class LocaleConverter extends PropertyEditorSupport {
 	public void setAsText(final String text) throws IllegalArgumentException {
-		setValue(Locale.forLanguageTag(text));
+		setValue(LocaleUtils.toLocale(text));
 	}
 }
