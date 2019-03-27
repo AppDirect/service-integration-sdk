@@ -40,8 +40,7 @@ public class VendorFieldValidationController {
 			produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorFieldsValidationResponse> validateFields(@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest) {
 		log.info(
-				"Calling validate fields API with sku={}, flowType={}, operationType={}, partner={}, " +
-						"applicationIdentifier={}",
+				"Calling validate fields API with sku={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}",
 				vendorFieldsValidationRequest.getSku(),
 				vendorFieldsValidationRequest.getFlowType(),
 				vendorFieldsValidationRequest.getOperationType(),
