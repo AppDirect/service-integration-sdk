@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
+import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
@@ -33,26 +34,31 @@ public class VendorRequiredFieldController {
 	@Autowired
 	private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
 
-	@RequestMapping(method = GET,
+	@RequestMapping(
+			method = GET,
 			value = "/api/v1/admin/requiredFields",
 			produces = APPLICATION_JSON_VALUE)
-	public Callable<VendorRequiredFieldsResponse> getRequiredFields(@RequestParam(value = "sku") String sku,
-																	@RequestParam(value = "flowType") FlowType flowType,
-																	@RequestParam(value = "operationType") OperationType operationType,
-																	@RequestParam(value = "locale") String locale) {
-		log.info("Calling required fields API with sku={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}",
+	public Callable<VendorRequiredFieldsResponse> getRequiredFields(
+			@RequestParam(value = "sku") String sku,
+			@RequestParam(value = "flowType") FlowType flowType,
+			@RequestParam(value = "operationType") OperationType operationType,
+			@RequestParam(value = "locale") Locale locale) {
+
+		log.info(
+				"Calling required fields API with sku={}, flowType={}, operationType={}, partner={}, " +
+						"applicationIdentifier={}",
 				sku,
 				flowType,
 				operationType,
-				locale
+				locale.toLanguageTag()
 		);
-
-		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType, Locale.forLanguageTag(locale));
+		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType, locale);
 	}
 
 	@InitBinder
 	public void initBinder(final WebDataBinder webdataBinder) {
 		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
 		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
+		webdataBinder.registerCustomEditor(Locale.class, new LocaleConverter());
 	}
 }
