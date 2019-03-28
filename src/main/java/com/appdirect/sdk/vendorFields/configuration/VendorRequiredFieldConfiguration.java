@@ -22,7 +22,7 @@ public class VendorRequiredFieldConfiguration {
 	public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
 		return (String sku, FlowType flowType, OperationType operationType, Locale locale) -> {
 			throw new UnsupportedOperationException(String.format(
-					"Vendor required field Service for sku=%s, flow type=%s, operation type=%s and locale=%s is not supported.",
+					"Vendor required field Service for editionCode=%s, flow type=%s, operation type=%s and locale=%s is not supported.",
 					sku,
 					flowType,
 					operationType,
