@@ -46,9 +46,8 @@ public class VendorFieldValidationControllerTest {
 				.fieldValues(Maps.newHashMap())
 				.flowType(FlowType.RESELLER_FLOW)
 				.operationType(OperationType.SUBSCRIPTION_CHANGE)
-				.sku("SKU")
+				.editionCode("SKU")
 				.partner("APPDIRECT")
-				.applicationIdentifier("APPLICATION_SKU")
 				.build();
 		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest))
 				.thenReturn(response);
