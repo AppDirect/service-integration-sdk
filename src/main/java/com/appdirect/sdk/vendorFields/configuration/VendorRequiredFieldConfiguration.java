@@ -20,10 +20,10 @@ public class VendorRequiredFieldConfiguration {
 
 	@Bean
 	public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
-		return (String sku, FlowType flowType, OperationType operationType, Locale locale) -> {
+		return (String editionCode, FlowType flowType, OperationType operationType, Locale locale) -> {
 			throw new UnsupportedOperationException(String.format(
 					"Vendor required field Service for editionCode=%s, flow type=%s, operation type=%s and locale=%s is not supported.",
-					sku,
+					editionCode,
 					flowType,
 					operationType,
 					locale));

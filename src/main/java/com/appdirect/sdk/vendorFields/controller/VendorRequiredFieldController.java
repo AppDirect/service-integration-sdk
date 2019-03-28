@@ -39,19 +39,19 @@ public class VendorRequiredFieldController {
 			value = "/api/v1/admin/requiredFields",
 			produces = APPLICATION_JSON_VALUE)
 	public Callable<VendorRequiredFieldsResponse> getRequiredFields(
-			@RequestParam(value = "editionCode") String sku,
+			@RequestParam(value = "editionCode") String editionCode,
 			@RequestParam(value = "flowType") FlowType flowType,
 			@RequestParam(value = "operationType") OperationType operationType,
 			@RequestParam(value = "locale") Locale locale) {
 
 		log.info(
 				"Calling required fields API with editionCode={}, flowType={}, operationType={}, locale={}",
-				sku,
+				editionCode,
 				flowType,
 				operationType,
 				locale.toLanguageTag()
 		);
-		return () -> vendorRequiredFieldHandler.getRequiredFields(sku, flowType, operationType, locale);
+		return () -> vendorRequiredFieldHandler.getRequiredFields(editionCode, flowType, operationType, locale);
 	}
 
 	@InitBinder
