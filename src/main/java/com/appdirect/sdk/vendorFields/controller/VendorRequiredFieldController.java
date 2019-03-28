@@ -45,7 +45,7 @@ public class VendorRequiredFieldController {
 			@RequestParam(value = "locale") Locale locale) {
 
 		log.info(
-				"Calling required fields API with sku={}, flowType={}, operationType={}, partner={}, locale={}",
+				"Calling required fields API with sku={}, flowType={}, operationType={}, locale={}",
 				sku,
 				flowType,
 				operationType,
