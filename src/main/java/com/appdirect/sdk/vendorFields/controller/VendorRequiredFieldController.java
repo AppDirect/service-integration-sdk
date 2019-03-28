@@ -49,7 +49,7 @@ public class VendorRequiredFieldController {
 				editionCode,
 				flowType,
 				operationType,
-				locale.toLanguageTag()
+				locale
 		);
 		return () -> vendorRequiredFieldHandler.getRequiredFields(editionCode, flowType, operationType, locale);
 	}
