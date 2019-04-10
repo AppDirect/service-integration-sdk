@@ -28,29 +28,29 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequiredArgsConstructor
 public class VendorFieldValidationController {
-    @Autowired
-    private final VendorFieldValidationHandler vendorFieldValidationHandler;
+	@Autowired
+	private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
-    @RequestMapping(
-            method = POST,
-            value = "/api/v1/admin/vendorValidations",
-            consumes = APPLICATION_JSON_VALUE,
-            produces = APPLICATION_JSON_VALUE)
-    public Callable<VendorFieldsValidationResponse> validateFields(@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest) {
-        log.info(
-                "Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}",
-                vendorFieldsValidationRequest.getEditionCode(),
-                vendorFieldsValidationRequest.getFlowType(),
-                vendorFieldsValidationRequest.getOperationType(),
-                vendorFieldsValidationRequest.getPartner(),
-                vendorFieldsValidationRequest.getApplicationIdentifier()
-        );
-        return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
-    }
+	@RequestMapping(
+			method = POST,
+			value = "/api/v1/admin/vendorValidations",
+			consumes = APPLICATION_JSON_VALUE,
+			produces = APPLICATION_JSON_VALUE)
+	public Callable<VendorFieldsValidationResponse> validateFields(@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest) {
+		log.info(
+				"Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}",
+				vendorFieldsValidationRequest.getEditionCode(),
+				vendorFieldsValidationRequest.getFlowType(),
+				vendorFieldsValidationRequest.getOperationType(),
+				vendorFieldsValidationRequest.getPartner(),
+				vendorFieldsValidationRequest.getApplicationIdentifier()
+		);
+		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
+	}
 
-    @InitBinder
-    public void initBinder(final WebDataBinder webdataBinder) {
-        webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
-        webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
-    }
+	@InitBinder
+	public void initBinder(final WebDataBinder webdataBinder) {
+		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
+		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
+	}
 }
