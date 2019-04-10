@@ -1,5 +1,6 @@
 package com.appdirect.sdk.vendorFields.model;
 
+import java.util.Locale;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -19,4 +20,5 @@ public class VendorFieldsValidationRequest {
 	private OperationType operationType;
 	private String ApplicationIdentifier;
 	private Map<String, String> fieldValues;
+	private Locale locale;
 }
