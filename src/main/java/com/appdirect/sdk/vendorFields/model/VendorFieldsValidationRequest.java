@@ -12,10 +12,10 @@ import java.util.Map;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorFieldsValidationRequest {
-    private String partner;
-    private String editionCode;
-    private FlowType flowType;
-    private OperationType operationType;
-    private String ApplicationIdentifier;
-    private Map<String, String> fieldValues;
+	private String partner;
+	private String editionCode;
+	private FlowType flowType;
+	private OperationType operationType;
+	private String ApplicationIdentifier;
+	private Map<String, String> fieldValues;
 }
