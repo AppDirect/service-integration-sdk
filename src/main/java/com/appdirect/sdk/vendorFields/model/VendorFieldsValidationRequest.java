@@ -18,7 +18,7 @@ public class VendorFieldsValidationRequest {
 	private String editionCode;
 	private FlowType flowType;
 	private OperationType operationType;
-	private String ApplicationIdentifier;
+	private String applicationIdentifier;
 	private Map<String, String> fieldValues;
 	private Locale locale;
 }
