@@ -22,6 +22,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <guava.version>27.1-jre</guava.version>
+        <testng.version>6.14.3</testng.version>
     </properties>
 
     <parent>
@@ -90,6 +92,12 @@
             <groupId>org.springframework.hateoas</groupId>
             <artifactId>spring-hateoas</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,6 +128,14 @@
             <version>2.6.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- TestNG -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-standalone</artifactId>
