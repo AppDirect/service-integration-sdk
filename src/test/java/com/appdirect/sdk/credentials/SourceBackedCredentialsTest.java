@@ -14,8 +14,7 @@ public class SourceBackedCredentialsTest {
 
 	private Function<String, Credentials> functionTest = (String k) ->  {
 		if (k.equalsIgnoreCase("bad-key")) {
-			return new Credentials("this key does not exist in the supplier",
-					"this key does not exist in the supplier");
+			return Credentials.invalidCredentials();
 		}
 		return new Credentials(k,"s1");
 	};
