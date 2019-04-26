@@ -10,7 +10,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SourceBackedCredentialsTest {
-
 	private SourceBackedCredentials findCredentials;
 	private Function<String, Credentials> functionTest = (String k) ->  {
 		if (k.equalsIgnoreCase("bad-key")) {
