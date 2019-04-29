@@ -4,13 +4,13 @@ import com.appdirect.sdk.appmarket.Credentials;
 
 import java.util.function.Function;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SourceBackedCredentialsTest {
-	private SourceBackedCredentials findCredentials;
+public class SourceBackedCredentialsSupplierTest {
+	private SourceBackedCredentialsSupplier sourceBackedCredentialsSupplier;
 	private Function<String, Credentials> functionTest = (String k) ->  {
 		if (k.equalsIgnoreCase("bad-key")) {
 			return Credentials.invalidCredentials();
@@ -18,32 +18,26 @@ public class SourceBackedCredentialsTest {
 		return new Credentials(k,"s1");
 	};
 
-	@Before
+	@BeforeMethod
 	public void setUp() {
-		findCredentials = new SourceBackedCredentials(functionTest);
+		sourceBackedCredentialsSupplier = new SourceBackedCredentialsSupplier(functionTest);
 	}
 
 	@Test
-	public void returnsGoodCredentials_whenKeyIsFound() throws Exception {
-		//Given
+	public void returnsGoodCredentials_whenKeyIsFound() {
 		Credentials expected = Credentials.builder().developerKey("key1").developerSecret("s1").build();
 
-		//When
-		Credentials credentials = findCredentials.getConsumerCredentials("key1");
+		Credentials credentials = sourceBackedCredentialsSupplier.getConsumerCredentials("key1");
 
-		//Then
 		assertThat(credentials).isEqualTo(expected);
 	}
 
 	@Test
-	public void returnsInvalidCredentials_whenKeyIsNotFound() throws Exception {
-		//Given
+	public void returnsInvalidCredentials_whenKeyIsNotFound() {
 		Credentials expected = Credentials.invalidCredentials();
 
-		//When
-		Credentials credentials = findCredentials.getConsumerCredentials("bad-key");
+		Credentials credentials = sourceBackedCredentialsSupplier.getConsumerCredentials("bad-key");
 
-		//Then
 		assertThat(credentials).isEqualTo(expected);
 	}
 }
