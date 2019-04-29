@@ -24,7 +24,9 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
  * Creates an in-memory cache of (developer key ⟶ developer secret) pairs from a string of the following format:
  * <p>
  * devKey1:devPassword1,devKey2:devPassTwo
+ * @deprecated will be replaced by {@link SourceBackedCredentials}
  */
+@Deprecated
 public class StringBackedCredentialsSupplier implements DeveloperSpecificAppmarketCredentialsSupplier {
 	private final Map<String, String> allowedCredentials;
 
