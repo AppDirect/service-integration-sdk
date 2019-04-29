@@ -10,10 +10,10 @@ import static com.appdirect.sdk.appmarket.Credentials.invalidCredentials;
 /**
  * Functionality to find Credentials by key from a different sources: Database, ResourceFile, in memory cache, etc.
  */
-public class SourceBackedCredentials implements DeveloperSpecificAppmarketCredentialsSupplier {
+public class SourceBackedCredentialsSupplier implements DeveloperSpecificAppmarketCredentialsSupplier {
 	private final Function<String, Credentials> credentialsFinder;
 
-	public SourceBackedCredentials(Function<String, Credentials> credentialsFinder) {
+	public SourceBackedCredentialsSupplier(Function<String, Credentials> credentialsFinder) {
 		this.credentialsFinder = credentialsFinder;
 	}
 
