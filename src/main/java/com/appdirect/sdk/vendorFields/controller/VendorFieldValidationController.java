@@ -53,6 +53,8 @@ public class VendorFieldValidationController {
 				vendorFieldsValidationRequest.getApplicationIdentifier(),
 				locales
 		);
+
+		vendorFieldsValidationRequest.setLocales(locales);
 		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest, locales);
 	}
 
