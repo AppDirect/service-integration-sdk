@@ -1,5 +1,6 @@
 package com.appdirect.sdk.vendorFields.model;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -20,4 +21,5 @@ public class VendorFieldsValidationRequest {
 	private OperationType operationType;
 	private String applicationIdentifier;
 	private Map<String, String> fieldValues;
+	private List<Locale> locales;
 }
