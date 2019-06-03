@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +38,7 @@ public class VendorFieldValidationControllerTest {
 	@Test
 	public void testValidateFields_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
 		//Given
+		List<Locale> locales = Collections.singletonList(Locale.US);
 		VendorFieldsValidationResponse response = VendorFieldsValidationResponse.builder()
 				.validations(Collections.singletonList(VendorFieldValidation.builder()
 						.fieldName("EMAIL")
@@ -49,11 +52,11 @@ public class VendorFieldValidationControllerTest {
 				.editionCode("SKU")
 				.partner("APPDIRECT")
 				.build();
-		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest))
+		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest, locales))
 				.thenReturn(response);
 		//When
 		VendorFieldsValidationResponse controllerResponse =
-				vendorFieldValidationController.validateFields(vendorFieldsValidationRequest).call();
+				vendorFieldValidationController.validateFields(vendorFieldsValidationRequest, locales).call();
 
 		//Then
 		assertThat(controllerResponse).isEqualTo(response);

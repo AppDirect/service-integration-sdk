@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import org.junit.Before;
@@ -37,6 +38,7 @@ public class VendorRequiredFieldsControllerTest {
 	@Test
 	public void testValidateFields_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
 		//Given
+		List<Locale> locales = Collections.singletonList(Locale.US);
 		Form form = Form.builder()
 				.fields(Collections.singletonList(VendorRequiredField.builder()
 						.fieldType(FieldType.COUNTRY)
@@ -55,7 +57,7 @@ public class VendorRequiredFieldsControllerTest {
 				"SKU",
 				FlowType.RESELLER_FLOW,
 				OperationType.SUBSCRIPTION_CHANGE,
-				Locale.CANADA)).thenReturn(response);
+				locales)).thenReturn(response);
 
 		//When
 		VendorRequiredFieldsResponse controllerResponse = vendorRequiredFieldController
@@ -63,7 +65,7 @@ public class VendorRequiredFieldsControllerTest {
 						"SKU",
 						FlowType.RESELLER_FLOW,
 						OperationType.SUBSCRIPTION_CHANGE,
-						Locale.CANADA).call();
+						locales).call();
 
 		//Then
 		assertThat(controllerResponse).isEqualTo(response);
