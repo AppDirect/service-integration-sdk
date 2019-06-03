@@ -3,6 +3,7 @@ package com.appdirect.sdk.vendorFields.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,16 +44,17 @@ public class VendorRequiredFieldController {
 			@RequestParam(value = "editionCode") String editionCode,
 			@RequestParam(value = "flowType") FlowType flowType,
 			@RequestParam(value = "operationType") OperationType operationType,
-			@RequestParam(value = "locale") Locale locale) {
+			@RequestHeader(value = "Accept-Language") List<Locale> locales) {
+
 
 		log.info(
-				"Calling required fields API with editionCode={}, flowType={}, operationType={}, locale={}",
+				"Calling required fields API with editionCode={}, flowType={}, operationType={}, locales={}",
 				editionCode,
 				flowType,
 				operationType,
-				locale
+				locales
 		);
-		return () -> vendorRequiredFieldHandler.getRequiredFields(editionCode, flowType, operationType, locale);
+		return () -> vendorRequiredFieldHandler.getRequiredFields(editionCode, flowType, operationType, locales);
 	}
 
 	@InitBinder

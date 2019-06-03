@@ -3,6 +3,8 @@ package com.appdirect.sdk.vendorFields.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,17 +41,19 @@ public class VendorFieldValidationController {
 			value = "/api/v1/admin/vendorValidations",
 			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
-	public Callable<VendorFieldsValidationResponse> validateFields(@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest) {
+	public Callable<VendorFieldsValidationResponse> validateFields(
+			@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest,
+			@RequestHeader(value = "Accept-Language") List<Locale> locales) {
 		log.info(
-				"Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locale={}",
+				"Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
 				vendorFieldsValidationRequest.getEditionCode(),
 				vendorFieldsValidationRequest.getFlowType(),
 				vendorFieldsValidationRequest.getOperationType(),
 				vendorFieldsValidationRequest.getPartner(),
 				vendorFieldsValidationRequest.getApplicationIdentifier(),
-				vendorFieldsValidationRequest.getLocale()
+				locales
 		);
-		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
+		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest, locales);
 	}
 
 	@InitBinder

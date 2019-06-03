@@ -20,5 +20,4 @@ public class VendorFieldsValidationRequest {
 	private OperationType operationType;
 	private String applicationIdentifier;
 	private Map<String, String> fieldValues;
-	private Locale locale;
 }
