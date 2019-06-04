@@ -35,13 +35,13 @@ public class VendorFieldsConfiguration {
 
 	@Bean
 	public VendorFieldValidationHandler vendorFieldValidationHandler() {
-		return (vendorFieldsValidationRequest, locales) -> {
+		return (vendorFieldsValidationRequest) -> {
 			throw new UnsupportedOperationException(String.format(
 					"Vendor Fields Validation Service for editionCode=%s, flowType=%s, operationType=%s and locales=%s is not supported.",
 					vendorFieldsValidationRequest.getEditionCode(),
 					vendorFieldsValidationRequest.getFlowType(),
 					vendorFieldsValidationRequest.getOperationType(),
-					locales));
+					vendorFieldsValidationRequest.getLocales()));
 		};
 	}
 }

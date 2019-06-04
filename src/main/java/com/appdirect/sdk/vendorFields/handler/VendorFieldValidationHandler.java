@@ -11,5 +11,5 @@ import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
  */
 @FunctionalInterface
 public interface VendorFieldValidationHandler {
-	VendorFieldsValidationResponse validateFields(VendorFieldsValidationRequest vendorFieldsValidationRequest, List<Locale> locales);
+	VendorFieldsValidationResponse validateFields(VendorFieldsValidationRequest vendorFieldsValidationRequest);
 }

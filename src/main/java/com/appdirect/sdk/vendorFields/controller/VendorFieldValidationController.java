@@ -55,7 +55,7 @@ public class VendorFieldValidationController {
 		);
 
 		vendorFieldsValidationRequest.setLocales(locales);
-		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest, locales);
+		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
 	}
 
 	@InitBinder
