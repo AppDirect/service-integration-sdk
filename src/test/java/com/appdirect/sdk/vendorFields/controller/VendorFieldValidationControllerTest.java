@@ -52,7 +52,7 @@ public class VendorFieldValidationControllerTest {
 				.editionCode("SKU")
 				.partner("APPDIRECT")
 				.build();
-		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest, locales))
+		when(mockVendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest))
 				.thenReturn(response);
 		//When
 		VendorFieldsValidationResponse controllerResponse =

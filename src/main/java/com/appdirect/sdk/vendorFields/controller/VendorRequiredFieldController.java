@@ -61,6 +61,6 @@ public class VendorRequiredFieldController {
 	public void initBinder(final WebDataBinder webdataBinder) {
 		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
 		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
-		webdataBinder.registerCustomEditor(Locale.class, new LocaleConverter());
+		webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
 	}
 }
