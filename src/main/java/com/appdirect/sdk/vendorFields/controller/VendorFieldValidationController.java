@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
+import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
@@ -44,6 +45,7 @@ public class VendorFieldValidationController {
 	public Callable<VendorFieldsValidationResponse> validateFields(
 			@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest,
 			@RequestHeader(value = "Accept-Language") List<Locale> locales) {
+
 		log.info(
 				"Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
 				vendorFieldsValidationRequest.getEditionCode(),
@@ -62,5 +64,6 @@ public class VendorFieldValidationController {
 	public void initBinder(final WebDataBinder webdataBinder) {
 		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
 		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
+		webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
 	}
 }
