@@ -31,7 +31,7 @@ public class LocaleConverterTest {
 
 	@Test
 	public void testOneLocale() {
-		String localeToParse = "us";
+		String localeToParse = "en";
 		List<Locale> expected = Collections.singletonList(Locale.forLanguageTag(localeToParse));
 
 		localeConverter.setAsText(localeToParse);
@@ -78,6 +78,15 @@ public class LocaleConverterTest {
 		localeConverter.setAsText(localeToParse);
 
 		assertThat(localeConverter.getValue()).isEqualTo(expected);
+	}
+
+	@Test
+	public void testInvalidLocale_isNotIncludedInList() {
+		String localeToParse = "us";
+
+		localeConverter.setAsText(localeToParse);
+
+		assertThat(localeConverter.getValue()).isEqualTo(Collections.emptyList());
 	}
 
 	@Test
