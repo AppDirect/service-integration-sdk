@@ -23,12 +23,15 @@ import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
 import com.appdirect.sdk.appmarket.migration.SubscriptionMigrationHandler;
 import com.appdirect.sdk.appmarket.migration.SubscriptionValidationHandler;
+import com.appdirect.sdk.meteredUsage.service.MeteredUsageApiClientService;
+import com.appdirect.sdk.meteredUsage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import retrofit2.Retrofit;
 
 @Configuration
 public class AppmarketCommunicationConfiguration {
@@ -37,6 +40,11 @@ public class AppmarketCommunicationConfiguration {
 	public AppmarketBillingClient appmarketBillingReporter(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
 																												 @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
 		return new AppmarketBillingClient(billingRestTemplateFactory(), credentialsSupplier, mapper);
+	}
+
+	@Bean
+	public MeteredUsageApiClientService meteredUsageApiClientService(@Qualifier("meteredUsageRetrofitBuilder") Retrofit.Builder meteredUsageRetrofitBuilder, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier){
+		return new MeteredUsageApiClientServiceImpl(meteredUsageRetrofitBuilder, credentialsSupplier);
 	}
 
 	@Bean
