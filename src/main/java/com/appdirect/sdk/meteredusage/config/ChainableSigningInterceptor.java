@@ -1,4 +1,4 @@
-package com.appdirect.sdk.meteredUsage.config;
+package com.appdirect.sdk.meteredusage.config;
 
 import java.io.IOException;
 

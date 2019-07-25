@@ -23,8 +23,9 @@ import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
 import com.appdirect.sdk.appmarket.migration.SubscriptionMigrationHandler;
 import com.appdirect.sdk.appmarket.migration.SubscriptionValidationHandler;
-import com.appdirect.sdk.meteredUsage.service.MeteredUsageApiClientService;
-import com.appdirect.sdk.meteredUsage.service.MeteredUsageApiClientServiceImpl;
+import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
+import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientService;
+import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
@@ -43,8 +44,13 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public MeteredUsageApiClientService meteredUsageApiClientService(@Qualifier("meteredUsageRetrofitBuilder") Retrofit.Builder meteredUsageRetrofitBuilder, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier){
-		return new MeteredUsageApiClientServiceImpl(meteredUsageRetrofitBuilder, credentialsSupplier);
+	public MeteredUsageApiClientService meteredUsageApiClientService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth1RetrofitWrapper oAuth1RetrofitWrapper) {
+		return new MeteredUsageApiClientServiceImpl(credentialsSupplier, oAuth1RetrofitWrapper);
+	}
+
+	@Bean
+	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper(@Qualifier("meteredUsageRetrofitBuilder") Retrofit.Builder meteredUsageRetrofitBuilder) {
+		return new OAuth1RetrofitWrapper(meteredUsageRetrofitBuilder);
 	}
 
 	@Bean

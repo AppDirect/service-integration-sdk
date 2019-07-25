@@ -1,6 +1,6 @@
-package com.appdirect.sdk.meteredUsage.mother;
+package com.appdirect.sdk.meteredusage.mother;
 
-import com.appdirect.sdk.meteredUsage.model.UsageItem;
+import com.appdirect.sdk.meteredusage.model.UsageItem;
 import com.appdirect.sdk.utils.ConstantUtils;
 import com.google.inject.internal.Lists;
 

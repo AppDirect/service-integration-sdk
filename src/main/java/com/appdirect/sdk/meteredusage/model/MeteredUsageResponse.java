@@ -1,6 +1,4 @@
-package com.appdirect.sdk.meteredUsage.model;
-
-import java.util.Map;
+package com.appdirect.sdk.meteredusage.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttributeItem {
-	private Map<String, String> attributes = null;
+public class MeteredUsageResponse {
+	private String requestId;
+	private String idempotencyKey;
 }
 
