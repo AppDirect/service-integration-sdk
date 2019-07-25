@@ -1,21 +1,21 @@
-package com.appdirect.sdk.meteredUsage;
+package com.appdirect.sdk.meteredusage;
 
-import com.appdirect.sdk.meteredUsage.model.MeteredUsageRequestAccepted;
+import com.appdirect.sdk.meteredusage.model.MeteredUsageResponse;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RetrofitCallStub {
-	private Response<MeteredUsageRequestAccepted> response;
+	private Response<MeteredUsageResponse> response;
 	private Call call;
 
-	public RetrofitCallStub(Response<MeteredUsageRequestAccepted> response) {
+	public RetrofitCallStub(Response<MeteredUsageResponse> response) {
 		this.response = response;
-		this.call = new Call<MeteredUsageRequestAccepted>() {
+		this.call = new Call<MeteredUsageResponse>() {
 
 			@Override
-			public Response<MeteredUsageRequestAccepted> execute() {
+			public Response<MeteredUsageResponse> execute() {
 				return response;
 			}
 
@@ -37,7 +37,7 @@ public class RetrofitCallStub {
 				return false;
 			}
 			@Override
-			public Call<MeteredUsageRequestAccepted> clone() {
+			public Call<MeteredUsageResponse> clone() {
 				return null;
 			}
 			@Override
@@ -47,7 +47,7 @@ public class RetrofitCallStub {
 		};
 	}
 
-	public Call<MeteredUsageRequestAccepted> getCall() {
+	public Call<MeteredUsageResponse> getCall() {
 		return call;
 	}
 }

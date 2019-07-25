@@ -1,4 +1,4 @@
-package com.appdirect.sdk.meteredUsage;
+package com.appdirect.sdk.meteredusage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -18,11 +18,12 @@ import org.springframework.http.HttpStatus;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.APIResult;
-import com.appdirect.sdk.meteredUsage.exception.APIErrorCode;
-import com.appdirect.sdk.meteredUsage.model.MeteredUsageItem;
-import com.appdirect.sdk.meteredUsage.model.MeteredUsageRequestAccepted;
-import com.appdirect.sdk.meteredUsage.mother.MeteredUsageItemMother;
-import com.appdirect.sdk.meteredUsage.service.MeteredUsageApiClientServiceImpl;
+import com.appdirect.sdk.appmarket.events.ErrorCode;
+import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
+import com.appdirect.sdk.meteredusage.model.MeteredUsageItem;
+import com.appdirect.sdk.meteredusage.model.MeteredUsageResponse;
+import com.appdirect.sdk.meteredusage.mother.MeteredUsageItemMother;
+import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.utils.ConstantUtils;
 import com.google.inject.internal.Lists;
 import okhttp3.MediaType;
@@ -47,7 +48,9 @@ public class MeteredUsageApiClientServiceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		meteredUsageApiClientService = spy(new MeteredUsageApiClientServiceImpl(meteredUsageRetrofitBuilder, credentialsSupplier));
+		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper(meteredUsageRetrofitBuilder);
+
+		meteredUsageApiClientService = spy(new MeteredUsageApiClientServiceImpl(credentialsSupplier, oAuth1RetrofitWrapper));
 
 		when(credentialsSupplier.getConsumerCredentials(ConstantUtils.CONSUMER_KEY)).thenReturn(new Credentials(ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET));
 	}
@@ -55,19 +58,19 @@ public class MeteredUsageApiClientServiceTest {
 	@Test
 	public void testBillUsage_noErrors() {
 
-		MeteredUsageRequestAccepted requestAccepted = new MeteredUsageRequestAccepted(ConstantUtils.REQUEST_ID, ConstantUtils.IDEMPOTENCY_KEY);
+		MeteredUsageResponse requestAccepted = new MeteredUsageResponse(ConstantUtils.REQUEST_ID, ConstantUtils.IDEMPOTENCY_KEY);
 
 		MeteredUsageItem meteredUsageItem = MeteredUsageItemMother.basic().build();
 
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
-		Response<MeteredUsageRequestAccepted> response = buildResponse(requestAccepted);
-		Call<MeteredUsageRequestAccepted> call = new RetrofitCallStub(response).getCall();
+		Response<MeteredUsageResponse> response = buildResponse(requestAccepted);
+		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(any(), any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi( any());
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -80,23 +83,23 @@ public class MeteredUsageApiClientServiceTest {
 		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
-		Response<MeteredUsageRequestAccepted> response = buildResponse(httpStatus, APIErrorCode.UNKNOWN.getDescription());
-		Call<MeteredUsageRequestAccepted> call = new RetrofitCallStub(response).getCall();
+		Response<MeteredUsageResponse> response = buildResponse(httpStatus, ErrorCode.UNKNOWN_ERROR.toString());
+		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(any(), any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi( any());
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
 
 		assertThat(result.isSuccess()).isFalse();
 	}
 
-	private Response<MeteredUsageRequestAccepted> buildResponse(MeteredUsageRequestAccepted meteredUsageRequestAccepted) {
-		return Response.success(meteredUsageRequestAccepted);
+	private Response<MeteredUsageResponse> buildResponse(MeteredUsageResponse meteredUsageResponse) {
+		return Response.success(meteredUsageResponse);
 	}
 
-	private Response<MeteredUsageRequestAccepted> buildResponse(HttpStatus status, String body) {
+	private Response<MeteredUsageResponse> buildResponse(HttpStatus status, String body) {
 		ResponseBody responseBody = ResponseBody.create(MediaType.parse(body), body);
 		return Response.error(status.value(), responseBody);
 	}

@@ -1,4 +1,4 @@
-package com.appdirect.sdk.meteredUsage.model;
+package com.appdirect.sdk.meteredusage.model;
 
 import java.util.ArrayList;
 import java.util.List;

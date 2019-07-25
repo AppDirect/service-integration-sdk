@@ -1,34 +1,29 @@
-package com.appdirect.sdk.meteredUsage.config;
+package com.appdirect.sdk.meteredusage.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 
-@Configuration
-public class MeteredUsageRetrofitConfiguration {
+@Component
+public class OAuth1RetrofitWrapper {
+	private Retrofit.Builder builder;
 
 	@Autowired
-	public MeteredUsageRetrofitConfiguration() {
-
+	public OAuth1RetrofitWrapper(@Qualifier("meteredUsageRetrofitBuilder") Retrofit.Builder meteredUsageRetrofitBuilder) {
+		this.builder = meteredUsageRetrofitBuilder;
 	}
 
-	@Bean(name = "meteredUsageRetrofitBuilder")
-	@Qualifier("meteredUsageRetrofitBuilder")
-	public Retrofit.Builder meteredUsageRetrofitBuilder() {
-		Retrofit.Builder builder = new Retrofit.Builder()
-				.addConverterFactory(jacksonConverterFactory());
-
-		return builder;
+	public Retrofit sign(String key, String secret) {
+		return builder.client(getOkHttpOAuthConsumer(key, secret))
+				.build();
 	}
 
-	public static OkHttpClient getOkHttpOAuthConsumer(String key, String secret) {
+	private OkHttpClient getOkHttpOAuthConsumer(String key, String secret) {
 		final OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
 		// Add a logging interceptor to capture incoming/outgoing calls.
@@ -40,9 +35,5 @@ public class MeteredUsageRetrofitConfiguration {
 
 		builder.addNetworkInterceptor(new ChainableSigningInterceptor(consumer));
 		return builder.build();
-	}
-
-	private JacksonConverterFactory jacksonConverterFactory() {
-		return JacksonConverterFactory.create();
 	}
 }
