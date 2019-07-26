@@ -30,8 +30,6 @@ import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class MeteredUsageApiClientServiceTest {
 
@@ -40,15 +38,11 @@ public class MeteredUsageApiClientServiceTest {
 
 	private MeteredUsageApiClientServiceImpl meteredUsageApiClientService;
 
-	private Retrofit.Builder meteredUsageRetrofitBuilder = new Retrofit.Builder()
-			.baseUrl(ConstantUtils.BASE_URL)
-			.addConverterFactory(JacksonConverterFactory.create());
-
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper(meteredUsageRetrofitBuilder);
+		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper(ConstantUtils.BASE_URL);
 
 		meteredUsageApiClientService = spy(new MeteredUsageApiClientServiceImpl(credentialsSupplier, oAuth1RetrofitWrapper));
 

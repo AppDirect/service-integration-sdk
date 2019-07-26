@@ -14,6 +14,7 @@
 package com.appdirect.sdk.appmarket.events;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,14 +33,13 @@ import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import retrofit2.Retrofit;
 
 @Configuration
 public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketBillingClient appmarketBillingReporter(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-																												 @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
+														   @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
 		return new AppmarketBillingClient(billingRestTemplateFactory(), credentialsSupplier, mapper);
 	}
 
@@ -49,20 +49,20 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper(@Qualifier("meteredUsageRetrofitBuilder") Retrofit.Builder meteredUsageRetrofitBuilder) {
-		return new OAuth1RetrofitWrapper(meteredUsageRetrofitBuilder);
+	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper(@Value("${meteredUsage.baseUrl:http://metered-usage}") String baseUrl) {
+		return new OAuth1RetrofitWrapper(baseUrl);
 	}
 
 	@Bean
 	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-																										@Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
+													  @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
 		return new AppmarketEventClient(appMarketRestTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-																										 AppmarketEventDispatcher eventDispatcher,
-																										 AppmarketEventClient appmarketEventClient) {
+													   AppmarketEventDispatcher eventDispatcher,
+													   AppmarketEventClient appmarketEventClient) {
 		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
 	}
 
