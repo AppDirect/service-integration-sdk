@@ -1,21 +1,21 @@
 package com.appdirect.sdk.meteredusage.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 
 @Component
 public class OAuth1RetrofitWrapper {
 	private Retrofit.Builder builder;
 
-	@Autowired
-	public OAuth1RetrofitWrapper(@Qualifier("meteredUsageRetrofitBuilder") Retrofit.Builder meteredUsageRetrofitBuilder) {
-		this.builder = meteredUsageRetrofitBuilder;
+	public OAuth1RetrofitWrapper(String baseUrl) {
+		this.builder = new Retrofit.Builder()
+				.baseUrl(baseUrl)
+				.addConverterFactory(JacksonConverterFactory.create());
 	}
 
 	public Retrofit sign(String key, String secret) {

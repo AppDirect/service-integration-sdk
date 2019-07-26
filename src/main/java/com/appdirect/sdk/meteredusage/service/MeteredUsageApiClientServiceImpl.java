@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
@@ -54,7 +55,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	@Override
 	public APIResult reportUsage(String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems) {
 
-		Preconditions.checkArgument(meteredUsageItems != null && !meteredUsageItems.isEmpty(), "Usage data to report must not be empty");
+		Preconditions.checkArgument(!CollectionUtils.isEmpty(meteredUsageItems), "Usage data to report must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(idempotentKey), "IdempotentKey must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(secretKey), "Secret Key must not be empty");
 
