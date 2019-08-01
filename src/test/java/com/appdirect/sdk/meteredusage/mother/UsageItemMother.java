@@ -1,5 +1,10 @@
 package com.appdirect.sdk.meteredusage.mother;
 
+import java.math.BigDecimal;
+import java.util.Currency;
+import java.util.Locale;
+
+import com.appdirect.sdk.appmarket.events.PricingUnit;
 import com.appdirect.sdk.meteredusage.model.UsageItem;
 import com.appdirect.sdk.utils.ConstantUtils;
 import com.google.inject.internal.Lists;
@@ -7,12 +12,12 @@ import com.google.inject.internal.Lists;
 public class UsageItemMother {
 	public static UsageItem.UsageItemBuilder basic() {
 		return UsageItem.builder()
-				.unitPrice(ConstantUtils.UNIT_PRICE)
-				.quantity(ConstantUtils.QUANTITY)
+				.unitPrice(BigDecimal.ONE)
+				.quantity(BigDecimal.ONE)
 				.description(ConstantUtils.DESCRIPTION)
-				.currency(ConstantUtils.CURRENCY)
+				.currency(Currency.getInstance(Locale.US))
 				.customUnit(ConstantUtils.CUSTOM_UNIT)
-				.pricingUnit(ConstantUtils.PRICING_UNIT)
+				.pricingUnit(PricingUnit.UNIT)
 				.attributesList(Lists.newArrayList(AttributeItemMother.basic().build()));
 	}
 }
