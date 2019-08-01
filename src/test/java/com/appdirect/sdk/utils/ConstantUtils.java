@@ -9,12 +9,8 @@ public class ConstantUtils {
 
 	public static final String ACCOUNT_ID = "AccountId";
 
-	public static final String UNIT_PRICE = "10";
-	public static final String QUANTITY = "2";
 	public static final String DESCRIPTION = "Description";
-	public static final String CURRENCY = "USD";
 	public static final String CUSTOM_UNIT = "PC";
-	public static final String PRICING_UNIT = "UN";
 
 	public static final String ATTRIBUTE_KEY = "AttributeKey";
 	public static final String ATTRIBUTE_VALUE = "AttributeValue";
