@@ -22,6 +22,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import com.appdirect.sdk.meteredusage.model.AttributeItem;
+
 /**
  * Contains all relevant information of an order placed using a {@link SubscriptionOrder} event
  */
@@ -35,4 +37,5 @@ public class OrderInfo {
 	private String addonOfferingCode;
 	private PricingDuration pricingDuration;
 	private List<OrderItemInfo> items = new ArrayList<>();
+	private List<AttributeItem> customAttributes;
 }
