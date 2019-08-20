@@ -5,7 +5,7 @@ addons:
     packages:
     - libxml2-utils
 
-jdk: oraclejdk8
+jdk: openjdk8
 
 script: mvn source:jar javadoc:jar test -B
 
