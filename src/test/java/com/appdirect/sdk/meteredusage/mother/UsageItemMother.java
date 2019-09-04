@@ -7,7 +7,7 @@ import java.util.Locale;
 import com.appdirect.sdk.appmarket.events.PricingUnit;
 import com.appdirect.sdk.meteredusage.model.UsageItem;
 import com.appdirect.sdk.utils.ConstantUtils;
-import com.google.inject.internal.Lists;
+import com.google.inject.internal.Maps;
 
 public class UsageItemMother {
 	public static UsageItem.UsageItemBuilder basic() {
@@ -18,6 +18,6 @@ public class UsageItemMother {
 				.currency(Currency.getInstance(Locale.US))
 				.customUnit(ConstantUtils.CUSTOM_UNIT)
 				.pricingUnit(PricingUnit.UNIT)
-				.attributesList(Lists.newArrayList(AttributeItemMother.basic().build()));
+				.attributes(Maps.newHashMap());
 	}
 }

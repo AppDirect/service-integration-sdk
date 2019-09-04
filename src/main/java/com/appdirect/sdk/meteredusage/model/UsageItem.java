@@ -2,7 +2,7 @@ package com.appdirect.sdk.meteredusage.model;
 
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +24,6 @@ public class UsageItem {
 	private BigDecimal unitPrice;
 	private String description;
 	private Currency currency;
-	private List<AttributeItem> attributesList;
+	private Map<String, String> attributes = null;
 }
 
