@@ -24,6 +24,6 @@ public class UsageItem {
 	private BigDecimal unitPrice;
 	private String description;
 	private Currency currency;
-	private Map<String, String> attributes = null;
+	private Map<String, String> attributes;
 }
 
