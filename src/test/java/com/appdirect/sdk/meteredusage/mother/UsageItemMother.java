@@ -18,6 +18,8 @@ public class UsageItemMother {
 				.currency(Currency.getInstance(Locale.US))
 				.customUnit(ConstantUtils.CUSTOM_UNIT)
 				.pricingUnit(PricingUnit.UNIT)
-				.attributes(Maps.newHashMap());
+				.attributes(Maps.newHashMap())
+				.eventDate(ConstantUtils.EVENT_DATE)
+				.eventId(ConstantUtils.EVENT_ID);
 	}
 }
