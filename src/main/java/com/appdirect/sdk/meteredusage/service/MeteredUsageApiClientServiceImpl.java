@@ -38,32 +38,32 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	}
 
 	@Override
-	public APIResult reportUsage(String secretKey, String idempotentKey, MeteredUsageItem meteredUsageItem) {
-		return reportUsage(secretKey, idempotentKey, Lists.newArrayList(meteredUsageItem));
+	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, MeteredUsageItem meteredUsageItem) {
+		return reportUsage(baseUrl, secretKey, idempotentKey, Lists.newArrayList(meteredUsageItem));
 	}
 
 	@Override
-	public APIResult reportUsage(String secretKey, MeteredUsageItem meteredUsageItem) {
-		return reportUsage(secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem));
+	public APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem) {
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem));
 	}
 
 	@Override
-	public APIResult reportUsage(String secretKey, List<MeteredUsageItem> meteredUsageItems) {
-		return reportUsage(secretKey, UUID.randomUUID().toString(), meteredUsageItems);
+	public APIResult reportUsage(String baseUrl, String secretKey, List<MeteredUsageItem> meteredUsageItems) {
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), meteredUsageItems);
 	}
 
 	@Override
-	public APIResult reportUsage(String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems) {
-
-		Preconditions.checkArgument(!CollectionUtils.isEmpty(meteredUsageItems), "Usage data to report must not be empty");
-		Preconditions.checkArgument(!StringUtils.isEmpty(idempotentKey), "IdempotentKey must not be empty");
+	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems) {
+		Preconditions.checkArgument(!StringUtils.isEmpty(baseUrl), "Base URL must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(secretKey), "Secret Key must not be empty");
+		Preconditions.checkArgument(!StringUtils.isEmpty(idempotentKey), "IdempotentKey must not be empty");
+		Preconditions.checkArgument(!CollectionUtils.isEmpty(meteredUsageItems), "Usage data to report must not be empty");
 
 		// Create Request
 		MeteredUsageRequest meteredUsageRequest = createMeteredUsageRequest(idempotentKey, meteredUsageItems);
 
 		// Create API
-		MeteredUsageApi meteredUsageApi = createMeteredUsageApi(secretKey);
+		MeteredUsageApi meteredUsageApi = createMeteredUsageApi(baseUrl, secretKey);
 
 		try {
 			return processResponse(meteredUsageApi.meteredUsageCall(meteredUsageRequest).execute());
@@ -81,9 +81,12 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		return new APIResult(false, String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), response.message()));
 	}
 
-	public MeteredUsageApi createMeteredUsageApi(String key) {
+	public MeteredUsageApi createMeteredUsageApi(String baseUrl, String key) {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
-		return oAuth1RetrofitWrapper.sign(key, secret)
+		return oAuth1RetrofitWrapper
+				.baseUrl(baseUrl)
+				.sign(key, secret)
+				.build()
 				.create(MeteredUsageApi.class);
 	}
 
