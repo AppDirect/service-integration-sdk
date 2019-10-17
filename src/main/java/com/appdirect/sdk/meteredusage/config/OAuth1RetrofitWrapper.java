@@ -10,30 +10,46 @@ import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 
 @Component
 public class OAuth1RetrofitWrapper {
-	private Retrofit.Builder builder;
+	private Retrofit.Builder retrofitBuilder;
 
-	public OAuth1RetrofitWrapper(String baseUrl) {
-		this.builder = new Retrofit.Builder()
-				.baseUrl(baseUrl)
-				.addConverterFactory(JacksonConverterFactory.create());
+	public OAuth1RetrofitWrapper() {
+		this.retrofitBuilder = new Retrofit.Builder().addConverterFactory(JacksonConverterFactory.create());
 	}
 
-	public Retrofit sign(String key, String secret) {
-		return builder.client(getOkHttpOAuthConsumer(key, secret))
-				.build();
+	/**
+	 * Method used to set the baseUrl for the requests
+	 */
+	public OAuth1RetrofitWrapper baseUrl(String baseUrl) {
+		retrofitBuilder = retrofitBuilder.baseUrl(baseUrl);
+		return this;
 	}
 
-	private OkHttpClient getOkHttpOAuthConsumer(String key, String secret) {
-		final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+	/**
+	 * Method used to sign with the given oauthConsumerKey and oauthConsumerSecret
+	 */
+	public OAuth1RetrofitWrapper sign(String oauthConsumerKey, String oauthConsumerSecret) {
+		configureOkHttpClient(oauthConsumerKey, oauthConsumerSecret);
+		return this;
+	}
+
+	/**
+	 * Method used to obtain the {@link Retrofit} class used for the API calls
+	 */
+	public Retrofit build() {
+		return retrofitBuilder.build();
+	}
+
+	private void configureOkHttpClient(String oauthConsumerKey, String oauthConsumerSecret) {
+		final OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
 
 		// Add a logging interceptor to capture incoming/outgoing calls.
 		HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
 		httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-		builder.addInterceptor(httpLoggingInterceptor);
+		okHttpClientBuilder.addInterceptor(httpLoggingInterceptor);
 
-		OkHttpOAuthConsumer consumer = new OkHttpOAuthConsumer(key, secret);
+		OkHttpOAuthConsumer consumer = new OkHttpOAuthConsumer(oauthConsumerKey, oauthConsumerSecret);
 
-		builder.addNetworkInterceptor(new ChainableSigningInterceptor(consumer));
-		return builder.build();
+		okHttpClientBuilder.addNetworkInterceptor(new ChainableSigningInterceptor(consumer));
+		retrofitBuilder = retrofitBuilder.client(okHttpClientBuilder.build());
 	}
 }

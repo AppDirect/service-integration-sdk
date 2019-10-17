@@ -49,8 +49,8 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper(@Value("${meteredUsage.baseUrl:http://metered-usage}") String baseUrl) {
-		return new OAuth1RetrofitWrapper(baseUrl);
+	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper() {
+		return new OAuth1RetrofitWrapper();
 	}
 
 	@Bean

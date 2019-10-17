@@ -42,7 +42,7 @@ public class MeteredUsageApiClientServiceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper(ConstantUtils.BASE_URL);
+		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper();
 
 		meteredUsageApiClientService = spy(new MeteredUsageApiClientServiceImpl(credentialsSupplier, oAuth1RetrofitWrapper));
 
@@ -62,9 +62,9 @@ public class MeteredUsageApiClientServiceTest {
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi( any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -82,9 +82,9 @@ public class MeteredUsageApiClientServiceTest {
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi( any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL,  ConstantUtils.CONSUMER_KEY);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
 
 		assertThat(result.isSuccess()).isFalse();
 	}
