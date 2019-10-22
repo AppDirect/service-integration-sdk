@@ -161,9 +161,7 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.6.1</version>
         </dependency>
-
     </dependencies>
-    
 
     <build>
         <plugins>
