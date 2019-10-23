@@ -1,6 +1,6 @@
 package com.appdirect.sdk.utils;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class ConstantUtils {
 	public static final String BASE_URL = "https://localhost:8080/";
@@ -17,6 +17,6 @@ public class ConstantUtils {
 	public static final String ATTRIBUTE_KEY = "AttributeKey";
 	public static final String ATTRIBUTE_VALUE = "AttributeValue";
 
-	public static final LocalDateTime EVENT_DATE = LocalDateTime.now();
+	public static final ZonedDateTime EVENT_DATE = ZonedDateTime.now();
 	public static final String EVENT_ID = "EventId";
 }
