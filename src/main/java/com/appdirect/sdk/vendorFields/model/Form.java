@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Form {
-
+	private String title;
 	private List<VendorRequiredField> fields;
 	private int order;
 }
