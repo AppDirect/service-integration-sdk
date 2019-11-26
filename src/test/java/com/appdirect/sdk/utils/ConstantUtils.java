@@ -7,6 +7,7 @@ public class ConstantUtils {
 	public static final String CONSUMER_KEY = "ConsumerKey";
 	public static final String CONSUMER_SECRET = "ConsumerSecret";
 	public static final String IDEMPOTENCY_KEY = "IdempotencyKey";
+	public static final boolean BILLABLE = true;
 	public static final String REQUEST_ID = "RequestId";
 
 	public static final String ACCOUNT_ID = "AccountId";
