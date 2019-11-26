@@ -38,29 +38,29 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	}
 
 	@Override
-	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, MeteredUsageItem meteredUsageItem) {
-		return reportUsage(baseUrl, secretKey, idempotentKey, Lists.newArrayList(meteredUsageItem));
+	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, MeteredUsageItem meteredUsageItem, boolean billable) {
+		return reportUsage(baseUrl, secretKey, idempotentKey, Lists.newArrayList(meteredUsageItem), billable);
 	}
 
 	@Override
-	public APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem) {
-		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem));
+	public APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable) {
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable);
 	}
 
 	@Override
-	public APIResult reportUsage(String baseUrl, String secretKey, List<MeteredUsageItem> meteredUsageItems) {
-		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), meteredUsageItems);
+	public APIResult reportUsage(String baseUrl, String secretKey, List<MeteredUsageItem> meteredUsageItems, boolean billable) {
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), meteredUsageItems, billable);
 	}
 
 	@Override
-	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems) {
+	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable) {
 		Preconditions.checkArgument(!StringUtils.isEmpty(baseUrl), "Base URL must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(secretKey), "Secret Key must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(idempotentKey), "IdempotentKey must not be empty");
 		Preconditions.checkArgument(!CollectionUtils.isEmpty(meteredUsageItems), "Usage data to report must not be empty");
 
 		// Create Request
-		MeteredUsageRequest meteredUsageRequest = createMeteredUsageRequest(idempotentKey, meteredUsageItems);
+		MeteredUsageRequest meteredUsageRequest = createMeteredUsageRequest(idempotentKey, meteredUsageItems, billable);
 
 		// Create API
 		MeteredUsageApi meteredUsageApi = createMeteredUsageApi(baseUrl, secretKey);
@@ -90,9 +90,10 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 				.create(MeteredUsageApi.class);
 	}
 
-	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem) {
+	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable) {
 		return MeteredUsageRequest.builder()
 				.idempotencyKey(idempotentKey)
+				.billable(billable)
 				.usages(meteredUsageItem)
 				.build();
 	}

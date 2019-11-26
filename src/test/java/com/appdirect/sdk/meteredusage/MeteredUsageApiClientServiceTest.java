@@ -64,7 +64,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -84,7 +84,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL,  ConstantUtils.CONSUMER_KEY);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE);
 
 		assertThat(result.isSuccess()).isFalse();
 	}
