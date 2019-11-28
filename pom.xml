@@ -22,6 +22,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <com.google.guava.version>28.1-jre</com.google.guava.version>
     </properties>
 
     <parent>
@@ -89,6 +90,12 @@
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
             <artifactId>spring-hateoas</artifactId>
+        </dependency>
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${com.google.guava.version}</version>
         </dependency>
         <!-- Testing -->
         <dependency>

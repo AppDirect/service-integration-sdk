@@ -62,7 +62,7 @@ public class MeteredUsageApiClientServiceTest {
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY);
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
 		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE);
 
