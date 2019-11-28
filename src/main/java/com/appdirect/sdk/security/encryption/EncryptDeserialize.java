@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import lombok.AllArgsConstructor;
 
+import com.appdirect.sdk.security.encryption.service.EncryptionService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
