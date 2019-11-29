@@ -65,7 +65,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_SECRET);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -83,9 +83,9 @@ public class MeteredUsageApiClientServiceTest {
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL,  ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_SECRET);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
 		assertThat(result.isSuccess()).isFalse();
 	}
@@ -105,7 +105,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, null);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, null);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, null);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -123,9 +123,9 @@ public class MeteredUsageApiClientServiceTest {
 		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
-		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL,  ConstantUtils.CONSUMER_KEY, null);
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, null);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, null);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, null);
 
 		assertThat(result.isSuccess()).isFalse();
 	}
