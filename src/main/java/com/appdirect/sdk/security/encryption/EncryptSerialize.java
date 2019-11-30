@@ -2,7 +2,7 @@ package com.appdirect.sdk.security.encryption;
 
 import java.io.IOException;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import com.appdirect.sdk.security.encryption.service.EncryptionService;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EncryptSerialize extends JsonSerializer<String> {
 
 	private EncryptionService encryptionService;
