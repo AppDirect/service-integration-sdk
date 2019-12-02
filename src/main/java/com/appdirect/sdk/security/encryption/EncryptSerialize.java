@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 @RequiredArgsConstructor
 public class EncryptSerialize extends JsonSerializer<String> {
 
-	private EncryptionService encryptionService;
+	private final EncryptionService encryptionService;
 
 	@Override
 	public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
