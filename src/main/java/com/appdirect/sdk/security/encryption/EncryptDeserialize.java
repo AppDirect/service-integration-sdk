@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 @RequiredArgsConstructor
 public class EncryptDeserialize extends JsonDeserializer<String> {
 
-	private EncryptionService encryptionService;
+	private final EncryptionService encryptionService;
 
 	@Override
 	public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
