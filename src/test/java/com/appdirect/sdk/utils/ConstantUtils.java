@@ -20,4 +20,7 @@ public class ConstantUtils {
 
 	public static final ZonedDateTime EVENT_DATE = ZonedDateTime.now();
 	public static final String EVENT_ID = "EventId";
+
+	public static final String TEST_ENCRYPTION_DATA = "Test Encryption Data";
+	public static final String ENCRYPTED_DATA = "3k6xRbfgNTZwz76WFwoBdt/KDX3C0U/yonosIMSvbVg=";
 }
