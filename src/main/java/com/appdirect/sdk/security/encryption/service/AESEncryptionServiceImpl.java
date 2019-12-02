@@ -17,8 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.appdirect.sdk.security.encryption.EncryptionException;
-
-
+import com.google.common.annotations.VisibleForTesting;
 
 @Slf4j
 @Service
@@ -58,7 +57,8 @@ public class AESEncryptionServiceImpl implements EncryptionService {
 		}
 	}
 
-	String getKey() {
+	@VisibleForTesting
+	public String getKey() {
 		int keyLength = key.length();
 		if (!acceptedKeyLengths.isEmpty()) {
 			Integer min = acceptedKeyLengths.stream().min(Integer::compareTo).orElse(0);
