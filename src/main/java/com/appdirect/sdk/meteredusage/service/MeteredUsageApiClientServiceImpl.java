@@ -55,7 +55,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable) {
-		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, null);
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret);
 	}
 
 	@Override
@@ -96,9 +96,6 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 
 	@VisibleForTesting
 	MeteredUsageApi createMeteredUsageApi(String baseUrl, String secretKey, String secret) {
-		if (StringUtils.isEmpty(secret)) {
-			secret = credentialsSupplier.getConsumerCredentials(secretKey).developerSecret;
-		}
 		return oAuth1RetrofitWrapper
 			.baseUrl(baseUrl)
 			.sign(secretKey, secret)
