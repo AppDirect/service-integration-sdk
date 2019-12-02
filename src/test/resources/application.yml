@@ -11,3 +11,7 @@ authentication:
     user:
       - ROLE_THREE
       - ROLE_FOUR
+
+encryption:
+  key: 16CharRandom_val
+  initVector: 16CharRandom_val
