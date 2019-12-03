@@ -1,7 +1,11 @@
 package com.appdirect.sdk.meteredusage.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import brave.Tracing;
+import brave.okhttp3.TracingInterceptor;
+import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -10,6 +14,9 @@ import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 
 @Component
 public class OAuth1RetrofitWrapper {
+	@Autowired(required = false)
+	private Tracing tracing;
+
 	private Retrofit.Builder retrofitBuilder;
 
 	public OAuth1RetrofitWrapper() {
@@ -41,6 +48,11 @@ public class OAuth1RetrofitWrapper {
 
 	private void configureOkHttpClient(String oauthConsumerKey, String oauthConsumerSecret) {
 		final OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+
+		if(tracing != null){
+			okHttpClientBuilder.dispatcher(new Dispatcher(tracing.currentTraceContext().executorService(new Dispatcher().executorService())))
+				.addNetworkInterceptor(TracingInterceptor.create(tracing));
+		}
 
 		// Add a logging interceptor to capture incoming/outgoing calls.
 		HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
