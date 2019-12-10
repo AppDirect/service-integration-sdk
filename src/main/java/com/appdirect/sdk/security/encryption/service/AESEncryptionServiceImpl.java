@@ -13,7 +13,6 @@ import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.appdirect.sdk.security.encryption.EncryptionException;
@@ -31,11 +30,10 @@ public class AESEncryptionServiceImpl implements EncryptionService {
 	private final String initVector;
 	private final Set<Integer> acceptedKeyLengths;
 
-	public AESEncryptionServiceImpl(@Value("${encryption.key}") String key,
-									@Value("${encryption.initVector}") String initVector) {
+	public AESEncryptionServiceImpl(String key, String initVector) {
 		this.key = key;
 		this.initVector = initVector;
-		this.acceptedKeyLengths = new HashSet(Arrays.asList(16,24,32));
+		this.acceptedKeyLengths = new HashSet(Arrays.asList(16, 24, 32));
 	}
 
 	@Override
