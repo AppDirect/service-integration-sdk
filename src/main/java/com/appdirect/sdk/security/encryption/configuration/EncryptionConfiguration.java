@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.security.encryption.EncryptDeserialize;
 import com.appdirect.sdk.security.encryption.EncryptSerialize;
+import com.appdirect.sdk.security.encryption.converter.EncryptedFieldConverter;
 import com.appdirect.sdk.security.encryption.service.AESEncryptionServiceImpl;
 import com.appdirect.sdk.security.encryption.service.EncryptionService;
 
@@ -30,5 +31,10 @@ public class EncryptionConfiguration {
 	@Bean
 	public EncryptionService encryptionService() {
 		return new AESEncryptionServiceImpl(key, initVector);
+	}
+
+	@Bean
+	public EncryptedFieldConverter encryptedFieldConverter() {
+		return new EncryptedFieldConverter();
 	}
 }
