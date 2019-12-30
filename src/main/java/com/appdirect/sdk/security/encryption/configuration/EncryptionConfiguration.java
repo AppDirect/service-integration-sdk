@@ -1,15 +1,20 @@
 package com.appdirect.sdk.security.encryption.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 
 import com.appdirect.sdk.security.encryption.EncryptDeserialize;
 import com.appdirect.sdk.security.encryption.EncryptSerialize;
 import com.appdirect.sdk.security.encryption.service.AESEncryptionServiceImpl;
 import com.appdirect.sdk.security.encryption.service.EncryptionService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan
+@SpringBootConfiguration
 public class EncryptionConfiguration {
 
 	@Value("${encryption.key}")
