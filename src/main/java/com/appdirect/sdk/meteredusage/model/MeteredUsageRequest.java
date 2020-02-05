@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class MeteredUsageRequest {
 	private String idempotencyKey;
 	private boolean billable;
+	private String sourceType;
 	private List<MeteredUsageItem> usages = new ArrayList<>();
 }
 
