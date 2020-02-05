@@ -49,39 +49,54 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	}
 
 	@Override
+	public APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType) {
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, sourceType);
+	}
+
+	@Override
 	public APIResult reportUsage(String baseUrl, String secretKey, List<MeteredUsageItem> meteredUsageItems, boolean billable) {
 		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), meteredUsageItems, billable);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable) {
-		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret);
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, org.apache.commons.lang3.StringUtils.EMPTY);
+	}
+
+	@Override
+	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String sourceType) {
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String idempotentKey, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret) {
-		return reportUsage(baseUrl, idempotentKey, Lists.newArrayList(meteredUsageItem), billable, secretKey, secret);
+		return reportUsage(baseUrl, idempotentKey, Lists.newArrayList(meteredUsageItem), billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret) {
-		return reportUsage(baseUrl, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, secretKey, secret);
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret) {
-		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, secret);
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), meteredUsageItems, billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
 	}
 
 	@Override
-	public APIResult reportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret) {
+	public APIResult reportUsage(String baseUrl, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret, String sourceType) {
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, secretKey, secret, sourceType);
+	}
+
+	@Override
+	public APIResult reportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret, String sourceType) {
 		Preconditions.checkArgument(!StringUtils.isEmpty(baseUrl), "Base URL must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(secretKey), "Secret Key must not be empty");
 		Preconditions.checkArgument(!StringUtils.isEmpty(idempotentKey), "IdempotentKey must not be empty");
 		Preconditions.checkArgument(!CollectionUtils.isEmpty(meteredUsageItems), "Usage data to report must not be empty");
 
 		// Create Request
-		MeteredUsageRequest meteredUsageRequest = createMeteredUsageRequest(idempotentKey, meteredUsageItems, billable);
+		MeteredUsageRequest meteredUsageRequest = createMeteredUsageRequest(idempotentKey, meteredUsageItems, billable, sourceType);
 
 		// Create API
 		MeteredUsageApi meteredUsageApi = createMeteredUsageApi(baseUrl, secretKey, secret);
@@ -111,11 +126,12 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		return new APIResult(false, String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), response.message()));
 	}
 
-	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable) {
+	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable, String sourceType) {
 		return MeteredUsageRequest.builder()
 			.idempotencyKey(idempotentKey)
 			.billable(billable)
 			.usages(meteredUsageItem)
+			.sourceType(sourceType)
 			.build();
 	}
 }

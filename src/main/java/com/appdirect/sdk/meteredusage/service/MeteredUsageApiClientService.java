@@ -71,6 +71,22 @@ public interface MeteredUsageApiClientService {
 	 * Calls the Metered Usage API Endpoint to bill usages.
 	 * This should be used instead of {@link AppmarketBillingClient} as this replaces the old API version.
 	 *
+	 * @param baseUrl           from the request
+	 * @param secretKey         to sign the request
+	 * @param idempotentKey     to make unique calls
+	 * @param meteredUsageItems list of usages to be reported
+	 * @param billable          specifies if the usage to be reported is billable or estimated
+	 * @param sourceType        specifies the type of source that generate the report (ex. aws, azure_csp, azure_modern)
+	 * @return an {@link APIResult} instance representing the marketplace response
+	 * <p>
+	 * throws an {@link MeteredUsageApiException} to the client with an error code and a status:
+	 */
+	APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String sourceType);
+
+	/**
+	 * Calls the Metered Usage API Endpoint to bill usages.
+	 * This should be used instead of {@link AppmarketBillingClient} as this replaces the old API version.
+	 *
 	 * @param baseUrl          from the request
 	 * @param secretKey        to sign the request
 	 * @param idempotentKey    to make unique calls
@@ -100,6 +116,21 @@ public interface MeteredUsageApiClientService {
 	 * Calls the Metered Usage API Endpoint to bill usages.
 	 * This should be used instead of {@link AppmarketBillingClient} as this replaces the old API version.
 	 *
+	 * @param baseUrl          from the request
+	 * @param secretKey        to sign the request
+	 * @param meteredUsageItem usage instance to be reported
+	 * @param billable         specifies if the usage to be reported is billable or estimated
+	 * @param sourceType       specifies the type of source that generate the report (ex. aws, azure_csp, azure_modern)
+	 * @return an {@link APIResult} instance representing the marketplace response
+	 * <p>
+	 * throws an {@link MeteredUsageApiException} to the client with an error code and a status:
+	 */
+	APIResult reportUsage(String baseUrl, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret, String sourceType);
+
+	/**
+	 * Calls the Metered Usage API Endpoint to bill usages.
+	 * This should be used instead of {@link AppmarketBillingClient} as this replaces the old API version.
+	 *
 	 * @param baseUrl           from the request
 	 * @param secretKey         to sign the request
 	 * @param meteredUsageItems list of usages to be reported
@@ -119,10 +150,25 @@ public interface MeteredUsageApiClientService {
 	 * @param idempotentKey     to make unique calls
 	 * @param meteredUsageItems list of usages to be reported
 	 * @param billable          specifies if the usage to be reported is billable or estimated
+	 * @param sourceType       specifies the type of source that generate the report (ex. aws, azure_csp, azure_modern)
 	 * @return an {@link APIResult} instance representing the marketplace response
 	 * <p>
 	 * throws an {@link MeteredUsageApiException} to the client with an error code and a status:
 	 */
-	APIResult reportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret);
+	APIResult reportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret, String sourceType);
 
+	/**
+	 * Calls the Metered Usage API Endpoint to bill usages.
+	 * This should be used instead of {@link AppmarketBillingClient} as this replaces the old API version.
+	 *
+	 * @param baseUrl          from the request
+	 * @param secretKey        to sign the request
+	 * @param meteredUsageItem usage instance to be reported
+	 * @param billable         specifies if the usage to be reported is billable or estimated
+	 * @param sourceType       specifies the type of source that generate the report (ex. aws, azure_csp, azure_modern)
+	 * @return an {@link APIResult} instance representing the marketplace response
+	 * <p>
+	 * throws an {@link MeteredUsageApiException} to the client with an error code and a status:
+	 */
+	APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType);
 }

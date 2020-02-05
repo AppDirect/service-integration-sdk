@@ -65,7 +65,27 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET, ConstantUtils.EMPTY_SOURCE_TYPE);
+
+		assertThat(result.isSuccess()).isTrue();
+	}
+
+	@Test
+	public void testSourceTypeUsage_noErrors() {
+
+		MeteredUsageResponse requestAccepted = new MeteredUsageResponse(ConstantUtils.REQUEST_ID, ConstantUtils.IDEMPOTENCY_KEY);
+
+		MeteredUsageItem meteredUsageItem = MeteredUsageItemMother.basic().build();
+
+		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
+		Response<MeteredUsageResponse> response = buildResponse(requestAccepted);
+		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
+		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
+
+		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
+
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET, ConstantUtils.SOURCE_TYPE);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -85,7 +105,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET,  ConstantUtils.EMPTY_SOURCE_TYPE);
 
 		assertThat(result.isSuccess()).isFalse();
 	}
@@ -105,7 +125,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, null);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, null);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, null, ConstantUtils.EMPTY_SOURCE_TYPE);
 
 		assertThat(result.isSuccess()).isTrue();
 	}
@@ -125,7 +145,7 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, null);
 
-		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, null);
+		APIResult result = meteredUsageApiClientService.reportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.BILLABLE, ConstantUtils.CONSUMER_KEY, null, ConstantUtils.EMPTY_SOURCE_TYPE);
 
 		assertThat(result.isSuccess()).isFalse();
 	}

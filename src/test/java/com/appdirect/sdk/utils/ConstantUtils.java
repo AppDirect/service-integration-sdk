@@ -2,6 +2,8 @@ package com.appdirect.sdk.utils;
 
 import java.time.ZonedDateTime;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ConstantUtils {
 	public static final String BASE_URL = "https://localhost:8080/";
 	public static final String CONSUMER_KEY = "ConsumerKey";
@@ -23,4 +25,8 @@ public class ConstantUtils {
 
 	public static final String TEST_ENCRYPTION_DATA = "Test Encryption Data";
 	public static final String ENCRYPTED_DATA = "3k6xRbfgNTZwz76WFwoBdt/KDX3C0U/yonosIMSvbVg=";
+
+	public static final String EMPTY_SOURCE_TYPE = StringUtils.EMPTY;
+	public static final String SOURCE_TYPE = "test-source-type";
+
 }
