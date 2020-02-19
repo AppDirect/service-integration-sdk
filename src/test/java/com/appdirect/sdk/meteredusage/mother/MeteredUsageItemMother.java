@@ -12,9 +12,6 @@ public class MeteredUsageItemMother {
 	}
 
 	public static MeteredUsageItem.MeteredUsageItemBuilder withSubscriptionId() {
-		return MeteredUsageItem.builder()
-			.accountId(ConstantUtils.ACCOUNT_ID)
-			.subscriptionId(ConstantUtils.SUBSCRIPTION_ID)
-			.usageList(Lists.newArrayList(UsageItemMother.basic().build()));
+		return basic().usageList(Lists.newArrayList(UsageItemMother.basic().build()));
 	}
 }
