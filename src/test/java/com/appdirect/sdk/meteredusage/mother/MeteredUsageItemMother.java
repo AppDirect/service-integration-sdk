@@ -12,6 +12,6 @@ public class MeteredUsageItemMother {
 	}
 
 	public static MeteredUsageItem.MeteredUsageItemBuilder withSubscriptionId() {
-		return basic().usageList(Lists.newArrayList(UsageItemMother.basic().build()));
+		return basic().subscriptionId(ConstantUtils.SUBSCRIPTION_ID);
 	}
 }
