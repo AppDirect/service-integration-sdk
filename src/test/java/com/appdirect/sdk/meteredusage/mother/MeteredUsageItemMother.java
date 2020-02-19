@@ -10,4 +10,11 @@ public class MeteredUsageItemMother {
 				.accountId(ConstantUtils.ACCOUNT_ID)
 				.usageList(Lists.newArrayList(UsageItemMother.basic().build()));
 	}
+
+	public static MeteredUsageItem.MeteredUsageItemBuilder withSubscriptionId() {
+		return MeteredUsageItem.builder()
+			.accountId(ConstantUtils.ACCOUNT_ID)
+			.subscriptionId(ConstantUtils.SUBSCRIPTION_ID)
+			.usageList(Lists.newArrayList(UsageItemMother.basic().build()));
+	}
 }
