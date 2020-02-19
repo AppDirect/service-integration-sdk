@@ -13,6 +13,7 @@ public class ConstantUtils {
 	public static final String REQUEST_ID = "RequestId";
 
 	public static final String ACCOUNT_ID = "AccountId";
+	public static final String SUBSCRIPTION_ID = "SubscriptionId";
 
 	public static final String DESCRIPTION = "Description";
 	public static final String CUSTOM_UNIT = "PC";
