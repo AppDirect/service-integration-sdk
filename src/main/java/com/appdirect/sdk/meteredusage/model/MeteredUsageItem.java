@@ -20,4 +20,9 @@ public class MeteredUsageItem {
 	@JsonInclude(Include.NON_NULL)
 	private String subscriptionId;
 	private List<UsageItem> usageList = new ArrayList<>();
+
+	public MeteredUsageItem(String accountId, List<UsageItem> usageList) {
+		this.accountId = accountId;
+		this.usageList = usageList;
+	}
 }
