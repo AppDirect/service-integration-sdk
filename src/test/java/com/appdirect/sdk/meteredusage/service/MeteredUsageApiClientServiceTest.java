@@ -166,7 +166,7 @@ public class MeteredUsageApiClientServiceTest {
 	}
 
 	@Test
-	public void testDONTSendSubscriptionIdInMeteredItem_doesntGetSerialized() {
+	public void testDONTSendSubscriptionIdInMeteredUsageItem_doesntGetSerialized() {
 
 		Call<MeteredUsageResponse> call = buildCall(MeteredUsageItemMother.basic().build());
 		String body = getCallBodyAsAString(call);
