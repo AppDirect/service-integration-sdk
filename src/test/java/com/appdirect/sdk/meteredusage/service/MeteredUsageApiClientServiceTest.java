@@ -30,7 +30,6 @@ import com.appdirect.sdk.meteredusage.model.MeteredUsageRequest;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageResponse;
 import com.appdirect.sdk.meteredusage.mother.MeteredUsageItemMother;
 import com.appdirect.sdk.utils.ConstantUtils;
-import com.google.inject.internal.Lists;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -65,7 +64,7 @@ public class MeteredUsageApiClientServiceTest {
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
 		Response<MeteredUsageResponse> response = buildResponse(requestAccepted);
 		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
-		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
@@ -85,7 +84,7 @@ public class MeteredUsageApiClientServiceTest {
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
 		Response<MeteredUsageResponse> response = buildResponse(requestAccepted);
 		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
-		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
@@ -105,7 +104,7 @@ public class MeteredUsageApiClientServiceTest {
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
 		Response<MeteredUsageResponse> response = buildResponse(httpStatus, ErrorCode.UNKNOWN_ERROR.toString());
 		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
-		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
@@ -125,7 +124,7 @@ public class MeteredUsageApiClientServiceTest {
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
 		Response<MeteredUsageResponse> response = buildResponse(requestAccepted);
 		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
-		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, null);
@@ -145,7 +144,7 @@ public class MeteredUsageApiClientServiceTest {
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
 		Response<MeteredUsageResponse> response = buildResponse(httpStatus, ErrorCode.UNKNOWN_ERROR.toString());
 		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
-		List<MeteredUsageItem> items = Lists.newArrayList(meteredUsageItem);
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
 
 		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, null);
