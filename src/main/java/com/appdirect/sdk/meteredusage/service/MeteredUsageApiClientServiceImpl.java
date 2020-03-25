@@ -1,6 +1,7 @@
 package com.appdirect.sdk.meteredusage.service;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,6 @@ import com.appdirect.sdk.meteredusage.model.MeteredUsageRequest;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageResponse;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gdata.util.common.base.Preconditions;
-import com.google.inject.internal.Lists;
 import retrofit2.Response;
 
 @Slf4j
@@ -40,17 +40,17 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String secretKey, String idempotentKey, MeteredUsageItem meteredUsageItem, boolean billable) {
-		return reportUsage(baseUrl, secretKey, idempotentKey, Lists.newArrayList(meteredUsageItem), billable);
+		return reportUsage(baseUrl, secretKey, idempotentKey, Collections.singletonList(meteredUsageItem), billable);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable) {
-		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable);
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Collections.singletonList(meteredUsageItem), billable);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType) {
-		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, sourceType);
+		return reportUsage(baseUrl, secretKey, UUID.randomUUID().toString(), Collections.singletonList(meteredUsageItem), billable, sourceType);
 	}
 
 	@Override
@@ -70,12 +70,12 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 
 	@Override
 	public APIResult reportUsage(String baseUrl, String idempotentKey, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret) {
-		return reportUsage(baseUrl, idempotentKey, Lists.newArrayList(meteredUsageItem), billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
+		return reportUsage(baseUrl, idempotentKey, Collections.singletonList(meteredUsageItem), billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
 	}
 
 	@Override
 	public APIResult reportUsage(String baseUrl, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret) {
-		return reportUsage(baseUrl, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), Collections.singletonList(meteredUsageItem), billable, secretKey, secret, org.apache.commons.lang3.StringUtils.EMPTY);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 
 	@Override
 	public APIResult reportUsage(String baseUrl, MeteredUsageItem meteredUsageItem, boolean billable, String secretKey, String secret, String sourceType) {
-		return reportUsage(baseUrl, UUID.randomUUID().toString(), Lists.newArrayList(meteredUsageItem), billable, secretKey, secret, sourceType);
+		return reportUsage(baseUrl, UUID.randomUUID().toString(), Collections.singletonList(meteredUsageItem), billable, secretKey, secret, sourceType);
 	}
 
 	@Override
