@@ -24,12 +24,18 @@ import org.springframework.hateoas.Link;
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
 	public SubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
-		String samlIdpUrl = null;
-		try {
-			samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
-		} catch (Exception e) {
-			log.warn("Error when recovering samlIdp, proceeding with empty value", e);
-		}
+		String samlIdpUrl = eventInfo.getLinks().stream()
+				.filter(link -> {
+					try {
+						return "samlIdp".equals(link.getRel());
+					} catch (Exception e) {
+						log.warn("Error when recovering samlIdp, proceeding with empty value", e);
+						return false;
+					}
+				})
+				.findFirst()
+				.map(Link::getHref)
+				.orElse(null);
 
 		return new SubscriptionOrder(
 				eventContext.getConsumerKeyUsedByTheRequest(),
