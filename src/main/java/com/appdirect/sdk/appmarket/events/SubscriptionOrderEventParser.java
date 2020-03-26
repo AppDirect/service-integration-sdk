@@ -28,7 +28,7 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 				.filter(link -> {
 					try {
 						return "samlIdp".equals(link.getRel());
-					} catch (Exception e) {
+					} catch (Exception | Error e) {
 						log.warn("Error when recovering samlIdp, proceeding with empty value", e);
 						return false;
 					}
