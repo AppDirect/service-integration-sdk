@@ -13,15 +13,23 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.hateoas.Link;
 
 /**
  * To see what is mandatory or not, consult https://docs.appdirect.com/developer/distribution/event-notifications/subscription-events#attributes
  */
+@Slf4j
 class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	@Override
 	public SubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
-		String samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
+		String samlIdpUrl = null;
+		try {
+			samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().value().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
+		} catch (Exception e) {
+			log.warn("Error when recovering samlIdp, proceeding with empty value", e);
+		}
 
 		return new SubscriptionOrder(
 				eventContext.getConsumerKeyUsedByTheRequest(),
