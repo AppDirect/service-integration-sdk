@@ -26,7 +26,7 @@ class SubscriptionOrderEventParser implements EventParser<SubscriptionOrder> {
 	public SubscriptionOrder parse(EventInfo eventInfo, EventHandlingContext eventContext) {
 		String samlIdpUrl = null;
 		try {
-			samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().value().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
+			samlIdpUrl = eventInfo.getLinks().stream().filter(link -> link.getRel().equals("samlIdp")).findFirst().map(Link::getHref).orElse(null);
 		} catch (Exception e) {
 			log.warn("Error when recovering samlIdp, proceeding with empty value", e);
 		}
