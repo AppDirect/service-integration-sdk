@@ -38,4 +38,5 @@ public class OrderInfo {
 	private PricingDuration pricingDuration;
 	private List<OrderItemInfo> items = new ArrayList<>();
 	private List<CustomAttribute> customAttributes;
+	private String discountCode;
 }
