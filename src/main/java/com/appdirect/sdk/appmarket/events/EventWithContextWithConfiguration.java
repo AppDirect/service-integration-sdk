@@ -19,10 +19,11 @@ public class EventWithContextWithConfiguration extends EventWithContext {
 		String consumerKeyUsedByTheRequest,
 		Map<String, String []> queryParameters,
 		EventFlag flag,
+		String eventId,
 		String eventToken,
 		String marketplaceUrl,
 		Map<String, String> configuration) {
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, eventToken, marketplaceUrl);
 		this.configuration = configuration;
 	}
 
