@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import com.appdirect.sdk.appmarket.events.PricingUnit;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,4 +32,3 @@ public class UsageItem {
 	private ZonedDateTime eventDate;
 	private String eventId;
 }
-
