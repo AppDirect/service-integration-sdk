@@ -32,11 +32,12 @@ public class UserUnassignment extends EventWithContextWithConfiguration {
 	                        String consumerKey,
 	                        Map<String, String[]> queryParameters,
 	                        EventFlag eventFlag,
+	                        String eventId,
 	                        String eventToken,
 	                        String marketplaceUrl,
 	                        Map<String, String> configuration) {
 
-		super(consumerKey, queryParameters, eventFlag, eventToken, marketplaceUrl, configuration);
+		super(consumerKey, queryParameters, eventFlag, eventId, eventToken, marketplaceUrl, configuration);
 		this.unassignedUser = unassignedUser;
 		this.accountId = accountId;
 	}
@@ -47,10 +48,11 @@ public class UserUnassignment extends EventWithContextWithConfiguration {
 	                        String consumerKey,
 	                        Map<String, String[]> queryParameters,
 	                        EventFlag eventFlag,
+	                        String eventId,
 	                        String eventToken,
 	                        String marketplaceUrl) {
 
 		this(unassignedUser, accountId, consumerKey, queryParameters,
-			 eventFlag, eventToken, marketplaceUrl, new HashMap<>());
+			 eventFlag, eventId, eventToken, marketplaceUrl, new HashMap<>());
 	}
 }

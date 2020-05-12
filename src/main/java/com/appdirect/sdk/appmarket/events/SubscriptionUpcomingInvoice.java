@@ -40,7 +40,7 @@ public class SubscriptionUpcomingInvoice extends EventWithContextWithConfigurati
 									   String marketplaceUrl,
 									   Map<String, String> configuration) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, eventToken, marketplaceUrl, configuration);
 		this.accountInfo = accountInfo;
 	}
 
@@ -53,6 +53,6 @@ public class SubscriptionUpcomingInvoice extends EventWithContextWithConfigurati
 									   String marketplaceUrl) {
 
 		this(consumerKeyUsedByTheRequest, accountInfo, queryParameters,
-			 flag, eventToken, marketplaceUrl, new HashMap<>());
+			 flag, eventId, eventToken, marketplaceUrl, new HashMap<>());
 	}
 }

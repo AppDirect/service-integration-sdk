@@ -41,7 +41,7 @@ public class SubscriptionChange extends EventWithContextWithConfiguration {
 							  String eventToken,
 							  String marketplaceUrl) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, eventToken, marketplaceUrl, configuration);
 		this.owner = owner;
 		this.order = order;
 		this.account = account;
@@ -58,6 +58,6 @@ public class SubscriptionChange extends EventWithContextWithConfiguration {
 							  String marketplaceUrl) {
 
 		this(consumerKeyUsedByTheRequest, owner, order, account,
-			 new HashMap<>(), queryParameters,flag, eventToken, marketplaceUrl);
+			 new HashMap<>(), queryParameters,flag, eventId, eventToken, marketplaceUrl);
 	}
 }

@@ -35,7 +35,7 @@ public class SubscriptionCancel extends EventWithContext {
 							  String eventToken,
 							  String marketplaceUrl) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, eventToken, marketplaceUrl);
 		this.accountIdentifier = accountIdentifier;
 	}
 }

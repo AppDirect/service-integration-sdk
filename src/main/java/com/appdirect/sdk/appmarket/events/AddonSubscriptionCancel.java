@@ -39,7 +39,7 @@ public class AddonSubscriptionCancel extends EventWithContextWithConfiguration {
 								   String marketplaceUrl,
 								   Map<String, String> configuration) {
 
-		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventToken, marketplaceUrl, configuration);
+		super(consumerKeyUsedByTheRequest, queryParameters, flag, eventId, eventToken, marketplaceUrl, configuration);
 		this.accountIdentifier = accountIdentifier;
 		this.parentAccountIdentifier = parentAccountIdentifier;
 	}
@@ -54,6 +54,6 @@ public class AddonSubscriptionCancel extends EventWithContextWithConfiguration {
 								   String marketplaceUrl) {
 
 		this(accountIdentifier, parentAccountIdentifier, consumerKeyUsedByTheRequest, queryParameters,
-			 flag, eventToken, marketplaceUrl, new HashMap<>());
+			 flag, eventId, eventToken, marketplaceUrl, new HashMap<>());
 	}
 }
