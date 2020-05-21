@@ -171,4 +171,6 @@ public interface MeteredUsageApiClientService {
 	 * throws an {@link MeteredUsageApiException} to the client with an error code and a status:
 	 */
 	APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType);
+
+	APIResult retryableReportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType);
 }

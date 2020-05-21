@@ -14,9 +14,9 @@
 package com.appdirect.sdk.appmarket.events;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.annotation.EnableRetry;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
@@ -34,6 +34,7 @@ import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@EnableRetry
 @Configuration
 public class AppmarketCommunicationConfiguration {
 
