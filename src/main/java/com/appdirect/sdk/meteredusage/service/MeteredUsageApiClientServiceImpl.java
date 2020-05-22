@@ -8,7 +8,6 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -32,15 +31,6 @@ import retrofit2.Response;
 @Slf4j
 @Service
 public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientService {
-
-	@Value("${usage.api.retry.maxAttempts}") 
-	private final int maxAttempts = 3;
-	@Value("${usage.api.retry.backoff.delay")
-	private final long backOffDelay = 2000;
-	@Value("${usage.api.retry.backoff.multiplier")
-	private final double backOffMultiplier = 2;
-	@Value("${usage.api.retry.backoff.maxDelay")
-	private final long backOffMaxDelay = 30000;
 
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final OAuth1RetrofitWrapper oAuth1RetrofitWrapper;
@@ -128,9 +118,9 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	}
 
 	@Retryable(
-			value = {ServiceException.class, MeteredUsageApiException.class, RuntimeException.class},
-			maxAttempts = maxAttempts,
-			backoff = @Backoff(delay = backOffDelay, multiplier = backOffMultiplier, maxDelay = backOffMaxDelay))
+		value = {ServiceException.class, MeteredUsageApiException.class, RuntimeException.class}, 
+		maxAttemptsExpression = "#{${usage.api.retry.maxAttempts:3}}",
+		backoff = @Backoff(delayExpression = "#{${usage.api.retry.backoff.delay:2000}}", multiplierExpression = "#{${usage.api.retry.backoff.multiplier:2}}", maxDelayExpression = "#{${usage.api.retry.backoff.maxDelay:30000}}"))
 	private APIResult retryableReportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret, String sourceType) {
 		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, secret, sourceType);
 		if (!apiResult.isSuccess()) {
