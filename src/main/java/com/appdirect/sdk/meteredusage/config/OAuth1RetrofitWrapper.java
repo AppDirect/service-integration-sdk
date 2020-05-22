@@ -1,6 +1,9 @@
 package com.appdirect.sdk.meteredusage.config;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import brave.Tracing;
@@ -14,6 +17,13 @@ import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 
 @Component
 public class OAuth1RetrofitWrapper {
+	@Value("${usage.api.timeout.connectTimeout:10000}")
+	private int connectTimeout;
+	@Value("${usage.api.timeout.readTimeout:10000}")
+	private int readTimeout;
+	@Value("${usage.api.timeout.writeTimeout:10000}")
+	private int writeTimeout;
+
 	@Autowired(required = false)
 	private Tracing tracing;
 
@@ -53,6 +63,10 @@ public class OAuth1RetrofitWrapper {
 			okHttpClientBuilder.dispatcher(new Dispatcher(tracing.currentTraceContext().executorService(new Dispatcher().executorService())))
 				.addNetworkInterceptor(TracingInterceptor.create(tracing));
 		}
+		//Overriding the timeouts
+		okHttpClientBuilder.connectTimeout(connectTimeout, TimeUnit.MILLISECONDS);
+		okHttpClientBuilder.readTimeout(readTimeout, TimeUnit.MILLISECONDS);
+		okHttpClientBuilder.writeTimeout(writeTimeout, TimeUnit.MILLISECONDS);
 
 		// Add a logging interceptor to capture incoming/outgoing calls.
 		HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
