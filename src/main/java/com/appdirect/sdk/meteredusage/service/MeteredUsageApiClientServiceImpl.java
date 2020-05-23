@@ -8,8 +8,6 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -112,18 +110,10 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		}
 	}
 
-	@Override
-	public APIResult retryableReportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType) {
-		return retryableReportUsage(baseUrl, UUID.randomUUID().toString(), Collections.singletonList(meteredUsageItem), billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
-	}
-
-	@Retryable(
-		value = {ServiceException.class, MeteredUsageApiException.class, RuntimeException.class}, 
-		maxAttemptsExpression = "#{${usage.api.retry.maxAttempts:3}}",
-		backoff = @Backoff(delayExpression = "#{${usage.api.retry.backoff.delay:2000}}", multiplierExpression = "#{${usage.api.retry.backoff.multiplier:2}}", maxDelayExpression = "#{${usage.api.retry.backoff.maxDelay:30000}}"))
-	private APIResult retryableReportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, boolean billable, String secretKey, String secret, String sourceType) {
-		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, secret, sourceType);
+	public APIResult retryableReportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, String secretKey, boolean billable, String sourceType) {
+		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 		if (!apiResult.isSuccess()) {
+			log.warn("Failed to inform Usage with idempotentKey={}, billable={}", idempotentKey, billable);
 			throw new ServiceException(apiResult.getMessage());
 		}
 		return apiResult;
