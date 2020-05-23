@@ -57,7 +57,7 @@ public class OAuth1RetrofitWrapper {
 	}
 
 	private void configureOkHttpClient(String oauthConsumerKey, String oauthConsumerSecret) {
-		final OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+		final OkHttpClient.Builder okHttpClientBuilder = OkHttpClientShared.getInstance().newBuilder();
 
 		if(tracing != null){
 			okHttpClientBuilder.dispatcher(new Dispatcher(tracing.currentTraceContext().executorService(new Dispatcher().executorService())))
