@@ -2,9 +2,13 @@ package com.appdirect.sdk.meteredusage.service;
 
 import java.util.List;
 
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
+
 import com.appdirect.sdk.appmarket.events.APIResult;
 import com.appdirect.sdk.appmarket.events.AppmarketBillingClient;
 import com.appdirect.sdk.meteredusage.exception.MeteredUsageApiException;
+import com.appdirect.sdk.meteredusage.exception.ServiceException;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageItem;
 
 public interface MeteredUsageApiClientService {
@@ -150,7 +154,7 @@ public interface MeteredUsageApiClientService {
 	 * @param idempotentKey     to make unique calls
 	 * @param meteredUsageItems list of usages to be reported
 	 * @param billable          specifies if the usage to be reported is billable or estimated
-	 * @param sourceType       specifies the type of source that generate the report (ex. aws, azure_csp, azure_modern)
+	 * @param sourceType        specifies the type of source that generate the report (ex. aws, azure_csp, azure_modern)
 	 * @return an {@link APIResult} instance representing the marketplace response
 	 * <p>
 	 * throws an {@link MeteredUsageApiException} to the client with an error code and a status:
@@ -172,5 +176,11 @@ public interface MeteredUsageApiClientService {
 	 */
 	APIResult reportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType);
 
-	APIResult retryableReportUsage(String baseUrl, String secretKey, MeteredUsageItem meteredUsageItem, boolean billable, String sourceType);
+	@Retryable(
+			value = {ServiceException.class, MeteredUsageApiException.class, RuntimeException.class},
+			maxAttemptsExpression = "#{${usage.api.retry.maxAttempts:3}}",
+			backoff = @Backoff(delayExpression = "#{${usage.api.retry.backoff.delay:2000}}",
+					multiplierExpression = "#{${usage.api.retry.backoff.multiplier:2}}",
+					maxDelayExpression = "#{${usage.api.retry.backoff.maxDelay:30000}}"))
+	APIResult retryableReportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, String secretKey, boolean billable, String sourceType);
 }
