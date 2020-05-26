@@ -1,5 +1,6 @@
 package com.appdirect.sdk.vendorFields.configuration;
 
+import com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandlerV2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +26,24 @@ public class VendorFieldsConfiguration {
 					flowType,
 					operationType,
 					locales));
+		};
+	}
+
+	@Bean
+	public VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2() {
+		return (applicationId, editionId, flowType, operationType, userId, companyId, salesAgentUserId, salesAgentCompanyId, locales, tenant) -> {
+			throw new UnsupportedOperationException(String.format(
+					"Vendor Required Field Service for editionCode=%s, flow type=%s, operation type=%s and locales=%s is not supported.",
+					applicationId,
+					editionId,
+					flowType,
+					operationType,
+					userId,
+					companyId,
+					salesAgentUserId,
+					salesAgentCompanyId,
+					locales,
+					tenant));
 		};
 	}
 
