@@ -1,8 +1,5 @@
 package com.appdirect.sdk.vendorFields.handler;
 
-import java.util.List;
-import java.util.Locale;
-
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 
@@ -11,5 +8,5 @@ import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
  */
 @FunctionalInterface
 public interface VendorFieldValidationHandler {
-	VendorFieldsValidationResponse validateFields(VendorFieldsValidationRequest vendorFieldsValidationRequest);
+    VendorFieldsValidationResponse validateFields(VendorFieldsValidationRequest vendorFieldsValidationRequest);
 }

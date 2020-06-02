@@ -46,7 +46,6 @@ public class VendorRequiredFieldController {
 			@RequestParam(value = "operationType") OperationType operationType,
 			@RequestHeader(value = "Accept-Language") List<Locale> locales) {
 
-
 		log.info(
 				"Calling required fields API with editionCode={}, flowType={}, operationType={}, locales={}",
 				editionCode,
