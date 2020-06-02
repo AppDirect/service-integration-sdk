@@ -12,5 +12,5 @@ import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
  */
 @FunctionalInterface
 public interface VendorRequiredFieldHandler {
-	VendorRequiredFieldsResponse getRequiredFields(String editionCode, FlowType flowType, OperationType operationType, List<Locale> locales);
+    VendorRequiredFieldsResponse getRequiredFields(String editionCode, FlowType flowType, OperationType operationType, List<Locale> locales);
 }
