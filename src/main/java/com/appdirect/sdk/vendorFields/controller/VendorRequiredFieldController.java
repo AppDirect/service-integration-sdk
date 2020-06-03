@@ -66,7 +66,7 @@ public class VendorRequiredFieldController {
             method = GET,
             value = "/api/v2/admin/requiredFields",
             produces = APPLICATION_JSON_VALUE)
-    public Callable<VendorRequiredFieldsResponseV2> getRequiredFieldsV2(
+    public Callable<VendorRequiredFieldsResponseV2> getRequiredFields(
             @RequestParam(value = "applicationId") final String applicationId,
             @RequestParam(value = "editionId") final String editionId,
             @RequestParam(value = "flowType") final FlowType flowType,
