@@ -7,13 +7,17 @@ import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController
 import com.appdirect.sdk.vendorFields.controller.VendorRequiredFieldController;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
+import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandlerV2;
 
 @Configuration
 public class VendorFieldsConfiguration {
-    
+
     @Bean
-    public VendorRequiredFieldController vendorRequiredFieldController(VendorRequiredFieldHandler vendorRequiredFieldHandler) {
-        return new VendorRequiredFieldController(vendorRequiredFieldHandler);
+    public VendorRequiredFieldController vendorRequiredFieldController(
+            VendorRequiredFieldHandler vendorRequiredFieldHandler,
+            VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2
+    ) {
+        return new VendorRequiredFieldController(vendorRequiredFieldHandler, vendorRequiredFieldHandlerV2);
     }
 
     @Bean
@@ -25,6 +29,42 @@ public class VendorFieldsConfiguration {
                     flowType,
                     operationType,
                     locales));
+        };
+    }
+
+    @Bean
+    public VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2() {
+        return (applicationId,
+                editionId,
+                flowType,
+                operationType,
+                userId,
+                companyId,
+                salesAgentUserId,
+                salesAgentCompanyId,
+                locales) -> {
+            throw new UnsupportedOperationException(String.format(
+                    "Vendor Required Field Service for " +
+                            "applicationId=%s," +
+                            "editionId=%s," +
+                            "flowType=%s," +
+                            "operationType=%s," +
+                            "userId=%s," +
+                            "companyId=%s," +
+                            "salesAgentUserId=%s," +
+                            "salesAgentCompanyId=%s," +
+                            "locales=%s" +
+                            " and is not supported.",
+                    applicationId,
+                    editionId,
+                    flowType,
+                    operationType,
+                    userId,
+                    companyId,
+                    salesAgentUserId,
+                    salesAgentCompanyId,
+                    locales
+            ));
         };
     }
 
