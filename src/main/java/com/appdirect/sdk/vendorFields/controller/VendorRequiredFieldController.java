@@ -22,9 +22,11 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
+import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
+import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponseV2;
 
 /**
  * Defines the endpoint for enforcing vendor required requiredFields on their products
@@ -33,33 +35,86 @@ import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 @RestController
 @RequiredArgsConstructor
 public class VendorRequiredFieldController {
-	@Autowired
-	private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
 
-	@RequestMapping(
-			method = GET,
-			value = "/api/v1/admin/requiredFields",
-			produces = APPLICATION_JSON_VALUE)
-	public Callable<VendorRequiredFieldsResponse> getRequiredFields(
-			@RequestParam(value = "editionCode") String editionCode,
-			@RequestParam(value = "flowType") FlowType flowType,
-			@RequestParam(value = "operationType") OperationType operationType,
-			@RequestHeader(value = "Accept-Language") List<Locale> locales) {
+    @Autowired
+    private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
 
-		log.info(
-				"Calling required fields API with editionCode={}, flowType={}, operationType={}, locales={}",
-				editionCode,
-				flowType,
-				operationType,
-				locales
-		);
-		return () -> vendorRequiredFieldHandler.getRequiredFields(editionCode, flowType, operationType, locales);
-	}
+    @Autowired
+    private final VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2;
 
-	@InitBinder
-	public void initBinder(final WebDataBinder webdataBinder) {
-		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
-		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
-		webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
-	}
+    @RequestMapping(
+            method = GET,
+            value = "/api/v1/admin/requiredFields",
+            produces = APPLICATION_JSON_VALUE)
+    public Callable<VendorRequiredFieldsResponse> getRequiredFields(
+            @RequestParam(value = "editionCode") String editionCode,
+            @RequestParam(value = "flowType") FlowType flowType,
+            @RequestParam(value = "operationType") OperationType operationType,
+            @RequestHeader(value = "Accept-Language") List<Locale> locales) {
+
+        log.info(
+                "Calling required fields API with editionCode={}, flowType={}, operationType={}, locales={}",
+                editionCode,
+                flowType,
+                operationType,
+                locales
+        );
+        return () -> vendorRequiredFieldHandler.getRequiredFields(editionCode, flowType, operationType, locales);
+    }
+
+    @RequestMapping(
+            method = GET,
+            value = "/api/v2/admin/requiredFields",
+            produces = APPLICATION_JSON_VALUE)
+    public Callable<VendorRequiredFieldsResponseV2> getRequiredFieldsV2(
+            @RequestParam(value = "applicationId") final String applicationId,
+            @RequestParam(value = "editionId") final String editionId,
+            @RequestParam(value = "flowType") final FlowType flowType,
+            @RequestParam(value = "operationType") final OperationType operationType,
+            @RequestParam(value = "userId") final String userId,
+            @RequestParam(value = "companyId") final String companyId,
+            @RequestParam(value = "salesAgentUserId") final String salesAgentUserId,
+            @RequestParam(value = "salesAgentCompanyId") final String salesAgentCompanyId,
+            @RequestHeader(value = "Accept-Language") final List<Locale> locales) {
+
+        log.info(
+                "Calling required fields API with " +
+                        "applicationId={}, " +
+                        "editionId={}, " +
+                        "flowType={}, " +
+                        "operationType={}, " +
+                        "userId={}, " +
+                        "companyId={}, " +
+                        "salesAgentUserId={}, " +
+                        "salesAgentCompanyId={}" +
+                        "locales={}",
+                applicationId,
+                editionId,
+                flowType,
+                operationType,
+                userId,
+                companyId,
+                salesAgentUserId,
+                salesAgentCompanyId,
+                locales
+        );
+        return () -> vendorRequiredFieldHandlerV2.getRequiredFields(
+                applicationId,
+                editionId,
+                flowType,
+                operationType,
+                userId,
+                companyId,
+                salesAgentUserId,
+                salesAgentCompanyId,
+                locales
+        );
+    }
+
+    @InitBinder
+    public void initBinder(final WebDataBinder webdataBinder) {
+        webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
+        webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
+        webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
+    }
 }
