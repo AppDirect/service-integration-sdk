@@ -75,7 +75,8 @@ public class VendorRequiredFieldController {
             @RequestParam(value = "companyId") final String companyId,
             @RequestParam(value = "salesAgentUserId") final String salesAgentUserId,
             @RequestParam(value = "salesAgentCompanyId") final String salesAgentCompanyId,
-            @RequestHeader(value = "Accept-Language") final List<Locale> locales) {
+            @RequestHeader(value = "Accept-Language") final List<Locale> locales,
+            @RequestHeader(value = "AD-Tenant") final String partnerCode) {
 
         log.info(
                 "Calling required fields API with " +
@@ -87,7 +88,8 @@ public class VendorRequiredFieldController {
                         "companyId={}, " +
                         "salesAgentUserId={}, " +
                         "salesAgentCompanyId={}" +
-                        "locales={}",
+                        "locales={}" +
+                        "partnerCode={}",
                 applicationId,
                 editionId,
                 flowType,
@@ -96,7 +98,8 @@ public class VendorRequiredFieldController {
                 companyId,
                 salesAgentUserId,
                 salesAgentCompanyId,
-                locales
+                locales,
+                partnerCode
         );
         return () -> vendorRequiredFieldHandlerV2.getRequiredFields(
                 applicationId,
@@ -107,7 +110,8 @@ public class VendorRequiredFieldController {
                 companyId,
                 salesAgentUserId,
                 salesAgentCompanyId,
-                locales
+                locales,
+                partnerCode
         );
     }
 
