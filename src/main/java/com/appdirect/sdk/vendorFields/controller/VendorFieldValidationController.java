@@ -22,10 +22,13 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
+import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequestV2;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponseV2;
 
 /**
  * Defines the endpoint for validating the fields with the vendor
@@ -34,36 +37,66 @@ import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 @RestController
 @RequiredArgsConstructor
 public class VendorFieldValidationController {
-	@Autowired
-	private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
-	@RequestMapping(
-			method = POST,
-			value = "/api/v1/admin/vendorValidations",
-			consumes = APPLICATION_JSON_VALUE,
-			produces = APPLICATION_JSON_VALUE)
-	public Callable<VendorFieldsValidationResponse> validateFields(
-			@RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest,
-			@RequestHeader(value = "Accept-Language") List<Locale> locales) {
+    @Autowired
+    private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
-		log.info(
-				"Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
-				vendorFieldsValidationRequest.getEditionCode(),
-				vendorFieldsValidationRequest.getFlowType(),
-				vendorFieldsValidationRequest.getOperationType(),
-				vendorFieldsValidationRequest.getPartner(),
-				vendorFieldsValidationRequest.getApplicationIdentifier(),
-				locales
-		);
+    @Autowired
+    private final VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2;
 
-		vendorFieldsValidationRequest.setLocales(locales);
-		return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
-	}
+    @RequestMapping(
+            method = POST,
+            value = "/api/v1/admin/vendorValidations",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    public Callable<VendorFieldsValidationResponse> validateFields(
+            @RequestBody VendorFieldsValidationRequest vendorFieldsValidationRequest,
+            @RequestHeader(value = "Accept-Language") List<Locale> locales) {
 
-	@InitBinder
-	public void initBinder(final WebDataBinder webdataBinder) {
-		webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
-		webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
-		webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
-	}
+        log.info(
+                "Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
+                vendorFieldsValidationRequest.getEditionCode(),
+                vendorFieldsValidationRequest.getFlowType(),
+                vendorFieldsValidationRequest.getOperationType(),
+                vendorFieldsValidationRequest.getPartner(),
+                vendorFieldsValidationRequest.getApplicationIdentifier(),
+                locales
+        );
+
+        vendorFieldsValidationRequest.setLocales(locales);
+        return () -> vendorFieldValidationHandler.validateFields(vendorFieldsValidationRequest);
+    }
+
+    @RequestMapping(
+            method = POST,
+            value = "/api/v2/admin/vendorValidations",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    public Callable<VendorFieldsValidationResponseV2> validateFields(
+            @RequestBody final VendorFieldsValidationRequestV2 vendorFieldsValidationRequest,
+            @RequestHeader(value = "Accept-Language") final List<Locale> locales,
+            @RequestHeader(value = "AD-Tenant") final String partnerCode) {
+
+        log.info(
+                "Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}, partnerCode={}",
+                vendorFieldsValidationRequest.getEditionCode(),
+                vendorFieldsValidationRequest.getFlowType(),
+                vendorFieldsValidationRequest.getOperationType(),
+                vendorFieldsValidationRequest.getPartner(),
+                vendorFieldsValidationRequest.getApplicationIdentifier(),
+                locales,
+                partnerCode
+        );
+
+        vendorFieldsValidationRequest.setLocales(locales);
+        vendorFieldsValidationRequest.setPartnerCode(partnerCode);
+        return () -> vendorFieldValidationHandlerV2.validateFields(vendorFieldsValidationRequest);
+    }
+
+    @InitBinder
+    public void initBinder(final WebDataBinder webdataBinder) {
+        webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
+        webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
+        webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
+    }
 }

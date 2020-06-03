@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController;
 import com.appdirect.sdk.vendorFields.controller.VendorRequiredFieldController;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
+import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandlerV2;
 
@@ -14,8 +15,8 @@ public class VendorFieldsConfiguration {
 
     @Bean
     public VendorRequiredFieldController vendorRequiredFieldController(
-            VendorRequiredFieldHandler vendorRequiredFieldHandler,
-            VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2
+            final VendorRequiredFieldHandler vendorRequiredFieldHandler,
+            final VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2
     ) {
         return new VendorRequiredFieldController(vendorRequiredFieldHandler, vendorRequiredFieldHandlerV2);
     }
@@ -24,7 +25,7 @@ public class VendorFieldsConfiguration {
     public VendorRequiredFieldHandler vendorRequiredFieldHandler() {
         return (editionCode, flowType, operationType, locales) -> {
             throw new UnsupportedOperationException(String.format(
-                    "Vendor Required Field Service for editionCode=%s, flow type=%s, operation type=%s and locales=%s is not supported.",
+                    "Vendor Required Field Service for editionCode=%s, flowType=%s, operationType=%s and locales=%s is not supported.",
                     editionCode,
                     flowType,
                     operationType,
@@ -69,8 +70,11 @@ public class VendorFieldsConfiguration {
     }
 
     @Bean
-    public VendorFieldValidationController vendorFieldValidationController(VendorFieldValidationHandler vendorFieldValidationHandler) {
-        return new VendorFieldValidationController(vendorFieldValidationHandler);
+    public VendorFieldValidationController vendorFieldValidationController(
+            final VendorFieldValidationHandler vendorFieldValidationHandler,
+            final VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2
+    ) {
+        return new VendorFieldValidationController(vendorFieldValidationHandler, vendorFieldValidationHandlerV2);
     }
 
     @Bean
@@ -82,6 +86,19 @@ public class VendorFieldsConfiguration {
                     vendorFieldsValidationRequest.getFlowType(),
                     vendorFieldsValidationRequest.getOperationType(),
                     vendorFieldsValidationRequest.getLocales()));
+        };
+    }
+
+    @Bean
+    public VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2() {
+        return (vendorFieldsValidationRequest) -> {
+            throw new UnsupportedOperationException(String.format(
+                    "Vendor Fields Validation Service for editionCode=%s, flowType=%s, operationType=%s, locales=%s, and partnerCode=%s is not supported.",
+                    vendorFieldsValidationRequest.getEditionCode(),
+                    vendorFieldsValidationRequest.getFlowType(),
+                    vendorFieldsValidationRequest.getOperationType(),
+                    vendorFieldsValidationRequest.getLocales(),
+                    vendorFieldsValidationRequest.getPartnerCode()));
         };
     }
 }
