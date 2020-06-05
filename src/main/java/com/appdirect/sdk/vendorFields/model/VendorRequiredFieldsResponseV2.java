@@ -13,5 +13,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorRequiredFieldsResponseV2 {
-    private List<FormV2> forms;
+    private String isvIdentifier;
+    private List<VendorRequiredFieldV2> fields;
 }
