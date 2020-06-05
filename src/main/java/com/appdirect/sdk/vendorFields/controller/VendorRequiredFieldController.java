@@ -73,8 +73,8 @@ public class VendorRequiredFieldController {
             @RequestParam(value = "operationType") final OperationType operationType,
             @RequestParam(value = "userId") final String userId,
             @RequestParam(value = "companyId") final String companyId,
-            @RequestParam(value = "salesAgentUserId") final String salesAgentUserId,
-            @RequestParam(value = "salesAgentCompanyId") final String salesAgentCompanyId,
+            @RequestParam(required = false, value = "salesAgentUserId") final String salesAgentUserId,
+            @RequestParam(required = false, value = "salesAgentCompanyId") final String salesAgentCompanyId,
             @RequestHeader(value = "Accept-Language") final List<Locale> locales,
             @RequestHeader(value = "AD-Tenant") final String partnerCode) {
 
