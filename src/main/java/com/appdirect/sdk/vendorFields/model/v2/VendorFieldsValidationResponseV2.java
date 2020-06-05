@@ -1,18 +1,20 @@
-package com.appdirect.sdk.vendorFields.model;
+package com.appdirect.sdk.vendorFields.model.v2;
+
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ValidationFieldRequest {
-    private InputCode inputCode;
-    private String value;
+public class VendorFieldsValidationResponseV2 {
+	private int status;
+	private String code;
+	private List<ValidationFieldResponse> fields;
 }

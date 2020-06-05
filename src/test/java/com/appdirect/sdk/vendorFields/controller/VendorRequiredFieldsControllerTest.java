@@ -23,20 +23,20 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
-import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandlerV2;
+import com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FieldType;
-import com.appdirect.sdk.vendorFields.model.FieldTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.Form;
-import com.appdirect.sdk.vendorFields.model.InputCode;
-import com.appdirect.sdk.vendorFields.model.OperationType;
-import com.appdirect.sdk.vendorFields.model.Options;
-import com.appdirect.sdk.vendorFields.model.Suffix;
-import com.appdirect.sdk.vendorFields.model.Validations;
+import com.appdirect.sdk.vendorFields.model.v2.InputCode;
+import com.appdirect.sdk.vendorFields.model.v2.OperationType;
+import com.appdirect.sdk.vendorFields.model.v2.Options;
+import com.appdirect.sdk.vendorFields.model.v2.Suffix;
+import com.appdirect.sdk.vendorFields.model.v2.Validations;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
-import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldV2;
+import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldV2;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
-import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponseV2;
+import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VendorRequiredFieldsControllerTest {

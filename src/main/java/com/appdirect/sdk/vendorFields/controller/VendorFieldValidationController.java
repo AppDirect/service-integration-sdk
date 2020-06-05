@@ -22,13 +22,13 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
-import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandlerV2;
+import com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.v2.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequestV2;
+import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationRequestV2;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponseV2;
+import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationResponseV2;
 
 /**
  * Defines the endpoint for validating the fields with the vendor

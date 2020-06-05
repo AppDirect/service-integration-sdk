@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.model;
+package com.appdirect.sdk.vendorFields.model.v2;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data

@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController;
 import com.appdirect.sdk.vendorFields.controller.VendorRequiredFieldController;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
-import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandlerV2;
+import com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
-import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandlerV2;
+import com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandlerV2;
 
 @Configuration
 public class VendorFieldsConfiguration {

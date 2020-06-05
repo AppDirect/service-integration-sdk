@@ -1,7 +1,7 @@
-package com.appdirect.sdk.vendorFields.handler;
+package com.appdirect.sdk.vendorFields.handler.v2;
 
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequestV2;
-import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponseV2;
+import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationRequestV2;
+import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationResponseV2;
 
 /**
  * This is the interface you need to implement to have VendorFieldValidation on a product
