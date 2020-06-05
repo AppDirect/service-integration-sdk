@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class VendorRequiredFieldSuffixV2 {
-    private String text;
-    private String inputCode;
+class Options {
+    private Suffix suffix;
+    private String placeholder;
 }

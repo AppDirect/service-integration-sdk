@@ -13,6 +13,5 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorRequiredFieldsResponseV2 {
-    // https://appdirect.jira.com/wiki/spaces/PI/pages/982647318/TD+Required+field+Service#3.2.1.1.4-Response
     private List<FormV2> forms;
 }

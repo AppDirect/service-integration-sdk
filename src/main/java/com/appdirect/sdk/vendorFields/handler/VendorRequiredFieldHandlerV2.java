@@ -12,7 +12,6 @@ import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponseV2;
  */
 @FunctionalInterface
 public interface VendorRequiredFieldHandlerV2 {
-    // https://appdirect.jira.com/wiki/spaces/PI/pages/982647318/TD+Required+field+Service#3.2.1.1.3-Parameters
     VendorRequiredFieldsResponseV2 getRequiredFields(final String applicationId,
                                                      final String editionId,
                                                      final FlowType flowType,

@@ -47,17 +47,17 @@ public class VendorFieldsConfiguration {
                 partnerCode) -> {
             throw new UnsupportedOperationException(String.format(
                     "Vendor Required Field Service for " +
-                            "applicationId=%s," +
-                            "editionId=%s," +
-                            "flowType=%s," +
-                            "operationType=%s," +
-                            "userId=%s," +
-                            "companyId=%s," +
-                            "salesAgentUserId=%s," +
-                            "salesAgentCompanyId=%s," +
-                            "locales=%s" +
-                            "partnerCode=%s" +
-                            " and is not supported.",
+                            "applicationId=%s, " +
+                            "editionId=%s, " +
+                            "flowType=%s, " +
+                            "operationType=%s, " +
+                            "userId=%s, " +
+                            "companyId=%s, " +
+                            "salesAgentUserId=%s, " +
+                            "salesAgentCompanyId=%s, " +
+                            "locales=%s, " +
+                            "partnerCode=%s " +
+                            "is not supported.",
                     applicationId,
                     editionId,
                     flowType,
