@@ -18,7 +18,7 @@ class VendorRequiredFieldV2 {
     private String subTitle;
     private String tooltip;
     private String value;
-    private FieldType fieldType;
-    private VendorRequiredFieldValidationsV2 validations;
-    private VendorRequiredFieldOptionsV2 options;
+    private FieldTypeV2 fieldType;
+    private Validations validations;
+    private Options options;
 }
