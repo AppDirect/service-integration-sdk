@@ -11,7 +11,7 @@ import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
  * This is the interface you need to implement to apply vendor required requiredFields on a product
  */
 @FunctionalInterface
-public interface VendorRequiredFieldHandlerV2 {
+public interface VendorRequiredFieldHandler {
     VendorRequiredFieldsResponseV2 getRequiredFields(final String applicationId,
                                                      final String editionId,
                                                      final FlowType flowType,

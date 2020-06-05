@@ -22,7 +22,6 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
-import com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.v2.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
@@ -42,7 +41,7 @@ public class VendorFieldValidationController {
     private final VendorFieldValidationHandler vendorFieldValidationHandler;
 
     @Autowired
-    private final VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2;
+    private final com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2;
 
     @RequestMapping(
             method = POST,

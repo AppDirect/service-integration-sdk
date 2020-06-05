@@ -24,7 +24,6 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
-import com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.v2.InputCode;
 import com.appdirect.sdk.vendorFields.model.v2.OperationType;
@@ -44,7 +43,7 @@ public class VendorFieldValidationControllerTest {
     private VendorFieldValidationHandler mockVendorFieldValidationHandler;
 
     @Mock
-    private VendorFieldValidationHandlerV2 mockVendorFieldValidationHandlerV2;
+    private com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler mockVendorFieldValidationHandlerV2;
 
     @Mock
     private WebDataBinder webdataBinder;
