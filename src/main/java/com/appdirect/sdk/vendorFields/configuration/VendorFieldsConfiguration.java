@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.appdirect.sdk.vendorFields.controller.VendorFieldValidationController;
 import com.appdirect.sdk.vendorFields.controller.VendorRequiredFieldController;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
-import com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
-import com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandlerV2;
 
 @Configuration
 public class VendorFieldsConfiguration {
@@ -16,7 +14,7 @@ public class VendorFieldsConfiguration {
     @Bean
     public VendorRequiredFieldController vendorRequiredFieldController(
             final VendorRequiredFieldHandler vendorRequiredFieldHandler,
-            final VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2
+            final com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler vendorRequiredFieldHandlerV2
     ) {
         return new VendorRequiredFieldController(vendorRequiredFieldHandler, vendorRequiredFieldHandlerV2);
     }
@@ -34,7 +32,7 @@ public class VendorFieldsConfiguration {
     }
 
     @Bean
-    public VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2() {
+    public com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler vendorRequiredFieldHandlerV2() {
         return (applicationId,
                 editionId,
                 flowType,
@@ -75,7 +73,7 @@ public class VendorFieldsConfiguration {
     @Bean
     public VendorFieldValidationController vendorFieldValidationController(
             final VendorFieldValidationHandler vendorFieldValidationHandler,
-            final VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2
+            final com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2
     ) {
         return new VendorFieldValidationController(vendorFieldValidationHandler, vendorFieldValidationHandlerV2);
     }
@@ -93,7 +91,7 @@ public class VendorFieldsConfiguration {
     }
 
     @Bean
-    public VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2() {
+    public com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2() {
         return (vendorFieldsValidationRequest) -> {
             throw new UnsupportedOperationException(String.format(
                     "Vendor Fields Validation Service for " +

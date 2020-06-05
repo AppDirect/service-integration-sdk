@@ -22,7 +22,6 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
-import com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.v2.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
@@ -40,7 +39,7 @@ public class VendorRequiredFieldController {
     private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
 
     @Autowired
-    private final VendorRequiredFieldHandlerV2 vendorRequiredFieldHandlerV2;
+    private final com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler vendorRequiredFieldHandlerV2;
 
     @RequestMapping(
             method = GET,

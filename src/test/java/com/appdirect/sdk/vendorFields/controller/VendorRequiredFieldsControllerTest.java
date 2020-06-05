@@ -23,7 +23,6 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
-import com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FieldType;
 import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
@@ -45,7 +44,7 @@ public class VendorRequiredFieldsControllerTest {
     private VendorRequiredFieldHandler mockVendorRequiredFieldHandler;
 
     @Mock
-    private VendorRequiredFieldHandlerV2 mockVendorRequiredFieldHandlerV2;
+    private com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler mockVendorRequiredFieldHandlerV2;
 
     @Mock
     private WebDataBinder webdataBinder;
