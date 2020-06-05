@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class Options {
+public class Options {
     private Suffix suffix;
     private String placeholder;
 }

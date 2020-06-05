@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
@@ -25,7 +26,10 @@ import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.InputCode;
 import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.ValidationFieldRequest;
+import com.appdirect.sdk.vendorFields.model.ValidationFieldResponse;
 import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequestV2;
@@ -83,27 +87,32 @@ public class VendorFieldValidationControllerTest {
     @Test
     public void testValidateFieldsV2_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
         //Given
-        List<Locale> locales = Collections.singletonList(Locale.US);
-        String partnerCode = "AD-Tenant";
-        VendorFieldsValidationResponseV2 response = VendorFieldsValidationResponseV2.builder()
-                .validations(Collections.singletonList(VendorFieldValidation.builder()
-                        .fieldName("EMAIL")
-                        .errorMessage("must contain @")
-                        .build()))
+        final String partnerCode = "AD-Tenant";
+        final ValidationFieldResponse validationFieldResponse = ValidationFieldResponse.builder()
+                .inputCode(InputCode.ADDRESS_POSTAL_CODE)
+                .messageKey("messageKey")
+                .build();
+        final VendorFieldsValidationResponseV2 response = VendorFieldsValidationResponseV2.builder()
+                .status(HttpStatus.OK.value())
+                .code(HttpStatus.OK.getReasonPhrase())
+                .fields(Collections.singletonList(validationFieldResponse))
+                .build();
+        final ValidationFieldRequest validationFieldRequest = ValidationFieldRequest.builder()
+                .inputCode(InputCode.ADDRESS_POSTAL_CODE)
+                .value("value")
                 .build();
         VendorFieldsValidationRequestV2 vendorFieldsValidationRequest = VendorFieldsValidationRequestV2.builder()
-                .fieldValues(Maps.newHashMap())
+                .fields(Collections.singletonList(validationFieldRequest))
                 .flowType(FlowType.RESELLER_FLOW)
                 .operationType(OperationType.SUBSCRIPTION_CHANGE)
-                .editionCode("SKU")
-                .partner("APPDIRECT")
+                .editionId("SKU")
                 .partnerCode(partnerCode)
                 .build();
         when(mockVendorFieldValidationHandlerV2.validateFields(vendorFieldsValidationRequest))
                 .thenReturn(response);
         //When
         VendorFieldsValidationResponseV2 controllerResponse =
-                vendorFieldValidationController.validateFields(vendorFieldsValidationRequest, locales, partnerCode).call();
+                vendorFieldValidationController.validateFields(vendorFieldsValidationRequest, partnerCode).call();
 
         //Then
         assertThat(controllerResponse).isEqualTo(response);
