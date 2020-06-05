@@ -5,14 +5,19 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VendorRequiredFieldsResponseV2 {
-    // https://appdirect.jira.com/wiki/spaces/PI/pages/982647318/TD+Required+field+Service#3.2.1.1.4-Response
-    private List<FormV2> forms;
+class FormV2 {
+    private String isvIdentifier;
+    private Context context;
+    private String title;
+    private String subTitle;
+    private List<VendorRequiredFieldV2> fields;
 }
