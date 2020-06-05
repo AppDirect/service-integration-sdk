@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Builder
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VendorFieldsValidationResponseV2 { // TODO Ajay: extend from VendorFieldsValidationResponseV2 to avoid duplicates?
-	List<VendorFieldValidation> validations;
+public class VendorFieldsValidationResponseV2 {
+	private int status;
+	private String code;
+	private List<ValidationFieldResponse> fields;
 }

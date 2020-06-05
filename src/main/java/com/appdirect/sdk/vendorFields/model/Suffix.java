@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class Suffix {
+public class Suffix {
     private String text;
     private String inputCode;
 }

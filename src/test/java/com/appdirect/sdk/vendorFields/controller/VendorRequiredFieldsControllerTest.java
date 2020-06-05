@@ -25,10 +25,16 @@ import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandlerV2;
 import com.appdirect.sdk.vendorFields.model.FieldType;
+import com.appdirect.sdk.vendorFields.model.FieldTypeV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.Form;
+import com.appdirect.sdk.vendorFields.model.InputCode;
 import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.Options;
+import com.appdirect.sdk.vendorFields.model.Suffix;
+import com.appdirect.sdk.vendorFields.model.Validations;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
+import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldV2;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponseV2;
 
@@ -91,22 +97,30 @@ public class VendorRequiredFieldsControllerTest {
     @Test
     public void testGetRequiredFieldsV2_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
         //Given
-        List<Locale> locales = Collections.singletonList(Locale.US);
-        String partnerCode = "AD-Tenant";
-        Form form = Form.builder()
-                .fields(Collections.singletonList(VendorRequiredField.builder()
-                        .fieldType(FieldType.COUNTRY)
-                        .inputCode("ABCDE")
-                        .inputTitle("COUNTRY")
-                        .order(1)
-                        .prePopulatedValue("GERMANY")
-                        .required(true)
-                        .subTitle("REGION")
-                        .toolTip("place your country")
-                        .build()))
-                .order(4)
+        final List<Locale> locales = Collections.singletonList(Locale.US);
+        final String partnerCode = "AD-Tenant";
+        final Validations validations = Validations.builder()
+
                 .build();
-        VendorRequiredFieldsResponseV2 response = new VendorRequiredFieldsResponseV2("isvIdentifier", Collections.singletonList(form));
+        final Suffix suffix = Suffix.builder()
+                .text("text")
+                .inputCode("inputCode")
+                .build();
+        final Options options = Options.builder()
+                .suffix(suffix)
+                .placeholder("placeholder")
+                .build();
+        final VendorRequiredFieldV2 vendorRequiredFieldV2 = VendorRequiredFieldV2.builder()
+                .inputCode(InputCode.ADDRESS_POSTAL_CODE)
+                .inputTitle("inputTitle")
+                .subTitle("subTitle")
+                .tooltip("tooltip")
+                .value("value")
+                .fieldType(FieldTypeV2.COUNTRY)
+                .validations(validations)
+                .options(options)
+                .build();
+        final VendorRequiredFieldsResponseV2 response = new VendorRequiredFieldsResponseV2("isvIdentifier", Collections.singletonList(vendorRequiredFieldV2));
         when(mockVendorRequiredFieldHandlerV2.getRequiredFields(
                 "SKU",
                 "editionId",
@@ -131,7 +145,8 @@ public class VendorRequiredFieldsControllerTest {
                         "salesAgentUserId",
                         "salesAgentCompanyId",
                         locales,
-                        partnerCode).call();
+                        partnerCode
+                ).call();
 
         //Then
         assertThat(controllerResponse).isEqualTo(response);

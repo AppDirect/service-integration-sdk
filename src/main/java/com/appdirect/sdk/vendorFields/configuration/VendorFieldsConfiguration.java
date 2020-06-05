@@ -84,7 +84,7 @@ public class VendorFieldsConfiguration {
     public VendorFieldValidationHandler vendorFieldValidationHandler() {
         return (vendorFieldsValidationRequest) -> {
             throw new UnsupportedOperationException(String.format(
-                    "Vendor Fields Validation Service for editionCode=%s, flowType=%s, operationType=%s and locales=%s is not supported.",
+                    "Vendor Fields Validation Service for editionId=%s, flowType=%s, operationType=%s and locales=%s is not supported.",
                     vendorFieldsValidationRequest.getEditionCode(),
                     vendorFieldsValidationRequest.getFlowType(),
                     vendorFieldsValidationRequest.getOperationType(),
@@ -96,11 +96,25 @@ public class VendorFieldsConfiguration {
     public VendorFieldValidationHandlerV2 vendorFieldValidationHandlerV2() {
         return (vendorFieldsValidationRequest) -> {
             throw new UnsupportedOperationException(String.format(
-                    "Vendor Fields Validation Service for editionCode=%s, flowType=%s, operationType=%s, locales=%s, and partnerCode=%s is not supported.",
-                    vendorFieldsValidationRequest.getEditionCode(),
+                    "Vendor Fields Validation Service for " +
+                            "applicationIdentifier=%s, " +
+                            "editionId=%s, " +
+                            "flowType=%s, " +
+                            "operationType=%s, " +
+                            "userId=%s, " +
+                            "companyId=%s, " +
+                            "salesAgentUserId=%s, " +
+                            "salesAgentCompanyId=%s, " +
+                            "partnerCode=%s, " +
+                            "is not supported.",
+                    vendorFieldsValidationRequest.getApplicationIdentifier(),
+                    vendorFieldsValidationRequest.getEditionId(),
                     vendorFieldsValidationRequest.getFlowType(),
                     vendorFieldsValidationRequest.getOperationType(),
-                    vendorFieldsValidationRequest.getLocales(),
+                    vendorFieldsValidationRequest.getUserId(),
+                    vendorFieldsValidationRequest.getCompanyId(),
+                    vendorFieldsValidationRequest.getSalesAgentUserId(),
+                    vendorFieldsValidationRequest.getSalesAgentCompanyId(),
                     vendorFieldsValidationRequest.getPartnerCode()));
         };
     }

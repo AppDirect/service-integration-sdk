@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-class Validations {
+public class Validations {
     private boolean required;
     private boolean readonly;
     private String minLength;

@@ -54,7 +54,7 @@ public class VendorFieldValidationController {
             @RequestHeader(value = "Accept-Language") List<Locale> locales) {
 
         log.info(
-                "Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
+                "Calling validate fields API with editionId={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
                 vendorFieldsValidationRequest.getEditionCode(),
                 vendorFieldsValidationRequest.getFlowType(),
                 vendorFieldsValidationRequest.getOperationType(),
@@ -74,21 +74,31 @@ public class VendorFieldValidationController {
             produces = APPLICATION_JSON_VALUE)
     public Callable<VendorFieldsValidationResponseV2> validateFields(
             @RequestBody final VendorFieldsValidationRequestV2 vendorFieldsValidationRequest,
-            @RequestHeader(value = "Accept-Language") final List<Locale> locales,
             @RequestHeader(value = "AD-Tenant") final String partnerCode) {
 
         log.info(
-                "Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}, partnerCode={}",
-                vendorFieldsValidationRequest.getEditionCode(),
+                "Calling validate fields API with " +
+                        "applicationIdentifier={}, " +
+                        "editionId={}, " +
+                        "flowType={}, " +
+                        "operationType={}, " +
+                        "userId={}, " +
+                        "companyId={}, " +
+                        "salesAgentUserId={}, " +
+                        "salesAgentCompanyId={}, " +
+                        "partnerCode={}, " +
+                        "is not supported.",
+                vendorFieldsValidationRequest.getApplicationIdentifier(),
+                vendorFieldsValidationRequest.getEditionId(),
                 vendorFieldsValidationRequest.getFlowType(),
                 vendorFieldsValidationRequest.getOperationType(),
-                vendorFieldsValidationRequest.getPartner(),
-                vendorFieldsValidationRequest.getApplicationIdentifier(),
-                locales,
-                partnerCode
+                vendorFieldsValidationRequest.getUserId(),
+                vendorFieldsValidationRequest.getCompanyId(),
+                vendorFieldsValidationRequest.getSalesAgentUserId(),
+                vendorFieldsValidationRequest.getSalesAgentCompanyId(),
+                vendorFieldsValidationRequest.getPartnerCode()
         );
 
-        vendorFieldsValidationRequest.setLocales(locales);
         vendorFieldsValidationRequest.setPartnerCode(partnerCode);
         return () -> vendorFieldValidationHandlerV2.validateFields(vendorFieldsValidationRequest);
     }
