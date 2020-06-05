@@ -1,4 +1,4 @@
-package com.appdirect.sdk.vendorFields.model;
+package com.appdirect.sdk.vendorFields.model.v2;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

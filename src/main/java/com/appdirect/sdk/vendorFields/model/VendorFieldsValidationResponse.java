@@ -1,6 +1,5 @@
 package com.appdirect.sdk.vendorFields.model;
 
-
 import java.util.List;
 
 import lombok.AllArgsConstructor;

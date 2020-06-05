@@ -1,18 +1,18 @@
-package com.appdirect.sdk.vendorFields.model;
-
-import java.util.List;
+package com.appdirect.sdk.vendorFields.model.v2;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class VendorRequiredFieldsResponseV2 {
-    private String isvIdentifier;
-    private List<VendorRequiredFieldV2> fields;
+public class Options {
+    private Suffix suffix;
+    private String placeholder;
 }
