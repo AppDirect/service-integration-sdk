@@ -39,4 +39,5 @@ public class OrderInfo {
 	private List<OrderItemInfo> items = new ArrayList<>();
 	private List<CustomAttribute> customAttributes;
 	private String discountCode;
+	private FreeTrialInfo freeTrial;
 }
