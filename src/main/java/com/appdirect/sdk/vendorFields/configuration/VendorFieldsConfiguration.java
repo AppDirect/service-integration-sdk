@@ -82,7 +82,7 @@ public class VendorFieldsConfiguration {
     public VendorFieldValidationHandler vendorFieldValidationHandler() {
         return (vendorFieldsValidationRequest) -> {
             throw new UnsupportedOperationException(String.format(
-                    "Vendor Fields Validation Service for editionId=%s, flowType=%s, operationType=%s and locales=%s is not supported.",
+                    "Vendor Fields Validation Service for editionCode=%s, flowType=%s, operationType=%s and locales=%s is not supported.",
                     vendorFieldsValidationRequest.getEditionCode(),
                     vendorFieldsValidationRequest.getFlowType(),
                     vendorFieldsValidationRequest.getOperationType(),

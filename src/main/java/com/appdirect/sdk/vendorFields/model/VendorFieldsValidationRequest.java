@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import com.appdirect.sdk.vendorFields.model.v2.OperationType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data

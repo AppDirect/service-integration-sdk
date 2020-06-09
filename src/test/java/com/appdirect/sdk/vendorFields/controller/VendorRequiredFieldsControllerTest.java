@@ -28,7 +28,7 @@ import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.Form;
 import com.appdirect.sdk.vendorFields.model.v2.InputCode;
-import com.appdirect.sdk.vendorFields.model.v2.OperationType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.v2.Options;
 import com.appdirect.sdk.vendorFields.model.v2.Suffix;
 import com.appdirect.sdk.vendorFields.model.v2.Validations;

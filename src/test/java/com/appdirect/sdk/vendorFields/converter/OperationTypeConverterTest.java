@@ -12,7 +12,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.appdirect.sdk.exception.PropertyEditorSupportException;
-import com.appdirect.sdk.vendorFields.model.v2.OperationType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 
 public class OperationTypeConverterTest {
 	private OperationTypeConverter operationTypeConverter;

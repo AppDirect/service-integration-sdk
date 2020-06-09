@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.v2.OperationType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 
 /**
