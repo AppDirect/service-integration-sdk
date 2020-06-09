@@ -26,7 +26,7 @@ import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.v2.InputCode;
-import com.appdirect.sdk.vendorFields.model.v2.OperationType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.v2.ValidationFieldRequest;
 import com.appdirect.sdk.vendorFields.model.v2.ValidationFieldResponse;
 import com.appdirect.sdk.vendorFields.model.VendorFieldValidation;

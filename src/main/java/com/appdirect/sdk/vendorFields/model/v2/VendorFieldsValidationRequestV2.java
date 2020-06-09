@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import com.appdirect.sdk.vendorFields.model.FlowType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data

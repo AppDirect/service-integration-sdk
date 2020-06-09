@@ -23,7 +23,7 @@ import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.v2.OperationType;
+import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationRequestV2;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
@@ -53,7 +53,7 @@ public class VendorFieldValidationController {
             @RequestHeader(value = "Accept-Language") List<Locale> locales) {
 
         log.info(
-                "Calling validate fields API with editionId={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
+                "Calling validate fields API with editionCode={}, flowType={}, operationType={}, partner={}, applicationIdentifier={}, locales={}",
                 vendorFieldsValidationRequest.getEditionCode(),
                 vendorFieldsValidationRequest.getFlowType(),
                 vendorFieldsValidationRequest.getOperationType(),
