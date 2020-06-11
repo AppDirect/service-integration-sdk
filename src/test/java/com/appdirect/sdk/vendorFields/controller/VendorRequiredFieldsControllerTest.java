@@ -24,17 +24,17 @@ import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.model.FieldType;
-import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.Form;
-import com.appdirect.sdk.vendorFields.model.v2.InputCode;
 import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
+import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
+import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.InputCode;
 import com.appdirect.sdk.vendorFields.model.v2.Options;
 import com.appdirect.sdk.vendorFields.model.v2.Suffix;
 import com.appdirect.sdk.vendorFields.model.v2.Validations;
-import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldV2;
-import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -99,7 +99,11 @@ public class VendorRequiredFieldsControllerTest {
         final List<Locale> locales = Collections.singletonList(Locale.US);
         final String partnerCode = "AD-Tenant";
         final Validations validations = Validations.builder()
-
+                .required(true)
+                .readonly(true)
+                .minLength(2)
+                .maxLength(255)
+                .expression("expression")
                 .build();
         final Suffix suffix = Suffix.builder()
                 .text("text")

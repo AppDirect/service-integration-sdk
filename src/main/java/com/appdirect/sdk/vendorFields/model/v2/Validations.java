@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Validations {
     private boolean required;
     private boolean readonly;
-    private String minLength;
-    private String maxLength;
+    private int minLength;
+    private int maxLength;
     private String expression;
 }
