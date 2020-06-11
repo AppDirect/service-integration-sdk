@@ -90,7 +90,7 @@ public class VendorFieldValidationController {
                 vendorFieldsValidationRequest.getCompanyId(),
                 vendorFieldsValidationRequest.getSalesAgentUserId(),
                 vendorFieldsValidationRequest.getSalesAgentCompanyId(),
-                vendorFieldsValidationRequest.getPartnerCode()
+                partnerCode
         );
 
         vendorFieldsValidationRequest.setPartnerCode(partnerCode);

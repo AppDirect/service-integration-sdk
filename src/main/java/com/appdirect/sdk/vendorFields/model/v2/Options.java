@@ -14,5 +14,5 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Options {
     private Suffix suffix;
-    private String placeholder;
+    private String placeholderKey;
 }
