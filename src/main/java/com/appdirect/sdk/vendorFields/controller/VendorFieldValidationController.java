@@ -10,7 +10,6 @@ import java.util.concurrent.Callable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +24,8 @@ import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
-import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationRequestV2;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
+import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationRequestV2;
 import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationResponseV2;
 
 /**
@@ -37,10 +36,7 @@ import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationResponseV2;
 @RequiredArgsConstructor
 public class VendorFieldValidationController {
 
-    @Autowired
     private final VendorFieldValidationHandler vendorFieldValidationHandler;
-
-    @Autowired
     private final com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2;
 
     @RequestMapping(
@@ -85,8 +81,7 @@ public class VendorFieldValidationController {
                         "companyId={}, " +
                         "salesAgentUserId={}, " +
                         "salesAgentCompanyId={}, " +
-                        "partnerCode={}, " +
-                        "is not supported.",
+                        "partnerCode={}",
                 vendorFieldsValidationRequest.getApplicationIdentifier(),
                 vendorFieldsValidationRequest.getEditionId(),
                 vendorFieldsValidationRequest.getFlowType(),
