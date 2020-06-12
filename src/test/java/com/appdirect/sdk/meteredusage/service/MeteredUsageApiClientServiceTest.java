@@ -1,10 +1,12 @@
 package com.appdirect.sdk.meteredusage.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +27,7 @@ import com.appdirect.sdk.appmarket.events.ErrorCode;
 import com.appdirect.sdk.meteredusage.MeteredUsageApi;
 import com.appdirect.sdk.meteredusage.RetrofitCallStub;
 import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
+import com.appdirect.sdk.meteredusage.exception.ServiceException;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageItem;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageRequest;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageResponse;
@@ -176,6 +179,49 @@ public class MeteredUsageApiClientServiceTest {
 
 		assertThat(body).isNotNull();
 		assertThat(body).doesNotContain(ConstantUtils.SUBSCRIPTION_ID);
+	}
+
+
+	@Test
+	public void testRetryableReportUsage_withFailure() {
+		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		MeteredUsageItem meteredUsageItem = MeteredUsageItemMother.basic().build();
+		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
+		Response<MeteredUsageResponse> response = buildResponse(httpStatus, ErrorCode.UNKNOWN_ERROR.toString());
+		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
+
+		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
+
+		try {
+			assertThatThrownBy(() -> meteredUsageApiClientService.retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE))
+					.isInstanceOf(ServiceException.class)
+					.hasMessageContaining("Failed to inform Usage with errorCode=500, message=Response.error()");
+		} finally {
+			verify(meteredUsageApiClientService).retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE);
+		}
+	}
+
+	@Test
+	public void testRetryableReportUsage_withSuccess() {
+		MeteredUsageResponse requestAccepted = new MeteredUsageResponse(ConstantUtils.REQUEST_ID, ConstantUtils.IDEMPOTENCY_KEY);
+
+		MeteredUsageItem meteredUsageItem = MeteredUsageItemMother.basic().build();
+
+		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
+		Response<MeteredUsageResponse> response = buildResponse(requestAccepted);
+		Call<MeteredUsageResponse> call = new RetrofitCallStub(response).getCall();
+		List<MeteredUsageItem> items = Collections.singletonList(meteredUsageItem);
+
+		doReturn(call).when(meteredUsageApi).meteredUsageCall(any());
+		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
+
+		try {
+			meteredUsageApiClientService.retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE);
+		} finally {
+			verify(meteredUsageApiClientService).retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE);
+		}
 	}
 
 	private Call<MeteredUsageResponse> buildCall(MeteredUsageItem meteredUsageItem) {
