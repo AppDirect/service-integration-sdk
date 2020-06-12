@@ -113,8 +113,8 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	public APIResult retryableReportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, String secretKey, boolean billable, String sourceType) {
 		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 		if (!apiResult.isSuccess()) {
-			log.warn("Failed to inform Usage with idempotentKey={}, billable={}", idempotentKey, billable);
-			throw new ServiceException(apiResult.getMessage());
+			log.warn("Failed to inform Usage idempotentKey={}, billable={} with errorCode={}, message={}", idempotentKey, billable, apiResult.getErrorCode(), apiResult.getMessage());
+			throw new ServiceException(apiResult.getMessage(), apiResult.getErrorCode());
 		}
 		return apiResult;
 	}
