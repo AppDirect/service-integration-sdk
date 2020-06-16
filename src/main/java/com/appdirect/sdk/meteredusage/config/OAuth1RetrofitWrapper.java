@@ -1,9 +1,6 @@
 package com.appdirect.sdk.meteredusage.config;
 
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import brave.Tracing;
@@ -17,20 +14,17 @@ import se.akerfeldt.okhttp.signpost.OkHttpOAuthConsumer;
 
 @Component
 public class OAuth1RetrofitWrapper {
-	@Value("${usage.api.timeout.connectTimeout:10000}")
-	private int connectTimeout;
-	@Value("${usage.api.timeout.readTimeout:10000}")
-	private int readTimeout;
-	@Value("${usage.api.timeout.writeTimeout:10000}")
-	private int writeTimeout;
 
 	@Autowired(required = false)
 	private Tracing tracing;
 
 	private Retrofit.Builder retrofitBuilder;
+	private OkHttpClient okHttpClient;
 
-	public OAuth1RetrofitWrapper() {
+	@Autowired
+	public OAuth1RetrofitWrapper(OkHttpClient okHttpClient) {
 		this.retrofitBuilder = new Retrofit.Builder().addConverterFactory(JacksonConverterFactory.create());
+		this.okHttpClient = okHttpClient;
 	}
 
 	/**
@@ -57,15 +51,11 @@ public class OAuth1RetrofitWrapper {
 	}
 
 	private void configureOkHttpClient(String oauthConsumerKey, String oauthConsumerSecret) {
-		OkHttpClient.Builder okHttpClientBuilder = OkHttpClientShared.getInstance().newBuilder();
+		OkHttpClient.Builder okHttpClientBuilder = okHttpClient.newBuilder();
 		if(tracing != null){
 			okHttpClientBuilder.dispatcher(new Dispatcher(tracing.currentTraceContext().executorService(new Dispatcher().executorService())))
 				.addNetworkInterceptor(TracingInterceptor.create(tracing));
 		}
-		//Overriding the timeouts
-		okHttpClientBuilder.connectTimeout(connectTimeout, TimeUnit.MILLISECONDS);
-		okHttpClientBuilder.readTimeout(readTimeout, TimeUnit.MILLISECONDS);
-		okHttpClientBuilder.writeTimeout(writeTimeout, TimeUnit.MILLISECONDS);
 
 		// Add a logging interceptor to capture incoming/outgoing calls.
 		HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
