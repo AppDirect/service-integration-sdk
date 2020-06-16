@@ -13,7 +13,10 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
@@ -33,6 +36,7 @@ import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
 
 @EnableRetry
 @Configuration
@@ -50,8 +54,17 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper() {
-		return new OAuth1RetrofitWrapper();
+	public OAuth1RetrofitWrapper oAuth1RetrofitWrapper(OkHttpClient okHttpClient) {
+		return new OAuth1RetrofitWrapper(okHttpClient);
+	}
+
+	@Bean
+	public OkHttpClient okHttpClient(@Value("${usage.api.timeout.connectTimeout:10000}") int connectTimeout, @Value("${usage.api.timeout.readTimeout:10000}") int readTimeout, @Value("${usage.api.timeout.writeTimeout:10000}") int writeTimeout) {
+		return new OkHttpClient().newBuilder()
+				.connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
+				.readTimeout(readTimeout, TimeUnit.MILLISECONDS)
+				.writeTimeout(writeTimeout, TimeUnit.MILLISECONDS)
+				.build();
 	}
 
 	@Bean

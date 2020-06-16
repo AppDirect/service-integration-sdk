@@ -31,6 +31,7 @@ import com.appdirect.sdk.meteredusage.model.MeteredUsageResponse;
 import com.appdirect.sdk.meteredusage.mother.MeteredUsageItemMother;
 import com.appdirect.sdk.utils.ConstantUtils;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 import retrofit2.Call;
@@ -38,6 +39,8 @@ import retrofit2.Response;
 
 public class MeteredUsageApiClientServiceTest {
 
+	@Mock
+	private OkHttpClient okHttpClient;
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
@@ -47,10 +50,11 @@ public class MeteredUsageApiClientServiceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper();
+		OAuth1RetrofitWrapper oAuth1RetrofitWrapper = new OAuth1RetrofitWrapper(okHttpClient);
 
 		meteredUsageApiClientService = spy(new MeteredUsageApiClientServiceImpl(credentialsSupplier, oAuth1RetrofitWrapper));
 
+		when(okHttpClient.newBuilder()).thenReturn(new OkHttpClient.Builder());
 		when(credentialsSupplier.getConsumerCredentials(ConstantUtils.CONSUMER_KEY)).thenReturn(new Credentials(ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET));
 	}
 
