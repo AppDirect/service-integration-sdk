@@ -113,8 +113,8 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 	public APIResult retryableReportUsage(String baseUrl, String idempotentKey, List<MeteredUsageItem> meteredUsageItems, String secretKey, boolean billable, String sourceType) {
 		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 		if (!apiResult.isSuccess()) {
-			log.warn("Failed to inform Usage idempotentKey={}, billable={} with errorCode={}, message={}", idempotentKey, billable, apiResult.getErrorCode(), apiResult.getMessage());
-			throw new ServiceException(apiResult.getMessage(), apiResult.getErrorCode());
+			log.warn("Failed to inform Usage idempotentKey={}, billable={} with errorCode={}, message={}", idempotentKey, billable, apiResult.getResponseCode(), apiResult.getMessage());
+			throw new ServiceException(apiResult.getMessage(), apiResult.getResponseCode());
 		}
 		return apiResult;
 	}
@@ -133,7 +133,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 			return new APIResult(true, response.body().toString());
 		}
 		log.error("Metered Usage API Client failed with error={}", response.message());
-		return new APIResult(false, String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), response.message()));
+		return APIResult.failure(response.code(), String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), response.message()));
 	}
 
 	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable, String sourceType) {

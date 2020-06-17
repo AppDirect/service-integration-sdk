@@ -39,6 +39,8 @@ public class APIResult {
 	private String userIdentifier;
 	@JsonIgnore
 	private int statusCodeReturnedToAppmarket;
+	@JsonIgnore
+	private int responseCode;
 
 	public APIResult(ErrorCode errorCode, String message) {
 		this(false, message);
@@ -76,6 +78,12 @@ public class APIResult {
 	public static APIResult failure(ErrorCode errorCode, String message) {
 		APIResult result = new APIResult(errorCode, message);
 		result.setStatusCodeReturnedToAppmarket(200);
+		return result;
+	}
+
+	public static APIResult failure(int errorCode, String message) {
+		APIResult result = new APIResult(false, message);
+		result.setResponseCode(errorCode);
 		return result;
 	}
 }
