@@ -181,7 +181,6 @@ public class MeteredUsageApiClientServiceTest {
 		assertThat(body).doesNotContain(ConstantUtils.SUBSCRIPTION_ID);
 	}
 
-
 	@Test
 	public void testRetryableReportUsage_withFailure() {
 		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
