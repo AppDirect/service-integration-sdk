@@ -1,7 +1,7 @@
 package com.appdirect.sdk.vendorFields.converter;
 
 import com.appdirect.sdk.exception.PropertyEditorSupportException;
-import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import java.beans.PropertyEditorSupport;
 
 public class FlowTypeV2Converter extends PropertyEditorSupport {
