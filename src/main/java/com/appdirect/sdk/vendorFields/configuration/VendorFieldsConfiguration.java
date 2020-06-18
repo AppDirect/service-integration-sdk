@@ -103,9 +103,10 @@ public class VendorFieldsConfiguration {
                             "companyId=%s, " +
                             "salesAgentUserId=%s, " +
                             "salesAgentCompanyId=%s, " +
+                            "locales=%s, " +
                             "partnerCode=%s, " +
                             "is not supported.",
-                    vendorFieldsValidationRequest.getApplicationIdentifier(),
+                    vendorFieldsValidationRequest.getApplicationId(),
                     vendorFieldsValidationRequest.getEditionId(),
                     vendorFieldsValidationRequest.getFlowType(),
                     vendorFieldsValidationRequest.getOperationType(),
@@ -113,6 +114,7 @@ public class VendorFieldsConfiguration {
                     vendorFieldsValidationRequest.getCompanyId(),
                     vendorFieldsValidationRequest.getSalesAgentUserId(),
                     vendorFieldsValidationRequest.getSalesAgentCompanyId(),
+                    vendorFieldsValidationRequest.getLocales(),
                     vendorFieldsValidationRequest.getPartnerCode()));
         };
     }

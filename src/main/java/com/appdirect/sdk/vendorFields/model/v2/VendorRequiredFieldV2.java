@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorRequiredFieldV2 {
-    private InputCode inputCode;
+    private String inputCode;
     private String inputTitleKey;
     private String subTitleKey;
     private String tooltipKey;

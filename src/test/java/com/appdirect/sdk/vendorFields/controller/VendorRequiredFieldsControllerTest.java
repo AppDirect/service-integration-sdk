@@ -7,6 +7,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
+import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -30,7 +32,6 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
-import com.appdirect.sdk.vendorFields.model.v2.InputCode;
 import com.appdirect.sdk.vendorFields.model.v2.Options;
 import com.appdirect.sdk.vendorFields.model.v2.Suffix;
 import com.appdirect.sdk.vendorFields.model.v2.Validations;
@@ -114,7 +115,7 @@ public class VendorRequiredFieldsControllerTest {
                 .placeholderKey("placeholderKey")
                 .build();
         final VendorRequiredFieldV2 vendorRequiredFieldV2 = VendorRequiredFieldV2.builder()
-                .inputCode(InputCode.ADDRESS_POSTAL_CODE)
+                .inputCode("ADDRESS_POSTAL_CODE")
                 .inputTitleKey("inputTitleKey")
                 .subTitleKey("subTitleKey")
                 .tooltipKey("tooltipKey")
@@ -127,7 +128,7 @@ public class VendorRequiredFieldsControllerTest {
         when(mockVendorRequiredFieldHandlerV2.getRequiredFields(
                 "SKU",
                 "editionId",
-                FlowType.RESELLER_FLOW,
+                FlowTypeV2.BOBO,
                 OperationType.SUBSCRIPTION_CHANGE,
                 "userId",
                 "companyId",
@@ -141,7 +142,7 @@ public class VendorRequiredFieldsControllerTest {
                 .getRequiredFields(
                         "SKU",
                         "editionId",
-                        FlowType.RESELLER_FLOW,
+                        FlowTypeV2.BOBO,
                         OperationType.SUBSCRIPTION_CHANGE,
                         "userId",
                         "companyId",
@@ -160,6 +161,8 @@ public class VendorRequiredFieldsControllerTest {
         vendorRequiredFieldController.initBinder(webdataBinder);
 
         verify(webdataBinder, times(1)).registerCustomEditor(eq(FlowType.class), any(FlowTypeConverter.class));
+        verify(webdataBinder, times(1)).registerCustomEditor(eq(FlowTypeV2.class), any(
+            FlowTypeV2Converter.class));
         verify(webdataBinder, times(1)).registerCustomEditor(eq(OperationType.class), any(OperationTypeConverter.class));
         verify(webdataBinder, times(1)).registerCustomEditor(eq(List.class), any(LocaleConverter.class));
     }
