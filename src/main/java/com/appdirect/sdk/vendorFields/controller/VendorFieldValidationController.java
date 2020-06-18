@@ -3,6 +3,8 @@ package com.appdirect.sdk.vendorFields.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
+import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
@@ -69,11 +71,12 @@ public class VendorFieldValidationController {
             produces = APPLICATION_JSON_VALUE)
     public Callable<VendorFieldsValidationResponseV2> validateFields(
             @RequestBody final VendorFieldsValidationRequestV2 vendorFieldsValidationRequest,
-            @RequestHeader(value = "AD-Tenant") final String partnerCode) {
+            @RequestHeader(value = "AD-Tenant") final String partnerCode,
+            @RequestHeader(value = "Accept-Language") List<Locale> locales) {
 
         log.info(
                 "Calling validate fields API with " +
-                        "applicationIdentifier={}, " +
+                        "applicationId={}, " +
                         "editionId={}, " +
                         "flowType={}, " +
                         "operationType={}, " +
@@ -81,8 +84,9 @@ public class VendorFieldValidationController {
                         "companyId={}, " +
                         "salesAgentUserId={}, " +
                         "salesAgentCompanyId={}, " +
+                        "locales={}, " +
                         "partnerCode={}",
-                vendorFieldsValidationRequest.getApplicationIdentifier(),
+                vendorFieldsValidationRequest.getApplicationId(),
                 vendorFieldsValidationRequest.getEditionId(),
                 vendorFieldsValidationRequest.getFlowType(),
                 vendorFieldsValidationRequest.getOperationType(),
@@ -90,9 +94,11 @@ public class VendorFieldValidationController {
                 vendorFieldsValidationRequest.getCompanyId(),
                 vendorFieldsValidationRequest.getSalesAgentUserId(),
                 vendorFieldsValidationRequest.getSalesAgentCompanyId(),
+                locales,
                 partnerCode
         );
 
+        vendorFieldsValidationRequest.setLocales(locales);
         vendorFieldsValidationRequest.setPartnerCode(partnerCode);
         return () -> vendorFieldValidationHandlerV2.validateFields(vendorFieldsValidationRequest);
     }
@@ -100,6 +106,7 @@ public class VendorFieldValidationController {
     @InitBinder
     public void initBinder(final WebDataBinder webdataBinder) {
         webdataBinder.registerCustomEditor(FlowType.class, new FlowTypeConverter());
+        webdataBinder.registerCustomEditor(FlowTypeV2.class, new FlowTypeV2Converter());
         webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
         webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
     }

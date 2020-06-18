@@ -7,6 +7,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
+import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -25,7 +27,6 @@ import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorFieldValidationHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.v2.InputCode;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.v2.ValidationFieldRequest;
 import com.appdirect.sdk.vendorFields.model.v2.ValidationFieldResponse;
@@ -88,7 +89,7 @@ public class VendorFieldValidationControllerTest {
         //Given
         final String partnerCode = "AD-Tenant";
         final ValidationFieldResponse validationFieldResponse = ValidationFieldResponse.builder()
-                .inputCode(InputCode.ADDRESS_POSTAL_CODE)
+                .inputCode("ADDRESS_POSTAL_CODE")
                 .messageKey("messageKey")
                 .build();
         final VendorFieldsValidationResponseV2 response = VendorFieldsValidationResponseV2.builder()
@@ -97,12 +98,12 @@ public class VendorFieldValidationControllerTest {
                 .fields(Collections.singletonList(validationFieldResponse))
                 .build();
         final ValidationFieldRequest validationFieldRequest = ValidationFieldRequest.builder()
-                .inputCode(InputCode.ADDRESS_POSTAL_CODE)
+                .inputCode("ADDRESS_POSTAL_CODE")
                 .value("value")
                 .build();
         VendorFieldsValidationRequestV2 vendorFieldsValidationRequest = VendorFieldsValidationRequestV2.builder()
                 .fields(Collections.singletonList(validationFieldRequest))
-                .flowType(FlowType.RESELLER_FLOW)
+                .flowType(FlowTypeV2.BOBO)
                 .operationType(OperationType.SUBSCRIPTION_CHANGE)
                 .editionId("SKU")
                 .partnerCode(partnerCode)
@@ -111,7 +112,8 @@ public class VendorFieldValidationControllerTest {
                 .thenReturn(response);
         //When
         VendorFieldsValidationResponseV2 controllerResponse =
-                vendorFieldValidationController.validateFields(vendorFieldsValidationRequest, partnerCode).call();
+                vendorFieldValidationController.validateFields(vendorFieldsValidationRequest, partnerCode,
+                    Collections.singletonList(Locale.US)).call();
 
         //Then
         assertThat(controllerResponse).isEqualTo(response);
@@ -122,6 +124,8 @@ public class VendorFieldValidationControllerTest {
         vendorFieldValidationController.initBinder(webdataBinder);
 
         verify(webdataBinder, times(1)).registerCustomEditor(eq(FlowType.class), any(FlowTypeConverter.class));
+        verify(webdataBinder, times(1)).registerCustomEditor(eq(FlowTypeV2.class), any(
+            FlowTypeV2Converter.class));
         verify(webdataBinder, times(1)).registerCustomEditor(eq(OperationType.class), any(OperationTypeConverter.class));
         verify(webdataBinder, times(1)).registerCustomEditor(eq(List.class), any(LocaleConverter.class));
     }
