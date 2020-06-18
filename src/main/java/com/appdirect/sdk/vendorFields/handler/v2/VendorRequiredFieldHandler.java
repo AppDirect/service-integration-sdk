@@ -1,6 +1,6 @@
 package com.appdirect.sdk.vendorFields.handler.v2;
 
-import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 import java.util.List;

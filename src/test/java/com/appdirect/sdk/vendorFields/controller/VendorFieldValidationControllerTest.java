@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
-import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;

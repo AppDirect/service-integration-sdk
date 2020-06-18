@@ -1,6 +1,5 @@
 package com.appdirect.sdk.vendorFields.model.v2;
 
-import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;

@@ -9,7 +9,7 @@ import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.FlowTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
