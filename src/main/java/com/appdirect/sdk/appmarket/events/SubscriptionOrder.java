@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class SubscriptionOrder extends EventWithContextWithConfiguration implements Serializable {
 	private UserInfo purchaserInfo;
 	private CompanyInfo companyInfo;
