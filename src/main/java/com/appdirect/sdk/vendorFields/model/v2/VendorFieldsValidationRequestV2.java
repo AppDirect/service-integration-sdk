@@ -23,5 +23,5 @@ public class VendorFieldsValidationRequestV2 {
 	private String salesAgentCompanyId;
 	private List<ValidationFieldRequest> fields;
 	private String partnerCode;
-	private List<Locale> locales;
+	private Locale locale;
 }

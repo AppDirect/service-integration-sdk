@@ -97,7 +97,6 @@ public class VendorRequiredFieldsControllerTest {
     @Test
     public void testGetRequiredFieldsV2_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
         //Given
-        final List<Locale> locales = Collections.singletonList(Locale.US);
         final String partnerCode = "AD-Tenant";
         final Validations validations = Validations.builder()
                 .required(true)
@@ -134,7 +133,7 @@ public class VendorRequiredFieldsControllerTest {
                 "companyId",
                 "salesAgentUserId",
                 "salesAgentCompanyId",
-                locales,
+                Locale.US,
                 partnerCode)).thenReturn(response);
 
         //When
@@ -148,7 +147,7 @@ public class VendorRequiredFieldsControllerTest {
                         "companyId",
                         "salesAgentUserId",
                         "salesAgentCompanyId",
-                        locales,
+                        Locale.US,
                         partnerCode
                 ).call();
 

@@ -113,7 +113,7 @@ public class VendorFieldValidationControllerTest {
         //When
         VendorFieldsValidationResponseV2 controllerResponse =
                 vendorFieldValidationController.validateFields(vendorFieldsValidationRequest, partnerCode,
-                    Collections.singletonList(Locale.US)).call();
+                    Locale.US).call();
 
         //Then
         assertThat(controllerResponse).isEqualTo(response);
