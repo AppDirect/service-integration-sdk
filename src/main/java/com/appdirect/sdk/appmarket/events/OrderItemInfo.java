@@ -13,6 +13,8 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,7 +22,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
-public class OrderItemInfo {
+public class OrderItemInfo implements Serializable {
 	private PricingUnit unit;
 	private int quantity;
 }

@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class UserInfo {
+public class UserInfo implements Serializable {
 	private String uuid;
 	private String openId;
 	private String email;

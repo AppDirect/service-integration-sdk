@@ -13,6 +13,7 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ import com.appdirect.sdk.meteredusage.model.CustomAttribute;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class OrderInfo {
+public class OrderInfo implements Serializable {
 	private String editionCode;
 	private String addonOfferingCode;
 	private PricingDuration pricingDuration;
