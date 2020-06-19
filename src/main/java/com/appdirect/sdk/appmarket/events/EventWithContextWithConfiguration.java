@@ -2,6 +2,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static java.util.Objects.isNull;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class EventWithContextWithConfiguration extends EventWithContext {
+public class EventWithContextWithConfiguration extends EventWithContext implements Serializable {
 	private Map<String, String> configuration = new HashMap<>();
 
 	public EventWithContextWithConfiguration(

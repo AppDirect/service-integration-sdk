@@ -13,10 +13,12 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class SubscriptionOrder extends EventWithContextWithConfiguration {
+@Builder
+public class SubscriptionOrder extends EventWithContextWithConfiguration implements Serializable {
 	private UserInfo purchaserInfo;
 	private CompanyInfo companyInfo;
 	private OrderInfo orderInfo;
@@ -71,7 +74,7 @@ public class SubscriptionOrder extends EventWithContextWithConfiguration {
 							 String samlIdpUrl) { // NOSONAR: constructor is too big, but it's mostly just for sdk use
 
 		this(consumerKeyUsedByTheRequest, flag, purchaserInfo, new HashMap<>(), companyInfo, orderInfo, partner,
-			 applicationUuid, queryParameters, eventToken, marketplaceUrl, samlIdpUrl);
+				applicationUuid, queryParameters, eventToken, marketplaceUrl, samlIdpUrl);
 	}
 
 	public Optional<String> getApplicationUuid() {

@@ -15,6 +15,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.EventFlag.DEVELOPMENT;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class EventWithContext {
+public abstract class EventWithContext implements Serializable {
 	/**
 	 * Returns the consumer key that was used by the appmarket to publish this event.
 	 * You can use this to determine which product is the originator of this event.

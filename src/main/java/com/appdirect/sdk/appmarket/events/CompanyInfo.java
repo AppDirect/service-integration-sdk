@@ -13,6 +13,8 @@
 
 package com.appdirect.sdk.appmarket.events;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +28,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @Builder
-public class CompanyInfo {
+public class CompanyInfo implements Serializable {
 	private String uuid;
 	private String name;
 	private String email;

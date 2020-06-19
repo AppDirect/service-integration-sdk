@@ -1,5 +1,7 @@
 package com.appdirect.sdk.appmarket.events;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreeTrialInfo {
-  private Boolean active;
+public class FreeTrialInfo implements Serializable {
+	private Boolean active;
 }
