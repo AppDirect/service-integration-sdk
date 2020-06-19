@@ -41,7 +41,7 @@ public class VendorFieldsConfiguration {
                 companyId,
                 salesAgentUserId,
                 salesAgentCompanyId,
-                locales,
+                locale,
                 partnerCode) -> {
             throw new UnsupportedOperationException(String.format(
                     "Vendor Required Field Service for " +
@@ -53,7 +53,7 @@ public class VendorFieldsConfiguration {
                             "companyId=%s, " +
                             "salesAgentUserId=%s, " +
                             "salesAgentCompanyId=%s, " +
-                            "locales=%s, " +
+                            "locale=%s, " +
                             "partnerCode=%s " +
                             "is not supported.",
                     applicationId,
@@ -64,7 +64,7 @@ public class VendorFieldsConfiguration {
                     companyId,
                     salesAgentUserId,
                     salesAgentCompanyId,
-                    locales,
+                    locale,
                     partnerCode
             ));
         };
@@ -103,7 +103,7 @@ public class VendorFieldsConfiguration {
                             "companyId=%s, " +
                             "salesAgentUserId=%s, " +
                             "salesAgentCompanyId=%s, " +
-                            "locales=%s, " +
+                            "locale=%s, " +
                             "partnerCode=%s, " +
                             "is not supported.",
                     vendorFieldsValidationRequest.getApplicationId(),
@@ -114,7 +114,7 @@ public class VendorFieldsConfiguration {
                     vendorFieldsValidationRequest.getCompanyId(),
                     vendorFieldsValidationRequest.getSalesAgentUserId(),
                     vendorFieldsValidationRequest.getSalesAgentCompanyId(),
-                    vendorFieldsValidationRequest.getLocales(),
+                    vendorFieldsValidationRequest.getLocale(),
                     vendorFieldsValidationRequest.getPartnerCode()));
         };
     }

@@ -72,7 +72,7 @@ public class VendorFieldValidationController {
     public Callable<VendorFieldsValidationResponseV2> validateFields(
             @RequestBody final VendorFieldsValidationRequestV2 vendorFieldsValidationRequest,
             @RequestHeader(value = "AD-Tenant") final String partnerCode,
-            @RequestHeader(value = "Accept-Language") List<Locale> locales) {
+            @RequestHeader(value = "Accept-Language") Locale locale) {
 
         log.info(
                 "Calling validate fields API with " +
@@ -94,11 +94,11 @@ public class VendorFieldValidationController {
                 vendorFieldsValidationRequest.getCompanyId(),
                 vendorFieldsValidationRequest.getSalesAgentUserId(),
                 vendorFieldsValidationRequest.getSalesAgentCompanyId(),
-                locales,
+                locale,
                 partnerCode
         );
 
-        vendorFieldsValidationRequest.setLocales(locales);
+        vendorFieldsValidationRequest.setLocale(locale);
         vendorFieldsValidationRequest.setPartnerCode(partnerCode);
         return () -> vendorFieldValidationHandlerV2.validateFields(vendorFieldsValidationRequest);
     }

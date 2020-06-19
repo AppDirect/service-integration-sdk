@@ -1,9 +1,8 @@
 package com.appdirect.sdk.vendorFields.handler.v2;
 
-import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -19,7 +18,7 @@ public interface VendorRequiredFieldHandler {
                                                      final String companyId,
                                                      final String salesAgentUserId,
                                                      final String salesAgentCompanyId,
-                                                     final List<Locale> locales,
+                                                     final Locale locale,
                                                      final String partnerCode
     );
 }
