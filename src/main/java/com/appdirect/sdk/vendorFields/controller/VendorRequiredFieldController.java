@@ -70,7 +70,7 @@ public class VendorRequiredFieldController {
             @RequestParam(value = "companyId") final String companyId,
             @RequestParam(required = false, value = "salesAgentUserId") final String salesAgentUserId,
             @RequestParam(required = false, value = "salesAgentCompanyId") final String salesAgentCompanyId,
-            @RequestHeader(value = "Accept-Language") final Locale locale,
+            @RequestHeader(required = false, value = "Accept-Language") final Locale locale,
             @RequestHeader(value = "AD-Tenant") final String partnerCode) {
 
         log.info(
@@ -83,7 +83,7 @@ public class VendorRequiredFieldController {
                         "companyId={}, " +
                         "salesAgentUserId={}, " +
                         "salesAgentCompanyId={}, " +
-                        "locales={}, " +
+                        "locale={}, " +
                         "partnerCode={}",
                 applicationId,
                 editionId,
