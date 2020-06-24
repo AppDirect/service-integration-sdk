@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
+import com.appdirect.sdk.vendorFields.converter.LocaleObjectConverter;
 import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import java.util.List;
 import java.util.Locale;
@@ -109,5 +110,6 @@ public class VendorFieldValidationController {
         webdataBinder.registerCustomEditor(FlowTypeV2.class, new FlowTypeV2Converter());
         webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
         webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
+        webdataBinder.registerCustomEditor(Locale.class, new LocaleObjectConverter());
     }
 }

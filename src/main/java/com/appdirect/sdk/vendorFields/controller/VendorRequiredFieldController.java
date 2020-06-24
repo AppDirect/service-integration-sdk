@@ -6,12 +6,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
+import com.appdirect.sdk.vendorFields.converter.LocaleObjectConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
 import com.appdirect.sdk.vendorFields.model.FlowType;
-import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 import java.util.List;
 import java.util.Locale;
@@ -81,8 +82,8 @@ public class VendorRequiredFieldController {
                         "userId={}, " +
                         "companyId={}, " +
                         "salesAgentUserId={}, " +
-                        "salesAgentCompanyId={}" +
-                        "locales={}" +
+                        "salesAgentCompanyId={}, " +
+                        "locales={}, " +
                         "partnerCode={}",
                 applicationId,
                 editionId,
@@ -115,5 +116,6 @@ public class VendorRequiredFieldController {
         webdataBinder.registerCustomEditor(FlowTypeV2.class, new FlowTypeV2Converter());
         webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
         webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
+        webdataBinder.registerCustomEditor(Locale.class, new LocaleObjectConverter());
     }
 }
