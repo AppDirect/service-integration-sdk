@@ -73,7 +73,7 @@ public class VendorFieldValidationController {
     public Callable<VendorFieldsValidationResponseV2> validateFields(
             @RequestBody final VendorFieldsValidationRequestV2 vendorFieldsValidationRequest,
             @RequestHeader(value = "AD-Tenant") final String partnerCode,
-            @RequestHeader(value = "Accept-Language") Locale locale) {
+            @RequestHeader(required = false, value = "Accept-Language") Locale locale) {
 
         log.info(
                 "Calling validate fields API with " +
