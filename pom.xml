@@ -17,7 +17,7 @@
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.94</version>
+    <version>1.95-SNAPSHOT</version>
     <name>SDK for service integration</name>
 
     <properties>
