@@ -17,6 +17,7 @@ import com.appdirect.sdk.appmarket.events.APIResult;
 import com.appdirect.sdk.appmarket.events.ErrorCode;
 import com.appdirect.sdk.meteredusage.MeteredUsageApi;
 import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
+import com.appdirect.sdk.meteredusage.exception.EntryAlreadyExistsException;
 import com.appdirect.sdk.meteredusage.exception.MeteredUsageApiException;
 import com.appdirect.sdk.meteredusage.exception.ServiceException;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageItem;
@@ -114,6 +115,10 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 		if (!apiResult.isSuccess()) {
 			log.warn("Failed to inform Usage idempotentKey={}, billable={} with errorCode={}, message={}", idempotentKey, billable, apiResult.getResponseCode(), apiResult.getMessage());
+			if (apiResult.getMessage().contains("Entry ALREADY exists with idempotencyKey")) {
+				log.error("Response is already shared with meterusage with idempotecncy key {}", idempotentKey);
+				throw new EntryAlreadyExistsException(apiResult.getResponseCode(), apiResult.getMessage());
+			}
 			throw new ServiceException(apiResult.getMessage(), apiResult.getResponseCode());
 		}
 		return apiResult;
@@ -128,12 +133,12 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 			.create(MeteredUsageApi.class);
 	}
 
-	private APIResult processResponse(Response<MeteredUsageResponse> response) {
+	private APIResult processResponse(Response<MeteredUsageResponse> response) throws IOException{
 		if (response.isSuccessful()) {
 			return new APIResult(true, response.body().toString());
 		}
 		log.error("Metered Usage API Client failed with error={}", response.message());
-		return APIResult.failure(response.code(), String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), response.message()));
+		return APIResult.failure(response.code(), String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), response.errorBody().string()));
 	}
 
 	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable, String sourceType) {
