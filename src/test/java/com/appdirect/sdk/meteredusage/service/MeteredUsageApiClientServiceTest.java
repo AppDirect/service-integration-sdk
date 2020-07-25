@@ -197,7 +197,7 @@ public class MeteredUsageApiClientServiceTest {
 		try {
 			assertThatThrownBy(() -> meteredUsageApiClientService.retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE))
 					.isInstanceOf(ServiceException.class)
-					.hasMessageStartingWith("Failed to inform Usage with errorCode=500");
+					.hasMessageContaining("Failed to inform Usage with errorCode=500, message=UNKNOWN_ERROR");
 		} finally {
 			verify(meteredUsageApiClientService).retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE);
 		}
