@@ -31,6 +31,7 @@ import retrofit2.Response;
 @Slf4j
 @Service
 public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientService {
+	private final static String IDEMPOTENT_KEY_ALREADY_PRESENT_ERROR = "Entry ALREADY exists with idempotencyKey";
 
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final OAuth1RetrofitWrapper oAuth1RetrofitWrapper;
@@ -116,7 +117,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 		if (!apiResult.isSuccess()) {
 			log.warn("Failed to inform Usage idempotentKey={}, billable={} with errorCode={}, message={}", idempotentKey, billable, apiResult.getResponseCode(), apiResult.getMessage());
-			if (apiResult.getMessage().contains("Entry ALREADY exists with idempotencyKey")) {
+			if (apiResult.getMessage().contains(IDEMPOTENT_KEY_ALREADY_PRESENT_ERROR)) {
 				log.error("Response is already shared with meterusage with idempotecncy key {}", idempotentKey);
 				throw new EntryAlreadyExistsException(apiResult.getResponseCode(), apiResult.getMessage());
 			}
