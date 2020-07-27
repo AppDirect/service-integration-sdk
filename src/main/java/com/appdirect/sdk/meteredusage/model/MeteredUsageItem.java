@@ -21,8 +21,8 @@ public class MeteredUsageItem {
 	private String subscriptionId;
 	private List<UsageItem> usageList = new ArrayList<>();
 
-	public MeteredUsageItem(String accountId, List<UsageItem> usageList) {
-		this.accountId = accountId;
-		this.usageList = usageList;
-	}
+//	public MeteredUsageItem(String accountId, List<UsageItem> usageList) {
+//		this.accountId = accountId;
+//		this.usageList = usageList;
+//	}
 }
