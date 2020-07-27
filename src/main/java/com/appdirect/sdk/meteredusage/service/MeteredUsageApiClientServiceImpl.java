@@ -31,7 +31,7 @@ import retrofit2.Response;
 @Slf4j
 @Service
 public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientService {
-	private final static String IDEMPOTENT_KEY_ALREADY_SHARED = "Entry ALREADY exists with idempotencyKey";
+	private final static String IDEMPOTENCY_KEY_ALREADY_SHARED = "Entry ALREADY exists with idempotencyKey";
 
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final OAuth1RetrofitWrapper oAuth1RetrofitWrapper;
@@ -117,7 +117,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		APIResult apiResult = reportUsage(baseUrl, idempotentKey, meteredUsageItems, billable, secretKey, credentialsSupplier.getConsumerCredentials(secretKey).developerSecret, sourceType);
 		if (!apiResult.isSuccess()) {
 			log.warn("Failed to inform Usage idempotentKey={}, billable={} with errorCode={}, message={}", idempotentKey, billable, apiResult.getResponseCode(), apiResult.getMessage());
-			if (apiResult.getMessage().contains(IDEMPOTENT_KEY_ALREADY_SHARED)) {
+			if (!StringUtils.isEmpty(apiResult.getMessage()) && apiResult.getMessage().contains(IDEMPOTENCY_KEY_ALREADY_SHARED)) {
 				log.error("Response is already shared with meterusage with idempotecncy key {}", idempotentKey);
 				throw new MeterUsageServiceException(apiResult.getResponseCode(), apiResult.getMessage());
 			}
@@ -139,10 +139,15 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		if (response.isSuccessful()) {
 			return new APIResult(true, response.body().toString());
 		}
-		String errorMessage = Objects.isNull(response.errorBody()) ? response.message() : response.message().concat(" "+response.errorBody().string());
+		String errorBodyMessage = "";
+		if (!Objects.isNull(response.errorBody())) {
+			errorBodyMessage = response.errorBody().string();
+		}
+		String errorMessage = !StringUtils.isEmpty(errorBodyMessage) ? response.message().concat(" " + errorBodyMessage) : response.message();
 		log.error("Metered Usage API Client failed with error={}", errorMessage);
 		return APIResult.failure(response.code(), String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), errorMessage));
 	}
+
 
 	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable, String sourceType) {
 		return MeteredUsageRequest.builder()

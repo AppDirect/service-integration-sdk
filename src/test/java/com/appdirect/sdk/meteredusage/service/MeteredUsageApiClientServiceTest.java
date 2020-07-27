@@ -225,7 +225,7 @@ public class MeteredUsageApiClientServiceTest {
 	}
 
 	@Test
-	public void testRetryableReport_expectEntryAlredyExistsException() {
+	public void testRetryableReport_expectMeterUsageServiceException() {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		MeteredUsageItem meteredUsageItem = MeteredUsageItemMother.basic().build();
 		MeteredUsageApi meteredUsageApi = mock(MeteredUsageApi.class);
