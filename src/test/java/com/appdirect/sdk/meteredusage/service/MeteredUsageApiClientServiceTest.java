@@ -27,7 +27,7 @@ import com.appdirect.sdk.appmarket.events.ErrorCode;
 import com.appdirect.sdk.meteredusage.MeteredUsageApi;
 import com.appdirect.sdk.meteredusage.RetrofitCallStub;
 import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
-import com.appdirect.sdk.meteredusage.exception.EntryAlreadyExistsException;
+import com.appdirect.sdk.meteredusage.exception.MeterUsageServiceException;
 import com.appdirect.sdk.meteredusage.exception.ServiceException;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageItem;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageRequest;
@@ -197,7 +197,7 @@ public class MeteredUsageApiClientServiceTest {
 		try {
 			assertThatThrownBy(() -> meteredUsageApiClientService.retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE))
 					.isInstanceOf(ServiceException.class)
-					.hasMessageContaining("Failed to inform Usage with errorCode=500, message=UNKNOWN_ERROR");
+					.hasMessageContaining("Failed to inform Usage with errorCode=500, message=Response.error() UNKNOWN_ERROR");
 		} finally {
 			verify(meteredUsageApiClientService).retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE);
 		}
@@ -224,7 +224,7 @@ public class MeteredUsageApiClientServiceTest {
 		}
 	}
 
-  @Test
+	@Test
 	public void testRetryableReport_expectEntryAlredyExistsException() {
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		MeteredUsageItem meteredUsageItem = MeteredUsageItemMother.basic().build();
@@ -237,8 +237,8 @@ public class MeteredUsageApiClientServiceTest {
 		doReturn(meteredUsageApi).when(meteredUsageApiClientService).createMeteredUsageApi(ConstantUtils.BASE_URL, ConstantUtils.CONSUMER_KEY, ConstantUtils.CONSUMER_SECRET);
 		try {
 			assertThatThrownBy(() -> meteredUsageApiClientService.retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE))
-				.isInstanceOf(EntryAlreadyExistsException.class)
-				.hasMessageStartingWith("Failed to inform Usage with errorCode=400, message=Entry ALREADY exists with idempotencyKey");
+				.isInstanceOf(MeterUsageServiceException.class)
+				.hasMessageContaining("Failed to inform Usage with errorCode=400, message=Response.error() Entry ALREADY exists with idempotencyKey");
 		} finally {
 			verify(meteredUsageApiClientService).retryableReportUsage(ConstantUtils.BASE_URL, ConstantUtils.IDEMPOTENCY_KEY, items, ConstantUtils.CONSUMER_KEY, ConstantUtils.BILLABLE, ConstantUtils.EMPTY_SOURCE_TYPE);
 		}
