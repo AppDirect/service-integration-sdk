@@ -139,7 +139,7 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		if (response.isSuccessful()) {
 			return new APIResult(true, response.body().toString());
 		}
-		String errorBodyMessage = "";
+		String errorBodyMessage = null;
 		if (!Objects.isNull(response.errorBody())) {
 			errorBodyMessage = response.errorBody().string();
 		}
@@ -147,7 +147,6 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 		log.error("Metered Usage API Client failed with error={}", errorMessage);
 		return APIResult.failure(response.code(), String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), errorMessage));
 	}
-
 
 	private MeteredUsageRequest createMeteredUsageRequest(String idempotentKey, List<MeteredUsageItem> meteredUsageItem, boolean billable, String sourceType) {
 		return MeteredUsageRequest.builder()
