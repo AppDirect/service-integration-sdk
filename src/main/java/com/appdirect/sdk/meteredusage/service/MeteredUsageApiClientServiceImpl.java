@@ -3,7 +3,6 @@ package com.appdirect.sdk.meteredusage.service;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
@@ -140,10 +139,10 @@ public class MeteredUsageApiClientServiceImpl implements MeteredUsageApiClientSe
 			return new APIResult(true, response.body().toString());
 		}
 		String errorBodyMessage = null;
-		if (!Objects.isNull(response.errorBody())) {
+		if (response.errorBody() != null) {
 			errorBodyMessage = response.errorBody().string();
 		}
-		String errorMessage = !StringUtils.isEmpty(errorBodyMessage) ? response.message().concat(" " + errorBodyMessage) : response.message();
+		String errorMessage = !StringUtils.isEmpty(errorBodyMessage) ? response.message().concat(" ".concat(errorBodyMessage)) : response.message();
 		log.error("Metered Usage API Client failed with error={}", errorMessage);
 		return APIResult.failure(response.code(), String.format("Failed to inform Usage with errorCode=%s, message=%s", response.code(), errorMessage));
 	}
