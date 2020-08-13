@@ -7,6 +7,7 @@ import org.springframework.retry.annotation.Retryable;
 
 import com.appdirect.sdk.appmarket.events.APIResult;
 import com.appdirect.sdk.appmarket.events.AppmarketBillingClient;
+import com.appdirect.sdk.meteredusage.exception.MeterUsageServiceException;
 import com.appdirect.sdk.meteredusage.exception.MeteredUsageApiException;
 import com.appdirect.sdk.meteredusage.exception.ServiceException;
 import com.appdirect.sdk.meteredusage.model.MeteredUsageItem;
@@ -178,6 +179,7 @@ public interface MeteredUsageApiClientService {
 
 	@Retryable(
 			value = {ServiceException.class, MeteredUsageApiException.class, RuntimeException.class},
+			exclude = {MeterUsageServiceException.class},
 			maxAttemptsExpression = "#{${usage.api.retry.maxAttempts:3}}",
 			backoff = @Backoff(delayExpression = "#{${usage.api.retry.backoff.delay:2000}}",
 					multiplierExpression = "#{${usage.api.retry.backoff.multiplier:2}}",
