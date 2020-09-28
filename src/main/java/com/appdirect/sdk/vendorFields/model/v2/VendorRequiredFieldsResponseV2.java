@@ -14,5 +14,4 @@ public class VendorRequiredFieldsResponseV2 {
     private String isvIdentifier;
     private List<VendorRequiredFieldV2> fields;
     private Context context;
-
 }
