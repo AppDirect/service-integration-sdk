@@ -25,6 +25,7 @@ import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
+import com.appdirect.sdk.vendorFields.model.Context;
 import com.appdirect.sdk.vendorFields.model.FieldType;
 import com.appdirect.sdk.vendorFields.model.FlowType;
 import com.appdirect.sdk.vendorFields.model.Form;
@@ -123,7 +124,7 @@ public class VendorRequiredFieldsControllerTest {
                 .validations(validations)
                 .options(options)
                 .build();
-        final VendorRequiredFieldsResponseV2 response = new VendorRequiredFieldsResponseV2("isvIdentifier", Collections.singletonList(vendorRequiredFieldV2));
+        final VendorRequiredFieldsResponseV2 response = new VendorRequiredFieldsResponseV2("isvIdentifier", Collections.singletonList(vendorRequiredFieldV2), Context.CART_LEVEL);
         when(mockVendorRequiredFieldHandlerV2.getRequiredFields(
                 "SKU",
                 "editionId",
