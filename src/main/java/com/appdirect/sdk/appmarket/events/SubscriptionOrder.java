@@ -23,6 +23,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Developer-facing event creation of an account requested by the AppMarket
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@ToString
 public class SubscriptionOrder extends EventWithContextWithConfiguration implements Serializable {
 	private UserInfo purchaserInfo;
 	private CompanyInfo companyInfo;
