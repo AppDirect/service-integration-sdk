@@ -18,4 +18,5 @@ public class VendorRequiredFieldV2 {
     private FieldTypeV2 fieldType;
     private Validations validations;
     private Options options;
+    private Boolean visible;
 }
