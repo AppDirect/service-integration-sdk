@@ -123,6 +123,7 @@ public class VendorRequiredFieldsControllerTest {
                 .fieldType(FieldTypeV2.COUNTRY)
                 .validations(validations)
                 .options(options)
+                .visible(true)
                 .build();
         final VendorRequiredFieldsResponseV2 response = new VendorRequiredFieldsResponseV2("isvIdentifier", Collections.singletonList(vendorRequiredFieldV2), Context.CART_LEVEL);
         when(mockVendorRequiredFieldHandlerV2.getRequiredFields(
