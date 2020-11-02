@@ -76,7 +76,7 @@ public class VendorRequiredFieldController {
             @RequestParam(required = false, value = "salesAgentCompanyId") final String salesAgentCompanyId,
             @RequestHeader(required = false, value = "Accept-Language") final Locale locale,
             @RequestHeader(value = "AD-Tenant") final String partnerCode,
-            @RequestHeader() Map<String, String> headers) {
+            @RequestHeader Map<String, String> headers) {
 
         log.info(
                 "Calling required fields API with " +
