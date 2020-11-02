@@ -14,9 +14,13 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Callable;
+
+import com.google.common.net.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;
@@ -71,7 +75,8 @@ public class VendorRequiredFieldController {
             @RequestParam(required = false, value = "salesAgentUserId") final String salesAgentUserId,
             @RequestParam(required = false, value = "salesAgentCompanyId") final String salesAgentCompanyId,
             @RequestHeader(required = false, value = "Accept-Language") final Locale locale,
-            @RequestHeader(value = "AD-Tenant") final String partnerCode) {
+            @RequestHeader(value = "AD-Tenant") final String partnerCode,
+            @RequestHeader Map<String, String> headers) {
 
         log.info(
                 "Calling required fields API with " +
@@ -106,7 +111,9 @@ public class VendorRequiredFieldController {
                 salesAgentUserId,
                 salesAgentCompanyId,
                 locale,
-                partnerCode
+                partnerCode,
+                getAdditionalInformation(headers)
+
         );
     }
 
@@ -117,5 +124,11 @@ public class VendorRequiredFieldController {
         webdataBinder.registerCustomEditor(OperationType.class, new OperationTypeConverter());
         webdataBinder.registerCustomEditor(List.class, new LocaleConverter());
         webdataBinder.registerCustomEditor(Locale.class, new LocaleObjectConverter());
+    }
+
+    private Map<String, String> getAdditionalInformation(Map<String, String> headers) {
+        return new HashMap<String, String>() {{
+                put(HttpHeaders.X_FORWARDED_FOR, headers.get(HttpHeaders.X_FORWARDED_FOR));
+        }};
     }
 }

@@ -4,6 +4,7 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * This is the interface you need to implement to apply vendor required requiredFields on a product
@@ -19,6 +20,7 @@ public interface VendorRequiredFieldHandler {
                                                      final String salesAgentUserId,
                                                      final String salesAgentCompanyId,
                                                      final Locale locale,
-                                                     final String partnerCode
+                                                     final String partnerCode,
+                                                     final Map<String, String> additionalInformation
     );
 }

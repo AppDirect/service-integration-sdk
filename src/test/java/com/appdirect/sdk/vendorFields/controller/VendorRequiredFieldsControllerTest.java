@@ -1,17 +1,24 @@
 package com.appdirect.sdk.vendorFields.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
 import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -125,18 +132,23 @@ public class VendorRequiredFieldsControllerTest {
                 .options(options)
                 .visible(true)
                 .build();
+        final Map<String, String> allHeaders = new HashMap<String, String>() {{
+            put("X-Forwarded-For", "127.0.0.1");
+            put("Dont-Send-This", "secret");
+        }};
         final VendorRequiredFieldsResponseV2 response = new VendorRequiredFieldsResponseV2("isvIdentifier", Collections.singletonList(vendorRequiredFieldV2), Context.CART_LEVEL);
         when(mockVendorRequiredFieldHandlerV2.getRequiredFields(
-                "SKU",
-                "editionId",
-                FlowTypeV2.BOBO,
-                OperationType.SUBSCRIPTION_CHANGE,
-                "userId",
-                "companyId",
-                "salesAgentUserId",
-                "salesAgentCompanyId",
-                Locale.US,
-                partnerCode)).thenReturn(response);
+                eq("SKU"),
+                eq("editionId"),
+                eq(FlowTypeV2.BOBO),
+                eq(OperationType.SUBSCRIPTION_CHANGE),
+                eq("userId"),
+                eq("companyId"),
+                eq("salesAgentUserId"),
+                eq("salesAgentCompanyId"),
+                eq(Locale.US),
+                eq(partnerCode),
+                argThat(allOf(hasEntry("X-Forwarded-For", "127.0.0.1"), not(hasEntry("Dont-Send-This", "secret")))))).thenReturn(response);
 
         //When
         VendorRequiredFieldsResponseV2 controllerResponse = vendorRequiredFieldController
@@ -150,7 +162,8 @@ public class VendorRequiredFieldsControllerTest {
                         "salesAgentUserId",
                         "salesAgentCompanyId",
                         Locale.US,
-                        partnerCode
+                        partnerCode,
+                        allHeaders
                 ).call();
 
         //Then
