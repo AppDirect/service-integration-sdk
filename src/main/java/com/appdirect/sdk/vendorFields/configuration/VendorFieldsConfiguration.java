@@ -42,8 +42,7 @@ public class VendorFieldsConfiguration {
                 salesAgentUserId,
                 salesAgentCompanyId,
                 locale,
-                partnerCode,
-                additionalInformation) -> {
+                partnerCode) -> {
             throw new UnsupportedOperationException(String.format(
                     "Vendor Required Field Service for " +
                             "applicationId=%s, " +
