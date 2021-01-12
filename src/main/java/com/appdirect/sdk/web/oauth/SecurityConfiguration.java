@@ -14,6 +14,8 @@
 package com.appdirect.sdk.web.oauth;
 
 import static java.util.Arrays.asList;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth.provider.OAuthProviderSupport;
@@ -35,8 +37,13 @@ import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSuppo
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
+import com.appdirect.authz.sdk.Client;
+import com.appdirect.authz.sdk.impl.CachedSigningKeyService;
+import com.appdirect.authz.security.JwtAuthorizationFilter;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
@@ -91,26 +98,45 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new RequestIdFilter();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		String[] securedUrlPatterns = createSecuredUrlPatterns();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        mainConfiguration(http);
+        authZProtectionOnApi(http);
+    }
 
-		http
-				.authorizeRequests()
-				.antMatchers("/unsecured/**")
-				.permitAll()
-					.and()
-				.requestMatchers()
-					.antMatchers(securedUrlPatterns)
-					.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-					.and()
-				.csrf().disable()
-				.authorizeRequests().anyRequest().authenticated()
-					.and()
-				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class);
-	}
+    private void mainConfiguration(HttpSecurity http) throws Exception {
+        http
+                .requestMatchers()
+                .antMatchers("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**")
+                .and()
+                .cors().disable()
+                .csrf().disable()
+                .logout().disable()
+                .x509().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .rememberMe().disable()
+                .sessionManagement().sessionCreationPolicy(STATELESS)
+                .and()
+                .addFilterAfter(jwtAuthorizationFilter(), HeaderWriterFilter.class)
+                .addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
+    }
+
+
+    private void authZProtectionOnApi(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/unsecured/**").permitAll()
+                .antMatchers("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**")
+                .authenticated();
+    }
+
+    private JwtAuthorizationFilter jwtAuthorizationFilter() {
+        Client authZClient = new Client(CachedSigningKeyService.builder().build());
+        return new JwtAuthorizationFilter(authZClient, SecurityContextHolder.getContextHolderStrategy());
+    }
+
 
 	private String[] createSecuredUrlPatterns() {
 		OpenIdCustomUrlPattern openIdCustomUrlPattern = openIdUrlPatterns();
