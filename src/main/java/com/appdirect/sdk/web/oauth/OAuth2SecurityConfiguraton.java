@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration;
 import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
@@ -14,10 +11,8 @@ import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 
 
 @Slf4j
-@EnableResourceServer
-@EnableWebSecurity
 @Configuration
-public class OAuth2SecurityConfiguraton extends ResourceServerConfiguration {
+public class OAuth2SecurityConfiguraton {
 
 
     @Bean
