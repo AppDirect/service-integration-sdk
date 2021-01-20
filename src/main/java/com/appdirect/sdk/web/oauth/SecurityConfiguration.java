@@ -19,6 +19,8 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.Filter;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,9 @@ import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSuppo
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
@@ -46,6 +50,8 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	@Autowired
+	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -55,6 +61,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public ConsumerDetailsService consumerDetailsService() {
 		return new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+	}
+
+	@Bean
+	public DeveloperSpecificOAuth2AuthorizationService oAuth2consumerDetailsService() {
+		return new DeveloperSpecificOAuth2AuthorizationService(oAuth2AuthorizationSupplier);
 	}
 
 	@Bean
@@ -87,6 +98,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	public Filter oAuth2SignatureCheckingFilter() {
+		return oAuth2consumerDetailsService().getOAuth2Filter();
+	}
+
+	@Bean
 	public RequestIdFilter requestIdFilter() {
 		return new RequestIdFilter();
 	}
@@ -109,7 +125,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().anyRequest().authenticated()
 					.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class);
+				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
+				.addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
 	private String[] createSecuredUrlPatterns() {
