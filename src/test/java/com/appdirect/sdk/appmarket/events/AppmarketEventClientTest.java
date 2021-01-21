@@ -31,11 +31,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
+import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,6 +45,7 @@ public class AppmarketEventClientTest {
 	private RestTemplateFactory restTemplateFactory;
 	private RestTemplate restOperations;
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	private AppmarketEventClient testedFetcher;
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
@@ -50,11 +53,13 @@ public class AppmarketEventClientTest {
 	public void setUp() throws Exception {
 		restOperations = mock(RestTemplate.class);
 		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
+		oAuth2AuthorizationSupplier = mock(DeveloperSpecificOAuth2AuthorizationSupplier.class);
 		restTemplateFactory = mock(RestTemplateFactory.class);
 
 		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier, jsonMapper);
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
+		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(new OAuth2AuthenticationProcessingFilter());
 	}
 
 	@Test

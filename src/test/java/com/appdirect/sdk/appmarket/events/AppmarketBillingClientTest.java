@@ -36,10 +36,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,6 +52,8 @@ public class AppmarketBillingClientTest {
 	private RestTemplateFactory restTemplateFactory;
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	@Mock
+	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 
 	private AppmarketBillingClient appmarketBillingClient;
 	private ObjectMapper jsonMapper;
@@ -63,6 +67,8 @@ public class AppmarketBillingClientTest {
 		appmarketBillingClient = spy(new AppmarketBillingClient(restTemplateFactory, credentialsSupplier, jsonMapper));
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
+
+		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(new OAuth2AuthenticationProcessingFilter());
 
 		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restTemplate);
 	}

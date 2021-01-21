@@ -30,10 +30,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
+import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketEventServiceTest {
@@ -44,7 +46,9 @@ public class AppmarketEventServiceTest {
 	private AppmarketEventDispatcher eventDispatcher;
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-
+	@Mock
+	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	
 	private AppmarketEventService testedService;
 
 	@Before
@@ -53,6 +57,8 @@ public class AppmarketEventServiceTest {
 
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
 				.thenReturn(new Credentials("testKey", "testSecret"));
+
+		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(new OAuth2AuthenticationProcessingFilter());
 	}
 
 	@Test
