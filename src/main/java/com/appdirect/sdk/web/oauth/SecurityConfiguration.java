@@ -14,10 +14,14 @@
 package com.appdirect.sdk.web.oauth;
 
 import static java.util.Arrays.asList;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.Filter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +31,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth.provider.OAuthProviderSupport;
@@ -35,7 +38,9 @@ import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSuppo
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
@@ -46,6 +51,9 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+
+	@Autowired
+	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -58,8 +66,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	public DeveloperSpecificOAuth2AuthorizationService oAuth2consumerDetailsService() {
+		return new DeveloperSpecificOAuth2AuthorizationService(oAuth2AuthorizationSupplier);
+	}
+
+	@Bean
 	public OAuthProviderTokenServices oauthProviderTokenServices() {
 		return new InMemorySelfCleaningProviderTokenServices();
+	}
+
+	@Bean
+	public Filter oAuth2SignatureCheckingFilter() {
+		return oAuth2consumerDetailsService().getOAuth2Filter();
 	}
 
 	@Bean
@@ -91,25 +109,39 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new RequestIdFilter();
 	}
 
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		String[] securedUrlPatterns = createSecuredUrlPatterns();
+		mainConfiguration(http);
+		authZProtectionOnApi(http);
+	}
 
+	private void mainConfiguration(HttpSecurity http) throws Exception {
+		http
+				.requestMatchers()
+				.antMatchers("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**")
+				.and()
+				.cors().disable()
+				.csrf().disable()
+				.logout().disable()
+				.x509().disable()
+				.formLogin().disable()
+				.httpBasic().disable()
+				.rememberMe().disable()
+				.sessionManagement().sessionCreationPolicy(STATELESS)
+				.and()
+				.addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class)
+				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
+	}
+
+
+	private void authZProtectionOnApi(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-				.antMatchers("/unsecured/**")
-				.permitAll()
-					.and()
-				.requestMatchers()
-					.antMatchers(securedUrlPatterns)
-					.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-					.and()
-				.csrf().disable()
-				.authorizeRequests().anyRequest().authenticated()
-					.and()
-				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class);
+				.antMatchers("/unsecured/**").permitAll()
+				.antMatchers("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**")
+				.authenticated();
 	}
 
 	private String[] createSecuredUrlPatterns() {
