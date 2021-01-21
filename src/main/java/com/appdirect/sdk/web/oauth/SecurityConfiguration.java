@@ -15,6 +15,7 @@ package com.appdirect.sdk.web.oauth;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSuppo
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
 
@@ -109,24 +110,38 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		mainConfiguration(http);
+		oAuth2ProtectionOnApi(http);
+	}
+
+	private void mainConfiguration(HttpSecurity http) throws Exception {
 		String[] securedUrlPatterns = createSecuredUrlPatterns();
 
 		http
 				.authorizeRequests()
 				.antMatchers("/unsecured/**")
 				.permitAll()
-					.and()
+				.and()
 				.requestMatchers()
-					.antMatchers(securedUrlPatterns)
-					.and()
+				.antMatchers(securedUrlPatterns)
+				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-					.and()
+				.and()
 				.csrf().disable()
 				.authorizeRequests().anyRequest().authenticated()
-					.and()
+				.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-				.addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
+				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));;
+	}
+
+	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
+		http
+				.authorizeRequests()
+				.antMatchers("/unsecured/**").permitAll()
+				.antMatchers("/api/oauth2/integration/**", "/api/oauth2/domainassociation/**", "/api/oauth2/migration/**", "/api/oauth2/restrictions/**")
+				.authenticated()
+				.and().addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
 	private String[] createSecuredUrlPatterns() {
