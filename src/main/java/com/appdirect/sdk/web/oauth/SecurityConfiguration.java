@@ -53,6 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Autowired
 	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	@Autowired
+	private DeveloperSpecificOAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -67,6 +69,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public DeveloperSpecificOAuth2AuthorizationService oAuth2consumerDetailsService() {
 		return new DeveloperSpecificOAuth2AuthorizationService(oAuth2AuthorizationSupplier);
+	}
+
+	/**
+	 * The feature flag will be used to enable oAuth2 authorization.
+	 * The flag value is retrieved from connector.
+	 */
+	@Bean
+	public DeveloperSpecificOAuth2FeatureFlagService OAuth2FeatureFlagService() {
+		return new DeveloperSpecificOAuth2FeatureFlagService(oAuth2FeatureFlagSupplier);
 	}
 
 	@Bean
@@ -103,6 +114,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return oAuth2consumerDetailsService().getOAuth2Filter();
 	}
 
+	private boolean isOAuth2Enabled() {
+		return OAuth2FeatureFlagService().isOAuth2Enabled();
+	}
+
 	@Bean
 	public RequestIdFilter requestIdFilter() {
 		return new RequestIdFilter();
@@ -111,7 +126,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		mainConfiguration(http);
-		oAuth2ProtectionOnApi(http);
+		if(isOAuth2Enabled()) {
+			oAuth2ProtectionOnApi(http);
+		}
 	}
 
 	private void mainConfiguration(HttpSecurity http) throws Exception {
