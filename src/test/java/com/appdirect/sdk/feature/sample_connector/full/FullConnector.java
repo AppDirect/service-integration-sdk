@@ -47,6 +47,7 @@ import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2FeatureFlagSupplier;
 
 /**
  * Sample connector that supports all of the supported events, both the
@@ -74,6 +75,11 @@ public class FullConnector {
 			
 			return resourcesServerFilter;
 		};
+	}
+
+	@Bean
+	public DeveloperSpecificOAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
+		return () -> true;
 	}
 
 	@Bean

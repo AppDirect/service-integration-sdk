@@ -33,6 +33,7 @@ import com.appdirect.sdk.support.DummyRestController;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationService;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplierImpl;
+import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2FeatureFlagSupplier;
 
 /**
  * Sample connector that only supports the mandatory events, not the
@@ -59,6 +60,11 @@ public class MinimalConnector {
 
 			return resourcesServerFilter;
 		};
+	}
+
+	@Bean
+	public DeveloperSpecificOAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
+		return () -> true;
 	}
 
 	@Bean
