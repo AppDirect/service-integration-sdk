@@ -8,7 +8,7 @@ import javax.servlet.Filter;
  * of this type in its application context in order for the communication with AppMarket to work.
  */
 @FunctionalInterface
-public interface DeveloperSpecificOAuth2AuthorizationSupplier {
+public interface OAuth2AuthorizationSupplier {
 
     /**
      * Returns the oAuth2 Filter

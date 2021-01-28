@@ -41,7 +41,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,7 +53,7 @@ public class AppmarketBillingClientTest {
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Mock
-	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 
 	private AppmarketBillingClient appmarketBillingClient;
 	private ObjectMapper jsonMapper;

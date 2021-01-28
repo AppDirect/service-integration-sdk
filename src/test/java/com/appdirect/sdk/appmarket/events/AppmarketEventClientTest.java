@@ -37,7 +37,7 @@ import org.springframework.web.client.RestTemplate;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,7 +45,7 @@ public class AppmarketEventClientTest {
 	private RestTemplateFactory restTemplateFactory;
 	private RestTemplate restOperations;
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	private AppmarketEventClient testedFetcher;
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
@@ -53,7 +53,7 @@ public class AppmarketEventClientTest {
 	public void setUp() throws Exception {
 		restOperations = mock(RestTemplate.class);
 		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
-		oAuth2AuthorizationSupplier = mock(DeveloperSpecificOAuth2AuthorizationSupplier.class);
+		oAuth2AuthorizationSupplier = mock(OAuth2AuthorizationSupplier.class);
 		restTemplateFactory = mock(RestTemplateFactory.class);
 
 		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier, jsonMapper);

@@ -35,7 +35,7 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketEventServiceTest {
@@ -47,7 +47,7 @@ public class AppmarketEventServiceTest {
 	@Mock
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Mock
-	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	
 	private AppmarketEventService testedService;
 

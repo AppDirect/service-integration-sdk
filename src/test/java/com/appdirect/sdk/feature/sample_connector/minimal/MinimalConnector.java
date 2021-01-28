@@ -30,10 +30,8 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.support.DummyRestController;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationService;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplier;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2AuthorizationSupplierImpl;
-import com.appdirect.sdk.web.oauth.DeveloperSpecificOAuth2FeatureFlagSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
 /**
  * Sample connector that only supports the mandatory events, not the
@@ -48,7 +46,7 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
+	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
 		return () -> {
 			OAuth2AuthenticationProcessingFilter resourcesServerFilter = new OAuth2AuthenticationProcessingFilter();
 			OAuthProcessingFilterEntryPoint entryPoint = new OAuthProcessingFilterEntryPoint();
@@ -63,7 +61,7 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public DeveloperSpecificOAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
+	public OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
 		return () -> true;
 	}
 

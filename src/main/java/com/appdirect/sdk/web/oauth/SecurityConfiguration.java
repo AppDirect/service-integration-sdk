@@ -52,9 +52,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Autowired
-	private DeveloperSpecificOAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Autowired
-	private DeveloperSpecificOAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
+	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -67,8 +67,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public DeveloperSpecificOAuth2AuthorizationService oAuth2consumerDetailsService() {
-		return new DeveloperSpecificOAuth2AuthorizationService(oAuth2AuthorizationSupplier);
+	public OAuth2AuthorizationService oAuth2consumerDetailsService() {
+		return new OAuth2AuthorizationServiceImpl(oAuth2AuthorizationSupplier);
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 * The flag value is retrieved from connector.
 	 */
 	@Bean
-	public DeveloperSpecificOAuth2FeatureFlagService OAuth2FeatureFlagService() {
-		return new DeveloperSpecificOAuth2FeatureFlagService(oAuth2FeatureFlagSupplier);
+	public OAuth2FeatureFlagService OAuth2FeatureFlagService() {
+		return new OAuth2FeatureFlagServiceImpl(oAuth2FeatureFlagSupplier);
 	}
 
 	@Bean

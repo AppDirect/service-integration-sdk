@@ -6,6 +6,6 @@ package com.appdirect.sdk.web.oauth;
  * of this type in its application context in order for the communication with AppMarket to work.
  */
 @FunctionalInterface
-public interface DeveloperSpecificOAuth2FeatureFlagSupplier {
+public interface OAuth2FeatureFlagSupplier {
     boolean isOAuth2Enabled();
 }
