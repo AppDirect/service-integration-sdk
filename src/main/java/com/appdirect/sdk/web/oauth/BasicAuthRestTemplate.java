@@ -16,7 +16,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 
-@Slf4j
 public class BasicAuthRestTemplate extends RestTemplate {
     private final String username;
     private final String password;

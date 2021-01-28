@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-@Slf4j
 public class DefaultRestTemplateFactoryImpl implements RestTemplateFactory {
 	private final ResponseErrorHandler errorHandler;
 
