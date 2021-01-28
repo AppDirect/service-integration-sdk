@@ -41,4 +41,9 @@ public class ReportUsageRestTemplateFactoryImpl implements RestTemplateFactory {
 		restTemplate.setErrorHandler(new ReportUsageApiExceptionHandler());
 		return restTemplate;
 	}
+
+	@Override
+	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
+		return new BasicAuthRestTemplate(key, secret);
+	}
 }

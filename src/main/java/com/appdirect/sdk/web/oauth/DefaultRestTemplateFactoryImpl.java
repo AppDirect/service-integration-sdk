@@ -16,28 +16,28 @@ package com.appdirect.sdk.web.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 public class DefaultRestTemplateFactoryImpl implements RestTemplateFactory {
 	private final ResponseErrorHandler errorHandler;
-	private final BufferingClientHttpRequestFactory bufferingClientHttpRequestFactory;
 
-	public DefaultRestTemplateFactoryImpl(ResponseErrorHandler errorHandler,BufferingClientHttpRequestFactory bufferingClientHttpRequestFactory) {
+	public DefaultRestTemplateFactoryImpl(ResponseErrorHandler errorHandler) {
 		this.errorHandler = errorHandler;
-		this.bufferingClientHttpRequestFactory = bufferingClientHttpRequestFactory;
 	}
 
 	@Override
 	public RestTemplate getOAuthRestTemplate(String key, String secret) {
-//		RestTemplate restTemplate = new RestTemplate(new OAuthSignedClientHttpRequestFactory(key, secret));
-//		restTemplate.setErrorHandler(errorHandler);
-//		return restTemplate;
-
-		log.info(" Inside DefaultRestTemplateFactoryImpl");
-		return new BasicAuthRestTemplate(key, secret, bufferingClientHttpRequestFactory);
+		RestTemplate restTemplate = new RestTemplate(new OAuthSignedClientHttpRequestFactory(key, secret));
+		restTemplate.setErrorHandler(errorHandler);
+		return restTemplate;
 	}
+
+	@Override
+	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
+		return new BasicAuthRestTemplate(key, secret);
+	}
+
+
 }
