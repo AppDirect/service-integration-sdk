@@ -6,10 +6,13 @@ import java.util.Base64;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -18,22 +21,25 @@ public class BasicAuthRestTemplate extends RestTemplate {
     private final String username;
     private final String password;
 
-    public BasicAuthRestTemplate(String username, String password, ClientHttpRequestFactory requestFactory) {
-        super(requestFactory);
+    public BasicAuthRestTemplate(String username, String password) {
+        super(clientHttpRequestFactory());
 
         this.username = username;
         this.password = password;
     }
 
+    private static ClientHttpRequestFactory clientHttpRequestFactory() {
+        return new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+    }
+
+
     @Override
     protected ClientHttpRequest createRequest(URI url, HttpMethod method) throws IOException {
-        log.info("inside createRequest ");
         ClientHttpRequest request = super.createRequest(url, method);
 
         String authorization = Base64.getEncoder().encodeToString((this.username + ":" + this.password).getBytes());
         request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Basic " + authorization);
-        log.info("authorization is {}", authorization);
-        log.info("request header are {}", request.getHeaders());
+
         return request;
     }
 }
