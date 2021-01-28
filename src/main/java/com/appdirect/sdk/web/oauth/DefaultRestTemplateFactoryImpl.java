@@ -36,8 +36,9 @@ public class DefaultRestTemplateFactoryImpl implements RestTemplateFactory {
 
 	@Override
 	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
-		return new BasicAuthRestTemplate(key, secret);
+		RestTemplate restTemplate  = new BasicAuthRestTemplate(key, secret);
+		restTemplate.setErrorHandler(errorHandler);
+		return restTemplate;
 	}
-
 
 }
