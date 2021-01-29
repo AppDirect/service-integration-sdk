@@ -20,6 +20,7 @@ import org.springframework.security.oauth.consumer.BaseProtectedResourceDetails;
 import org.springframework.security.oauth.consumer.client.OAuthRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
+import com.appdirect.sdk.web.exception.ReportUsageApiExceptionHandler;
 import com.appdirect.sdk.web.exception.UserSyncApiExceptionHandler;
 
 public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
@@ -43,6 +44,8 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 
 	@Override
 	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
-		return new BasicAuthRestTemplate(key, secret);
+		RestTemplate restTemplate  = new BasicAuthRestTemplate(key, secret);
+		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
+		return restTemplate;
 	}
 }
