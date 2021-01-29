@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 public class BasicAuthRestTemplate extends RestTemplate {
     private final String username;
     private final String password;
+    private static final String BASIC = "Basic";
 
     public BasicAuthRestTemplate(String username, String password) {
         super(clientHttpRequestFactory());
@@ -33,7 +34,7 @@ public class BasicAuthRestTemplate extends RestTemplate {
         ClientHttpRequest request = super.createRequest(url, method);
 
         String authorization = Base64.getEncoder().encodeToString((this.username + ":" + this.password).getBytes());
-        request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Basic " + authorization);
+        request.getHeaders().set(HttpHeaders.AUTHORIZATION, BASIC + authorization);
 
         return request;
     }
