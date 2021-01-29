@@ -20,7 +20,6 @@ import org.springframework.security.oauth.consumer.BaseProtectedResourceDetails;
 import org.springframework.security.oauth.consumer.client.OAuthRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
-import com.appdirect.sdk.web.exception.ReportUsageApiExceptionHandler;
 import com.appdirect.sdk.web.exception.UserSyncApiExceptionHandler;
 
 public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
