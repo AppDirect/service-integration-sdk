@@ -19,7 +19,6 @@ public class BasicAuthRestTemplate extends RestTemplate {
 
     public BasicAuthRestTemplate(String username, String password) {
         super(clientHttpRequestFactory());
-
         this.username = username;
         this.password = password;
     }
