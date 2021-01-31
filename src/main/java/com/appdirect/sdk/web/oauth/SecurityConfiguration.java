@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -49,6 +50,7 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 @Configuration
 @EnableWebSecurity
 @Slf4j
+@Order(100)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;

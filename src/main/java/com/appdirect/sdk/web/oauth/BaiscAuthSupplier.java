@@ -9,11 +9,11 @@ import javax.servlet.Filter;
  */
 
 @FunctionalInterface
-public interface BaiscOauthSupplier {
+public interface BaiscAuthSupplier {
 	/**
 	 * Returns the Basic Filter
 	 *
 	 * @return the Filter to authorize incoming requests
 	 */
-	Filter getBasicFilter();
+	Filter getBasicAuthFilter();
 }

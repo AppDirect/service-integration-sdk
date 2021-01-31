@@ -2,7 +2,7 @@ package com.appdirect.sdk.web.oauth;
 
 import javax.servlet.Filter;
 
-public interface BaiscOauthService {
+public interface BaiscAuthService {
 	/**
 	 * Returns the Basic Filter
 	 *

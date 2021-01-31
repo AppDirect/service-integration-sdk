@@ -2,16 +2,16 @@ package com.appdirect.sdk.web.oauth;
 
 import javax.servlet.Filter;
 
-public class BaiscOauthSupplierImpl implements  BaiscOauthSupplier{
+public class BaiscAuthSupplierImpl implements BaiscAuthSupplier {
 
 	private final Filter basicFilter;
 
-	public BaiscOauthSupplierImpl(Filter oAuth2Filter) {
+	public BaiscAuthSupplierImpl(Filter oAuth2Filter) {
 		this.basicFilter = oAuth2Filter;
 	}
 
 	@Override
-	public Filter getBasicFilter() {
+	public Filter getBasicAuthFilter() {
 		return basicFilter;
 	}
 }
