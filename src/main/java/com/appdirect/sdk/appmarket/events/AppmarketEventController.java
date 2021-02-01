@@ -60,6 +60,17 @@ class AppmarketEventController {
 		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
 
+
+	@RequestMapping(method = GET, value = "/api/v2/integration/processEvent", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<APIResult> processEvents(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl, @RequestParam("applicationUuid") String applicationUuid) {
+		log.info(" Received Event with applicationUuid ={} and eventUrl={}", applicationUuid, eventUrl);
+
+		APIResult result = appmarketEventService.processEvent(eventUrl, eventExecutionContext(request, applicationUuid),applicationUuid);
+
+		log.info("apiResult={}", result);
+		return new ResponseEntity<>(result, httpStatusOf(result));
+	}
+
 	private EventHandlingContext eventExecutionContext(HttpServletRequest request, String keyUsedToSignRequest) {
 		HashMap<String, String[]> queryParamsNotTiedToRequestReference = new HashMap<>(request.getParameterMap());
 		return new EventHandlingContext(keyUsedToSignRequest, queryParamsNotTiedToRequestReference);
