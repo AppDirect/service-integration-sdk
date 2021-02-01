@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
@@ -38,74 +39,83 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Slf4j
 public class AppmarketEventClient {
-	private final RestTemplateFactory restTemplateFactory;
-	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	private final ObjectMapper jsonMapper;
+    private final RestTemplateFactory restTemplateFactory;
+    private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+    private final ObjectMapper jsonMapper;
 
-	AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, ObjectMapper jsonMapper) {
-		this.restTemplateFactory = restTemplateFactory;
-		this.credentialsSupplier = credentialsSupplier;
-		this.jsonMapper = jsonMapper;
-	}
+    AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, ObjectMapper jsonMapper) {
+        this.restTemplateFactory = restTemplateFactory;
+        this.credentialsSupplier = credentialsSupplier;
+        this.jsonMapper = jsonMapper;
+    }
 
-	/**
-	 * Perform "signed fetch" in order to retrieve the payload of an event sent to the connector from the AppMarket
-	 *
-	 * @param url         from which we can fetch the event payload
-	 * @param credentials the credentials used to sign the request
-	 * @return an {@link EventInfo} instance representing the retrieved payload
-	 */
-	EventInfo fetchEvent(String url, Credentials credentials) {
-		log.debug("Consuming event from url={}", url);
-		final RestTemplate restTemplate = restTemplateFactory
-				.getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
+    /**
+     * Perform "signed fetch" in order to retrieve the payload of an event sent to the connector from the AppMarket
+     *
+     * @param url         from which we can fetch the event payload
+     * @param credentials the credentials used to sign the request
+     * @return an {@link EventInfo} instance representing the retrieved payload
+     */
+    EventInfo fetchEvent(String url, Credentials credentials) {
+        log.debug("Consuming event from url={}", url);
+        final RestTemplate restTemplate = restTemplateFactory
+                .getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
+        return execute(url, restTemplate);
+    }
 
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setAccept(singletonList(APPLICATION_JSON));
-		final HttpEntity<String> requestEntity = new HttpEntity<>("", requestHeaders);
+    EventInfo fetchEvents(String url, OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
+        log.debug("Consuming event from url={}", url);
+        final RestTemplate restTemplate = restTemplateFactory.getOAuth2RestTemplate(oAuth2ProtectedResourceDetails);
+        return execute(url, restTemplate);
+    }
 
-		EventInfo fetchedEvent = restTemplate
-				.exchange(url, GET, requestEntity, EventInfo.class)
-				.getBody();
+    private EventInfo execute(String url, RestTemplate restTemplate) {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setAccept(singletonList(APPLICATION_JSON));
+        final HttpEntity<String> requestEntity = new HttpEntity<>("", requestHeaders);
 
-		fetchedEvent.setId(extractId(url));
-		return fetchedEvent;
-	}
+        EventInfo fetchedEvent = restTemplate
+                .exchange(url, GET, requestEntity, EventInfo.class)
+                .getBody();
 
-	/**
-	 * Send an "event resolved" notification for an asynchronous event. It serves to notify the
-	 * AppMarket that the processing of a given event by the connector has been completed
-	 *
-	 * @param baseAppmarketUrl host on which the marketplace is running
-	 * @param eventToken       the id of the event we would like to resolve
-	 * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
-	 *                         processing has been successful or not.
-	 * @param key              the client key used to sign the resolve request
-	 */
-	@SneakyThrows
-	public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, String key) {
-		String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
-		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
+        fetchedEvent.setId(extractId(url));
+        return fetchedEvent;
+    }
 
-		final RestTemplate restTemplate = restTemplateFactory.getOAuthRestTemplate(key, secret);
+    /**
+     * Send an "event resolved" notification for an asynchronous event. It serves to notify the
+     * AppMarket that the processing of a given event by the connector has been completed
+     *
+     * @param baseAppmarketUrl host on which the marketplace is running
+     * @param eventToken       the id of the event we would like to resolve
+     * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
+     *                         processing has been successful or not.
+     * @param key              the client key used to sign the resolve request
+     */
+    @SneakyThrows
+    public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, String key) {
+        String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
+        String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(APPLICATION_JSON);
+        final RestTemplate restTemplate = restTemplateFactory.getOAuthRestTemplate(key, secret);
 
-		final HttpEntity<String> requestEntity = new HttpEntity<>(jsonMapper.writeValueAsString(result), requestHeaders);
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(APPLICATION_JSON);
 
-		restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+        final HttpEntity<String> requestEntity = new HttpEntity<>(jsonMapper.writeValueAsString(result), requestHeaders);
 
-		log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
-	}
+        restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
-	public ServiceProviderInformation resolveSamlIdp(String url, String key) {
-		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
+        log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
+    }
 
-		return restTemplateFactory.getOAuthRestTemplate(key, secret).getForObject(url, ServiceProviderInformation.class);
-	}
+    public ServiceProviderInformation resolveSamlIdp(String url, String key) {
+        String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 
-	private String eventResolutionEndpoint(String baseAppmarketUrl, String eventToken) {
-		return format("%s/api/integration/v1/events/%s/result", baseAppmarketUrl, eventToken);
-	}
+        return restTemplateFactory.getOAuthRestTemplate(key, secret).getForObject(url, ServiceProviderInformation.class);
+    }
+
+    private String eventResolutionEndpoint(String baseAppmarketUrl, String eventToken) {
+        return format("%s/api/integration/v1/events/%s/result", baseAppmarketUrl, eventToken);
+    }
 }
