@@ -67,7 +67,7 @@ class AppmarketEventController {
 
 		APIResult result = appmarketEventService.processEvent(eventUrl, eventExecutionContext(request, applicationUuid),applicationUuid);
 
-		log.info("apiResult={}", result);
+		log.info("apiResult={} for applicationUuid={}", result, applicationUuid);
 		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
 
