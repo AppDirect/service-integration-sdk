@@ -24,6 +24,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
+import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
@@ -42,6 +46,8 @@ import com.appdirect.sdk.appmarket.events.UserAssignment;
 import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration;
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
 /**
  * Sample connector that supports all of the supported events, both the
@@ -54,6 +60,26 @@ public class FullConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
 		return someKey -> new Credentials(someKey, "isv-secret");
+	}
+
+	@Bean
+	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
+		return () -> {
+			OAuth2AuthenticationProcessingFilter resourcesServerFilter = new OAuth2AuthenticationProcessingFilter();
+			OAuthProcessingFilterEntryPoint entryPoint = new OAuthProcessingFilterEntryPoint();
+			entryPoint.setRealmName("http://www.example.com");
+			resourcesServerFilter.setAuthenticationEntryPoint(entryPoint);
+					
+			resourcesServerFilter.setAuthenticationManager(new OAuth2AuthenticationManager());
+			resourcesServerFilter.setTokenExtractor(new BearerTokenExtractor());
+			
+			return resourcesServerFilter;
+		};
+	}
+
+	@Bean
+	public OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
+		return () -> true;
 	}
 
 	@Bean

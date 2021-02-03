@@ -15,9 +15,12 @@ package com.appdirect.sdk.web.oauth;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.Filter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +38,9 @@ import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSuppo
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
@@ -46,6 +51,10 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	@Autowired
+	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
+	@Autowired
+	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -55,6 +64,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public ConsumerDetailsService consumerDetailsService() {
 		return new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+	}
+
+	@Bean
+	public OAuth2AuthorizationService oAuth2consumerDetailsService() {
+		return new OAuth2AuthorizationServiceImpl(oAuth2AuthorizationSupplier);
+	}
+
+	/**
+	 * The feature flag will be used to enable oAuth2 authorization.
+	 * The flag value is retrieved from connector.
+	 */
+	@Bean
+	public OAuth2FeatureFlagService OAuth2FeatureFlagService() {
+		return new OAuth2FeatureFlagServiceImpl(oAuth2FeatureFlagSupplier);
 	}
 
 	@Bean
@@ -87,29 +110,55 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	public Filter oAuth2SignatureCheckingFilter() {
+		return oAuth2consumerDetailsService().getOAuth2Filter();
+	}
+
+	private boolean isOAuth2Enabled() {
+		return OAuth2FeatureFlagService().isOAuth2Enabled();
+	}
+
+	@Bean
 	public RequestIdFilter requestIdFilter() {
 		return new RequestIdFilter();
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		mainConfiguration(http);
+		if(isOAuth2Enabled()) {
+			oAuth2ProtectionOnApi(http);
+		}
+	}
+
+	private void mainConfiguration(HttpSecurity http) throws Exception {
 		String[] securedUrlPatterns = createSecuredUrlPatterns();
 
 		http
 				.authorizeRequests()
 				.antMatchers("/unsecured/**")
 				.permitAll()
-					.and()
+				.and()
 				.requestMatchers()
-					.antMatchers(securedUrlPatterns)
-					.and()
+				.antMatchers(securedUrlPatterns)
+				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-					.and()
+				.and()
 				.csrf().disable()
 				.authorizeRequests().anyRequest().authenticated()
-					.and()
+				.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class);
+				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
+				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));;
+	}
+
+	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
+		http
+				.authorizeRequests()
+				.antMatchers("/unsecured/**").permitAll()
+				.antMatchers("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
+				.authenticated()
+				.and().addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
 	private String[] createSecuredUrlPatterns() {
