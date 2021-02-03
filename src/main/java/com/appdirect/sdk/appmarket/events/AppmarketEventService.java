@@ -25,19 +25,22 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 
 @Slf4j
 class AppmarketEventService {
     private final AppmarketEventClient appmarketEventClient;
     private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+    private final OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
     private final AppmarketEventDispatcher dispatcher;
 
     AppmarketEventService(AppmarketEventClient appmarketEventClient,
                           DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-                          AppmarketEventDispatcher dispatcher) {
+                          OAuth2CredentialsSupplier oAuth2CredentialsSupplier, AppmarketEventDispatcher dispatcher) {
         this.appmarketEventClient = appmarketEventClient;
         this.credentialsSupplier = credentialsSupplier;
+        this.oAuth2CredentialsSupplier = oAuth2CredentialsSupplier;
         this.dispatcher = dispatcher;
     }
 
@@ -71,9 +74,10 @@ class AppmarketEventService {
 
         EventInfo event = fetchEventInfo(eventUrl, applicationUuid);
 
-        if (event.getFlag() == EventFlag.STATELESS) {
+        if (EventFlag.STATELESS == event.getFlag()) {
             return APIResult.success("success response to stateless event.");
         }
+        log.info("retrun response");
         return executeEvent(eventUrl, event, eventContext);
     }
 
@@ -90,28 +94,10 @@ class AppmarketEventService {
     }
 
     private EventInfo fetchEventInfo(String eventUrl, String applicationUuid) {
-        //TODO added for testing we need to fetch ResourceDetails from connectors using applicationUuid
-        OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails = getOAuth2ProtectedResourceDetails(applicationUuid);
-        EventInfo event = appmarketEventClient.fetchEvents(eventUrl, oAuth2ProtectedResourceDetails);
+        OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2CredentialsSupplier.getOAuth2ResourceDetails(applicationUuid);
+        EventInfo event = appmarketEventClient.fetchEvents(eventUrl, oAuth2ResourceDetails);
         log.info("Successfully retrieved event={}", event);
         return event;
-    }
-
-    private OAuth2ProtectedResourceDetails getOAuth2ProtectedResourceDetails(String applicationUuid) {
-        //TODO get this details from connector
-        // return OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails = credentialsSupplier.getOAuth2ProtectedResourceDetails(applicationUuid);
-        return createResourceDetails(applicationUuid);
-    }
-
-    //Added for local testing
-    private OAuth2ProtectedResourceDetails createResourceDetails(String applicationUuid) {
-        ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
-        details.setId("I33yJ9K0K1");
-        details.setClientId("I33yJ9K0K1");
-        details.setClientSecret("3DnUEFT1f4qY7aCPocZZKFMVptIXonWrib/BlqALtXVpavnfF0TmFBXNjPAtq37l");
-        details.setAccessTokenUri("https://dummydbnode.appdirect.com/oauth2/token");
-        details.setScope(Arrays.asList("ROLE_PARTNER"));
-        return details;
     }
 
     private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
