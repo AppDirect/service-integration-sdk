@@ -111,9 +111,32 @@ public class AppmarketEventClient {
         log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
     }
 
+
+    @SneakyThrows
+    public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, OAuth2ProtectedResourceDetails oAuth2ResourceDetails) {
+        log.info("received request for");
+        String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
+
+        final RestTemplate restTemplate = restTemplateFactory.getOAuth2RestTemplate(oAuth2ResourceDetails);
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(APPLICATION_JSON);
+
+        final HttpEntity<String> requestEntity = new HttpEntity<>(jsonMapper.writeValueAsString(result), requestHeaders);
+
+        restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+
+        log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
+    }
+
     public ServiceProviderInformation resolveSamlIdp(String url, String key) {
         String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
         return restTemplateFactory.getOAuthRestTemplate(key, secret).getForObject(url, ServiceProviderInformation.class);
+    }
+
+    public ServiceProviderInformation resolveSamlIdp(String url, OAuth2ProtectedResourceDetails oAuth2ResourceDetails) {
+        log.info("calling Oauth2 resolveSamlIdp");
+        return restTemplateFactory.getOAuth2RestTemplate(oAuth2ResourceDetails).getForObject(url, ServiceProviderInformation.class);
     }
 
     private String eventResolutionEndpoint(String baseAppmarketUrl, String eventToken) {
