@@ -19,11 +19,15 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.security.openid.configuration.OpenIdSsoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
@@ -55,6 +59,12 @@ public class FullConnector {
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
 		return someKey -> new Credentials(someKey, "isv-secret");
 	}
+
+	@Bean
+	public OAuth2CredentialsSupplier oAuth2CredentialsSupplier(){
+		return someKey -> new ClientCredentialsResourceDetails();
+	}
+
 
 	@Bean
 	public AppmarketEventHandler<SubscriptionOrder> subscriptionOrderHandler() {

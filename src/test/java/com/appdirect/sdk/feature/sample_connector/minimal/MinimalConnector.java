@@ -18,11 +18,13 @@ import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.support.DummyRestController;
@@ -37,6 +39,11 @@ public class MinimalConnector {
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
 		return someKey -> new Credentials(someKey, "isv-secret");
+	}
+
+	@Bean
+	public OAuth2CredentialsSupplier oAuth2CredentialsSupplier(){
+		return someKey -> new ClientCredentialsResourceDetails();
 	}
 
 	@Bean
