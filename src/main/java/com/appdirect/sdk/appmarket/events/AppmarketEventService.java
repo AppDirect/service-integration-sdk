@@ -69,6 +69,15 @@ class AppmarketEventService {
         }
     }
 
+    /**
+     * Processes an event notification from the AppMarket
+     *
+     * @param eventUrl the url from which we can fetch the payload of the incoming event
+     * @param eventContext contextual information about the event notification
+     * @param applicationUuid which can be used to fetch the oauth2 credentails from connector
+     * @return the {@link APIResult} instance representing the payload to be returned in response of the event
+     * notification request
+     */
     APIResult processEvent(String eventUrl, EventHandlingContext eventContext, String applicationUuid) {
         log.info("processing event for applicationUuid={} and eventUrl={}", applicationUuid, eventUrl);
 
