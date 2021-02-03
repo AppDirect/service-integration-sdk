@@ -38,6 +38,7 @@ import org.springframework.security.oauth.provider.token.OAuthProviderTokenServi
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
@@ -47,6 +48,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
+	@Autowired
+	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
+
+
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
 		return new OpenIdCustomUrlPattern();
@@ -55,6 +60,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public ConsumerDetailsService consumerDetailsService() {
 		return new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+	}
+
+	@Bean
+	public OAuth2ClientDetailsService oAuth2ClientDetailsService() {
+		return new OAuth2ClientDetailsServiceImpl(oAuth2CredentialsSupplier);
 	}
 
 	@Bean

@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
@@ -68,16 +69,17 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2CredentialsSupplier oAuth2CredentialsSupplier,
 													  @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
-		return new AppmarketEventClient(appMarketRestTemplateFactory(), credentialsSupplier, mapper);
+		return new AppmarketEventClient(appMarketRestTemplateFactory(), credentialsSupplier, oAuth2CredentialsSupplier, mapper);
 	}
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+													   OAuth2CredentialsSupplier oAuth2CredentialsSupplier,
 													   AppmarketEventDispatcher eventDispatcher,
 													   AppmarketEventClient appmarketEventClient) {
-		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
+		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2CredentialsSupplier, eventDispatcher);
 	}
 
 	@Bean
