@@ -144,7 +144,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private void mainConfiguration(HttpSecurity http) throws Exception {
 		String[] securedUrlPatterns = createSecuredUrlPatterns();
-		log.info("Receiving api call to SC ");
 		http
 				.authorizeRequests()
 				.antMatchers("/unsecured/**")
