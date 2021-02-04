@@ -17,7 +17,7 @@
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.105-SNAPSHOT</version>
+    <version>1.111-SNAPSHOT</version>
     <name>SDK for service integration</name>
 
     <properties>
@@ -30,7 +30,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.4.RELEASE</version>
     </parent>
-
+    
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -53,6 +53,10 @@
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

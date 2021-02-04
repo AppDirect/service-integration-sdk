@@ -20,6 +20,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
+import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
+import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
+
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.appmarket.Credentials;
@@ -28,6 +33,8 @@ import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.support.DummyRestController;
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
 /**
  * Sample connector that only supports the mandatory events, not the
@@ -42,8 +49,28 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public OAuth2CredentialsSupplier oAuth2CredentialsSupplier(){
+	public OAuth2CredentialsSupplier oAuth2CredentialsSupplier() {
 		return someKey -> new ClientCredentialsResourceDetails();
+	}
+
+	@Bean
+	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
+		return () -> {
+			OAuth2AuthenticationProcessingFilter resourcesServerFilter = new OAuth2AuthenticationProcessingFilter();
+			OAuthProcessingFilterEntryPoint entryPoint = new OAuthProcessingFilterEntryPoint();
+			entryPoint.setRealmName("http://www.example.com");
+			resourcesServerFilter.setAuthenticationEntryPoint(entryPoint);
+
+			resourcesServerFilter.setAuthenticationManager(new OAuth2AuthenticationManager());
+			resourcesServerFilter.setTokenExtractor(new BearerTokenExtractor());
+
+			return resourcesServerFilter;
+		};
+	}
+
+	@Bean
+	public OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
+		return () -> true;
 	}
 
 	@Bean
