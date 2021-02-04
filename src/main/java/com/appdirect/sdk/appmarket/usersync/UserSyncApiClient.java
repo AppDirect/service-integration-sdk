@@ -69,6 +69,24 @@ public class UserSyncApiClient {
 		log.info("Received response={} for sync assign api", apiResult);
 	}
 
+	public void syncUserUnAssignment(String baseUrl, OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails, SyncedUser syncedUser) {
+		String url = String.format(USER_SYNC_ASSIGN_API_ENDPOINT, baseUrl);
+		log.debug("Calling user sync unassign api with url={}", url);
+		UserSyncRequestPayload userSyncRequestPayload = buildUserSyncRequestPayload(syncedUser);
+		userSyncRequestPayload.setType(USER_SYNC_PAYLOAD_TYPE);
+		userSyncRequestPayload.setOperation(UserSyncRequestPayloadOperation.UNASSIGN.toString());
+
+		ResponseEntity<String> apiResult = restTemplateFactory
+				.getOAuth2RestTemplate(oAuth2ProtectedResourceDetails)
+				.postForEntity(url, userSyncRequestPayload, String.class);
+		log.info("Received response={} for sync un-assign api", apiResult);
+	}
+
+	/**
+	 * @deprecated
+	 * Use syncUserAssignment with the type OAuth2ProtectedResourceDetails instead.
+	 */
+	@Deprecated
 	public void syncUserUnAssignment(String baseUrl, String oauthKey, String oauthSecret, SyncedUser syncedUser) {
 		String url = String.format(USER_SYNC_ASSIGN_API_ENDPOINT, baseUrl);
 		log.debug("Calling user sync unassign api with url={}", url);
