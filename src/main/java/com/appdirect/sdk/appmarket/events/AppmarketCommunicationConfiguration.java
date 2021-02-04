@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
 import com.appdirect.sdk.appmarket.migration.CustomerAccountValidationHandler;
@@ -33,6 +32,7 @@ import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientService;
 import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
@@ -69,17 +69,17 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2CredentialsSupplier oAuth2CredentialsSupplier,
+	public AppmarketEventClient appmarketEventFetcher(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
 													  @Qualifier("sdkInternalJsonMapper") ObjectMapper mapper) {
-		return new AppmarketEventClient(appMarketRestTemplateFactory(), credentialsSupplier, oAuth2CredentialsSupplier, mapper);
+		return new AppmarketEventClient(appMarketRestTemplateFactory(), credentialsSupplier, mapper);
 	}
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-													   OAuth2CredentialsSupplier oAuth2CredentialsSupplier,
+													   OAuth2ClientDetailsService oAuth2ClientDetailsService,
 													   AppmarketEventDispatcher eventDispatcher,
 													   AppmarketEventClient appmarketEventClient) {
-		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2CredentialsSupplier, eventDispatcher);
+		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher);
 	}
 
 	@Bean

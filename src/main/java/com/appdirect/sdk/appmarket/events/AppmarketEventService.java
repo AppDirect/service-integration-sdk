@@ -27,20 +27,21 @@ import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 
 @Slf4j
 class AppmarketEventService {
     private final AppmarketEventClient appmarketEventClient;
     private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-    private final OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
+    private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
     private final AppmarketEventDispatcher dispatcher;
 
     AppmarketEventService(AppmarketEventClient appmarketEventClient,
                           DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-                          OAuth2CredentialsSupplier oAuth2CredentialsSupplier, AppmarketEventDispatcher dispatcher) {
+                          OAuth2ClientDetailsService oAuth2ClientDetailsService, AppmarketEventDispatcher dispatcher) {
         this.appmarketEventClient = appmarketEventClient;
         this.credentialsSupplier = credentialsSupplier;
-        this.oAuth2CredentialsSupplier = oAuth2CredentialsSupplier;
+        this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
         this.dispatcher = dispatcher;
     }
 
@@ -103,7 +104,7 @@ class AppmarketEventService {
     }
 
     private EventInfo fetchEventInfo(String eventUrl, String applicationUuid) {
-        OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2CredentialsSupplier.getOAuth2ResourceDetails(applicationUuid);
+        OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(applicationUuid);
         EventInfo event = appmarketEventClient.fetchEvents(eventUrl, oAuth2ResourceDetails);
         log.info("Successfully retrieved event={}", event);
         return event;

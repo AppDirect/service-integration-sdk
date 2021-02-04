@@ -30,8 +30,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,13 +42,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AppmarketEventClient {
     private final RestTemplateFactory restTemplateFactory;
     private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-    private final OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
     private final ObjectMapper jsonMapper;
 
-    AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2CredentialsSupplier oAuth2CredentialsSupplier, ObjectMapper jsonMapper) {
+    AppmarketEventClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, ObjectMapper jsonMapper) {
         this.restTemplateFactory = restTemplateFactory;
         this.credentialsSupplier = credentialsSupplier;
-        this.oAuth2CredentialsSupplier = oAuth2CredentialsSupplier;
         this.jsonMapper = jsonMapper;
     }
 
@@ -94,6 +92,7 @@ public class AppmarketEventClient {
      *                         processing has been successful or not.
      * @param key              the client key used to sign the resolve request
      */
+    @Deprecated
     @SneakyThrows
     public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, String key) {
         String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
@@ -129,6 +128,7 @@ public class AppmarketEventClient {
         log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
     }
 
+    @Deprecated
     public ServiceProviderInformation resolveSamlIdp(String url, String key) {
         String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
         return restTemplateFactory.getOAuthRestTemplate(key, secret).getForObject(url, ServiceProviderInformation.class);
