@@ -92,11 +92,9 @@ class AppmarketEventService {
 				usr = values[0];
 				pass = values[1];
 
-				log.info("Username ->{}",usr);
-				log.info("Password ->{}",pass);
 			}
 
-			APIResult result = null;
+			APIResult result;
 			assert pass != null;
 			if (usr.equals("bhupi") && pass.equals("password"))
 			{
