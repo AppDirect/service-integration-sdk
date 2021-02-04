@@ -5,7 +5,7 @@ import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BasicAuthServiceImpl implements BaiscAuthService {
+public class BasicAuthServiceImpl implements BasicAuthService {
 	/**
 	 * Returns the Basic Filter
 	 *

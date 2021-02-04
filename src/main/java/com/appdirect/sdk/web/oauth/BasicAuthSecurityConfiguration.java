@@ -53,13 +53,13 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	}
 
 	@Bean
-	public BaiscAuthService baiscAuthService() {
+	public BasicAuthService basicAuthService() {
 		return new BasicAuthServiceImpl(basicAuthSupplier);
 	}
 
 	@Bean
 	public Filter basicAuthenticationFilter() {
-		return baiscAuthService().getBasicFilter();
+		return basicAuthService().getBasicFilter();
 	}
 
 	@Bean
