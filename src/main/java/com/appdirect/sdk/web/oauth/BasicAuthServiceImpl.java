@@ -5,21 +5,21 @@ import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BaiscAuthServiceImpl implements BaiscAuthService {
+public class BasicAuthServiceImpl implements BaiscAuthService {
 	/**
 	 * Returns the Basic Filter
 	 *
 	 * @return the Filter to authorize incoming requests
 	 */
-	private final BaiscAuthSupplier baiscAuthSupplier;
+	private final BasicAuthSupplier basicAuthSupplier;
 
-	public BaiscAuthServiceImpl(BaiscAuthSupplier baiscAuthSupplier) {
-		this.baiscAuthSupplier = baiscAuthSupplier;
+	public BasicAuthServiceImpl(BasicAuthSupplier basicAuthSupplier) {
+		this.basicAuthSupplier = basicAuthSupplier;
 	}
 
 	@Override
 	public Filter getBasicFilter() {
 		log.info("Receiving api call to doFilter");
-		return baiscAuthSupplier.getBasicAuthFilter();
+		return basicAuthSupplier.getBasicAuthFilter();
 	}
 }

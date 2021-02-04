@@ -9,7 +9,7 @@ import javax.servlet.Filter;
  */
 
 @FunctionalInterface
-public interface BaiscAuthSupplier {
+public interface BasicAuthSupplier {
 	/**
 	 * Returns the Basic Filter
 	 *

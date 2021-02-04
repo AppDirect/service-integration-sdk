@@ -45,7 +45,7 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private BaiscAuthSupplier baiscAuthSupplier;
+	private BasicAuthSupplier basicAuthSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -54,7 +54,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	@Bean
 	public BaiscAuthService baiscAuthService() {
-		return new BaiscAuthServiceImpl(baiscAuthSupplier);
+		return new BasicAuthServiceImpl(basicAuthSupplier);
 	}
 
 	@Bean
