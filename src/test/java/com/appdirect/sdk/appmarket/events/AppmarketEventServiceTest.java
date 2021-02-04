@@ -15,6 +15,7 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static com.appdirect.sdk.appmarket.events.EventFlag.STATELESS;
+import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.defaultEventContext;
 import static com.appdirect.sdk.appmarket.events.EventHandlingContexts.eventContext;
 import static com.appdirect.sdk.appmarket.events.EventType.ACCOUNT_UNSYNC;
 import static java.lang.String.format;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -31,9 +33,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 
@@ -48,12 +52,16 @@ public class AppmarketEventServiceTest {
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Mock
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
-	
+	@Mock
+	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
+
 	private AppmarketEventService testedService;
+
+	private static final String EVENT_URL = "http://test.url.org";
 
 	@Before
 	public void setUp() throws Exception {
-		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
+		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2CredentialsSupplier, eventDispatcher);
 
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
 				.thenReturn(new Credentials("testKey", "testSecret"));
@@ -84,6 +92,27 @@ public class AppmarketEventServiceTest {
 		//Then
 		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
 	}
+
+	@Test
+	public void processEvent_dispatcherIsCalled_with_oAuth2_andExpectedResultIsReturned() throws Exception {
+		//Given
+		EventInfo testEvent = EventInfo.builder()
+				.type(ACCOUNT_UNSYNC)
+				.build();
+		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
+		when(appmarketEventClient.fetchEvents(anyString(), any())).thenReturn(testEvent);
+		when(oAuth2CredentialsSupplier.getOAuth2ResourceDetails(anyString())).thenReturn(new ClientCredentialsResourceDetails());
+
+		EventHandlingContext eventContext = defaultEventContext();
+		when(eventDispatcher.dispatchAndHandle(testEvent, eventContext)).thenReturn(expectedProcessingResult);
+
+		//When
+		APIResult actualResponse = testedService.processEvent(EVENT_URL, eventContext, "applicationUuid");
+
+		//Then
+		assertThat(actualResponse).isEqualTo(expectedProcessingResult);
+	}
+
 
 	@Test
 	public void processEvent_whenBusinessLevelExceptionThrown_thenItBubblesUp() {
