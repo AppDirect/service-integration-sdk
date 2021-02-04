@@ -16,16 +16,12 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
-import java.util.Arrays;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 
@@ -80,33 +76,27 @@ class AppmarketEventService {
      * notification request
      */
     APIResult processEvent(String eventUrl, EventHandlingContext eventContext, String applicationUuid) {
-        log.info("processing event for applicationUuid={} and eventUrl={}", applicationUuid, eventUrl);
-
-        EventInfo event = fetchEventInfo(eventUrl, applicationUuid);
-
-        if (EventFlag.STATELESS == event.getFlag()) {
-            return APIResult.success("success response to stateless event.");
-        }
-        log.info("retrun response");
-        return executeEvent(eventUrl, event, eventContext);
+            log.info("processing event for eventUrl={} for applicationUuid={}", eventUrl, applicationUuid);
+            try {
+                EventInfo event = fetchEventInfo(eventUrl, applicationUuid);
+                if (event.getFlag() == EventFlag.STATELESS) {
+                    return APIResult.success("success response to stateless event.");
+                }
+                return dispatcher.dispatchAndHandle(event, eventContext);
+            } catch (DeveloperServiceException e) {
+                log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
+                throw e;
+            } catch (RuntimeException e) {
+                log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
+                throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
+            }
     }
 
-    private APIResult executeEvent(String eventUrl, EventInfo event, EventHandlingContext eventContext) {
-        try {
-            return dispatcher.dispatchAndHandle(event, eventContext);
-        } catch (DeveloperServiceException e) {
-            log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
-            throw e;
-        } catch (RuntimeException e) {
-            log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
-            throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
-        }
-    }
 
     private EventInfo fetchEventInfo(String eventUrl, String applicationUuid) {
         OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(applicationUuid);
-        EventInfo event = appmarketEventClient.fetchEvents(eventUrl, oAuth2ResourceDetails);
-        log.info("Successfully retrieved event={}", event);
+        EventInfo event =  appmarketEventClient.fetchEvent(eventUrl, oAuth2ResourceDetails);
+        log.info("Successfully retrieved event={} for applicationUuid={}", event, applicationUuid);
         return event;
     }
 

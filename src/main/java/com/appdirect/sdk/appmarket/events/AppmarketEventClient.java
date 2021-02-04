@@ -64,7 +64,7 @@ public class AppmarketEventClient {
         return execute(url, restTemplate);
     }
 
-    EventInfo fetchEvents(String url, OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
+    EventInfo fetchEvent(String url, OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
         log.debug("Consuming event from url={}", url);
         final RestTemplate restTemplate = restTemplateFactory.getOAuth2RestTemplate(oAuth2ProtectedResourceDetails);
         return execute(url, restTemplate);
@@ -113,7 +113,6 @@ public class AppmarketEventClient {
 
     @SneakyThrows
     public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, OAuth2ProtectedResourceDetails oAuth2ResourceDetails) {
-        log.info("received request for");
         String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
 
         final RestTemplate restTemplate = restTemplateFactory.getOAuth2RestTemplate(oAuth2ResourceDetails);
@@ -135,7 +134,6 @@ public class AppmarketEventClient {
     }
 
     public ServiceProviderInformation resolveSamlIdp(String url, OAuth2ProtectedResourceDetails oAuth2ResourceDetails) {
-        log.info("calling Oauth2 resolveSamlIdp");
         return restTemplateFactory.getOAuth2RestTemplate(oAuth2ResourceDetails).getForObject(url, ServiceProviderInformation.class);
     }
 
