@@ -75,6 +75,17 @@ public class AppmarketEventControllerTest {
 		assertThat(response.getStatusCode()).isEqualTo(OK);
 	}
 
+	@Test
+	public void process_OAuth2_Event_sendsTheEventToTheService_andReturnsItsResults() throws Exception {
+		APIResult aHugeSuccess = aHugeSuccess();
+		when(service.processEvent(eq("some-event-url"), any(), any())).thenReturn(aHugeSuccess);
+
+		ResponseEntity<APIResult> response = controller.processEvents(anyRequest(), "some-event-url", "applicationUuid");
+
+		assertThat(response.getBody()).isEqualTo(aHugeSuccess);
+		assertThat(response.getStatusCode()).isEqualTo(OK);
+	}
+
 	private HttpServletRequest aRequestContainingHeader(String key, String value) {
 		HttpServletRequest request = anyRequest();
 
