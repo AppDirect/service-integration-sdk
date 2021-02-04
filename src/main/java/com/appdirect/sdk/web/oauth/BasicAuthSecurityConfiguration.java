@@ -28,18 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth.provider.ConsumerDetailsService;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
@@ -47,8 +43,6 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 @Slf4j
 @Order(101)
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
 	@Autowired
 	private BaiscAuthSupplier baiscAuthSupplier;
@@ -69,16 +63,6 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	}
 
 	@Bean
-	public ConsumerDetailsService consumerDetailsService() {
-		return new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
-	}
-
-	@Bean
-	public OAuthProcessingFilterEntryPoint oAuthProcessingFilterEntryPoint() {
-		return new OAuthProcessingFilterEntryPoint();
-	}
-
-	@Bean
 	public RequestIdFilter requestIdFilter() {
 		return new RequestIdFilter();
 	}
@@ -86,11 +70,9 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		String[] securedUrlPatterns = createSecuredUrlPatterns();
-
+		log.info("Receiving api call to doFilter");
 		http
 			.authorizeRequests()
-			.antMatchers("/unsecured/**")
-			.permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.requestMatchers()
@@ -104,18 +86,13 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 			.httpBasic()
 			.and()
 			.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-			.addFilterAfter(basicAuthenticationFilter(), BasicAuthenticationFilter.class)
+			.addFilterBefore(basicAuthenticationFilter(), BasicAuthenticationFilter.class)
 			.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
-	}
-
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("bhupi").password("password");
 	}
 
 	private String[] createSecuredUrlPatterns() {
 		OpenIdCustomUrlPattern openIdCustomUrlPattern = openIdUrlPatterns();
-		List<String> securedPaths = new ArrayList<>(asList("/api/basic/v1/integration/**", "/api/basic/v1/domainassociation/**", "/api/basic/v1/migration/**", "/api/basic/v1/restrictions/**"));
+		List<String> securedPaths = new ArrayList<>(asList("/api/v1/basic/integration/**"));
 		log.debug("Found custom secured paths: {}", openIdCustomUrlPattern.getPatterns());
 		if (!isEmpty(openIdCustomUrlPattern.getPatterns())) {
 			securedPaths.addAll(openIdCustomUrlPattern.getPatterns());
