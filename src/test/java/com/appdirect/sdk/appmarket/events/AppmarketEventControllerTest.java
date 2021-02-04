@@ -80,7 +80,7 @@ public class AppmarketEventControllerTest {
 		APIResult aHugeSuccess = aHugeSuccess();
 		when(service.processEvent(eq("some-event-url"), any(), any())).thenReturn(aHugeSuccess);
 
-		ResponseEntity<APIResult> response = controller.processEvents(anyRequest(), "some-event-url", "applicationUuid");
+		ResponseEntity<APIResult> response = controller.processEvent(anyRequest(), "some-event-url", "applicationUuid");
 
 		assertThat(response.getBody()).isEqualTo(aHugeSuccess);
 		assertThat(response.getStatusCode()).isEqualTo(OK);

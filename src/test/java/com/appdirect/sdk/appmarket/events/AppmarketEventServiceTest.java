@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
@@ -101,7 +102,7 @@ public class AppmarketEventServiceTest {
 				.type(ACCOUNT_UNSYNC)
 				.build();
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
-		when(appmarketEventClient.fetchEvents(anyString(), any())).thenReturn(testEvent);
+		when(appmarketEventClient.fetchEvent(anyString(), any(OAuth2ProtectedResourceDetails.class))).thenReturn(testEvent);
 		when(oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(anyString())).thenReturn(new ClientCredentialsResourceDetails());
 
 		EventHandlingContext eventContext = defaultEventContext();
@@ -176,10 +177,11 @@ public class AppmarketEventServiceTest {
 		//Given
 		String invalidUrl = "inVaLidUrl";
 		String expectedErrorMessage = format("Failed to process event. eventUrl=%s | exception=Url is not valid.", invalidUrl);
-		when(appmarketEventClient.fetchEvent(any(), any())).thenThrow(new IllegalArgumentException("Url is not valid."));
+		when(oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(anyString())).thenReturn(new ClientCredentialsResourceDetails());
+		when(appmarketEventClient.fetchEvent(anyString(), any(OAuth2ProtectedResourceDetails.class))).thenThrow(new IllegalArgumentException("Url is not valid."));
 
 		//When
-		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, eventContext("testKey")));
+		Throwable exceptionCaught = catchThrowable(() -> testedService.processEvent(invalidUrl, eventContext("testKey"), "applicationUuid"));
 
 		//Then
 		assertThat(exceptionCaught)
