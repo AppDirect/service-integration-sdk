@@ -40,6 +40,7 @@ import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier
 import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppmarketEventServiceTest {
@@ -53,7 +54,7 @@ public class AppmarketEventServiceTest {
 	@Mock
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Mock
-	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
+	private OAuth2ClientDetailsService oAuth2ClientDetailsService;
 
 	private AppmarketEventService testedService;
 
@@ -61,7 +62,7 @@ public class AppmarketEventServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2CredentialsSupplier, eventDispatcher);
+		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher);
 
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
 				.thenReturn(new Credentials("testKey", "testSecret"));
@@ -101,7 +102,7 @@ public class AppmarketEventServiceTest {
 				.build();
 		APIResult expectedProcessingResult = new APIResult(true, "Event Processing Successful");
 		when(appmarketEventClient.fetchEvents(anyString(), any())).thenReturn(testEvent);
-		when(oAuth2CredentialsSupplier.getOAuth2ResourceDetails(anyString())).thenReturn(new ClientCredentialsResourceDetails());
+		when(oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(anyString())).thenReturn(new ClientCredentialsResourceDetails());
 
 		EventHandlingContext eventContext = defaultEventContext();
 		when(eventDispatcher.dispatchAndHandle(testEvent, eventContext)).thenReturn(expectedProcessingResult);
