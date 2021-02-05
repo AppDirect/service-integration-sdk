@@ -86,7 +86,7 @@ public class FullConnector {
 
 	@Bean
 	public OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
-		return () -> true;
+		return () -> false;
 	}
 
 	@Bean
