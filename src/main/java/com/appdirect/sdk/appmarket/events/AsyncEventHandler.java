@@ -22,22 +22,29 @@ import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
+import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagService;
 
 class AsyncEventHandler {
 	private final Logger log;
 	private final Executor executor;
 	private final AppmarketEventClient appmarketEventClient;
+	private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
+	private final OAuth2FeatureFlagService oAuth2FeatureFlagService;
 
-	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient) {
-		this(executor, appmarketEventClient, LoggerFactory.getLogger(AsyncEventHandler.class));
+	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, OAuth2ClientDetailsService oAuth2ClientDetailsService, OAuth2FeatureFlagService oAuth2FeatureFlagService) {
+		this(executor, appmarketEventClient, LoggerFactory.getLogger(AsyncEventHandler.class),oAuth2ClientDetailsService, oAuth2FeatureFlagService);
 	}
 
-	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, Logger log) {
+	AsyncEventHandler(Executor executor, AppmarketEventClient appmarketEventClient, Logger log, OAuth2ClientDetailsService oAuth2ClientDetailsService, OAuth2FeatureFlagService oAuth2FeatureFlagService) {
 		this.executor = executor;
 		this.appmarketEventClient = appmarketEventClient;
 		this.log = log;
+		this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
+		this.oAuth2FeatureFlagService = oAuth2FeatureFlagService;
 	}
 
 	/**
@@ -61,11 +68,16 @@ class AsyncEventHandler {
 			}
 
 			if (result != null) {
-				appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, eventContext.getConsumerKeyUsedByTheRequest());
+				if (oAuth2FeatureFlagService.isOAuth2Enabled()) {
+					OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(eventContext.getConsumerKeyUsedByTheRequest());
+					appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, oAuth2ProtectedResourceDetails);
+				} else {
+					appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, eventContext.getConsumerKeyUsedByTheRequest());
+				}
 			}
 		});
 		return asyncEventResult(
-			format("Event with eventToken=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
+				format("Event with eventToken=%s has been accepted by the connector. It will be processed soon.", eventInfo.getId())
 		);
 	}
 }
