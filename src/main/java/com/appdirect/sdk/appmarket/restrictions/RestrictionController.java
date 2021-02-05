@@ -37,18 +37,10 @@ public class RestrictionController {
 	private final RestrictionHandler restrictionHandler;
 
 	@RequestMapping(method = POST,
-			value = "/api/v1/restrictions",
+			value = {"/api/v1/restrictions", "/api/v2/restrictions"},
 			produces = APPLICATION_JSON_VALUE,
 			consumes = APPLICATION_JSON_VALUE)
 	public Callable<RestrictionResponse> getRestrictions(@RequestBody RestrictionInfo restrictionInfo, @RequestParam("partner") String partner) {
-		return () -> restrictionHandler.getRestrictions(restrictionInfo, partner);
-	}
-
-	@RequestMapping(method = POST,
-			value = "/api/v2/restrictions",
-			produces = APPLICATION_JSON_VALUE,
-			consumes = APPLICATION_JSON_VALUE)
-	public Callable<RestrictionResponse> getRestrictionsV2(@RequestBody RestrictionInfo restrictionInfo, @RequestParam("partner") String partner) {
 		return () -> restrictionHandler.getRestrictions(restrictionInfo, partner);
 	}
 }
