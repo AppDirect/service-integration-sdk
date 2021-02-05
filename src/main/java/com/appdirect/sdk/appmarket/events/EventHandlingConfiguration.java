@@ -26,6 +26,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
 import com.appdirect.sdk.executor.MdcExecutor;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
+import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -53,10 +55,10 @@ public class EventHandlingConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient) {
+	public AppmarketEventDispatcher appmarketEventDispatcher(AppmarketEventClient appmarketEventClient, OAuth2ClientDetailsService oAuth2ClientDetailsService, OAuth2FeatureFlagService oAuth2FeatureFlagService) {
 		return new AppmarketEventDispatcher(
 			new Events(),
-			new AsyncEventHandler(defaultExecutorService(), appmarketEventClient),
+			new AsyncEventHandler(defaultExecutorService(), appmarketEventClient, oAuth2ClientDetailsService, oAuth2FeatureFlagService),
 			new ParseAndHandleWrapper<>(new SubscriptionOrderEventParser(), subscriptionOrderHandler),
 			new ParseAndHandleWrapper<>(new SubscriptionCancelEventParser(), subscriptionCancelHandler),
 			new ParseAndHandleWrapper<>(new SubscriptionChangeEventParser(), subscriptionChangeHandler),
