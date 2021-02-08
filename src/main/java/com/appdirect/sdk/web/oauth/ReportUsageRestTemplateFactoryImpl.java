@@ -52,4 +52,11 @@ public class ReportUsageRestTemplateFactoryImpl implements RestTemplateFactory {
 		oAuth2RestTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
 		return oAuth2RestTemplate;
 	}
+
+	@Override
+	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
+		RestTemplate restTemplate = new BasicAuthRestTemplate(key, secret);
+		restTemplate.setErrorHandler(new ReportUsageApiExceptionHandler());
+		return restTemplate;
+	}
 }

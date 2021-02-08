@@ -36,6 +36,13 @@ public class DefaultRestTemplateFactoryImpl implements RestTemplateFactory {
 	}
 
 	@Override
+	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
+		RestTemplate restTemplate = new BasicAuthRestTemplate(key, secret);
+		restTemplate.setErrorHandler(errorHandler);
+		return restTemplate;
+	}
+
+	@Override
 	public RestTemplate getOAuth2RestTemplate(OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
 		OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(oAuth2ProtectedResourceDetails);
 		oAuth2RestTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
