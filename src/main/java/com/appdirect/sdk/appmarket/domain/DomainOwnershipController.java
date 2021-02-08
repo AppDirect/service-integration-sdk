@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 @RestController
-@RequestMapping("/api/v1/domainassociation")
+@RequestMapping(value = {"/api/v1/domainassociation", "/api/v2/domainassociation"})
 public class DomainOwnershipController {
 
 	public static final String OWNERSHIP_PROOF_DNS_OPERATION_TYPE = "ownershipProof";

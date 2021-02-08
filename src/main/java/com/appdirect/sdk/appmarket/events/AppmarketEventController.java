@@ -48,7 +48,7 @@ class AppmarketEventController {
 	 * @param eventUrl the url from which the payload of the incoming event can be retrieved.
 	 * @return the HTTP response to return to the AppMarket.
 	 */
-	@RequestMapping(method = GET, value = "/api/v1/integration/processEvent", produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(method = GET, value = {"/api/v1/integration/processEvent", "/api/v2/integration/processEvent"}, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<APIResult> processEvent(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl) {
 
 		String keyUsedToSignRequest = keyExtractor.extractFrom(request);

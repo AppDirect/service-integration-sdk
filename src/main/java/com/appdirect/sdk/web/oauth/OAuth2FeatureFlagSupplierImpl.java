@@ -9,6 +9,6 @@ public class OAuth2FeatureFlagSupplierImpl implements OAuth2FeatureFlagSupplier 
 
     @Override
     public boolean isOAuth2Enabled() {
-        return false;
+        return isOAuth2Enabled;
     }
 }
