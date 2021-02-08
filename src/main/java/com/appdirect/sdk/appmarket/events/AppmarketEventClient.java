@@ -31,7 +31,6 @@ import org.springframework.web.client.RestTemplate;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
-import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -64,6 +63,14 @@ public class AppmarketEventClient {
         return execute(url, restTemplate);
     }
 
+    /**
+     * Perform "signed fetch" in order to retrieve the payload of an event sent to the connector from the AppMarket
+     * using OAuth2 authentication
+     *
+     * @param url         from which we can fetch the event payload
+     * @param oAuth2ProtectedResourceDetails the oAuth2ProtectedResourceDetails used to sign the request
+     * @return an {@link EventInfo} instance representing the retrieved payload
+     */
     EventInfo fetchEvent(String url, OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
         log.debug("Consuming event from url={}", url);
         final RestTemplate restTemplate = restTemplateFactory.getOAuth2RestTemplate(oAuth2ProtectedResourceDetails);
@@ -91,7 +98,9 @@ public class AppmarketEventClient {
      * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
      *                         processing has been successful or not.
      * @param key              the client key used to sign the resolve request
+     * @Deprecated             Use resolve with the type OAuth2ProtectedResourceDetails instead.
      */
+
     @Deprecated
     @SneakyThrows
     public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, String key) {
@@ -111,6 +120,17 @@ public class AppmarketEventClient {
     }
 
 
+    /**
+     * Send an "event resolved" notification for an asynchronous event. It serves to notify the
+     * AppMarket that the processing of a given event by the connector has been completed
+     * This is done using OAuth2 authentication
+     *
+     * @param baseAppmarketUrl host on which the marketplace is running
+     * @param eventToken       the id of the event we would like to resolve
+     * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
+     *                         processing has been successful or not.
+     * @param oAuth2ResourceDetails  the oAuth2ProtectedResourceDetails used to sign the request
+     */
     @SneakyThrows
     public void resolve(String baseAppmarketUrl, String eventToken, APIResult result, OAuth2ProtectedResourceDetails oAuth2ResourceDetails) {
         String url = eventResolutionEndpoint(baseAppmarketUrl, eventToken);
@@ -127,6 +147,9 @@ public class AppmarketEventClient {
         log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
     }
 
+    /**
+     * @Deprecated    Use resolveSamlIdp with the type OAuth2ProtectedResourceDetails instead.
+     */
     @Deprecated
     public ServiceProviderInformation resolveSamlIdp(String url, String key) {
         String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
