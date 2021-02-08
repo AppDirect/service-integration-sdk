@@ -19,5 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 public interface RestTemplateFactory {
 	RestTemplate getOAuthRestTemplate(String key, String secret);
+
+	RestTemplate getBasicAuthRestTemplate(String key, String secret);
 	RestTemplate getOAuth2RestTemplate(OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails);
 }

@@ -30,6 +30,7 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 	private static final int DEFAULT_CONNECT_TIMEOUT = 10000;
 	private static final int DEFAULT_READ_TIMEOUT = 60000;
 
+
 	@Override
 	public RestTemplate getOAuthRestTemplate(String key, String secret) {
 		BaseProtectedResourceDetails oauthCredentials = new BaseProtectedResourceDetails();
@@ -40,6 +41,13 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 		clientHttpRequestFactory.setReadTimeout(DEFAULT_READ_TIMEOUT);
 		clientHttpRequestFactory.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT);
 		RestTemplate restTemplate = new OAuthRestTemplate(clientHttpRequestFactory, oauthCredentials);
+		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
+		return restTemplate;
+	}
+
+	@Override
+	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
+		RestTemplate restTemplate = new BasicAuthRestTemplate(key, secret);
 		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
 		return restTemplate;
 	}
