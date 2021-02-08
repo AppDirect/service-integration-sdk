@@ -44,8 +44,8 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
 		return restTemplate;
 	}
-	
-    @Override
+
+	@Override
 	public RestTemplate getBasicAuthRestTemplate(String key, String secret) {
 		RestTemplate restTemplate = new BasicAuthRestTemplate(key, secret);
 		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
