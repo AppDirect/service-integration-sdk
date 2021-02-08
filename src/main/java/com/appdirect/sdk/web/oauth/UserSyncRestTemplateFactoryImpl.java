@@ -14,10 +14,14 @@
 
 package com.appdirect.sdk.web.oauth;
 
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.oauth.common.signature.SharedConsumerSecretImpl;
 import org.springframework.security.oauth.consumer.BaseProtectedResourceDetails;
 import org.springframework.security.oauth.consumer.client.OAuthRestTemplate;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.web.exception.UserSyncApiExceptionHandler;
@@ -46,5 +50,12 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 		RestTemplate restTemplate = new BasicAuthRestTemplate(key, secret);
 		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
 		return restTemplate;
+	}
+
+	@Override
+	public RestTemplate getOAuth2RestTemplate(OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails) {
+		OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(oAuth2ProtectedResourceDetails);
+		oAuth2RestTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+		return oAuth2RestTemplate;
 	}
 }

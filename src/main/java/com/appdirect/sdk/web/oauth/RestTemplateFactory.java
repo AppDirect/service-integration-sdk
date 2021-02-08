@@ -14,10 +14,12 @@
 
 package com.appdirect.sdk.web.oauth;
 
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.web.client.RestTemplate;
 
 public interface RestTemplateFactory {
 	RestTemplate getOAuthRestTemplate(String key, String secret);
 
 	RestTemplate getBasicAuthRestTemplate(String key, String secret);
+	RestTemplate getOAuth2RestTemplate(OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails);
 }

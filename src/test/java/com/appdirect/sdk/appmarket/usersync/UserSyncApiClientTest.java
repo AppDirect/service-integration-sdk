@@ -27,11 +27,24 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.appdirect.sdk.exception.UserSyncException;
 import com.appdirect.sdk.exception.UserSyncTooManyRequestsException;
@@ -45,8 +58,13 @@ public class UserSyncApiClientTest {
 	private static final String OAUTH_SECRET = "testSecret";
 	private static final String USER_SYNC_ENDPOINT = "/api/sync/v1/tasks";
 	private static final String HOST = "localhost";
-	private RestTemplateFactory restTemplateFactory;
-	private UserSyncApiClient userSyncApiClient;
+	private static final String OUTBOUND_CLIENT_ID = "my-outbound-client-id";
+	private static final String OUTBOUND_CLIENT_SECRET = "my-outbound-client-secret";
+	private static final String OUTBOUND_SCOPE = "offline openid";
+	public static final String SCOPE_DELIMITER = " ";
+	private static final String OUTBOUND_TOKEN_URI = "https://tokenuri";
+	@Mock
+	private OAuth2RestTemplate oAuth2RestTemplate;
 	private String hostUrl;
 	private SyncedUser syncedUser;
 
@@ -55,14 +73,16 @@ public class UserSyncApiClientTest {
 
 	@Before
 	public void setUp() throws Exception {
-		restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
-		userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+		oAuth2RestTemplate = mock(OAuth2RestTemplate.class);
 		syncedUser = createSyncedUser();
 		hostUrl = new URIBuilder().setScheme("http").setHost(HOST).setPort(wireMockRule.port()).build().toString();
 	}
 
 	@Test
 	public void postUserAssignment_returnsAccepted() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+
 		//Given
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
@@ -78,7 +98,31 @@ public class UserSyncApiClientTest {
 	}
 
 	@Test
+	public void postUserAssignment_oAuth2_returnsAccepted() throws Exception {
+		RestTemplateFactory restTemplateFactory = mock(RestTemplateFactory.class);
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+		
+		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+
+		userSyncApiClient.syncUserAssignment(hostUrl, createOAuth2ProtectedResourceDetails(), syncedUser);
+
+		Mockito.verify(oAuth2RestTemplate).postForEntity(anyString(), any(), any());
+	}
+
+	private OAuth2ProtectedResourceDetails createOAuth2ProtectedResourceDetails() {
+		ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
+		details.setId(OUTBOUND_CLIENT_ID);
+		details.setClientId(OUTBOUND_CLIENT_ID);
+		details.setClientSecret(OUTBOUND_CLIENT_SECRET);
+		details.setAccessTokenUri(OUTBOUND_TOKEN_URI);
+		details.setScope(Arrays.asList(OUTBOUND_SCOPE.split(SCOPE_DELIMITER)));
+		return details;
+	}
+
+	@Test
 	public void postUserAssignment_throwsUserApiException() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
 		//Given
 		String responseBody = "{\"code\":\"SUBSCRIPTION_NOT_FOUND\", \"message\":\"Subscription is not found for the ISV\"}";
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
@@ -94,7 +138,24 @@ public class UserSyncApiClientTest {
 	}
 
 	@Test
+	public void postUserAssignment_oAuth2_throwsUserApiException() throws Exception {
+		RestTemplateFactory restTemplateFactory = mock(RestTemplateFactory.class);
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+
+		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+		when(oAuth2RestTemplate.postForEntity(anyString(), any(), any())).thenThrow(new UserSyncException("SUBSCRIPTION_NOT_FOUND", "Subscription is not found for the ISV"));
+
+		assertThatThrownBy(() -> userSyncApiClient.syncUserAssignment(hostUrl, createOAuth2ProtectedResourceDetails(), syncedUser))
+				.isInstanceOf(UserSyncException.class)
+				.hasMessage("Subscription is not found for the ISV")
+				.hasFieldOrPropertyWithValue("code", "SUBSCRIPTION_NOT_FOUND");
+	}
+
+	@Test
 	public void postUserAssignment_throwsUserSyncTooManyRequestsException() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+		
 		//Given
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
@@ -107,11 +168,12 @@ public class UserSyncApiClientTest {
 
 	@Test
 	public void postUserUnAssignment_returnsAccepted() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
 		//Given
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
 						.withStatus(200)));
-
 
 		//When
 		userSyncApiClient.syncUserUnAssignment(hostUrl, OAUTH_KEY, OAUTH_SECRET, syncedUser);
@@ -123,7 +185,21 @@ public class UserSyncApiClientTest {
 	}
 
 	@Test
+	public void postUserUnAssignment_oAuth2_returnsAccepted() throws Exception {
+		RestTemplateFactory restTemplateFactory = mock(RestTemplateFactory.class);
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+
+		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+
+		userSyncApiClient.syncUserUnAssignment(hostUrl, createOAuth2ProtectedResourceDetails(), syncedUser);
+
+		Mockito.verify(oAuth2RestTemplate).postForEntity(anyString(), any(), any());
+	}
+
+	@Test
 	public void postUserUnAssignment_throwsUserApiException() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
 		//Given
 		String responseBody = "{\"code\":\"SUBSCRIPTION_NOT_FOUND\", \"message\":\"Subscription is not found for the ISV\"}";
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
@@ -139,7 +215,23 @@ public class UserSyncApiClientTest {
 	}
 
 	@Test
+	public void postUserUnAssignment_oAuth2_throwsUserApiException() throws Exception {
+		RestTemplateFactory restTemplateFactory = mock(RestTemplateFactory.class);
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
+
+		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+		when(oAuth2RestTemplate.postForEntity(anyString(), any(), any())).thenThrow(new UserSyncException("SUBSCRIPTION_NOT_FOUND", "Subscription is not found for the ISV"));
+
+		assertThatThrownBy(() -> userSyncApiClient.syncUserUnAssignment(hostUrl, createOAuth2ProtectedResourceDetails(), syncedUser))
+				.isInstanceOf(UserSyncException.class)
+				.hasMessage("Subscription is not found for the ISV")
+				.hasFieldOrPropertyWithValue("code", "SUBSCRIPTION_NOT_FOUND");
+	}
+
+	@Test
 	public void postUserUnAssignment_throwsUserSyncTooManyRequestsException() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
 		//Given
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
@@ -151,6 +243,8 @@ public class UserSyncApiClientTest {
 
 	@Test
 	public void postUserUnAssignmentInvalidJson_throwsUseSyncException() throws Exception {
+		RestTemplateFactory restTemplateFactory = new UserSyncRestTemplateFactoryImpl();
+		UserSyncApiClient userSyncApiClient = new UserSyncApiClient(restTemplateFactory);
 		//Given
 		String responseBody = "{\"code\":\"SUBSCRIPTION_NOT_FOUND\", \"error\":\"Subscription is not found for the ISV\"}";
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
