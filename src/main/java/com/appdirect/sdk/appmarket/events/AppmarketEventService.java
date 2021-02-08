@@ -16,11 +16,6 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNKNOWN_ERROR;
 import static java.lang.String.format;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
-import javax.servlet.http.HttpServletRequest;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -71,8 +66,8 @@ class AppmarketEventService {
         }
     }
 
-	APIResult processEventForBasicAuth(String eventUrl, HttpServletRequest request) {
-		try {
+	APIResult processEventForBasicAuth(String eventUrl, EventHandlingContext eventContext) {
+/*		try {
 			log.info("processing event for eventUrl={}", eventUrl);
 			final String authorization = request.getHeader("Authorization");
 			String[] values = new String[0];
@@ -109,6 +104,21 @@ class AppmarketEventService {
 			}
 
 			return result;
+		} catch (DeveloperServiceException e) {
+			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
+			throw e;
+		} catch (RuntimeException e) {
+			log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
+			throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
+		}*/
+
+		log.info("processing event for eventUrl={}", eventUrl);
+		try {
+			EventInfo event = fetchEvent(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
+			if (event.getFlag() == EventFlag.STATELESS) {
+				return APIResult.success("success response to stateless event.");
+			}
+			return dispatcher.dispatchAndHandle(event, eventContext);
 		} catch (DeveloperServiceException e) {
 			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
 			throw e;

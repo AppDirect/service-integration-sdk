@@ -32,10 +32,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth.provider.ConsumerDetailsService;
+import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
+import org.springframework.security.oauth.provider.OAuthProviderSupport;
+import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSupport;
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
@@ -47,9 +53,17 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	@Autowired
 	private BasicAuthSupplier basicAuthSupplier;
 
+	@Autowired
+	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
 		return new OpenIdCustomUrlPattern();
+	}
+
+	@Bean
+	public OAuthProviderSupport basicAuthProviderSupport() {
+		return new CoreOAuthProviderSupport();
 	}
 
 	@Bean
@@ -58,8 +72,31 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	}
 
 	@Bean
+	public BasicAuthUserExtractor basicAuthKeyExtractor() {
+		return new BasicAuthUserExtractor(basicAuthProviderSupport());
+	}
+
+	@Bean
 	public Filter basicAuthenticationFilter() {
 		return basicAuthService().getBasicFilter();
+	}
+
+	@Bean
+	public OAuthProcessingFilterEntryPoint basicAuthProcessingFilterEntryPoint() {
+		return new OAuthProcessingFilterEntryPoint();
+	}
+
+	@Bean
+	public ConsumerDetailsService consumerDetailsService() {
+		return new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+	}
+
+	@Bean
+	public ProtectedResourceProcessingFilter basicAuthSignatureCheckingFilter() {
+		ProtectedResourceProcessingFilter filter = new ProtectedResourceProcessingFilter();
+		filter.setConsumerDetailsService(consumerDetailsService());
+		filter.setAuthenticationEntryPoint(basicAuthProcessingFilterEntryPoint());
+		return filter;
 	}
 
 	@Bean
@@ -85,8 +122,9 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 			.and()
 			.httpBasic()
 			.and()
+			.addFilterBefore(basicAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-			.addFilterBefore(basicAuthenticationFilter(), BasicAuthenticationFilter.class)
+			.addFilterAfter(basicAuthenticationFilter(), BasicAuthenticationFilter.class)
 			.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
 	}
 

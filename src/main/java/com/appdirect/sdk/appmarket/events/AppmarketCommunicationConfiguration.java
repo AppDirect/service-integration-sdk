@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 
@@ -31,6 +32,7 @@ import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
 import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientService;
 import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
+import com.appdirect.sdk.web.oauth.BasicAuthUserExtractor;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
@@ -40,6 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 
 @EnableRetry
+@ComponentScan
 @Configuration
 public class AppmarketCommunicationConfiguration {
 
@@ -83,8 +86,8 @@ public class AppmarketCommunicationConfiguration {
 	}
 
 	@Bean
-	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor) {
-		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor);
+	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor, BasicAuthUserExtractor basicAuthUserExtractor) {
+		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor, basicAuthUserExtractor);
 	}
 
 	@Bean

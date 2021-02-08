@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.appdirect.sdk.web.oauth.BasicAuthUserExtractor;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 @Slf4j
@@ -36,17 +37,22 @@ class AppmarketEventController {
 
 	private final AppmarketEventService appmarketEventService;
 	private final OAuthKeyExtractor keyExtractor;
+	private final BasicAuthUserExtractor basicAuthUserExtractor;
 
-	AppmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor keyExtractor) {
+	AppmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor keyExtractor, BasicAuthUserExtractor basicAuthUserExtractor) {
 		this.appmarketEventService = appmarketEventService;
 		this.keyExtractor = keyExtractor;
+		this.basicAuthUserExtractor = basicAuthUserExtractor;
 	}
 
 	@RequestMapping(method = GET, value = {"/api/v1/basic/integration/user"}, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<APIResult>  listUser(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl){
-		APIResult result = appmarketEventService.processEventForBasicAuth(eventUrl, request);
+		String userUsedToSignRequest = basicAuthUserExtractor.extractFrom(request);
+		log.info("eventUrl={} signed with User={}", eventUrl, userUsedToSignRequest);
+		APIResult result = appmarketEventService.processEventForBasicAuth(eventUrl, eventExecutionContext(request, userUsedToSignRequest));
+//		APIResult result = appmarketEventService.processEventForBasicAuth(eventUrl, request);
 		log.info("apiResult={}", result);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
 
 	/**

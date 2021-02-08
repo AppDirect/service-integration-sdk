@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
+import com.appdirect.sdk.web.oauth.BasicAuthUserExtractor;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 public class AppmarketEventControllerTest {
@@ -40,13 +41,14 @@ public class AppmarketEventControllerTest {
 	private AppmarketEventService service;
 	private AppmarketEventController controller;
 	private OAuthKeyExtractor keyExtractor;
+	private BasicAuthUserExtractor basicAuthUserExtractor;
 
 	@Before
 	public void setup() throws Exception {
 		service = mock(AppmarketEventService.class);
 		keyExtractor = mock(OAuthKeyExtractor.class);
 
-		controller = new AppmarketEventController(service, keyExtractor);
+		controller = new AppmarketEventController(service, keyExtractor, basicAuthUserExtractor);
 
 		when(service.processEvent(anyString(), any())).thenReturn(aHugeSuccess());
 	}
