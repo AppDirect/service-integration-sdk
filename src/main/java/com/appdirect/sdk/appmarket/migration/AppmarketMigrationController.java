@@ -47,7 +47,7 @@ public class AppmarketMigrationController {
 	 * @return an {@link APIResult#success(String)} in case the validation is successful and a {@link APIResult#failure(ErrorCode, String)}
 	 * otherwise.
 	 */
-	@RequestMapping(method = POST, value = "/api/v1/migration/validateCustomerAccount", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	@RequestMapping(method = POST, value = {"/api/v1/migration/validateCustomerAccount", "/api/v2/migration/validateCustomerAccount"}, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	public Callable<APIResult> validateISVCustomerAccount(@RequestBody Map<String, String> isvCustomerAccountData) {
 		return () -> migrationService.validateCustomerAccount(isvCustomerAccountData);
 	}
@@ -60,7 +60,7 @@ public class AppmarketMigrationController {
 	 * @return an {@link APIResult#success(String)} in case the validation is successful and a {@link APIResult#failure(ErrorCode, String)}
 	 * otherwise.
 	 */
-	@RequestMapping(method = POST, value = "/api/v1/migration/validateSubscription", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	@RequestMapping(method = POST, value = {"/api/v1/migration/validateSubscription", "/api/v2/migration/validateSubscription"}, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	public Callable<APIResult> validateISVSubscription(@RequestBody Map<String, String> isvSubscriptionData) {
 		return () -> migrationService.validateSubscription(isvSubscriptionData);
 	}
@@ -71,7 +71,7 @@ public class AppmarketMigrationController {
 	 * @param subscription the subscription record to be migrated
 	 * @return an {@link APIResult#success(String)} in case the migration is successful and a {@link APIResult#failure(ErrorCode, String)}
 	 */
-	@RequestMapping(method = POST, value = "/api/v1/migration/subscription", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+	@RequestMapping(method = POST, value = {"/api/v1/migration/subscription", "/api/v2/migration/subscription"}, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 	public Callable<APIResult> migrate(@RequestBody Subscription subscription) {
 		return () -> migrationService.migrate(subscription);
 	}
