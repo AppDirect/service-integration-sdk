@@ -36,13 +36,18 @@ import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 
 import com.appdirect.sdk.exception.DeveloperServiceException;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
+import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagService;
 
 public class AsyncEventHandlerTest {
 
 	private Executor executor = mock(ExecutorService.class);
 	private AppmarketEventClient appmarketEventClient = mock(AppmarketEventClient.class);
 	private Logger mockLog = mock(Logger.class);
-	private AsyncEventHandler asyncEventHandler = new AsyncEventHandler(executor, appmarketEventClient, mockLog);
+	private OAuth2ClientDetailsService oAuth2ClientDetailsService = mock(OAuth2ClientDetailsService.class);
+	private OAuth2FeatureFlagService oAuth2FeatureFlagService = mock(OAuth2FeatureFlagService.class);
+
+	private AsyncEventHandler asyncEventHandler = new AsyncEventHandler(executor, appmarketEventClient, mockLog, oAuth2ClientDetailsService, oAuth2FeatureFlagService);
 
 	@Test
 	public void returnsOk() throws Exception {

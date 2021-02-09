@@ -43,6 +43,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
@@ -55,6 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Autowired
 	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
+
+	@Autowired
+	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
+
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -71,6 +76,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new OAuth2AuthorizationServiceImpl(oAuth2AuthorizationSupplier);
 	}
 
+	@Bean
+	public OAuth2ClientDetailsService oAuth2ClientDetailsService() {
+		return new OAuth2ClientDetailsServiceImpl(oAuth2CredentialsSupplier);
+	}
 	/**
 	 * The feature flag will be used to enable oAuth2 authorization.
 	 * The flag value is retrieved from connector.

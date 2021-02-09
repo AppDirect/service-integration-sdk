@@ -32,6 +32,7 @@ import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientService;
 import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.ReportUsageRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
@@ -75,9 +76,10 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+													   OAuth2ClientDetailsService oAuth2ClientDetailsService,
 													   AppmarketEventDispatcher eventDispatcher,
 													   AppmarketEventClient appmarketEventClient) {
-		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, eventDispatcher);
+		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher);
 	}
 
 	@Bean

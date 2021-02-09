@@ -16,6 +16,7 @@ package com.appdirect.sdk.appmarket.events;
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -31,13 +32,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,6 +53,7 @@ public class AppmarketEventClientTest {
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	private AppmarketEventClient testedFetcher;
 	private ObjectMapper jsonMapper = new ObjectMapper();
+	private OAuth2RestTemplate oAuth2RestTemplate;
 
 	@Before
 	public void setUp() throws Exception {
@@ -55,6 +61,7 @@ public class AppmarketEventClientTest {
 		credentialsSupplier = mock(DeveloperSpecificAppmarketCredentialsSupplier.class);
 		oAuth2AuthorizationSupplier = mock(OAuth2AuthorizationSupplier.class);
 		restTemplateFactory = mock(RestTemplateFactory.class);
+		oAuth2RestTemplate = mock(OAuth2RestTemplate.class);
 
 		testedFetcher = new AppmarketEventClient(restTemplateFactory, credentialsSupplier, jsonMapper);
 
@@ -77,7 +84,7 @@ public class AppmarketEventClientTest {
 		);
 		when(
 				restOperations.exchange(
-						testUrl, 
+						testUrl,
 						HttpMethod.GET,
 						expectedEntity,
 						EventInfo.class
@@ -92,6 +99,36 @@ public class AppmarketEventClientTest {
 
 		//When
 		EventInfo fetchedEvent = testedFetcher.fetchEvent(testUrl, testCredentials);
+
+		//Then
+		assertThat(fetchedEvent).isEqualTo(testEventInfo);
+		assertThat(fetchedEvent.getId()).isEqualTo("the-id-inferred-from-url");
+	}
+
+	@Test
+	public void fetchEvents_calls_withOauth2Get_onTheRightUrl_andSetsEventId() throws Exception {
+		//Given
+		String testUrl = "some.com/events/the-id-inferred-from-url";
+		EventInfo testEventInfo = EventInfo.builder().build();
+		HttpEntity<String> expectedEntity = expectedGetEntity();
+		when(
+				restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))
+		).thenReturn(
+				oAuth2RestTemplate
+		);
+		when(
+				oAuth2RestTemplate.exchange(
+						testUrl,
+						HttpMethod.GET,
+						expectedEntity,
+						EventInfo.class
+				)
+		).thenReturn(
+				new ResponseEntity<>(testEventInfo, HttpStatus.OK)
+		);
+
+		//When
+		EventInfo fetchedEvent = testedFetcher.fetchEvent(testUrl, any(OAuth2ProtectedResourceDetails.class));
 
 		//Then
 		assertThat(fetchedEvent).isEqualTo(testEventInfo);
@@ -132,11 +169,46 @@ public class AppmarketEventClientTest {
 	public void resolveSamlIdp() {
 		// Given
 		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restOperations);
-
 		// When
 		testedFetcher.resolveSamlIdp("http://base.com/saml/18749910", "some-key");
 
 		// Then
 		verify(restOperations, times(1)).getForObject("http://base.com/saml/18749910", ServiceProviderInformation.class);
 	}
+
+	@Test
+	public void resolveEvent_withOauth2callsPost_onTheRightUrl() throws Exception {
+		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+		APIResult expectedApiResult = success("async is resolved");
+
+		final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+		testedFetcher.resolve("http://base.com", "id-of-the-event", expectedApiResult, any(OAuth2ProtectedResourceDetails.class));
+
+		verify(oAuth2RestTemplate)
+				.exchange(
+						eq("http://base.com/api/integration/v1/events/id-of-the-event/result"),
+						eq(HttpMethod.POST),
+						httpEntityArgumentCaptor.capture(),
+						eq(String.class)
+				);
+
+		final HttpEntity actualEntity = httpEntityArgumentCaptor.getValue();
+		final APIResult actualApiResult = jsonMapper.readValue((String) actualEntity.getBody(), APIResult.class);
+
+		assertThat(actualEntity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(actualApiResult.getMessage()).isEqualTo(expectedApiResult.getMessage());
+		assertThat(actualApiResult.isSuccess()).isEqualTo(expectedApiResult.isSuccess());
+	}
+
+	@Test
+	public void resolveSamlIdp_withOauth2() {
+		// Given
+		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+		// When
+		testedFetcher.resolveSamlIdp("http://base.com/saml/18749910", any(OAuth2ProtectedResourceDetails.class));
+
+		// Then
+		verify(oAuth2RestTemplate, times(1)).getForObject("http://base.com/saml/18749910", ServiceProviderInformation.class);
+	}
+
 }
