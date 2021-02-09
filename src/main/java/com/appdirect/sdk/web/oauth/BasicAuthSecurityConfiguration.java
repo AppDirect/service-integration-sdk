@@ -41,11 +41,11 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketBasicAuthCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Slf4j
 @Order(101)
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -54,7 +54,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	private BasicAuthSupplier basicAuthSupplier;
 
 	@Autowired
-	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	private DeveloperSpecificAppmarketBasicAuthCredentialsSupplier credentialsSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -88,14 +88,13 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	@Bean
 	public ConsumerDetailsService consumerDetailsService() {
-		return new DeveloperSpecificAppmarketCredentialsConsumerDetailsService(credentialsSupplier);
+		return new DeveloperSpecificAppmarketBasicAuthCredentialsConsumerDetailsService(credentialsSupplier);
 	}
 
 	@Bean
 	public ProtectedResourceProcessingFilter basicAuthSignatureCheckingFilter() {
 		ProtectedResourceProcessingFilter filter = new ProtectedResourceProcessingFilter();
 		filter.setConsumerDetailsService(consumerDetailsService());
-		filter.setAuthenticationEntryPoint(basicAuthProcessingFilterEntryPoint());
 		return filter;
 	}
 
@@ -130,7 +129,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	private String[] createSecuredUrlPatterns() {
 		OpenIdCustomUrlPattern openIdCustomUrlPattern = openIdUrlPatterns();
-		List<String> securedPaths = new ArrayList<>(asList("/api/v1/basic/integration/**"));
+		List<String> securedPaths = new ArrayList<>(asList("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**"));
 		log.debug("Found custom secured paths: {}", openIdCustomUrlPattern.getPatterns());
 		if (!isEmpty(openIdCustomUrlPattern.getPatterns())) {
 			securedPaths.addAll(openIdCustomUrlPattern.getPatterns());

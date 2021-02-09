@@ -14,8 +14,8 @@
 package com.appdirect.sdk.web.oauth;
 
 import static java.util.Arrays.asList;
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Autowired
 	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
+/*
+	@Autowired
+	private DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier;
+*/
 
 	@Autowired
 	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
@@ -94,6 +98,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public OAuthProviderTokenServices oauthProviderTokenServices() {
 		return new InMemorySelfCleaningProviderTokenServices();
+	}
+
+	@Bean
+	public BasicAuthUserExtractor basicAuthKeyExtractor() {
+		return new BasicAuthUserExtractor(oauthProviderSupport());
 	}
 
 	@Bean
