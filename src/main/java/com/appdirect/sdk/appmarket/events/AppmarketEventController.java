@@ -46,11 +46,10 @@ class AppmarketEventController {
 	}
 
 	@RequestMapping(method = GET, value = {"/api/v1/basic/integration/user"}, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<APIResult>  listUser(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl){
+	public ResponseEntity<APIResult> listUser(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl) {
 		String userUsedToSignRequest = basicAuthUserExtractor.extractFrom(request);
 		log.info("eventUrl={} signed with User={}", eventUrl, userUsedToSignRequest);
 		APIResult result = appmarketEventService.processEventForBasicAuth(eventUrl, eventExecutionContext(request, userUsedToSignRequest));
-//		APIResult result = appmarketEventService.processEventForBasicAuth(eventUrl, request);
 		log.info("apiResult={}", result);
 		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
