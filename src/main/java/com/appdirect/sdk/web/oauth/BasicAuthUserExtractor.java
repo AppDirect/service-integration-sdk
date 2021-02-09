@@ -21,10 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.oauth.provider.OAuthProviderSupport;
-import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
 public class BasicAuthUserExtractor {
 	private final OAuthProviderSupport oauthProviderSupport;
 
@@ -36,15 +34,12 @@ public class BasicAuthUserExtractor {
 		final String authorization = request.getHeader("Authorization");
 		String[] values;
 		String usr = null;
-		String credentials = null;
-
-		log.info("authorization ={}",authorization);
-		if (authorization != null ) {
+		String credentials;
+		if (authorization != null) {
 			// Authorization: Basic base64credentials
 			String base64Credentials = authorization.substring("Basic".length()).trim();
 			byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
 			credentials = new String(credDecoded, StandardCharsets.UTF_8);
-			log.info("credentials={}",credentials);
 			// credentials = username:password
 			values = credentials.split(":", 2);
 			usr = values[0];
