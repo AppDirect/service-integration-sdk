@@ -67,51 +67,6 @@ class AppmarketEventService {
     }
 
 	APIResult processEventForBasicAuth(String eventUrl, EventHandlingContext eventContext) {
-/*		try {
-			log.info("processing event for eventUrl={}", eventUrl);
-			final String authorization = request.getHeader("Authorization");
-			String[] values = new String[0];
-			String usr = null;
-			String pass = null;
-			String credentials = null;
-
-			log.info("authorization ={}",authorization);
-			if (authorization != null ) {
-				// Authorization: Basic base64credentials
-				String base64Credentials = authorization.substring("Basic".length()).trim();
-				byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
-				credentials = new String(credDecoded, StandardCharsets.UTF_8);
-				log.info("credentials={}",credentials);
-				// credentials = username:password
-				values = credentials.split(":", 2);
-				usr = values[0];
-				pass = values[1];
-
-			}
-
-			APIResult result;
-			assert pass != null;
-			if (usr.equals("bhupi") && pass.equals("password"))
-			{
-				result = APIResult.success("Basic Auth authenticated");
-				result.setResponseCode(200);
-			}
-			else {
-				result = APIResult.failure(401, "Basic Auth Unauthorized");
-				result.setResponseCode(401);
-				result.setStatusCodeReturnedToAppmarket(401);
-				result.setErrorCode(ErrorCode.UNAUTHORIZED);
-			}
-
-			return result;
-		} catch (DeveloperServiceException e) {
-			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
-			throw e;
-		} catch (RuntimeException e) {
-			log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
-			throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
-		}*/
-
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
 			EventInfo event = fetchEvent(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
