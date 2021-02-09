@@ -84,10 +84,10 @@ class AppmarketEventService {
                 }
                 return dispatcher.dispatchAndHandle(event, eventContext);
             } catch (DeveloperServiceException e) {
-                log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
+                log.error("Service returned an error for eventUrl={}, result={}, applicationUuid={}", eventUrl, e.getResult(), applicationUuid);
                 throw e;
             } catch (RuntimeException e) {
-                log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
+                log.error("Exception while attempting to process an event. applicationUuid={} and eventUrl={}", applicationUuid, eventUrl, e);
                 throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
             }
     }
