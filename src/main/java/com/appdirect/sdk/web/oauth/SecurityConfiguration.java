@@ -58,10 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Autowired
 	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
-/*
-	@Autowired
-	private DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier;
-*/
 
 	@Autowired
 	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
@@ -86,6 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public OAuth2ClientDetailsService oAuth2ClientDetailsService() {
 		return new OAuth2ClientDetailsServiceImpl(oAuth2CredentialsSupplier);
 	}
+
 	/**
 	 * The feature flag will be used to enable oAuth2 authorization.
 	 * The flag value is retrieved from connector.
