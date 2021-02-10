@@ -14,8 +14,8 @@
 package com.appdirect.sdk.web.oauth;
 
 import static java.util.Arrays.asList;
-import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -49,6 +50,7 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 @Configuration
 @EnableWebSecurity
 @Slf4j
+@Order(100)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
@@ -80,6 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public OAuth2ClientDetailsService oAuth2ClientDetailsService() {
 		return new OAuth2ClientDetailsServiceImpl(oAuth2CredentialsSupplier);
 	}
+
 	/**
 	 * The feature flag will be used to enable oAuth2 authorization.
 	 * The flag value is retrieved from connector.
@@ -92,6 +95,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public OAuthProviderTokenServices oauthProviderTokenServices() {
 		return new InMemorySelfCleaningProviderTokenServices();
+	}
+
+	@Bean
+	public BasicAuthUserExtractor basicAuthKeyExtractor() {
+		return new BasicAuthUserExtractor(oauthProviderSupport());
 	}
 
 	@Bean
@@ -142,7 +150,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private void mainConfiguration(HttpSecurity http) throws Exception {
 		String[] securedUrlPatterns = createSecuredUrlPatterns();
-
 		http
 				.authorizeRequests()
 				.antMatchers("/unsecured/**")

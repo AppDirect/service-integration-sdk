@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
@@ -31,6 +32,7 @@ import com.appdirect.sdk.meteredusage.config.OAuth1RetrofitWrapper;
 import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientService;
 import com.appdirect.sdk.meteredusage.service.MeteredUsageApiClientServiceImpl;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
+import com.appdirect.sdk.web.oauth.BasicAuthUserExtractor;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
 import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
@@ -76,15 +78,15 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+																										 AppmarketEventDispatcher eventDispatcher, BasicAuthCredentialsSupplier basicAuthCredentialsSupplier,
 													   OAuth2ClientDetailsService oAuth2ClientDetailsService,
-													   AppmarketEventDispatcher eventDispatcher,
 													   AppmarketEventClient appmarketEventClient) {
-		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher);
+		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, basicAuthCredentialsSupplier);
 	}
 
 	@Bean
-	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor) {
-		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor);
+	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor, BasicAuthUserExtractor basicAuthUserExtractor) {
+		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor, basicAuthUserExtractor);
 	}
 
 	@Bean

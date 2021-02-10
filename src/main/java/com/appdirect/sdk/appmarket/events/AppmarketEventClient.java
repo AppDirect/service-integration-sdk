@@ -59,7 +59,7 @@ public class AppmarketEventClient {
     EventInfo fetchEvent(String url, Credentials credentials) {
         log.debug("Consuming event from url={}", url);
         final RestTemplate restTemplate = restTemplateFactory
-                .getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
+          .getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
         return execute(url, restTemplate);
     }
 
@@ -82,8 +82,8 @@ public class AppmarketEventClient {
         requestHeaders.setAccept(singletonList(APPLICATION_JSON));
         final HttpEntity<String> requestEntity = new HttpEntity<>("", requestHeaders);
         EventInfo fetchedEvent = restTemplate
-                .exchange(url, GET, requestEntity, EventInfo.class)
-                .getBody();
+          .exchange(url, GET, requestEntity, EventInfo.class)
+          .getBody();
 
         fetchedEvent.setId(extractId(url));
         return fetchedEvent;
