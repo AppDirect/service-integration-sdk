@@ -17,12 +17,12 @@ import org.springframework.security.oauth.provider.ConsumerDetails;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
 
 import com.appdirect.sdk.appmarket.Credentials;
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketBasicAuthCredentialsSupplier;
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 
-class DeveloperSpecificAppmarketBasicAuthCredentialsConsumerDetailsService implements ConsumerDetailsService {
-	private DeveloperSpecificAppmarketBasicAuthCredentialsSupplier credentialsSupplier;
+class BasicAuthCredentialsConsumerDetailsService implements ConsumerDetailsService {
+	private BasicAuthCredentialsSupplier credentialsSupplier;
 
-	DeveloperSpecificAppmarketBasicAuthCredentialsConsumerDetailsService(DeveloperSpecificAppmarketBasicAuthCredentialsSupplier credentialsSupplier) {
+	BasicAuthCredentialsConsumerDetailsService(BasicAuthCredentialsSupplier credentialsSupplier) {
 		this.credentialsSupplier = credentialsSupplier;
 	}
 

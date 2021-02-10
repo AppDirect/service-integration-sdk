@@ -37,7 +37,7 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
 import com.appdirect.sdk.appmarket.Credentials;
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketBasicAuthCredentialsSupplier;
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
@@ -55,7 +55,7 @@ public class AppmarketEventServiceTest {
 	@Mock
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Mock
-	private DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier;
+	private BasicAuthCredentialsSupplier basicAuthCredentialsSupplier;
 
 	@Mock
 	private OAuth2ClientDetailsService oAuth2ClientDetailsService;
@@ -66,7 +66,7 @@ public class AppmarketEventServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, developerSpecificAppmarketBasicAuthCredentialsSupplier);
+		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, basicAuthCredentialsSupplier);
 
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
 				.thenReturn(new Credentials("testKey", "testSecret"));

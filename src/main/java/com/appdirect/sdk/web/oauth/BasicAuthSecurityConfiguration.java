@@ -41,7 +41,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketBasicAuthCredentialsSupplier;
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
@@ -54,7 +54,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 	private BasicAuthSupplier basicAuthSupplier;
 
 	@Autowired
-	private DeveloperSpecificAppmarketBasicAuthCredentialsSupplier credentialsSupplier;
+	private BasicAuthCredentialsSupplier credentialsSupplier;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -88,7 +88,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	@Bean
 	public ConsumerDetailsService consumerDetailsService() {
-		return new DeveloperSpecificAppmarketBasicAuthCredentialsConsumerDetailsService(credentialsSupplier);
+		return new BasicAuthCredentialsConsumerDetailsService(credentialsSupplier);
 	}
 
 	@Bean

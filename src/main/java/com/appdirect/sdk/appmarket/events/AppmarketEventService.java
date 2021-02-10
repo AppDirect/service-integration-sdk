@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 import com.appdirect.sdk.appmarket.Credentials;
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketBasicAuthCredentialsSupplier;
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
@@ -32,16 +32,16 @@ class AppmarketEventService {
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
 	private final AppmarketEventDispatcher dispatcher;
-	private final DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier;
+	private final BasicAuthCredentialsSupplier basicAuthCredentialsSupplier;
 
 	AppmarketEventService(AppmarketEventClient appmarketEventClient,
 												DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-												OAuth2ClientDetailsService oAuth2ClientDetailsService, AppmarketEventDispatcher dispatcher, DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier) {
+												OAuth2ClientDetailsService oAuth2ClientDetailsService, AppmarketEventDispatcher dispatcher, BasicAuthCredentialsSupplier basicAuthCredentialsSupplier) {
 		this.appmarketEventClient = appmarketEventClient;
 		this.credentialsSupplier = credentialsSupplier;
 		this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
 		this.dispatcher = dispatcher;
-		this.developerSpecificAppmarketBasicAuthCredentialsSupplier = developerSpecificAppmarketBasicAuthCredentialsSupplier;
+		this.basicAuthCredentialsSupplier = basicAuthCredentialsSupplier;
 	}
 
 	/**
@@ -129,7 +129,7 @@ class AppmarketEventService {
 	}
  	private EventInfo fetchEventForBasicAuth(String url, String keyUsedToSignRequest) {
 		log.info("keyUsedToSignRequest ={}", keyUsedToSignRequest);
-		Credentials credentials = developerSpecificAppmarketBasicAuthCredentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
+		Credentials credentials = basicAuthCredentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
 		EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
 		log.info("Successfully retrieved event={}", event);
 		return event;

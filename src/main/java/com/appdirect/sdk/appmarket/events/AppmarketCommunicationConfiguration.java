@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 
-import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketBasicAuthCredentialsSupplier;
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationController;
 import com.appdirect.sdk.appmarket.migration.AppmarketMigrationService;
@@ -78,10 +78,10 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-																										 AppmarketEventDispatcher eventDispatcher, DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier,
+																										 AppmarketEventDispatcher eventDispatcher, BasicAuthCredentialsSupplier basicAuthCredentialsSupplier,
 													   OAuth2ClientDetailsService oAuth2ClientDetailsService,
 													   AppmarketEventClient appmarketEventClient) {
-		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, developerSpecificAppmarketBasicAuthCredentialsSupplier);
+		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, basicAuthCredentialsSupplier);
 	}
 
 	@Bean

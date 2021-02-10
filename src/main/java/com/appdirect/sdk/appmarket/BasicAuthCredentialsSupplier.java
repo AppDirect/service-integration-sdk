@@ -19,7 +19,7 @@ package com.appdirect.sdk.appmarket;
  * of this type in its application context in order for the communication with AppMarket to work.
  */
 @FunctionalInterface
-public interface DeveloperSpecificAppmarketBasicAuthCredentialsSupplier {
+public interface BasicAuthCredentialsSupplier {
 
 	/**
 	 * Returns the credentials that applies to the given consumer key
