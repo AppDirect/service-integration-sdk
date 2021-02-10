@@ -30,84 +30,29 @@ import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 class AppmarketEventService {
 	private final AppmarketEventClient appmarketEventClient;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	private final DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier;
+	private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
 	private final AppmarketEventDispatcher dispatcher;
-    private final AppmarketEventClient appmarketEventClient;
-    private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-    private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
-    private final AppmarketEventDispatcher dispatcher;
+	private final DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier;
 
 	AppmarketEventService(AppmarketEventClient appmarketEventClient,
-												DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier, AppmarketEventDispatcher dispatcher) {
+												DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
+												OAuth2ClientDetailsService oAuth2ClientDetailsService, AppmarketEventDispatcher dispatcher, DeveloperSpecificAppmarketBasicAuthCredentialsSupplier developerSpecificAppmarketBasicAuthCredentialsSupplier) {
 		this.appmarketEventClient = appmarketEventClient;
 		this.credentialsSupplier = credentialsSupplier;
-		this.developerSpecificAppmarketBasicAuthCredentialsSupplier = developerSpecificAppmarketBasicAuthCredentialsSupplier;
+		this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
 		this.dispatcher = dispatcher;
+		this.developerSpecificAppmarketBasicAuthCredentialsSupplier = developerSpecificAppmarketBasicAuthCredentialsSupplier;
 	}
-    AppmarketEventService(AppmarketEventClient appmarketEventClient,
-                          DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-                          OAuth2ClientDetailsService oAuth2ClientDetailsService, AppmarketEventDispatcher dispatcher) {
-        this.appmarketEventClient = appmarketEventClient;
-        this.credentialsSupplier = credentialsSupplier;
-        this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
-        this.dispatcher = dispatcher;
-    }
 
-    /**
-     * Processes an event notification from the AppMarket
-     *
-     * @param eventUrl     the url from which we can fetch the payload of the incoming event
-     * @param eventContext contextual information about the event notification
-     * @return the {@link APIResult} instance representing the payload to be returned in response of the event
-     * notification request
-     */
-    APIResult processEvent(String eventUrl, EventHandlingContext eventContext) {
-        log.info("processing event for eventUrl={}", eventUrl);
-        try {
-            EventInfo event = fetchEvent(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
-            if (event.getFlag() == EventFlag.STATELESS) {
-                return APIResult.success("success response to stateless event.");
-            }
-            return dispatcher.dispatchAndHandle(event, eventContext);
-        } catch (DeveloperServiceException e) {
-            log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
-            throw e;
-        } catch (RuntimeException e) {
-            log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
-            throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
-        }
-    }
-
-	APIResult processEventForBasicAuth(String eventUrl, EventHandlingContext eventContext) {
-		log.info("EventHandlingContext={}", eventContext.getConsumerKeyUsedByTheRequest());
-/*		try {
-			log.info("processing event for eventUrl={}", eventUrl);
-			final String authorization = request.getHeader("Authorization");
-			String[] values = new String[0];
-			String usr = null;
-			String pass = null;
-			String credentials = null;
-
-			log.info("authorization ={}",authorization);
-			if (authorization != null ) {
-				// Authorization: Basic base64credentials
-				String base64Credentials = authorization.substring("Basic".length()).trim();
-				byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
-				credentials = new String(credDecoded, StandardCharsets.UTF_8);
-				log.info("credentials={}",credentials);
-				// credentials = username:password
-				values = credentials.split(":", 2);
-				usr = values[0];
-				pass = values[1];
-
-			}
-
-			APIResult result;
-			assert pass != null;
-			if (usr.equals("bhupi") && pass.equals("password"))
-			{
-				result = APIResult.success("Basic Auth authenticated");
-				result.setResponseCode(200);
+	/**
+	 * Processes an event notification from the AppMarket
+	 *
+	 * @param eventUrl     the url from which we can fetch the payload of the incoming event
+	 * @param eventContext contextual information about the event notification
+	 * @return the {@link APIResult} instance representing the payload to be returned in response of the event
+	 * notification request
+	 */
+	APIResult processEvent(String eventUrl, EventHandlingContext eventContext) {
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
 			EventInfo event = fetchEvent(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
@@ -124,6 +69,49 @@ class AppmarketEventService {
 		}
 	}
 
+	/**
+	 * Processes an event notification from the AppMarket
+	 *
+	 * @param eventUrl the url from which we can fetch the payload of the incoming event
+	 * @param eventContext contextual information about the event notification
+	 * @param applicationUuid which can be used to fetch the oauth2 credentails from connector
+	 * @return the {@link APIResult} instance representing the payload to be returned in response of the event
+	 * notification request
+	 */
+	APIResult processEvent(String eventUrl, EventHandlingContext eventContext, String applicationUuid) {
+		log.info("processing event for eventUrl={} for applicationUuid={}", eventUrl, applicationUuid);
+		try {
+			EventInfo event = fetchEventInfo(eventUrl, applicationUuid);
+			if (event.getFlag() == EventFlag.STATELESS) {
+				return APIResult.success("success response to stateless event.");
+			}
+			return dispatcher.dispatchAndHandle(event, eventContext);
+		} catch (DeveloperServiceException e) {
+			log.error("Service returned an error for eventUrl={}, result={}", eventUrl, e.getResult());
+			throw e;
+		} catch (RuntimeException e) {
+			log.error("Exception while attempting to process an event. eventUrl={}", eventUrl, e);
+			throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
+		}
+	}
+
+
+	private EventInfo fetchEventInfo(String eventUrl, String applicationUuid) {
+		OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(applicationUuid);
+		EventInfo event =  appmarketEventClient.fetchEvent(eventUrl, oAuth2ResourceDetails);
+		log.info("Successfully retrieved event={} for applicationUuid={}", event, applicationUuid);
+		return event;
+	}
+
+	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
+		Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
+		EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
+		log.info("Successfully retrieved event={}", event);
+		return event;
+	}
+
+	APIResult processEventForBasicAuth(String eventUrl, EventHandlingContext eventContext) {
+		log.info("EventHandlingContext={}", eventContext.getConsumerKeyUsedByTheRequest());
 		log.info("processing event for eventUrl={}", eventUrl);
 		try {
 			EventInfo event = fetchEventForBasicAuth(eventUrl, eventContext.getConsumerKeyUsedByTheRequest());
@@ -139,58 +127,11 @@ class AppmarketEventService {
 			throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
 		}
 	}
-    /**
-     * Processes an event notification from the AppMarket
-     *
-     * @param eventUrl the url from which we can fetch the payload of the incoming event
-     * @param eventContext contextual information about the event notification
-     * @param applicationUuid which can be used to fetch the oauth2 credentails from connector
-     * @return the {@link APIResult} instance representing the payload to be returned in response of the event
-     * notification request
-     */
-    APIResult processEvent(String eventUrl, EventHandlingContext eventContext, String applicationUuid) {
-            log.info("processing event for eventUrl={} for applicationUuid={}", eventUrl, applicationUuid);
-            try {
-                EventInfo event = fetchEventInfo(eventUrl, applicationUuid);
-                if (event.getFlag() == EventFlag.STATELESS) {
-                    return APIResult.success("success response to stateless event.");
-                }
-                return dispatcher.dispatchAndHandle(event, eventContext);
-            } catch (DeveloperServiceException e) {
-                log.error("Service returned an error for eventUrl={}, result={}, applicationUuid={}", eventUrl, e.getResult(), applicationUuid);
-                throw e;
-            } catch (RuntimeException e) {
-                log.error("Exception while attempting to process an event. applicationUuid={} and eventUrl={}", applicationUuid, eventUrl, e);
-                throw new DeveloperServiceException(UNKNOWN_ERROR, format("Failed to process event. eventUrl=%s | exception=%s", eventUrl, e.getMessage()));
-            }
-    }
-
-	private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
-		Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
-		EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
-		log.info("Successfully retrieved event={}", event);
-		return event;
-	}
-
-	private EventInfo fetchEventForBasicAuth(String url, String keyUsedToSignRequest) {
+ 	private EventInfo fetchEventForBasicAuth(String url, String keyUsedToSignRequest) {
 		log.info("keyUsedToSignRequest ={}", keyUsedToSignRequest);
 		Credentials credentials = developerSpecificAppmarketBasicAuthCredentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
 		EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
 		log.info("Successfully retrieved event={}", event);
 		return event;
 	}
-
-    private EventInfo fetchEventInfo(String eventUrl, String applicationUuid) {
-        OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(applicationUuid);
-        EventInfo event =  appmarketEventClient.fetchEvent(eventUrl, oAuth2ResourceDetails);
-        log.info("Successfully retrieved event={} for applicationUuid={}", event, applicationUuid);
-        return event;
-    }
-
-    private EventInfo fetchEvent(String url, String keyUsedToSignRequest) {
-        Credentials credentials = credentialsSupplier.getConsumerCredentials(keyUsedToSignRequest);
-        EventInfo event = appmarketEventClient.fetchEvent(url, credentials);
-        log.info("Successfully retrieved event={}", event);
-        return event;
-    }
 }

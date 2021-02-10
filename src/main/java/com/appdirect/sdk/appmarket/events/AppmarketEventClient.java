@@ -49,17 +49,6 @@ public class AppmarketEventClient {
         this.jsonMapper = jsonMapper;
     }
 
-	/**
-	 * Perform "signed fetch" in order to retrieve the payload of an event sent to the connector from the AppMarket
-	 *
-	 * @param url         from which we can fetch the event payload
-	 * @param credentials the credentials used to sign the request
-	 * @return an {@link EventInfo} instance representing the retrieved payload
-	 */
-	EventInfo fetchEvent(String url, Credentials credentials) {
-		log.info("Consuming event from url={}", url);
-		final RestTemplate restTemplate = restTemplateFactory
-				.getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
     /**
      * Perform "signed fetch" in order to retrieve the payload of an event sent to the connector from the AppMarket
      *
@@ -70,7 +59,7 @@ public class AppmarketEventClient {
     EventInfo fetchEvent(String url, Credentials credentials) {
         log.debug("Consuming event from url={}", url);
         final RestTemplate restTemplate = restTemplateFactory
-                .getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
+          .getOAuthRestTemplate(credentials.developerKey, credentials.developerSecret);
         return execute(url, restTemplate);
     }
 
@@ -93,8 +82,8 @@ public class AppmarketEventClient {
         requestHeaders.setAccept(singletonList(APPLICATION_JSON));
         final HttpEntity<String> requestEntity = new HttpEntity<>("", requestHeaders);
         EventInfo fetchedEvent = restTemplate
-                .exchange(url, GET, requestEntity, EventInfo.class)
-                .getBody();
+          .exchange(url, GET, requestEntity, EventInfo.class)
+          .getBody();
 
         fetchedEvent.setId(extractId(url));
         return fetchedEvent;
