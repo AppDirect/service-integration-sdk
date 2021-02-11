@@ -31,6 +31,7 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
+import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
@@ -184,5 +185,10 @@ public class FullConnector {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Bean
+	public BasicAuthCredentialsSupplier getConsumerCredentials() {
+		return someKey -> new Credentials(someKey, "isv-secret");
 	}
 }
