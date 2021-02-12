@@ -16,8 +16,10 @@ package com.appdirect.sdk.appmarket.domain;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
 /**
@@ -27,15 +29,23 @@ import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 public class DomainVerificationNotificationClient {
 	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
+	private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
 
-	public DomainVerificationNotificationClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+	public DomainVerificationNotificationClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2ClientDetailsService oAuth2ClientDetailsService) {
 		this.restTemplateFactory = restTemplateFactory;
 		this.credentialsSupplier = credentialsSupplier;
+		this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
 	}
 
+	@Deprecated
 	public void resolveDomainVerification(String callbackUrl, String key, boolean isVerified) {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 		ResponseEntity<String> result = restTemplateFactory.getOAuthRestTemplate(key, secret).postForEntity(callbackUrl, new DomainVerificationStatus(isVerified), String.class);
+		log.info("Domain verification callbackUrl={} called with status={}", callbackUrl, result.getStatusCodeValue());
+	}
+
+	public void resolveDomainVerification(String callbackUrl, OAuth2ProtectedResourceDetails oAuth2ResourceDetails, boolean isVerified) {
+		ResponseEntity<String> result = restTemplateFactory.getOAuth2RestTemplate(oAuth2ResourceDetails).postForEntity(callbackUrl, new DomainVerificationStatus(isVerified), String.class);
 		log.info("Domain verification callbackUrl={} called with status={}", callbackUrl, result.getStatusCodeValue());
 	}
 }
