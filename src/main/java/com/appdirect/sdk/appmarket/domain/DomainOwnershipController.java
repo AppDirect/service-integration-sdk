@@ -115,6 +115,21 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
+			value = "/api/v2/domainassociation/customers/{customerIdentifier}/domains/{domain}/ownershipVerification"
+	)
+	@ResponseStatus(value = ACCEPTED)
+	public void verifyDomainOwnership(HttpServletRequest request,
+									  @PathVariable("customerIdentifier") String customerId,
+									  @PathVariable("domain") String domain,
+									  @RequestParam("callbackUrl") String callbackUrl,
+									  @RequestParam("applicationUuid") String applicationUuid) {
+		log.info("received request for v2 verifyDomainOwnership");
+
+		domainOwnershipVerificationHandler.verifyDomainOwnership(customerId, domain, callbackUrl, applicationUuid);
+	}
+
+	@RequestMapping(
+			method = POST,
 			value = {"/api/v1/domainassociation/customers/{customerIdentifier}/domains",
 			        "/api/v2/domainassociation/customers/{customerIdentifier}/domains"}
 	)
