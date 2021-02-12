@@ -22,6 +22,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 @RestController
-@RequestMapping(value = {"/api/v1/domainassociation", "/api/v2/domainassociation"})
+@Slf4j
 public class DomainOwnershipController {
 
 	public static final String OWNERSHIP_PROOF_DNS_OPERATION_TYPE = "ownershipProof";
@@ -67,7 +69,8 @@ public class DomainOwnershipController {
 	@Deprecated
 	@RequestMapping(
 			method = GET,
-			value = "/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord",
+			value = {"/api/v1/domainassociation/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord",
+					"/api/v2/domainassociation/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord"},
 			produces = APPLICATION_JSON_VALUE
 	)
 	public DnsRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
@@ -78,7 +81,8 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 		method = GET,
-		value = "/customers/{customerIdentifier}/domains/{domain}/dns",
+		value = {"/api/v1/domainassociation/customers/{customerIdentifier}/domains/{domain}/dns",
+				"/api/v2/domainassociation/customers/{customerIdentifier}/domains/{domain}/dns"},
 		produces = APPLICATION_JSON_VALUE
 	)
 	public DnsRecords readDnsRecord(
@@ -97,7 +101,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
-			value = "/customers/{customerIdentifier}/domains/{domain}/ownershipVerification"
+			value = "/api/v1/domainassociation/customers/{customerIdentifier}/domains/{domain}/ownershipVerification"
 	)
 	@ResponseStatus(value = ACCEPTED)
 	public void verifyDomainOwnership(HttpServletRequest request,
@@ -111,7 +115,8 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
-			value = "/customers/{customerIdentifier}/domains"
+			value = {"/api/v1/domainassociation/customers/{customerIdentifier}/domains",
+			        "/api/v2/domainassociation/customers/{customerIdentifier}/domains"}
 	)
 	@ResponseStatus(value = OK)
 	public void addDomain(@PathVariable("customerIdentifier") String customerId,
@@ -122,7 +127,8 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = DELETE,
-			value = "/customers/{customerIdentifier}/domains/{domainName}"
+			value = {"/api/v1/domainassociation/customers/{customerIdentifier}/domains/{domainName}",
+					"/api/v1/domainassociation/customers/{customerIdentifier}/domains/{domainName}"}
 	)
 	@ResponseStatus(value = OK)
 	public void removeDomain(@PathVariable("customerIdentifier") String customerId,
