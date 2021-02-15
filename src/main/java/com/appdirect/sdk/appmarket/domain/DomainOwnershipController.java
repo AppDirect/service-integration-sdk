@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 
 @RestController
-@Slf4j
 public class DomainOwnershipController {
 
 	public static final String OWNERSHIP_PROOF_DNS_OPERATION_TYPE = "ownershipProof";
@@ -123,7 +122,6 @@ public class DomainOwnershipController {
 									  @PathVariable("domain") String domain,
 									  @RequestParam("callbackUrl") String callbackUrl,
 									  @RequestParam("applicationUuid") String applicationUuid) {
-		log.info("received request for v2 verifyDomainOwnership");
 
 		domainOwnershipVerificationHandler.verifyDomainOwnership(customerId, domain, callbackUrl, applicationUuid);
 	}
