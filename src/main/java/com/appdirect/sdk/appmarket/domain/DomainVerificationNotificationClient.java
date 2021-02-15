@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
 /**
@@ -29,12 +28,10 @@ import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 public class DomainVerificationNotificationClient {
 	private final RestTemplateFactory restTemplateFactory;
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	private final OAuth2ClientDetailsService oAuth2ClientDetailsService;
 
-	public DomainVerificationNotificationClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2ClientDetailsService oAuth2ClientDetailsService) {
+	public DomainVerificationNotificationClient(RestTemplateFactory restTemplateFactory, DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
 		this.restTemplateFactory = restTemplateFactory;
 		this.credentialsSupplier = credentialsSupplier;
-		this.oAuth2ClientDetailsService = oAuth2ClientDetailsService;
 	}
 
 	@Deprecated

@@ -61,8 +61,8 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 	}
 
 	@Bean
-	public DomainVerificationNotificationClient domainVerificationNotificationClient(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2ClientDetailsService oAuth2ClientDetailsService) {
-		return new DomainVerificationNotificationClient(domainRestTemplateFactory(), credentialsSupplier, oAuth2ClientDetailsService);
+	public DomainVerificationNotificationClient domainVerificationNotificationClient(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
+		return new DomainVerificationNotificationClient(domainRestTemplateFactory(), credentialsSupplier);
 	}
 
 	@Bean
