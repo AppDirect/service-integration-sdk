@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.exception.AppmarketEventClientExceptionHandler;
 import com.appdirect.sdk.web.oauth.DefaultRestTemplateFactoryImpl;
+import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.OAuthKeyExtractor;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 
@@ -60,8 +61,8 @@ public abstract class DomainDnsOwnershipVerificationConfiguration {
 	}
 
 	@Bean
-	public DomainVerificationNotificationClient domainVerificationNotificationClient(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {
-		return new DomainVerificationNotificationClient(domainRestTemplateFactory(), credentialsSupplier);
+	public DomainVerificationNotificationClient domainVerificationNotificationClient(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier, OAuth2ClientDetailsService oAuth2ClientDetailsService) {
+		return new DomainVerificationNotificationClient(domainRestTemplateFactory(), credentialsSupplier, oAuth2ClientDetailsService);
 	}
 
 	@Bean
