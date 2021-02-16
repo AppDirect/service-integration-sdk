@@ -16,6 +16,7 @@ package com.appdirect.sdk.appmarket.domain;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
@@ -33,9 +34,15 @@ public class DomainVerificationNotificationClient {
 		this.credentialsSupplier = credentialsSupplier;
 	}
 
+	@Deprecated
 	public void resolveDomainVerification(String callbackUrl, String key, boolean isVerified) {
 		String secret = credentialsSupplier.getConsumerCredentials(key).developerSecret;
 		ResponseEntity<String> result = restTemplateFactory.getOAuthRestTemplate(key, secret).postForEntity(callbackUrl, new DomainVerificationStatus(isVerified), String.class);
+		log.info("Domain verification callbackUrl={} called with status={}", callbackUrl, result.getStatusCodeValue());
+	}
+
+	public void resolveDomainVerification(String callbackUrl, OAuth2ProtectedResourceDetails oAuth2ResourceDetails, boolean isVerified) {
+		ResponseEntity<String> result = restTemplateFactory.getOAuth2RestTemplate(oAuth2ResourceDetails).postForEntity(callbackUrl, new DomainVerificationStatus(isVerified), String.class);
 		log.info("Domain verification callbackUrl={} called with status={}", callbackUrl, result.getStatusCodeValue());
 	}
 }

@@ -134,6 +134,21 @@ public class DomainOwnershipControllerTest {
 	}
 
 	@Test
+	public void test_VerifyDomainOwnership_whenCalled_thenControllerForwardsItsArgumentsToTheUnderlyingHandler() throws Exception {
+		//Given
+		String testCustomerId = "testCustomerId";
+		String testDomain = "example.com";
+		String callbackUrl = "http://appmarket.com/callback/url";
+		String applicationUuid = "applicationUuid";
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		//When
+		tested.verifyDomainOwnership(request, testCustomerId, testDomain, callbackUrl, applicationUuid);
+
+		//Then
+		verify(domainOwnershipVerificationHandler).verifyDomainOwnership(testCustomerId, testDomain, callbackUrl, applicationUuid);
+	}
+
+	@Test
 	public void testAddDomain_whenCalled_thenControllerForwardsToTheUnderlyingHandler() throws Exception {
 		//Given
 		String testCustomerId = "testCustomerId";
