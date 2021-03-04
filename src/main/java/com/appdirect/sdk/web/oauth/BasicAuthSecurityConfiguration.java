@@ -129,7 +129,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	private String[] createSecuredUrlPatterns() {
 		OpenIdCustomUrlPattern openIdCustomUrlPattern = openIdUrlPatterns();
-		List<String> securedPaths = new ArrayList<>(asList("/api/v1/integration/**", "/api/v1/domainassociation/**", "/api/v1/migration/**", "/api/v1/restrictions/**"));
+		List<String> securedPaths = new ArrayList<>(asList("/api/v2/basic/integration/**", "/api/v2/basic/domainassociation/**", "/api/v2/basic/migration/**", "/api/v2/basic/restrictions/**"));
 		log.debug("Found custom secured paths: {}", openIdCustomUrlPattern.getPatterns());
 		if (!isEmpty(openIdCustomUrlPattern.getPatterns())) {
 			securedPaths.addAll(openIdCustomUrlPattern.getPatterns());
