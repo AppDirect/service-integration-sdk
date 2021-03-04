@@ -41,14 +41,13 @@ public class AppmarketEventControllerTest {
 	private AppmarketEventService service;
 	private AppmarketEventController controller;
 	private OAuthKeyExtractor keyExtractor;
-	private BasicAuthUserExtractor basicAuthUserExtractor;
 
 	@Before
 	public void setup() throws Exception {
 		service = mock(AppmarketEventService.class);
 		keyExtractor = mock(OAuthKeyExtractor.class);
 
-		controller = new AppmarketEventController(service, keyExtractor, basicAuthUserExtractor);
+		controller = new AppmarketEventController(service, keyExtractor);
 
 		when(service.processEvent(anyString(), any())).thenReturn(aHugeSuccess());
 	}
