@@ -143,9 +143,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		mainConfiguration(http);
-		if(isOAuth2Enabled()) {
-			oAuth2ProtectionOnApi(http);
-		}
+		oAuth2ProtectionOnApi(http);
 	}
 
 	private void mainConfiguration(HttpSecurity http) throws Exception {
@@ -170,10 +168,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
 		http
-				.authorizeRequests()
-				.antMatchers("/unsecured/**").permitAll()
+				.requestMatchers()
 				.antMatchers("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
-				.authenticated()
 				.and().addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
