@@ -58,10 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Autowired
 	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
-
 	@Autowired
 	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
-
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -126,13 +124,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return filter;
 	}
 
-	@Bean
 	public Filter oAuth2SignatureCheckingFilter() {
 		return oAuth2consumerDetailsService().getOAuth2Filter();
-	}
-
-	private boolean isOAuth2Enabled() {
-		return OAuth2FeatureFlagService().isOAuth2Enabled();
 	}
 
 	@Bean
@@ -163,10 +156,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));;
+				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
 	}
 
-	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
+	private void oAuth2ProtectionOnApi(HttpSecurity http) {
 		http
 				.requestMatchers()
 				.antMatchers("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
