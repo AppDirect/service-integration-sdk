@@ -81,7 +81,6 @@ public class FullConnector {
 	@Bean
 	public BasicAuthSupplier basicAuthSupplier() {
 		return () -> {
-
 			BasicAuthenticationEntryPoint authenticationEntryPoint = new BasicAuthenticationEntryPoint();
 			authenticationEntryPoint.setRealmName("http://www.example.com");
 			BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(authenticationManager, authenticationEntryPoint);
