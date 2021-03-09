@@ -15,15 +15,18 @@ package com.appdirect.sdk.feature.sample_connector.minimal;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.appdirect.sdk.ConnectorSdkConfiguration;
 import com.appdirect.sdk.appmarket.AppmarketEventHandler;
@@ -34,6 +37,7 @@ import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.support.DummyRestController;
+import com.appdirect.sdk.web.oauth.BasicAuthSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
@@ -44,6 +48,9 @@ import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 @SpringBootApplication
 @Import(ConnectorSdkConfiguration.class)
 public class MinimalConnector {
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
 	@Bean
 	public DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier() {
 		return someKey -> new Credentials(someKey, "isv-secret");
@@ -52,6 +59,17 @@ public class MinimalConnector {
 	@Bean
 	public OAuth2CredentialsSupplier oAuth2CredentialsSupplier() {
 		return someKey -> new ClientCredentialsResourceDetails();
+	}
+
+	@Bean
+	public BasicAuthSupplier basicAuthSupplier() {
+		return () -> {
+
+			BasicAuthenticationEntryPoint authenticationEntryPoint = new BasicAuthenticationEntryPoint();
+			authenticationEntryPoint.setRealmName("http://www.example.com");
+			BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(authenticationManager, authenticationEntryPoint);
+			return basicAuthenticationFilter;
+		};
 	}
 
 	@Bean
