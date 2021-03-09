@@ -13,128 +13,86 @@
 
 package com.appdirect.sdk.web.oauth;
 
-import static java.util.Arrays.asList;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.Filter;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth.provider.ConsumerDetailsService;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
-import org.springframework.security.oauth.provider.OAuthProviderSupport;
-import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSupport;
-import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
-import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 
 @Configuration
-@EnableWebSecurity(debug = true)
-@Slf4j
+@EnableWebSecurity
 @Order(101)
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private BasicAuthSupplier basicAuthSupplier;
+    @Autowired
+    private BasicAuthSupplier basicAuthSupplier;
 
-	@Autowired
-	private BasicAuthCredentialsSupplier credentialsSupplier;
+    @Autowired
+    private BasicAuthCredentialsSupplier credentialsSupplier;
 
-	@Bean
-	public OpenIdCustomUrlPattern openIdUrlPatterns() {
-		return new OpenIdCustomUrlPattern();
-	}
+    @Bean
+    public BasicAuthService basicAuthService() {
+        return new BasicAuthServiceImpl(basicAuthSupplier);
+    }
 
-	@Bean
-	public OAuthProviderSupport basicAuthProviderSupport() {
-		return new CoreOAuthProviderSupport();
-	}
+    @Bean
+    public Filter basicAuthenticationFilter() {
+        return basicAuthService().getBasicFilter();
+    }
 
-	@Bean
-	public BasicAuthService basicAuthService() {
-		return new BasicAuthServiceImpl(basicAuthSupplier);
-	}
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new BasicAuthCredentialsUserDetailsService(credentialsSupplier);
+    }
 
-	@Bean
-	public BasicAuthUserExtractor basicAuthKeyExtractor() {
-		return new BasicAuthUserExtractor(basicAuthProviderSupport());
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public Filter basicAuthenticationFilter() {
-		return basicAuthService().getBasicFilter();
-	}
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
-	@Bean
-	public OAuthProcessingFilterEntryPoint basicAuthProcessingFilterEntryPoint() {
-		return new OAuthProcessingFilterEntryPoint();
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-	@Bean
-	public ConsumerDetailsService consumerDetailsService() {
-		return new BasicAuthCredentialsConsumerDetailsService(credentialsSupplier);
-	}
-
-	@Bean
-	public ProtectedResourceProcessingFilter basicAuthSignatureCheckingFilter() {
-		ProtectedResourceProcessingFilter filter = new ProtectedResourceProcessingFilter();
-		filter.setConsumerDetailsService(consumerDetailsService());
-		return filter;
-	}
-
-	@Bean
-	public RequestIdFilter requestIdFilter() {
-		return new RequestIdFilter();
-	}
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		String[] securedUrlPatterns = createSecuredUrlPatterns();
-		log.info("Receiving api call to doFilter");
-		http
-			.authorizeRequests()
-			.anyRequest().authenticated()
-			.and()
-			.requestMatchers()
-			.antMatchers(securedUrlPatterns)
-			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.csrf().disable()
-			.authorizeRequests().anyRequest().authenticated()
-			.and()
-			.httpBasic()
-			.and()
-			.addFilterBefore(basicAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-			.addFilterAfter(basicAuthenticationFilter(), BasicAuthenticationFilter.class)
-			.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
-	}
-
-	private String[] createSecuredUrlPatterns() {
-		OpenIdCustomUrlPattern openIdCustomUrlPattern = openIdUrlPatterns();
-		List<String> securedPaths = new ArrayList<>(asList("/api/v2/basic/integration/**", "/api/v2/basic/domainassociation/**", "/api/v2/basic/migration/**", "/api/v2/basic/restrictions/**"));
-		log.debug("Found custom secured paths: {}", openIdCustomUrlPattern.getPatterns());
-		if (!isEmpty(openIdCustomUrlPattern.getPatterns())) {
-			securedPaths.addAll(openIdCustomUrlPattern.getPatterns());
-		}
-		log.debug("Configuring the following paths as secured: {}", securedPaths);
-		return securedPaths.toArray(new String[securedPaths.size()]);
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/unsecured/**")
+                .permitAll()
+                .and()
+                .requestMatchers()
+                .antMatchers("/api/v2/basic/integration/**", "/api/v2/basic/domainassociation/**", "/api/v2/basic/migration/**", "/api/v2/basic/restrictions/**")
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .httpBasic()
+                .and()
+                .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
+                .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
+    }
 }
