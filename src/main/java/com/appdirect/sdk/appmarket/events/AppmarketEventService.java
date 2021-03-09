@@ -96,7 +96,6 @@ class AppmarketEventService {
 
 	private EventInfo fetchEventInfo(String eventUrl, String applicationUuid) {
 		OAuth2ProtectedResourceDetails oAuth2ResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(applicationUuid);
-		log.info("oAuth2ResourceDetails --->{}", oAuth2ResourceDetails.getAccessTokenUri());
 		EventInfo event =  appmarketEventClient.fetchEvent(eventUrl, oAuth2ResourceDetails);
 		log.info("Successfully retrieved event={} for applicationUuid={}", event, applicationUuid);
 		return event;
