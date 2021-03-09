@@ -7,7 +7,7 @@ public class OAuth2FeatureFlagServiceImpl implements OAuth2FeatureFlagService{
         this.oAuth2FeatureFlagSupplier = oAuth2FeatureFlagSupplier;
     }
 
-    public boolean isOAuth2Enabled() {
-        return oAuth2FeatureFlagSupplier.isOAuth2Enabled();
+    public boolean isOAuth2Enabled(String partner) {
+        return oAuth2FeatureFlagSupplier.isOAuth2Enabled(partner);
     }
 }

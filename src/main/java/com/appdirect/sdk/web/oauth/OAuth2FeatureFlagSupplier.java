@@ -7,5 +7,5 @@ package com.appdirect.sdk.web.oauth;
  */
 @FunctionalInterface
 public interface OAuth2FeatureFlagSupplier {
-    boolean isOAuth2Enabled();
+    boolean isOAuth2Enabled(String partner);
 }
