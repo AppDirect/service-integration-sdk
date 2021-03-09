@@ -68,7 +68,7 @@ class AsyncEventHandler {
 			}
 
 			if (result != null) {
-				if (oAuth2FeatureFlagService.isOAuth2Enabled()) {
+				if (oAuth2FeatureFlagService.isOAuth2Enabled(eventInfo.getMarketplace().getPartner())) {
 					OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails = oAuth2ClientDetailsService.getOAuth2ProtectedResourceDetails(eventContext.getConsumerKeyUsedByTheRequest());
 					appmarketEventClient.resolve(eventInfo.getMarketplace().getBaseUrl(), eventInfo.getId(), result, oAuth2ProtectedResourceDetails);
 				} else {
