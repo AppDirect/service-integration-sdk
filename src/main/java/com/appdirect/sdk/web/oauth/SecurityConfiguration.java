@@ -165,7 +165,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));;
+				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
 	}
 
 	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
