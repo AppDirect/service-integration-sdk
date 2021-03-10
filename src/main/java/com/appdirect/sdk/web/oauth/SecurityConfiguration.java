@@ -124,6 +124,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return filter;
 	}
 
+	@Bean
 	public Filter oAuth2SignatureCheckingFilter() {
 		return oAuth2consumerDetailsService().getOAuth2Filter();
 	}
@@ -159,10 +160,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
 	}
 
-	private void oAuth2ProtectionOnApi(HttpSecurity http) {
+	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
 		http
-				.requestMatchers()
+				.authorizeRequests()
+				.antMatchers("/unsecured/**").permitAll()
 				.antMatchers("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
+				.authenticated()
 				.and().addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
