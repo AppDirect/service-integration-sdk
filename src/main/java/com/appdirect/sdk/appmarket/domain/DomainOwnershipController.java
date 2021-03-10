@@ -38,7 +38,6 @@ public class DomainOwnershipController {
 	public static final String SERVICE_CONFIGURATION_DNS_OPERATION_TYPE = "configuration";
 	public static final String V1_PATH = "/api/v1";
 	public static final String V2_PATH = "/api/v2";
-	public static final String V2_BASIC_PATH = "/api/v2/basic";
 	public static final String READ_OWNERSHIP_RECORD_PATH = "/domainassociation/customers/{customerIdentifier}/domains/{domain}/ownershipProofRecord";
 	public static final String READ_DNS_RECORD_PATH = "/domainassociation/customers/{customerIdentifier}/domains/{domain}/dns";
 	public static final String VERIFY_DOMAIN_OWNERSHIP_PATH = "/domainassociation/customers/{customerIdentifier}/domains/{domain}/ownershipVerification";
@@ -74,7 +73,7 @@ public class DomainOwnershipController {
 	@Deprecated
 	@RequestMapping(
 			method = GET,
-			value = {V1_PATH + READ_OWNERSHIP_RECORD_PATH, V2_PATH + READ_OWNERSHIP_RECORD_PATH, V2_BASIC_PATH + READ_OWNERSHIP_RECORD_PATH},
+			value = {V1_PATH + READ_OWNERSHIP_RECORD_PATH, V2_PATH + READ_OWNERSHIP_RECORD_PATH},
 			produces = APPLICATION_JSON_VALUE
 	)
 	public DnsRecords readOwnershipVerificationRecord(@PathVariable("customerIdentifier") String customerId,
@@ -85,7 +84,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 		method = GET,
-			value = {V1_PATH + READ_DNS_RECORD_PATH, V2_PATH + READ_DNS_RECORD_PATH, V2_BASIC_PATH + READ_DNS_RECORD_PATH},
+			value = {V1_PATH + READ_DNS_RECORD_PATH, V2_PATH + READ_DNS_RECORD_PATH},
 		produces = APPLICATION_JSON_VALUE
 	)
 	public DnsRecords readDnsRecord(
@@ -118,7 +117,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
-			value = {V2_PATH + VERIFY_DOMAIN_OWNERSHIP_PATH, V2_BASIC_PATH + VERIFY_DOMAIN_OWNERSHIP_PATH}
+			value = {V2_PATH + VERIFY_DOMAIN_OWNERSHIP_PATH}
 	)
 	@ResponseStatus(value = ACCEPTED)
 	public void verifyDomainOwnership(HttpServletRequest request,
@@ -132,7 +131,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
-			value = {V1_PATH + ADD_DOMAIN_PATH, V2_PATH + ADD_DOMAIN_PATH, V2_BASIC_PATH + ADD_DOMAIN_PATH}
+			value = {V1_PATH + ADD_DOMAIN_PATH, V2_PATH + ADD_DOMAIN_PATH}
 	)
 	@ResponseStatus(value = OK)
 	public void addDomain(@PathVariable("customerIdentifier") String customerId,
@@ -143,7 +142,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = DELETE,
-			value = {V1_PATH + REMOVE_DOMAIN_PATH, V2_PATH + REMOVE_DOMAIN_PATH, V2_BASIC_PATH + REMOVE_DOMAIN_PATH}
+			value = {V1_PATH + REMOVE_DOMAIN_PATH, V2_PATH + REMOVE_DOMAIN_PATH}
 	)
 	@ResponseStatus(value = OK)
 	public void removeDomain(@PathVariable("customerIdentifier") String customerId,

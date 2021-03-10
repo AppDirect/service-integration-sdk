@@ -62,7 +62,7 @@ class AppmarketEventController {
 	}
 
 
-	@RequestMapping(method = GET, value = {"/api/v2/integration/processEvent", "/api/v2/basic/integration/processEvent"}, produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(method = GET, value = "/api/v2/integration/processEvent", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<APIResult> processEvent(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl, @RequestParam("applicationUuid") String applicationUuid) {
 		log.info("Received Event with applicationUuid ={} and eventUrl={}", applicationUuid, eventUrl);
 
