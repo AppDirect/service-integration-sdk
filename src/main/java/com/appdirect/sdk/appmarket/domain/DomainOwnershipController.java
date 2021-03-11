@@ -117,7 +117,7 @@ public class DomainOwnershipController {
 
 	@RequestMapping(
 			method = POST,
-			value = {V2_PATH + VERIFY_DOMAIN_OWNERSHIP_PATH}
+			value = V2_PATH + VERIFY_DOMAIN_OWNERSHIP_PATH
 	)
 	@ResponseStatus(value = ACCEPTED)
 	public void verifyDomainOwnership(HttpServletRequest request,
