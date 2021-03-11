@@ -15,9 +15,9 @@ public class SessionRequestMatcher implements RequestMatcher {
     private static final String AD_AUTHORIZATION = "AD-Authorization";
     private static final String BASIC = "Basic ";
     private static final String INTEGRATION_PATH = "/api/v2/integration/**";
-    private static final String DOMAIN_ASSOCIATION_PATH = "/api/v1/domainassociation/**";
-    private static final String MIGRATION_PATH = "/api/v1/migration/**";
-    private static final String RESTRICTIONS_PATH = "/api/v1/restrictions/**";
+    private static final String DOMAIN_ASSOCIATION_PATH = "/api/v2/domainassociation/**";
+    private static final String MIGRATION_PATH = "/api/v2/migration/**";
+    private static final String RESTRICTIONS_PATH = "/api/v2/restrictions/**";
 
 
     @Override
