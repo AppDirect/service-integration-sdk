@@ -78,15 +78,15 @@ public class AppmarketCommunicationConfiguration {
 
 	@Bean
 	public AppmarketEventService appmarketEventService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier,
-																										 AppmarketEventDispatcher eventDispatcher, BasicAuthCredentialsSupplier basicAuthCredentialsSupplier,
+																										 AppmarketEventDispatcher eventDispatcher,
 													   OAuth2ClientDetailsService oAuth2ClientDetailsService,
 													   AppmarketEventClient appmarketEventClient) {
-		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, basicAuthCredentialsSupplier);
+		return new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher);
 	}
 
 	@Bean
-	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor, BasicAuthUserExtractor basicAuthUserExtractor) {
-		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor, basicAuthUserExtractor);
+	public AppmarketEventController appmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor oauthKeyExtractor) {
+		return new AppmarketEventController(appmarketEventService, oauthKeyExtractor);
 	}
 
 	@Bean

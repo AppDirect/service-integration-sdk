@@ -54,8 +54,6 @@ public class AppmarketEventServiceTest {
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Mock
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
-	@Mock
-	private BasicAuthCredentialsSupplier basicAuthCredentialsSupplier;
 
 	@Mock
 	private OAuth2ClientDetailsService oAuth2ClientDetailsService;
@@ -66,7 +64,7 @@ public class AppmarketEventServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher, basicAuthCredentialsSupplier);
+		testedService = new AppmarketEventService(appmarketEventClient, credentialsSupplier, oAuth2ClientDetailsService, eventDispatcher);
 
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
 				.thenReturn(new Credentials("testKey", "testSecret"));

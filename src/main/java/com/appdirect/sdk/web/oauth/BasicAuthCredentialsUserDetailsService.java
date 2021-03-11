@@ -13,25 +13,21 @@
 
 package com.appdirect.sdk.web.oauth;
 
-import org.springframework.security.oauth.provider.ConsumerDetails;
-import org.springframework.security.oauth.provider.ConsumerDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 
-class BasicAuthCredentialsConsumerDetailsService implements ConsumerDetailsService {
+class BasicAuthCredentialsUserDetailsService implements UserDetailsService {
 	private BasicAuthCredentialsSupplier credentialsSupplier;
 
-	BasicAuthCredentialsConsumerDetailsService(BasicAuthCredentialsSupplier credentialsSupplier) {
+	BasicAuthCredentialsUserDetailsService(BasicAuthCredentialsSupplier credentialsSupplier) {
 		this.credentialsSupplier = credentialsSupplier;
 	}
 
 	@Override
-	public ConsumerDetails loadConsumerByConsumerKey(String consumerKey) {
-		return consumerDetailsFrom(credentialsSupplier.getConsumerCredentials(consumerKey));
-	}
-
-	private ConsumerDetails consumerDetailsFrom(Credentials credentials) {
-		return new ConnectorConsumerDetails(credentials.developerKey, credentials.developerSecret);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return new BasicAuthUserDetailsService(credentialsSupplier.getConsumerCredentials(username));
 	}
 }

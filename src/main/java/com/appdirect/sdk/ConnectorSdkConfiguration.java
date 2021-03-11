@@ -26,6 +26,7 @@ import com.appdirect.sdk.appmarket.validation.DefaultValidationHandlers;
 import com.appdirect.sdk.vendorFields.configuration.VendorFieldsConfiguration;
 import com.appdirect.sdk.web.config.JacksonConfiguration;
 import com.appdirect.sdk.web.config.MvcConfiguration;
+import com.appdirect.sdk.web.oauth.BasicAuthSecurityConfiguration;
 import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 
 /**
@@ -37,6 +38,7 @@ import com.appdirect.sdk.web.oauth.SecurityConfiguration;
 		MvcConfiguration.class,
 		JacksonConfiguration.class,
 		SecurityConfiguration.class,
+		BasicAuthSecurityConfiguration.class,
 		DefaultEventHandlersForOptionalEvents.class,
 		EventHandlingConfiguration.class,
 		AppmarketCommunicationConfiguration.class,

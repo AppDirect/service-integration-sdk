@@ -37,21 +37,10 @@ class AppmarketEventController {
 
 	private final AppmarketEventService appmarketEventService;
 	private final OAuthKeyExtractor keyExtractor;
-	private final BasicAuthUserExtractor basicAuthUserExtractor;
 
-	AppmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor keyExtractor, BasicAuthUserExtractor basicAuthUserExtractor) {
+	AppmarketEventController(AppmarketEventService appmarketEventService, OAuthKeyExtractor keyExtractor) {
 		this.appmarketEventService = appmarketEventService;
 		this.keyExtractor = keyExtractor;
-		this.basicAuthUserExtractor = basicAuthUserExtractor;
-	}
-
-	@RequestMapping(method = GET, value = {"/api/v1/basic/integration/user"}, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<APIResult> listUser(HttpServletRequest request, @RequestParam("eventUrl") String eventUrl) {
-		String userUsedToSignRequest = basicAuthUserExtractor.extractFrom(request);
-		log.info("eventUrl={} signed with User={}", eventUrl, userUsedToSignRequest);
-		APIResult result = appmarketEventService.processEventForBasicAuth(eventUrl, eventExecutionContext(request, userUsedToSignRequest));
-		log.info("apiResult={}", result);
-		return new ResponseEntity<>(result, httpStatusOf(result));
 	}
 
 	/**

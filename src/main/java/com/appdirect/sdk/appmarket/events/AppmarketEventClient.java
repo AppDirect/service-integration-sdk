@@ -116,7 +116,7 @@ public class AppmarketEventClient {
 
         restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
-        log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
+        log.info("Resolved event with OAuth1 for eventToken={} with apiResult={}", eventToken, result);
     }
 
 
@@ -144,7 +144,7 @@ public class AppmarketEventClient {
 
         restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
-        log.info("Resolved event with eventToken={} with apiResult={}", eventToken, result);
+        log.info("Resolved event with OAuth2 for eventToken={} with apiResult={}", eventToken, result);
     }
 
     /**
