@@ -12,6 +12,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class SessionRequestMatcher implements RequestMatcher {
 
     private static final String AUTHORIZATION = "Authorization";
+    private static final String AD_AUTHORIZATION = "AD-Authorization";
     private static final String BASIC = "Basic ";
     private static final String INTEGRATION_PATH = "/api/v2/integration/**";
     private static final String DOMAIN_ASSOCIATION_PATH = "/api/v1/domainassociation/**";
@@ -21,7 +22,7 @@ public class SessionRequestMatcher implements RequestMatcher {
 
     @Override
     public boolean matches(HttpServletRequest request) {
-        return isAuthorizationBasicHeader(request) && antPathRequestMatcher(request);
+        return null == request.getHeader(AD_AUTHORIZATION) && isAuthorizationBasicHeader(request) && antPathRequestMatcher(request);
     }
 
     private boolean isAuthorizationBasicHeader(HttpServletRequest request) {
