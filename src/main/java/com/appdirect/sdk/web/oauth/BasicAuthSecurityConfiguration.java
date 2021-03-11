@@ -33,17 +33,23 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
+import com.appdirect.sdk.web.oauth.model.SessionRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@Order(101)
+@Order(50)
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BasicAuthSupplier basicAuthSupplier;
 
     @Autowired
-    private BasicAuthCredentialsSupplier credentialsSupplier;
+    private BasicAuthCredentialsSupplier basicAuthCredentialsSupplier;
+
+    @Bean
+    public SessionRequestMatcher sessionRequestMatcher(){
+        return new SessionRequestMatcher();
+    }
 
     @Bean
     public BasicAuthService basicAuthService() {
@@ -51,13 +57,14 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
     }
 
 
+    @Bean
     public Filter basicAuthenticationFilter() {
         return basicAuthService().getBasicFilter();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new BasicAuthCredentialsUserDetailsService(credentialsSupplier);
+        return new BasicAuthCredentialsUserDetailsService(basicAuthCredentialsSupplier);
     }
 
     @Bean
@@ -80,13 +87,12 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http    .requestMatcher(sessionRequestMatcher())
                 .authorizeRequests()
                 .antMatchers("/unsecured/**")
                 .permitAll()
                 .and()
-                .requestMatchers()
-                .antMatchers("/api/v2/basic/integration/**", "/api/v2/basic/domainassociation/**", "/api/v2/basic/migration/**", "/api/v2/basic/restrictions/**")
+                .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
