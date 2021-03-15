@@ -96,6 +96,7 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .csrf().disable()
                 .httpBasic()
                 .and()
                 .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
