@@ -160,12 +160,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
 	}
 
-	private void oAuth2ProtectionOnApi(HttpSecurity http) throws Exception {
+	private void oAuth2ProtectionOnApi(HttpSecurity http) {
 		http
-				.authorizeRequests()
-				.antMatchers("/unsecured/**").permitAll()
+				.requestMatchers()
 				.antMatchers("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
-				.authenticated()
 				.and().addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
