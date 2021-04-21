@@ -1,5 +1,13 @@
 language: java
 
+## export GPG details
+before_install:
+  - echo $GPG_SECRETKEYS | base64 --decode | $GPG_EXECUTABLE --import
+  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+
+install:
+  mvn --settings .maven.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+
 addons:
   apt:
     packages:
@@ -7,14 +15,15 @@ addons:
 
 jdk: openjdk8
 
-script: mvn source:jar javadoc:jar test -B
+## Build and release to maven central  
+script:
+  mvn clean deploy --settings .maven.xml test -B -U -Prelease
 
 deploy:
+  provider: releases
   on:
     tags: true
   skip_cleanup: true
-  provider: script
-  script: ./src/script/publish_build_artifacts.sh
 
 notifications:
   slack:
