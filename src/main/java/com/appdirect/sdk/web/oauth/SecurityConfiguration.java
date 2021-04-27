@@ -84,6 +84,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	/**
 	 * The feature flag will be used to enable oAuth2 authorization.
 	 * The flag value is retrieved from connector.
+	 * 
+	 * @return OAuth2FeatureFlagService service to get flag value
 	 */
 	@Bean
 	public OAuth2FeatureFlagService OAuth2FeatureFlagService() {
