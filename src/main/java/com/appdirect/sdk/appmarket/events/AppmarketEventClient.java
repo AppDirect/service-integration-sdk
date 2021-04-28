@@ -93,12 +93,13 @@ public class AppmarketEventClient {
      * Send an "event resolved" notification for an asynchronous event. It serves to notify the
      * AppMarket that the processing of a given event by the connector has been completed
      *
+     * Deprecated - Use resolve with the type OAuth2ProtectedResourceDetails instead.
+     * 
      * @param baseAppmarketUrl host on which the marketplace is running
      * @param eventToken       the id of the event we would like to resolve
      * @param result           represents the event processing result sent to the AppMarket. It would indicate if the event
      *                         processing has been successful or not.
      * @param key              the client key used to sign the resolve request
-     * @Deprecated             Use resolve with the type OAuth2ProtectedResourceDetails instead.
      */
 
     @Deprecated
@@ -148,7 +149,7 @@ public class AppmarketEventClient {
     }
 
     /**
-     * @Deprecated    Use resolveSamlIdp with the type OAuth2ProtectedResourceDetails instead.
+     *  Deprecated - Use resolveSamlIdp with the type OAuth2ProtectedResourceDetails instead.
      */
     @Deprecated
     public ServiceProviderInformation resolveSamlIdp(String url, String key) {
