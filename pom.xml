@@ -17,7 +17,7 @@
     <groupId>com.appdirect</groupId>
     <artifactId>service-integration-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.125-SNAPSHOT</version>
+    <version>1.129-SNAPSHOT</version>
     <name>SDK for service integration</name>
 
     <properties>
@@ -406,6 +406,17 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.3</version>
+                        <configuration>
+                            <tagNameFormat>v@{project.version}</tagNameFormat>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <releaseProfiles>release</releaseProfiles>
+                        </configuration>
                     </plugin>
                 </plugins>
 
