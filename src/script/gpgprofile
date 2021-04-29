@@ -4,7 +4,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <gpg.executable>gpg-key</gpg.executable>
+        <gpg.executable>gpg</gpg.executable>
         <gpg.passphrase>GPG_KEY</gpg.passphrase>
       </properties>
     </profile>
