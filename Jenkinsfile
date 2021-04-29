@@ -65,7 +65,7 @@ options { disableConcurrentBuilds() }
 		stage('Build') {
 			steps {
 				echo 'Building project...'
-				sh "./mvnw install source:jar-no-fork -Prelease -U -s settings.xml"
+				sh "./mvnw install source:jar-no-fork -Prelease,ossrh -U -s settings.xml"
             }
 		}
 

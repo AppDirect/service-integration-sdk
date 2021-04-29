@@ -1,7 +1,7 @@
 #!/bin/bash
 
-sed '/<\/settings>/{ 
+sed '/<\/profiles>/{ 
   r src/script/gpgprofile
-  a \</settings>
+  a \</profiles>
   d 
 }' mavenSettings | sed -e "s/GPG_KEY/$GPG_KEY/" > settings.xml
