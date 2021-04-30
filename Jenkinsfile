@@ -67,7 +67,7 @@ options { disableConcurrentBuilds() }
 			steps {
 				echo 'Building project...'
 				withCredentials([string(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {
-				sh "cat $GPG_KEY > gpg_key.txt"	
+				sh "echo $GPG_KEY > gpg_key.txt"	
 				sh "gpg2 --import gpg_key.txt"
 				sh "./mvnw install source:jar-no-fork -Prelease,ossrh -U -s settings.xml"
 				}
