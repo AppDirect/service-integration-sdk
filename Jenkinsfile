@@ -66,15 +66,9 @@ options { disableConcurrentBuilds() }
 		stage('Build') {
 			steps {
 				echo 'Building project...'
-<<<<<<< HEAD
 				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
 				sh "gpg2 --import $GPG_KEY"
-=======
-				withCredentials([string(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {
-				sh "echo $GPG_KEY > gpg_key.txt"	
-				sh "gpg2 --import gpg_key.txt"
->>>>>>> f86dbcaf217068e5bf7373e00b9285f4c9ce84d7
-				sh "./mvnw install source:jar-no-fork -Prelease,ossrh -U -s settings.xml"
+                                sh "./mvnw install source:jar-no-fork -Prelease,ossrh -U -s settings.xml"
 				}
             }
 		}
