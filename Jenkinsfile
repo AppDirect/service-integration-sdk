@@ -73,7 +73,6 @@ options { disableConcurrentBuilds() }
 				}
             }
 		}
-getSemver
 		stage('SonarQube') {
 			steps {
 				sonarScanner version
