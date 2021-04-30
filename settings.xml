@@ -2,8 +2,8 @@
   <servers>
     <server>
       <id>ossrh</id>
-      <username>t6WjTcao</username>
-      <password>6Dcgget2wDJP51MZkdKjveUN6TI6iTPmxPe9QneGy5Nb</password>
+      <username>username-sdk-ossrh</username>
+      <password>password-sdk-ossrh</password>
     </server>
   </servers>
   <profiles>
@@ -14,7 +14,7 @@
       </activation>
       <properties>
         <gpg.executable>gpg2</gpg.executable>
-        <gpg.passphrase>gpg-key</gpg.passphrase>
+        <gpg.passphrase>gpg-passphrase</gpg.passphrase>
       </properties>
     </profile>
   </profiles>
