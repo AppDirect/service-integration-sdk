@@ -14,7 +14,7 @@
       </activation>
       <properties>
         <gpg.executable>gpg2</gpg.executable>
-        <gpg.passphrase>gpg-key</gpg.passphrase>
+        <gpg.passphrase>gpg-passphrase</gpg.passphrase>
       </properties>
     </profile>
   </profiles>
