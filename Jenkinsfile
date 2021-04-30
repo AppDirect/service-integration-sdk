@@ -46,8 +46,9 @@ options { disableConcurrentBuilds() }
 						[configFile(fileId: MAVEN_CONFIGURATION_FILE, variable: 'MAVEN_SETTINGS')]) {
 					sh 'cp $MAVEN_SETTINGS mavenSettings'
 				}
-				withCredentials([string(credentialsId: 'gpg-key', variable: 'GPG_KEY')]) {
-					sh 'src/script/addgpg.sh'
+				withCredentials([string(credentialsId: 'gpg-passphrase', variable: 'GPG_PASSPHRASE'),
+								usernamePassword(credentialsId: 'sdk-ossrh', passwordVariable: 'OSSRH_PASSWORD', usernameVariable: 'OSSRH_USERNAME')]) {
+					sh 'src/script/addkeys.sh'
 				}
 
 		    }
