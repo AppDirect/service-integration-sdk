@@ -1,0 +1,5 @@
+    <server>
+      <id>ossrh</id>
+      <username>OSSRH_USERNAME</username>
+      <password>OSSRH_PASSWORD</password>
+    </server>
