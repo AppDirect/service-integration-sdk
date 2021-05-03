@@ -67,11 +67,17 @@ options { disableConcurrentBuilds() }
 			steps {
 				echo 'Building project...'
 				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
-				sh "gpg2  --no-tty --import $GPG_KEY || /bin/true"
-				sh "./mvnw install source:jar-no-fork -Prelease,ossrh -U -s settings.xml"
+					sh "gpg2  --no-tty --import $GPG_KEY || /bin/true"
+					withPullRequestBranch {
+						sh "./mvnw install source:jar-no-fork -Prelease -U -s settings.xml"
+					}
+					withMasterBranch {
+						sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+					}
 				}
-            }
+            		}
 		}
+
 		stage('SonarQube') {
 			steps {
 				sonarScanner version
