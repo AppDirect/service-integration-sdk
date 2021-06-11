@@ -38,6 +38,7 @@ import com.appdirect.sdk.appmarket.restrictions.OperationType;
 public class RestrictionInfo {
 	private List<EditionRestrictionInfo> editionInfo;
 	private List<UserRestrictionInfo> userInfo;
+	private List<SubscriptionInfo> subscriptionInfo;
 	private String applicationUuid;
 	private OperationType operation;
 	private String externalVendorId;
