@@ -13,4 +13,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SubscriptionInfo {
     private String applicationUuid;
     private String externalVendorId;
+    private String operationType;
 }
