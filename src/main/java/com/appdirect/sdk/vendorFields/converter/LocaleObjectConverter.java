@@ -15,7 +15,7 @@ public class LocaleObjectConverter extends PropertyEditorSupport {
 					.sorted(Comparator.comparing(Locale.LanguageRange::getWeight).reversed())
 					.map(localeRange -> Locale.forLanguageTag(localeRange.getRange()))
 					.filter(locale -> Arrays.asList(Locale.getAvailableLocales()).contains(locale))
-					.findFirst().get());
+					.findFirst().orElseThrow(() -> new PropertyEditorSupportException("Invalid  locale=%s", text)));
 		} catch (IllegalArgumentException | NullPointerException e) {
 			throw new PropertyEditorSupportException("Failed to serialize Locale from Accept-Language header with value=%s", text);
 		}
