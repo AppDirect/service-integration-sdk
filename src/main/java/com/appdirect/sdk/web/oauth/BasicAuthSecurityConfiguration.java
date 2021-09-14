@@ -18,6 +18,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import javax.servlet.Filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -38,6 +39,7 @@ import com.appdirect.sdk.web.oauth.model.SessionRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @Order(50)
+@ConditionalOnProperty(value = "sdk.basic.auth.supported", havingValue = "true", matchIfMissing = true)
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
