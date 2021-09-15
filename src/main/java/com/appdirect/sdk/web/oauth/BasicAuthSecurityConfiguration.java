@@ -39,7 +39,7 @@ import com.appdirect.sdk.web.oauth.model.SessionRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @Order(50)
-@ConditionalOnProperty(value = "sdk.basic.auth.supported", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(value = "sdk.basic.auth.enabled", havingValue = "true", matchIfMissing = true)
 public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired

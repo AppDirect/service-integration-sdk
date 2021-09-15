@@ -25,7 +25,6 @@ import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -52,7 +51,6 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 @EnableWebSecurity
 @Slf4j
 @Order(100)
-@ConditionalOnProperty(value = "sdk.auth.supported", havingValue = "true", matchIfMissing = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
@@ -86,7 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	/**
 	 * The feature flag will be used to enable oAuth2 authorization.
 	 * The flag value is retrieved from connector.
-	 *
+	 * 
 	 * @return OAuth2FeatureFlagService service to get flag value
 	 */
 	@Bean
