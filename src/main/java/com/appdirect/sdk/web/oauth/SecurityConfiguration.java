@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
 	@Autowired
 	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
-	@Value("${sdk.oauth2.enabled}")
+	@Value("${sdk.oauth2.enabled:}")
 	private String sdkOAuth2Enabled;
 
 	@Bean
@@ -145,7 +145,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		mainConfiguration(http);
-		if ("TRUE".equalsIgnoreCase(sdkOAuth2Enabled) || sdkOAuth2Enabled == null) {
+		if ("TRUE".equalsIgnoreCase(sdkOAuth2Enabled)) {
 			oAuth2ProtectionOnApi(http);
 		}
 	}
