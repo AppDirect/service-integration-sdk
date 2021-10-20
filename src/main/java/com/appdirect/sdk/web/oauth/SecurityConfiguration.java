@@ -25,6 +25,8 @@ import javax.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -54,12 +56,14 @@ import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
-	@Autowired
+	@Autowired(required = false)
 	private OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;
 	@Autowired
 	private OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier;
 	@Autowired
 	private OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
+	@Value("${sdk.oauth2.enabled}")
+	private String sdkOAuth2Enabled;
 
 	@Bean
 	public OpenIdCustomUrlPattern openIdUrlPatterns() {
@@ -72,6 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	@ConditionalOnProperty(havingValue = "true", name = "sdk.oauth2.enabled", matchIfMissing = true)
 	public OAuth2AuthorizationService oAuth2consumerDetailsService() {
 		return new OAuth2AuthorizationServiceImpl(oAuth2AuthorizationSupplier);
 	}
@@ -84,7 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	/**
 	 * The feature flag will be used to enable oAuth2 authorization.
 	 * The flag value is retrieved from connector.
-	 * 
+	 *
 	 * @return OAuth2FeatureFlagService service to get flag value
 	 */
 	@Bean
@@ -127,6 +132,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	@ConditionalOnProperty(havingValue = "true", name = "sdk.oauth2.enabled", matchIfMissing = true)
 	public Filter oAuth2SignatureCheckingFilter() {
 		return oAuth2consumerDetailsService().getOAuth2Filter();
 	}
@@ -139,7 +145,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		mainConfiguration(http);
-		oAuth2ProtectionOnApi(http);
+		if ("TRUE".equalsIgnoreCase(sdkOAuth2Enabled) || sdkOAuth2Enabled == null) {
+			oAuth2ProtectionOnApi(http);
+		}
 	}
 
 	private void mainConfiguration(HttpSecurity http) throws Exception {
