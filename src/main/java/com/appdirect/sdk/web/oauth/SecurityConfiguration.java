@@ -24,6 +24,7 @@ import javax.servlet.Filter;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -145,7 +146,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		mainConfiguration(http);
-		if ("TRUE".equalsIgnoreCase(sdkOAuth2Enabled)) {
+		if ("TRUE".equalsIgnoreCase(sdkOAuth2Enabled) || StringUtils.isBlank(sdkOAuth2Enabled)) {
 			oAuth2ProtectionOnApi(http);
 		}
 	}
