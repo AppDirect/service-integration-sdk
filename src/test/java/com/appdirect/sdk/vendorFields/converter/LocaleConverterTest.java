@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,7 +16,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.appdirect.sdk.exception.PropertyEditorSupportException;
-import com.google.inject.internal.ImmutableMap;
+import com.google.common.collect.ImmutableMap;
 
 public class LocaleConverterTest {
 	private static final String LANGUAGES_SEPARATOR = ",";
