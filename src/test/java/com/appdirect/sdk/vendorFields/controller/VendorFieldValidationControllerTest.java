@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
+import org.testng.collections.Maps;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
@@ -35,7 +36,6 @@ import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationRequest;
 import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationRequestV2;
 import com.appdirect.sdk.vendorFields.model.VendorFieldsValidationResponse;
 import com.appdirect.sdk.vendorFields.model.v2.VendorFieldsValidationResponseV2;
-import com.google.inject.internal.Maps;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VendorFieldValidationControllerTest {
