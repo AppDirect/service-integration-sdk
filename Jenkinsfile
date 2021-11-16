@@ -75,8 +75,10 @@ options { disableConcurrentBuilds() }
 					withPullRequestBranch {
 						sh "./mvnw install source:jar-no-fork -Prelease -U -s settings.xml"
 					}
-					if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
-						sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+					script {
+						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
+							sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+						}
 					}
 				}
 			}
