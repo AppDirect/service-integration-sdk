@@ -34,12 +34,11 @@ options { disableConcurrentBuilds() }
 						]
 				]
 				script {
-					if [ env.BRANCH_NAME == "master" ]
-					then
+					if (env.BRANCH_NAME == "master") {
 						version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
-					else
+					} else {
 						version = getSemver('release-v1', 'v1', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
-					fi
+					}
 				}
 			}
 		}
