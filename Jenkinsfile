@@ -34,7 +34,12 @@ options { disableConcurrentBuilds() }
 						]
 				]
 				script {
-					version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
+					if [ env.BRANCH_NAME == "master" ]
+					then
+						version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
+					else
+						version = getSemver('release-v1', 'v1', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
+					fi
 				}
 			}
 		}
@@ -85,10 +90,11 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('Release scope') {
+			when {
+				expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
 			steps {
-				withMasterBranch {
-					pushGitTag version
-				}
+				pushGitTag version
 			}
 		}
 	}
