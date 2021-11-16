@@ -78,8 +78,11 @@ options { disableConcurrentBuilds() }
 					withMasterBranch {
 						sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
 					}
+					if (env.BRANCH_NAME == "release-v1") {
+						sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+					}
 				}
-            		}
+			}
 		}
 
 		stage('SonarQube') {
