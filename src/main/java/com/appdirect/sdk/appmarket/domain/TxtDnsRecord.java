@@ -13,12 +13,14 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Value;
 
 /**
  * Represents a TXT DNS record.
  */
 @Value
+@AllArgsConstructor
 public final class TxtDnsRecord {
 	private String name;
 	private int ttl;
