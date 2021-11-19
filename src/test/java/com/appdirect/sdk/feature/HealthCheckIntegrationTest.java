@@ -23,8 +23,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
@@ -41,7 +41,7 @@ public class HealthCheckIntegrationTest {
 	public void healthEndpointReturnsSuccess() throws Exception {
 		//Given
 		HttpGet httpGet = HttpClientHelper.get(
-			format("http://localhost:%d/health", localConnectorPort)
+			format("http://localhost:%d/actuator/health", localConnectorPort)
 		);
 
 		//When

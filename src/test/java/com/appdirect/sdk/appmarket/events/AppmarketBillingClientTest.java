@@ -60,7 +60,7 @@ public class AppmarketBillingClientTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		jsonMapper = Jackson2ObjectMapperBuilder.json().build();
 

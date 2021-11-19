@@ -4,10 +4,11 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Locale;
 
+import org.testng.collections.Maps;
+
 import com.appdirect.sdk.appmarket.events.PricingUnit;
 import com.appdirect.sdk.meteredusage.model.UsageItem;
 import com.appdirect.sdk.utils.ConstantUtils;
-import com.google.inject.internal.Maps;
 
 public class UsageItemMother {
 	public static UsageItem.UsageItemBuilder basic() {
