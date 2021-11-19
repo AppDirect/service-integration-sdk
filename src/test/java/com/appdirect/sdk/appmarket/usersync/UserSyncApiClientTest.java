@@ -40,11 +40,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.appdirect.sdk.exception.UserSyncException;
 import com.appdirect.sdk.exception.UserSyncTooManyRequestsException;
@@ -94,7 +92,7 @@ public class UserSyncApiClientTest {
 		//Then
 		verify(exactly(1), postRequestedFor(urlMatching(USER_SYNC_ENDPOINT))
 				.withRequestBody(equalToJson(resourceAsString("usersync/usersync-assign.json")))
-				.withHeader("Content-Type", matching("application/json;charset=UTF-8")));
+				.withHeader("Content-Type", matching("application/json")));
 	}
 
 	@Test
@@ -181,7 +179,7 @@ public class UserSyncApiClientTest {
 		//Then
 		verify(exactly(1), postRequestedFor(urlMatching(USER_SYNC_ENDPOINT))
 				.withRequestBody(equalToJson(resourceAsString("usersync/usersync-unassign.json")))
-				.withHeader("Content-Type", matching("application/json;charset=UTF-8")));
+				.withHeader("Content-Type", matching("application/json")));
 	}
 
 	@Test
