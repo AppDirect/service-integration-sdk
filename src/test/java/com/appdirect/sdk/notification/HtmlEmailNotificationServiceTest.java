@@ -20,10 +20,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
+import org.assertj.core.api.exception.RuntimeIOException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,7 +85,7 @@ public class HtmlEmailNotificationServiceTest {
 		String expectedRecipientAddress = "expectedRecipient@example.com";
 
 		when(mockEmailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-		doThrow(MessagingException.class)
+		doThrow(new RuntimeIOException("test"))
 			.when(mockEmailSender).send(any(MimeMessage.class));
 
 		//When

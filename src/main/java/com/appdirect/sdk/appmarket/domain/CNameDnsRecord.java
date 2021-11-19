@@ -13,9 +13,18 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.Value;
 
-@Value
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public final class CNameDnsRecord {
 	private String name;
 	private String alias;

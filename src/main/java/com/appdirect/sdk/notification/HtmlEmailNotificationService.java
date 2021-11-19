@@ -13,6 +13,8 @@
 
 package com.appdirect.sdk.notification;
 
+import java.io.IOException;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
@@ -40,7 +42,7 @@ public class HtmlEmailNotificationService {
 			helper.setSubject(messageSubject);
 			helper.setText(messageBody, true);
 			sender.send(helper.getMimeMessage());
-		} catch (MessagingException e) {
+		} catch (Exception e) {
 			String errorMessage = String.format(
 				"Failed sending email notification with from=%s, to=%s, notification=%s",
 				fromAddress,
