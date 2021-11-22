@@ -37,7 +37,7 @@ options { disableConcurrentBuilds() }
 					if (env.BRANCH_NAME == "master") {
 						version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
 					} else if (env.BRANCH_NAME == "release-v1") {
-						version = getSemver('release-v1', 'v1', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
+						version = getSemver('release-v1', '', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
 					}
 				}
 			}
