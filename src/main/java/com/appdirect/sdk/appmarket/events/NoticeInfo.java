@@ -15,11 +15,13 @@ package com.appdirect.sdk.appmarket.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 class NoticeInfo {
 	private NoticeType type;
 	private String message;

@@ -17,11 +17,13 @@ import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderItemInfo implements Serializable {
 	private PricingUnit unit;
 	private int quantity;

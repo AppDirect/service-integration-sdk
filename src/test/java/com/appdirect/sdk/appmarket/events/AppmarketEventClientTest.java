@@ -39,10 +39,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
-import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.appmarket.saml.ServiceProviderInformation;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
-import com.appdirect.sdk.web.oauth.OAuth2ClientDetailsService;
 import com.appdirect.sdk.web.oauth.RestTemplateFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -112,7 +110,7 @@ public class AppmarketEventClientTest {
 		EventInfo testEventInfo = EventInfo.builder().build();
 		HttpEntity<String> expectedEntity = expectedGetEntity();
 		when(
-				restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))
+				restTemplateFactory.getOAuth2RestTemplate(any())
 		).thenReturn(
 				oAuth2RestTemplate
 		);
@@ -178,7 +176,8 @@ public class AppmarketEventClientTest {
 
 	@Test
 	public void resolveEvent_withOauth2callsPost_onTheRightUrl() throws Exception {
-		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+		when(restTemplateFactory.getOAuth2RestTemplate(any())).thenReturn(oAuth2RestTemplate);
+		when(oAuth2RestTemplate.getForObject("http://base.com", ServiceProviderInformation.class)).thenReturn(ServiceProviderInformation.builder().build());
 		APIResult expectedApiResult = success("async is resolved");
 
 		final ArgumentCaptor<HttpEntity> httpEntityArgumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
@@ -203,7 +202,8 @@ public class AppmarketEventClientTest {
 	@Test
 	public void resolveSamlIdp_withOauth2() {
 		// Given
-		when(restTemplateFactory.getOAuth2RestTemplate(any(OAuth2ProtectedResourceDetails.class))).thenReturn(oAuth2RestTemplate);
+		when(restTemplateFactory.getOAuth2RestTemplate(any())).thenReturn(oAuth2RestTemplate);
+		when(oAuth2RestTemplate.getForObject("http://base.com/saml/18749910", ServiceProviderInformation.class)).thenReturn(ServiceProviderInformation.builder().build());
 		// When
 		testedFetcher.resolveSamlIdp("http://base.com/saml/18749910", any(OAuth2ProtectedResourceDetails.class));
 

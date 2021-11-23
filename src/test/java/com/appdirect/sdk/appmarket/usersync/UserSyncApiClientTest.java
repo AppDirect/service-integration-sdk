@@ -40,11 +40,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.appdirect.sdk.exception.UserSyncException;
 import com.appdirect.sdk.exception.UserSyncTooManyRequestsException;
@@ -94,7 +93,7 @@ public class UserSyncApiClientTest {
 		//Then
 		verify(exactly(1), postRequestedFor(urlMatching(USER_SYNC_ENDPOINT))
 				.withRequestBody(equalToJson(resourceAsString("usersync/usersync-assign.json")))
-				.withHeader("Content-Type", matching("application/json;charset=UTF-8")));
+				.withHeader("Content-Type", matching(MediaType.APPLICATION_JSON.toString())));
 	}
 
 	@Test
@@ -128,7 +127,7 @@ public class UserSyncApiClientTest {
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
 						.withStatus(404)
-						.withHeader("Content-Type", "application/json")
+						.withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
 						.withBody(responseBody)));
 		//Then
 		assertThatThrownBy(() -> userSyncApiClient.syncUserAssignment(hostUrl, OAUTH_KEY, OAUTH_SECRET, syncedUser))
@@ -181,7 +180,7 @@ public class UserSyncApiClientTest {
 		//Then
 		verify(exactly(1), postRequestedFor(urlMatching(USER_SYNC_ENDPOINT))
 				.withRequestBody(equalToJson(resourceAsString("usersync/usersync-unassign.json")))
-				.withHeader("Content-Type", matching("application/json;charset=UTF-8")));
+				.withHeader("Content-Type", matching(MediaType.APPLICATION_JSON.toString())));
 	}
 
 	@Test
@@ -205,7 +204,7 @@ public class UserSyncApiClientTest {
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
 						.withStatus(404)
-						.withHeader("Content-Type", "application/json")
+						.withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
 						.withBody(responseBody)));
 		//Then
 		assertThatThrownBy(() -> userSyncApiClient.syncUserUnAssignment(hostUrl, OAUTH_KEY, OAUTH_SECRET, syncedUser))
@@ -250,7 +249,7 @@ public class UserSyncApiClientTest {
 		stubFor(post(urlEqualTo(USER_SYNC_ENDPOINT))
 				.willReturn(aResponse()
 						.withStatus(404)
-						.withHeader("Content-Type", "application/json")
+						.withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
 						.withBody(responseBody)));
 		//Then
 		assertThatThrownBy(() -> userSyncApiClient.syncUserUnAssignment(hostUrl, OAUTH_KEY, OAUTH_SECRET, syncedUser))

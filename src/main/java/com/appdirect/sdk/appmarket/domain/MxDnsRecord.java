@@ -13,13 +13,20 @@
 
 package com.appdirect.sdk.appmarket.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.Value;
 
 /**
  * Represents a MX record
  * http://domainmx.net/mxsetup.shtml
  */
-@Value
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public final class MxDnsRecord {
 	private String destinationDomain;
 	private int ttlInSeconds;

@@ -17,16 +17,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+
 
 /**
  * Represents an "account" (the equivalent of a subscription, from the AppMarket point of view)
  */
 @AllArgsConstructor
-@EqualsAndHashCode
+@NoArgsConstructor
 @Builder
 @Getter
+@EqualsAndHashCode
 public class AccountInfo {
-	private final String accountIdentifier;
-	private final AccountStatus status;
-	private final String parentAccountIdentifier;
+	private String accountIdentifier;
+	private AccountStatus status;
+	private String parentAccountIdentifier;
 }

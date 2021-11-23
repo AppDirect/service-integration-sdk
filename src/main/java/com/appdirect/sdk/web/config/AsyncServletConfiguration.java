@@ -16,7 +16,8 @@ package com.appdirect.sdk.web.config;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,17 @@ public class AsyncServletConfiguration {
 		return new DispatcherServlet();
 	}
 
+
+	@Bean
+	public DispatcherServletPath dispatcherServletPath(DispatcherServlet dispatcherServlet) {
+		DispatcherServletRegistrationBean registration = new DispatcherServletRegistrationBean(dispatcherServlet, "/");
+		registration.setName("dispatcherServletRegistration");
+		registration.setAsyncSupported(true);
+		registration.setEnabled(true);
+		registration.setLoadOnStartup(1);
+		return registration;
+	}
+
 	/**
 	 * Register dispatcherServlet programmatically
 	 *
@@ -45,7 +57,7 @@ public class AsyncServletConfiguration {
 			dispatcherServlet(), "/");
 
 		registration
-			.setName(DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME);
+			.setName("dispatcherServletRegistration");
 		registration.setAsyncSupported(true);
 		registration.setEnabled(true);
 		registration.setLoadOnStartup(1);
