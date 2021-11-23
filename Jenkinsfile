@@ -34,7 +34,11 @@ options { disableConcurrentBuilds() }
 						]
 				]
 				script {
-					version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
+					if (env.BRANCH_NAME == "master") {
+						version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
+					} else if (env.BRANCH_NAME == "release-v1") {
+						version = getSemver('release-v1', '', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
+					}
 				}
 			}
 		}
@@ -71,11 +75,13 @@ options { disableConcurrentBuilds() }
 					withPullRequestBranch {
 						sh "./mvnw install source:jar-no-fork -Prelease -U -s settings.xml"
 					}
-					withMasterBranch {
-						sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+					script {
+						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
+							sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+						}
 					}
 				}
-            		}
+			}
 		}
 
 		stage('SonarQube') {
@@ -85,10 +91,11 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('Release scope') {
+			when {
+				expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
 			steps {
-				withMasterBranch {
-					pushGitTag version
-				}
+				pushGitTag version
 			}
 		}
 	}
