@@ -10,7 +10,7 @@ For more details see [GitHub wiki](https://github.com/AppDirect/service-integrat
 
 ## Prerequisites
 * Java 8 or higher
-* Build your connector using [Spring Boot](https://projects.spring.io/spring-boot/)
+* Build your connector using [Spring Boot 2.0](https://projects.spring.io/spring-boot/)
 
 ## Features
 * Automatic parsing of incoming AppDirect distribution API calls
