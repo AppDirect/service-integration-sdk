@@ -7,8 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
-import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.bind.WebDataBinder;
 
 import com.appdirect.sdk.vendorFields.converter.FlowTypeConverter;
+import com.appdirect.sdk.vendorFields.converter.FlowTypeV2Converter;
 import com.appdirect.sdk.vendorFields.converter.LocaleConverter;
 import com.appdirect.sdk.vendorFields.converter.OperationTypeConverter;
 import com.appdirect.sdk.vendorFields.handler.VendorRequiredFieldHandler;
@@ -33,6 +32,7 @@ import com.appdirect.sdk.vendorFields.model.OperationType;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredField;
 import com.appdirect.sdk.vendorFields.model.VendorRequiredFieldsResponse;
 import com.appdirect.sdk.vendorFields.model.v2.FieldTypeV2;
+import com.appdirect.sdk.vendorFields.model.v2.FlowTypeV2;
 import com.appdirect.sdk.vendorFields.model.v2.Options;
 import com.appdirect.sdk.vendorFields.model.v2.Suffix;
 import com.appdirect.sdk.vendorFields.model.v2.Validations;
@@ -112,13 +112,13 @@ public class VendorRequiredFieldsControllerTest {
                 .build();
         final Options options = Options.builder()
                 .suffix(suffix)
-                .placeholderKey("placeholderKey")
+                .placeholder("placeholder")
                 .build();
         final VendorRequiredFieldV2 vendorRequiredFieldV2 = VendorRequiredFieldV2.builder()
                 .inputCode("ADDRESS_POSTAL_CODE")
-                .inputTitleKey("inputTitleKey")
-                .subTitleKey("subTitleKey")
-                .tooltipKey("tooltipKey")
+                .inputTitle("inputTitle")
+                .subTitle("subTitle")
+                .tooltip("tooltip")
                 .value("value")
                 .fieldType(FieldTypeV2.COUNTRY)
                 .validations(validations)

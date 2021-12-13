@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VendorRequiredFieldV2 {
     private String inputCode;
-    private String inputTitleKey;
-    private String subTitleKey;
-    private String tooltipKey;
+    private String inputTitle;
+    private String subTitle;
+    private String tooltip;
     private String value;
     private FieldTypeV2 fieldType;
     private Validations validations;
