@@ -112,13 +112,13 @@ public class VendorRequiredFieldsControllerTest {
                 .build();
         final Options options = Options.builder()
                 .suffix(suffix)
-                .placeholderKey("placeholderKey")
+                .placeholder("placeholder")
                 .build();
         final VendorRequiredFieldV2 vendorRequiredFieldV2 = VendorRequiredFieldV2.builder()
                 .inputCode("ADDRESS_POSTAL_CODE")
-                .inputTitleKey("inputTitleKey")
-                .subTitleKey("subTitleKey")
-                .tooltipKey("tooltipKey")
+                .inputTitle("inputTitle")
+                .subTitle("subTitle")
+                .tooltip("tooltip")
                 .value("value")
                 .fieldType(FieldTypeV2.COUNTRY)
                 .validations(validations)
