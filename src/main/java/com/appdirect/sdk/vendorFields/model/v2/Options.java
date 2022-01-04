@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Options {
     private Suffix suffix;
-    private String placeholder;
+    private String placeholderKey;
 }
