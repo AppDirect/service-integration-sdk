@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class VendorFieldsValidationRequestV2 {
+
 	private String applicationId;
 	private String editionId;
 	private FlowTypeV2 flowType;
