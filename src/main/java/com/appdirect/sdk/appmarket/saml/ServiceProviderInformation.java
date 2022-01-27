@@ -15,11 +15,15 @@ package com.appdirect.sdk.appmarket.saml;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ServiceProviderInformation {
 	private String version;
 	private String uuid;
@@ -35,4 +39,8 @@ public class ServiceProviderInformation {
 	private String notAfterMinutes;
 	private Certificate certificate;
 	private Map<String, SamlRelyingPartyAttribute> attributes = new HashMap<>();
+
+	public static void main(String[] args) {
+		//new ServiceProviderInformation().setAttributes();
+	}
 }

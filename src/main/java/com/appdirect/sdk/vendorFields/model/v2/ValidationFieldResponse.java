@@ -1,6 +1,5 @@
 package com.appdirect.sdk.vendorFields.model.v2;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
