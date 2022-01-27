@@ -14,6 +14,7 @@
 
 package com.appdirect.sdk.appmarket.usersync;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
