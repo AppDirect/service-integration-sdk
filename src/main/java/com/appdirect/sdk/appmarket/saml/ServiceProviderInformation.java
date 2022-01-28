@@ -39,8 +39,4 @@ public class ServiceProviderInformation {
 	private String notAfterMinutes;
 	private Certificate certificate;
 	private Map<String, SamlRelyingPartyAttribute> attributes = new HashMap<>();
-
-	public static void main(String[] args) {
-		//new ServiceProviderInformation().setAttributes();
-	}
 }
