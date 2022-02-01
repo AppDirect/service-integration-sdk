@@ -15,8 +15,10 @@
 package com.appdirect.sdk.exception;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserSyncApiErrorResponseBody {
 	String code;
 	String message;

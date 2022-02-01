@@ -15,18 +15,16 @@ package com.appdirect.sdk.appmarket.validation;
 
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import com.appdirect.sdk.appmarket.events.OrderValidationStatus;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ValidationResponse {
 	Set<OrderValidationStatus> result;
