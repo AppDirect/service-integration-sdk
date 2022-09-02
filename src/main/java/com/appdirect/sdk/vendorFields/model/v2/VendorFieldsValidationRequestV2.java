@@ -1,17 +1,21 @@
 package com.appdirect.sdk.vendorFields.model.v2;
 
-import com.appdirect.sdk.vendorFields.model.OperationType;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 import java.util.Locale;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+
+import com.appdirect.sdk.vendorFields.model.OperationType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
 @Builder
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VendorFieldsValidationRequestV2 {
 	private String applicationId;
 	private String editionId;
