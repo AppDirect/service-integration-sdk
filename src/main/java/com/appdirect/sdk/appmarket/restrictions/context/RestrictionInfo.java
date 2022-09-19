@@ -16,6 +16,7 @@ package com.appdirect.sdk.appmarket.restrictions.context;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class RestrictionInfo {
 	private String externalVendorId;
 	private String companyUuid;
 	private String locale;
+	private Map<String, String> additionalAttributes;
 
 	public Optional<String> getExternalVendorId() {
 		return Optional.ofNullable(externalVendorId);
