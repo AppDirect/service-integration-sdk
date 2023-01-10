@@ -17,6 +17,9 @@ import com.appdirect.sdk.vendorFields.model.v2.VendorRequiredFieldsResponseV2;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
+
+import com.appdirect.sdk.vendorFields.model.v3.FlowTypeV3;
+import com.appdirect.sdk.vendorFields.model.v3.VendorRequiredFieldsResponseV3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,6 +39,7 @@ public class VendorRequiredFieldController {
 
     private final VendorRequiredFieldHandler vendorRequiredFieldHandler;
     private final com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler vendorRequiredFieldHandlerV2;
+    private final com.appdirect.sdk.vendorFields.handler.v3.VendorRequiredFieldHandlerV3 vendorRequiredFieldHandlerV3;
 
     @RequestMapping(
             method = GET,
@@ -97,6 +101,59 @@ public class VendorRequiredFieldController {
                 partnerCode
         );
         return () -> vendorRequiredFieldHandlerV2.getRequiredFields(
+                applicationId,
+                editionId,
+                flowType,
+                operationType,
+                userId,
+                companyId,
+                salesAgentUserId,
+                salesAgentCompanyId,
+                locale,
+                partnerCode
+        );
+    }
+
+    @RequestMapping(
+            method = GET,
+            value = "/api/v3/admin/requiredFields",
+            produces = APPLICATION_JSON_VALUE)
+    public Callable<VendorRequiredFieldsResponseV3> getRequiredFields(
+            @RequestParam(value = "applicationId") final String applicationId,
+            @RequestParam(value = "editionId") final String editionId,
+            @RequestParam(value = "flowType") final FlowTypeV3 flowType,
+            @RequestParam(value = "operationType") final OperationType operationType,
+            @RequestParam(value = "userId") final String userId,
+            @RequestParam(value = "companyId") final String companyId,
+            @RequestParam(required = false, value = "salesAgentUserId") final String salesAgentUserId,
+            @RequestParam(required = false, value = "salesAgentCompanyId") final String salesAgentCompanyId,
+            @RequestHeader(required = false, value = "Accept-Language") final Locale locale,
+            @RequestHeader(value = "AD-Tenant") final String partnerCode) {
+
+        log.info(
+                "Calling required fields API with " +
+                        "applicationId={}, " +
+                        "editionId={}, " +
+                        "flowType={}, " +
+                        "operationType={}, " +
+                        "userId={}, " +
+                        "companyId={}, " +
+                        "salesAgentUserId={}, " +
+                        "salesAgentCompanyId={}, " +
+                        "locale={}, " +
+                        "partnerCode={}",
+                applicationId,
+                editionId,
+                flowType,
+                operationType,
+                userId,
+                companyId,
+                salesAgentUserId,
+                salesAgentCompanyId,
+                locale,
+                partnerCode
+        );
+        return () -> vendorRequiredFieldHandlerV3.getRequiredFields(
                 applicationId,
                 editionId,
                 flowType,

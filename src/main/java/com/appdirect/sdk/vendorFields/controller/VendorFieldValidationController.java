@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
+import com.appdirect.sdk.vendorFields.model.v3.VendorFieldsValidationRequestV3;
+import com.appdirect.sdk.vendorFields.model.v3.VendorFieldsValidationResponseV3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +43,8 @@ public class VendorFieldValidationController {
 
     private final VendorFieldValidationHandler vendorFieldValidationHandler;
     private final com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2;
+    private final com.appdirect.sdk.vendorFields.handler.v3.VendorFieldValidationHandlerV3 vendorFieldValidationHandlerV3;
+
 
     @RequestMapping(
             method = POST,
@@ -102,6 +106,45 @@ public class VendorFieldValidationController {
         vendorFieldsValidationRequest.setLocale(locale);
         vendorFieldsValidationRequest.setPartnerCode(partnerCode);
         return () -> vendorFieldValidationHandlerV2.validateFields(vendorFieldsValidationRequest);
+    }
+
+    @RequestMapping(
+            method = POST,
+            value = "/api/v3/admin/vendorValidations",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    public Callable<VendorFieldsValidationResponseV3> validateFields(
+            @RequestBody final VendorFieldsValidationRequestV3 vendorFieldsValidationRequest,
+            @RequestHeader(value = "AD-Tenant") final String partnerCode,
+            @RequestHeader(required = false, value = "Accept-Language") Locale locale) {
+
+        log.info(
+                "Calling validate fields API with " +
+                        "applicationId={}, " +
+                        "editionId={}, " +
+                        "flowType={}, " +
+                        "operationType={}, " +
+                        "userId={}, " +
+                        "companyId={}, " +
+                        "salesAgentUserId={}, " +
+                        "salesAgentCompanyId={}, " +
+                        "locales={}, " +
+                        "partnerCode={}",
+                vendorFieldsValidationRequest.getApplicationId(),
+                vendorFieldsValidationRequest.getEditionId(),
+                vendorFieldsValidationRequest.getFlowType(),
+                vendorFieldsValidationRequest.getOperationType(),
+                vendorFieldsValidationRequest.getUserId(),
+                vendorFieldsValidationRequest.getCompanyId(),
+                vendorFieldsValidationRequest.getSalesAgentUserId(),
+                vendorFieldsValidationRequest.getSalesAgentCompanyId(),
+                locale,
+                partnerCode
+        );
+
+        vendorFieldsValidationRequest.setLocale(locale);
+        vendorFieldsValidationRequest.setPartnerCode(partnerCode);
+        return () -> vendorFieldValidationHandlerV3.validateFields(vendorFieldsValidationRequest);
     }
 
     @InitBinder
