@@ -49,6 +49,9 @@ public class VendorRequiredFieldsControllerTest {
     private com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler mockVendorRequiredFieldHandlerV2;
 
     @Mock
+    private com.appdirect.sdk.vendorFields.handler.v3.VendorRequiredFieldHandlerV3 mockVendorRequiredFieldHandlerV3;
+
+    @Mock
     private WebDataBinder webdataBinder;
 
     private VendorRequiredFieldController vendorRequiredFieldController;
@@ -56,7 +59,7 @@ public class VendorRequiredFieldsControllerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        vendorRequiredFieldController = new VendorRequiredFieldController(mockVendorRequiredFieldHandler, mockVendorRequiredFieldHandlerV2);
+        vendorRequiredFieldController = new VendorRequiredFieldController(mockVendorRequiredFieldHandler, mockVendorRequiredFieldHandlerV2, mockVendorRequiredFieldHandlerV3);
     }
 
     @Test

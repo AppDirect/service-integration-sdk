@@ -47,6 +47,9 @@ public class VendorFieldValidationControllerTest {
     private com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler mockVendorFieldValidationHandlerV2;
 
     @Mock
+    private com.appdirect.sdk.vendorFields.handler.v3.VendorFieldValidationHandlerV3 mockVendorFieldValidationHandlerV3;
+
+    @Mock
     private WebDataBinder webdataBinder;
 
     private VendorFieldValidationController vendorFieldValidationController;
@@ -54,7 +57,7 @@ public class VendorFieldValidationControllerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        vendorFieldValidationController = new VendorFieldValidationController(mockVendorFieldValidationHandler, mockVendorFieldValidationHandlerV2);
+        vendorFieldValidationController = new VendorFieldValidationController(mockVendorFieldValidationHandler, mockVendorFieldValidationHandlerV2, mockVendorFieldValidationHandlerV3);
     }
 
     @Test
