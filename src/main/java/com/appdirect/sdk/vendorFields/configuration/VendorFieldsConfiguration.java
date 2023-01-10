@@ -14,9 +14,10 @@ public class VendorFieldsConfiguration {
     @Bean
     public VendorRequiredFieldController vendorRequiredFieldController(
             final VendorRequiredFieldHandler vendorRequiredFieldHandler,
-            final com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler vendorRequiredFieldHandlerV2
+            final com.appdirect.sdk.vendorFields.handler.v2.VendorRequiredFieldHandler vendorRequiredFieldHandlerV2,
+            final com.appdirect.sdk.vendorFields.handler.v3.VendorRequiredFieldHandlerV3 vendorRequiredFieldHandlerV3
     ) {
-        return new VendorRequiredFieldController(vendorRequiredFieldHandler, vendorRequiredFieldHandlerV2);
+        return new VendorRequiredFieldController(vendorRequiredFieldHandler, vendorRequiredFieldHandlerV2, vendorRequiredFieldHandlerV3);
     }
 
     @Bean
@@ -71,11 +72,51 @@ public class VendorFieldsConfiguration {
     }
 
     @Bean
+    public com.appdirect.sdk.vendorFields.handler.v3.VendorRequiredFieldHandlerV3 vendorRequiredFieldHandlerV3() {
+        return (applicationId,
+                editionId,
+                flowType,
+                operationType,
+                userId,
+                companyId,
+                salesAgentUserId,
+                salesAgentCompanyId,
+                locale,
+                partnerCode) -> {
+            throw new UnsupportedOperationException(String.format(
+                    "Vendor Required Field Service for " +
+                            "applicationId=%s, " +
+                            "editionId=%s, " +
+                            "flowType=%s, " +
+                            "operationType=%s, " +
+                            "userId=%s, " +
+                            "companyId=%s, " +
+                            "salesAgentUserId=%s, " +
+                            "salesAgentCompanyId=%s, " +
+                            "locale=%s, " +
+                            "partnerCode=%s " +
+                            "is not supported.",
+                    applicationId,
+                    editionId,
+                    flowType,
+                    operationType,
+                    userId,
+                    companyId,
+                    salesAgentUserId,
+                    salesAgentCompanyId,
+                    locale,
+                    partnerCode
+            ));
+        };
+    }
+
+    @Bean
     public VendorFieldValidationController vendorFieldValidationController(
             final VendorFieldValidationHandler vendorFieldValidationHandler,
-            final com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2
+            final com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2,
+            final com.appdirect.sdk.vendorFields.handler.v3.VendorFieldValidationHandlerV3 vendorFieldValidationHandlerV3
     ) {
-        return new VendorFieldValidationController(vendorFieldValidationHandler, vendorFieldValidationHandlerV2);
+        return new VendorFieldValidationController(vendorFieldValidationHandler, vendorFieldValidationHandlerV2, vendorFieldValidationHandlerV3);
     }
 
     @Bean
@@ -92,6 +133,35 @@ public class VendorFieldsConfiguration {
 
     @Bean
     public com.appdirect.sdk.vendorFields.handler.v2.VendorFieldValidationHandler vendorFieldValidationHandlerV2() {
+        return (vendorFieldsValidationRequest) -> {
+            throw new UnsupportedOperationException(String.format(
+                    "Vendor Fields Validation Service for " +
+                            "applicationIdentifier=%s, " +
+                            "editionId=%s, " +
+                            "flowType=%s, " +
+                            "operationType=%s, " +
+                            "userId=%s, " +
+                            "companyId=%s, " +
+                            "salesAgentUserId=%s, " +
+                            "salesAgentCompanyId=%s, " +
+                            "locale=%s, " +
+                            "partnerCode=%s, " +
+                            "is not supported.",
+                    vendorFieldsValidationRequest.getApplicationId(),
+                    vendorFieldsValidationRequest.getEditionId(),
+                    vendorFieldsValidationRequest.getFlowType(),
+                    vendorFieldsValidationRequest.getOperationType(),
+                    vendorFieldsValidationRequest.getUserId(),
+                    vendorFieldsValidationRequest.getCompanyId(),
+                    vendorFieldsValidationRequest.getSalesAgentUserId(),
+                    vendorFieldsValidationRequest.getSalesAgentCompanyId(),
+                    vendorFieldsValidationRequest.getLocale(),
+                    vendorFieldsValidationRequest.getPartnerCode()));
+        };
+    }
+
+    @Bean
+    public com.appdirect.sdk.vendorFields.handler.v3.VendorFieldValidationHandlerV3 vendorFieldValidationHandlerV3() {
         return (vendorFieldsValidationRequest) -> {
             throw new UnsupportedOperationException(String.format(
                     "Vendor Fields Validation Service for " +
