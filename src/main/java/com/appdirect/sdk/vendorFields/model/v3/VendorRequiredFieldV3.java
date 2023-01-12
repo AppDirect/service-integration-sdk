@@ -1,11 +1,11 @@
 package com.appdirect.sdk.vendorFields.model.v3;
 
-import com.appdirect.sdk.vendorFields.model.v2.Options;
 import com.appdirect.sdk.vendorFields.model.v2.Validations;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.appdirect.sdk.vendorFields.model.v3.OptionsV3;
 
 @Data
 @Builder
@@ -19,6 +19,6 @@ public class VendorRequiredFieldV3 {
     private String value;
     private FieldTypeV3 fieldType;
     private Validations validations;
-    private Options options;
+    private OptionsV3 options;
     private Boolean visible;
 }
