@@ -9,7 +9,12 @@ import org.json.JSONObject
 
 def version
 pipeline {
-agent any
+    agent {
+            docker {
+                image "docker.appdirect.tools/appdirect/build-jdk8:latest"
+                args "-v /var/run/docker.sock:/var/run/docker.sock"
+            }
+        }
 options { disableConcurrentBuilds() }
 	environment {
 		GITHUB_REPO_NAME = 'service-integration-sdk'
