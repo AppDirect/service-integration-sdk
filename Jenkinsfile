@@ -80,7 +80,6 @@ options { disableConcurrentBuilds() }
 				echo 'Building project...'
 				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
 					sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
-					sh "gpg --list-keys"
 					withPullRequestBranch {
 
 						sh '''
