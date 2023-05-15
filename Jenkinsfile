@@ -9,7 +9,14 @@ import org.json.JSONObject
 
 def version
 pipeline {
-agent any
+	
+    agent {
+            docker {
+                image "docker.appdirect.tools/appdirect/build-jdk8:latest"
+                args "-v /var/run/docker.sock:/var/run/docker.sock"
+            }
+        }
+
 options { disableConcurrentBuilds() }
 	environment {
 		GITHUB_REPO_NAME = 'service-integration-sdk'
@@ -69,15 +76,21 @@ options { disableConcurrentBuilds() }
 
 		stage('Build') {
 			steps {
+
 				echo 'Building project...'
 				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
-					sh "gpg2  --no-tty --import $GPG_KEY || /bin/true"
+					sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
 					withPullRequestBranch {
-						sh "./mvnw install source:jar-no-fork -Prelease -U -s settings.xml"
+
+						sh '''
+						   ./mvnw install source:jar-no-fork -Prelease -U -s settings.xml
+						   '''
 					}
 					script {
 						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
-							sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+							sh '''
+							    ./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+						       '''		
 						}
 					}
 				}
