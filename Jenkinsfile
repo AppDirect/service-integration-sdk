@@ -75,7 +75,7 @@ options { disableConcurrentBuilds() }
 
 		stage('Build') {
 			steps {
-				
+
 				echo 'Building project...'
 				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
 					sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
