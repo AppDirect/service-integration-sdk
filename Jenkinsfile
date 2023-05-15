@@ -9,6 +9,7 @@ import org.json.JSONObject
 
 def version
 pipeline {
+	
     agent {
             docker {
                 image "docker.appdirect.tools/appdirect/build-jdk8:latest"
