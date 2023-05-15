@@ -82,11 +82,18 @@ options { disableConcurrentBuilds() }
 					sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
 					sh "gpg --list-keys"
 					withPullRequestBranch {
-						sh "./mvnw install source:jar-no-fork -Prelease -U -s settings.xml"
+
+						sh '''
+						   export GPG_TTY=\$(tty)
+						   ./mvnw install source:jar-no-fork -Prelease -U -s settings.xml
+						   '''
 					}
 					script {
 						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
-							sh "./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+							sh '''
+							    export GPG_TTY=\$(tty)
+							    ./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
+						       '''		
 						}
 					}
 				}
