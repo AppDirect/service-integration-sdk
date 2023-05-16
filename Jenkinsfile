@@ -89,8 +89,8 @@ options { disableConcurrentBuilds() }
 					script {
 						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
 							sh '''
-							    ./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml"
-						       '''		
+							    ./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml
+						           '''		
 						}
 					}
 				}
