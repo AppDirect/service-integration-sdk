@@ -51,6 +51,10 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('Setup') {
+                        when {
+			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
+			
 			steps {
 				echo 'Prepare Maven properties'
 				configFileProvider(
@@ -79,15 +83,16 @@ options { disableConcurrentBuilds() }
 
 				echo 'Building project...'
 				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
-					sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
+					
 					withPullRequestBranch {
-
 						sh '''
-						   ./mvnw install source:jar-no-fork -Prelease -U -s settings.xml
+						   ./mvnw install source:jar-no-fork
 						   '''
 					}
 					script {
+						
 						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
+							sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
 							sh '''
 							    ./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml
 						           '''		
