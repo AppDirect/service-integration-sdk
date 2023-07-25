@@ -29,6 +29,9 @@ options { disableConcurrentBuilds() }
 
 	stages {
 		stage('Checkout') {
+			when {
+			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
 			steps {
 				echo 'Checking out from repository...'
 				checkout scm: [
@@ -51,7 +54,7 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('Setup') {
-                        when {
+            when {
 			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
 			}
 			
@@ -70,6 +73,9 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('Versioning') {
+			when {
+			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
 			steps {
 				script {
 					echo 'Setting build version...'
@@ -79,6 +85,9 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('Build') {
+			when {
+			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
 			steps {
 
 				echo 'Building project...'
@@ -103,6 +112,9 @@ options { disableConcurrentBuilds() }
 		}
 
 		stage('SonarQube') {
+			when {
+			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			}
 			steps {
 				sonarScanner version
 			}
