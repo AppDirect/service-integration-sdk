@@ -29,12 +29,8 @@ pipeline {
 
 	stages {
 		stage('Checkout') {
-			steps {
-			      if (BRANCH_NAME != 'master' || BRANCH_NAME != 'release-v1') {	 
-				timeout(time: 15, unit: "MINUTES") {
-	                           input message: 'Do you want to approve the PR build?', ok: 'Yes'
-	                        }
-			      }
+		        steps {
+			      
 				echo 'Checking out from repository...'
 				checkout scm: [
 						$class           : 'GitSCM',
@@ -46,6 +42,11 @@ pipeline {
 						]
 				]
 				script {
+					if (BRANCH_NAME != 'master' || BRANCH_NAME != 'release-v1') {	 
+						timeout(time: 15, unit: "MINUTES") {
+						   input message: 'Do you want to approve the PR build?', ok: 'Yes'
+						}
+					 }
 					if (env.BRANCH_NAME == "release-v1") {
 						version = getSemver('release-v1', '', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
 					} else {
