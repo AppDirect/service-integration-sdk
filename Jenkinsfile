@@ -28,6 +28,17 @@ pipeline {
 	}
 
 	stages {
+		stage('PR approval') {
+		        steps {
+				script {
+					if (BRANCH_NAME != 'master' || BRANCH_NAME != 'release-v1') {	 
+						timeout(time: 15, unit: "MINUTES") {
+						   input message: 'Do you want to approve the PR build?', ok: 'Yes'
+						}
+					 }
+				}
+			}
+		}
 		stage('Checkout') {
 		        steps {
 			      
@@ -42,11 +53,6 @@ pipeline {
 						]
 				]
 				script {
-					if (BRANCH_NAME != 'master' || BRANCH_NAME != 'release-v1') {	 
-						timeout(time: 15, unit: "MINUTES") {
-						   input message: 'Do you want to approve the PR build?', ok: 'Yes'
-						}
-					 }
 					if (env.BRANCH_NAME == "release-v1") {
 						version = getSemver('release-v1', '', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
 					} else {
