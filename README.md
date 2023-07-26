@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/AppDirect/service-integration-sdk.svg?branch=master)](https://travis-ci.org/AppDirect/service-integration-sdk)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.appdirect/service-integration-sdk)
 
-## Overview
+### Overview
 Integrate your application with the AppDirect platform. Create a connector using the Developer SDK and use that connector to connect to the AppDirect ecosystem.
 
 For more details see [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki).
