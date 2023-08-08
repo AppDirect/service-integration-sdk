@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-    options { disableConcurrentBuilds() }
+    // options { disableConcurrentBuilds() }
 	environment {
 		GITHUB_REPO_NAME = 'service-integration-sdk'
 		GITHUB_REPO_OWNER = 'AppDirect'
