@@ -13,7 +13,7 @@ pipeline {
     agent {
             docker {
                 image "docker.appdirect.tools/appdirect/build-jdk8:latest"
-                args "-v /var/run/docker.sock:/var/run/docker.sock -v$PWD:/app"
+                args "-v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/app -w /app'"
             }
         }
 
