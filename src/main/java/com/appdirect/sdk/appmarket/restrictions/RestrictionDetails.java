@@ -26,4 +26,5 @@ import lombok.NoArgsConstructor;
 public class RestrictionDetails {
 	private RestrictionCode code;
 	private String message;
+	private String localisedErrorMessage;
 }
