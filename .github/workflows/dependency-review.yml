@@ -1,0 +1,12 @@
+name: 'Dependency Review - Actions'
+
+on:
+  push:
+    branches: [ "master"]
+  pull_request:
+    branches: [ "master"]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  review-and-merge:
+    uses: AppDirect/actions/.github/workflows/dependency-review.yml@master
