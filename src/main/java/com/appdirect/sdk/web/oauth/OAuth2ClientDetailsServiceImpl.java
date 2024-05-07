@@ -4,7 +4,7 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 
 import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 
-class OAuth2ClientDetailsServiceImpl implements OAuth2ClientDetailsService {
+public class OAuth2ClientDetailsServiceImpl implements OAuth2ClientDetailsService {
     private final OAuth2CredentialsSupplier oAuth2CredentialsSupplier;
 
     OAuth2ClientDetailsServiceImpl(OAuth2CredentialsSupplier oAuth2CredentialsSupplier) {

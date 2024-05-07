@@ -19,7 +19,7 @@ import org.springframework.security.oauth.provider.ConsumerDetailsService;
 import com.appdirect.sdk.appmarket.Credentials;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 
-class DeveloperSpecificAppmarketCredentialsConsumerDetailsService implements ConsumerDetailsService {
+public class DeveloperSpecificAppmarketCredentialsConsumerDetailsService implements ConsumerDetailsService {
 	private final DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 
 	DeveloperSpecificAppmarketCredentialsConsumerDetailsService(DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier) {

@@ -22,7 +22,7 @@ import org.springframework.security.oauth.common.signature.SharedConsumerSecretI
 import org.springframework.security.oauth.common.signature.SignatureSecret;
 import org.springframework.security.oauth.provider.ExtraTrustConsumerDetails;
 
-class ConnectorConsumerDetails implements ExtraTrustConsumerDetails {
+public class ConnectorConsumerDetails implements ExtraTrustConsumerDetails {
     private static final long serialVersionUID = -6907656091309880557L;
 
     private final String key;
