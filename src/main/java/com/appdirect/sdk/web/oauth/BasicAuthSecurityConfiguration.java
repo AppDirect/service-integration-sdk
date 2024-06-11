@@ -15,32 +15,36 @@ package com.appdirect.sdk.web.oauth;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.header.HeaderWriterFilter;
 
 import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.SessionRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 @Order(50)
 @ConditionalOnProperty(value = "sdk.basic.auth.enabled", havingValue = "true", matchIfMissing = true)
-public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class BasicAuthSecurityConfiguration {
 
     @Autowired
     private BasicAuthSupplier basicAuthSupplier;
@@ -82,26 +86,22 @@ public class BasicAuthSecurityConfiguration extends WebSecurityConfigurerAdapter
         return authProvider;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(Arrays.asList(authenticationProvider()));
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http    .requestMatcher(sessionRequestMatcher())
-                .authorizeRequests()
-                .antMatchers("/unsecured/**")
-                .permitAll()
-                .and()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-                .httpBasic()
-                .and()
-                .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
-                .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
+    @Bean
+    @Order(50)
+    public SecurityFilterChain basicFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(
+                auth -> auth.requestMatchers(sessionRequestMatcher(), new AntPathRequestMatcher("/unsecured/**")).authenticated()
+                        .anyRequest().authenticated()
+            )
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
+            .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED)))
+            .build();
     }
 }

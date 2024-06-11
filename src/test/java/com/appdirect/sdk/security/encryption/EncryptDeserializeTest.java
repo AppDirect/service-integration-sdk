@@ -3,7 +3,7 @@ package com.appdirect.sdk.security.encryption;
 import static com.appdirect.sdk.utils.ConstantUtils.ENCRYPTED_DATA;
 import static com.appdirect.sdk.utils.ConstantUtils.TEST_ENCRYPTION_DATA;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

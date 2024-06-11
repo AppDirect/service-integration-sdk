@@ -25,10 +25,16 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class AsyncServletConfiguration {
+public class AsyncServletConfiguration implements WebMvcConfigurer {
+	@Value("${async.threadpool.coresize:16}")
+	private int corePoolSize;
+	@Value("${async.threadpool.maxsize:64}")
+	private int maxPoolSize;
+	@Value("${async.threadpool.capacity:1024}")
+	private int queueCapacity;
 	@Bean
 	public DispatcherServlet dispatcherServlet() {
 		return new DispatcherServlet();
@@ -66,7 +72,7 @@ public class AsyncServletConfiguration {
 	}
 
 	@Bean
-	public AsyncTaskExecutor asyncTaskExecutor(@Value("${async.threadpool.coresize:16}") int corePoolSize, @Value("${async.threadpool.maxsize:64}") int maxPoolSize, @Value("${async.threadpool.capacity:1024}") int queueCapacity) {
+	public AsyncTaskExecutor asyncTaskExecutor() {
 		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 		taskExecutor.setCorePoolSize(corePoolSize);
 		taskExecutor.setMaxPoolSize(maxPoolSize);
@@ -77,14 +83,8 @@ public class AsyncServletConfiguration {
 		return taskExecutor;
 	}
 
-	@Bean
-	public WebMvcConfigurerAdapter webMvcConfigurerAdapter(AsyncTaskExecutor asyncTaskExecutor) {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-				configurer.setTaskExecutor(asyncTaskExecutor);
-				super.configureAsyncSupport(configurer);
-			}
-		};
+	@Override
+	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+		configurer.setTaskExecutor(asyncTaskExecutor());
 	}
 }

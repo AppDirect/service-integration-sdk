@@ -14,8 +14,8 @@
 package com.appdirect.sdk.appmarket.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMapOf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerAccount_success() throws Exception {
-		when(migrationService.validateCustomerAccount(anyMapOf(String.class, String.class))).thenReturn(APIResult.success("Success"));
+		when(migrationService.validateCustomerAccount(anyMap())).thenReturn(APIResult.success("Success"));
 
 		Callable<APIResult> result = migrationController.validateISVCustomerAccount(new HashMap<>());
 		APIResult apiResult = result.call();
@@ -53,7 +53,7 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerAccount_failure() throws Exception {
-		when(migrationService.validateCustomerAccount(anyMapOf(String.class, String.class))).thenReturn(APIResult.failure(ErrorCode.NOT_FOUND, "Validation failed."));
+		when(migrationService.validateCustomerAccount(anyMap())).thenReturn(APIResult.failure(ErrorCode.NOT_FOUND, "Validation failed."));
 
 		Callable<APIResult> result = migrationController.validateISVCustomerAccount(new HashMap<>());
 		APIResult apiResult = result.call();
@@ -64,7 +64,7 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerSubscription_success() throws Exception {
-		when(migrationService.validateSubscription(anyMapOf(String.class, String.class))).thenReturn(APIResult.success("Success"));
+		when(migrationService.validateSubscription(anyMap())).thenReturn(APIResult.success("Success"));
 		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
 		APIResult apiResult = result.call();
 
@@ -74,7 +74,7 @@ public class AppmarketMigrationControllerTest {
 
 	@Test
 	public void validateISVCustomerSubscription_failure() throws Exception {
-		when(migrationService.validateSubscription(anyMapOf(String.class, String.class))).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Failure in validation"));
+		when(migrationService.validateSubscription(anyMap())).thenReturn(APIResult.failure(ErrorCode.CONFIGURATION_ERROR, "Failure in validation"));
 		Callable<APIResult> result = migrationController.validateISVSubscription(new HashMap<>());
 		APIResult apiResult = result.call();
 

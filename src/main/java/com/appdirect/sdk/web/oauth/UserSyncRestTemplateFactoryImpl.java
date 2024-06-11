@@ -14,6 +14,13 @@
 
 package com.appdirect.sdk.web.oauth;
 
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.http.io.SocketConfig;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -37,9 +44,25 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 		oauthCredentials.setConsumerKey(key);
 		oauthCredentials.setSharedSecret(new SharedConsumerSecretImpl(secret));
 
-		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-		clientHttpRequestFactory.setReadTimeout(DEFAULT_READ_TIMEOUT);
-		clientHttpRequestFactory.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT);
+		ConnectionConfig connectionConfig = ConnectionConfig.custom()
+				.setConnectTimeout(Timeout.ofMicroseconds(DEFAULT_CONNECT_TIMEOUT))
+				.build();
+		SocketConfig socketConfig = SocketConfig.custom()
+				.setSoTimeout(Timeout.ofMicroseconds(DEFAULT_READ_TIMEOUT))
+				.build();
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setConnectionRequestTimeout(Timeout.ofMicroseconds(DEFAULT_CONNECT_TIMEOUT))
+				.build();
+
+		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+		connectionManager.setDefaultSocketConfig(socketConfig);
+		connectionManager.setDefaultConnectionConfig(connectionConfig);
+
+		HttpClient httpClient = HttpClientBuilder.create()
+				.setConnectionManager(connectionManager)
+				.setDefaultRequestConfig(requestConfig)
+				.build();
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 		RestTemplate restTemplate = new OAuthRestTemplate(clientHttpRequestFactory, oauthCredentials);
 		restTemplate.setErrorHandler(new UserSyncApiExceptionHandler());
 		return restTemplate;
