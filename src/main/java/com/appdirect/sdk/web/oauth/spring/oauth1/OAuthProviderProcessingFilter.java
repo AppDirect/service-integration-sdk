@@ -115,8 +115,6 @@ public abstract class OAuthProviderProcessingFilter implements Filter, Initializ
                             token = (String)var8.next();
                             builder.append(token).append('=').append((String)oauthParams.get(token)).append(' ');
                         }
-
-                        this.log.debug(builder.toString());
                     }
 
                     String consumerKey = (String)oauthParams.get(OAuthConsumerParameter.oauth_consumer_key.toString());
@@ -125,9 +123,6 @@ public abstract class OAuthProviderProcessingFilter implements Filter, Initializ
                     }
 
                     ConsumerDetails consumerDetails = this.getConsumerDetailsService().loadConsumerByConsumerKey(consumerKey);
-                    if (this.log.isDebugEnabled()) {
-                        this.log.debug("Consumer details loaded for " + consumerKey + ": " + consumerDetails);
-                    }
 
                     this.validateOAuthParams(consumerDetails, oauthParams);
                     if (this.log.isDebugEnabled()) {

@@ -100,7 +100,6 @@ public class BasicAuthSecurityConfiguration {
                         auth -> auth.requestMatchers(new AntPathRequestMatcher("/unsecured/**")).permitAll()
                                 .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable())
                 .httpBasic(withDefaults())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
