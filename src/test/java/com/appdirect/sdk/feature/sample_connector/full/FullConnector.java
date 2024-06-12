@@ -48,7 +48,6 @@ import com.appdirect.sdk.appmarket.events.UserAssignment;
 import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration;
-import com.appdirect.sdk.security.openid.configuration.OpenIdSsoConfiguration;
 import com.appdirect.sdk.web.oauth.BasicAuthSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
@@ -57,8 +56,7 @@ import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
  * mandatory and optional ones.
  */
 @SpringBootApplication
-@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class,
-		OpenIdSsoConfiguration.class})
+@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class})
 public class FullConnector {
 	@Autowired
 	private AuthenticationManager authenticationManager;
