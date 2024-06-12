@@ -1,17 +1,3 @@
-openid:
-  identityUrl: http://fake.url
-  secured.url.patterns:
-    - /api/v1/dummy/**
-
-authentication:
-  roles:
-    admin:
-      - ROLE_ONE
-      - ROLE_TWO
-    user:
-      - ROLE_THREE
-      - ROLE_FOUR
-
 encryption:
   key: 16CharRandom_val
   initVector: 16CharRandom_val
