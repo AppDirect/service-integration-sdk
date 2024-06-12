@@ -19,18 +19,13 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
-import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplierImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -55,7 +50,6 @@ import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration;
 import com.appdirect.sdk.security.openid.configuration.OpenIdSsoConfiguration;
 import com.appdirect.sdk.web.oauth.BasicAuthSupplier;
-import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
 /**

@@ -20,11 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -38,7 +34,6 @@ import com.appdirect.sdk.appmarket.events.SubscriptionCancel;
 import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.support.DummyRestController;
 import com.appdirect.sdk.web.oauth.BasicAuthSupplier;
-import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
 
 /**

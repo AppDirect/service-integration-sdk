@@ -161,10 +161,10 @@ public class SecurityConfiguration {
 		.authorizeHttpRequests(auth -> auth.requestMatchers(createSecuredUrlPatterns()).authenticated())
 		.csrf(csrf -> csrf.disable())
 		.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-		.addFilterAfter(requestIdFilter(), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
 		.exceptionHandling(exception -> exception
-						.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED))
-				);
+			.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED))
+		);
 	}
 
 	private void oAuth2ProtectionOnApi(HttpSecurity http) {

@@ -14,6 +14,7 @@
 package com.appdirect.sdk.web.oauth;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import jakarta.servlet.Filter;
 
@@ -53,7 +54,7 @@ public class BasicAuthSecurityConfiguration {
     private BasicAuthCredentialsSupplier basicAuthCredentialsSupplier;
 
     @Bean
-    public SessionRequestMatcher sessionRequestMatcher(){
+    public SessionRequestMatcher sessionRequestMatcher() {
         return new SessionRequestMatcher();
     }
 
@@ -94,14 +95,16 @@ public class BasicAuthSecurityConfiguration {
     @Bean
     @Order(50)
     public SecurityFilterChain basicFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(
-                auth -> auth.requestMatchers(sessionRequestMatcher(), new AntPathRequestMatcher("/unsecured/**")).authenticated()
-                        .anyRequest().authenticated()
-            )
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
-            .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED)))
-            .build();
+        return http.securityMatcher(sessionRequestMatcher())
+                .authorizeHttpRequests(
+                        auth -> auth.requestMatchers(new AntPathRequestMatcher("/unsecured/**")).permitAll()
+                                .anyRequest().authenticated()
+                )
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(withDefaults())
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterAfter(basicAuthenticationFilter(), HeaderWriterFilter.class)
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED)))
+                .build();
     }
 }
