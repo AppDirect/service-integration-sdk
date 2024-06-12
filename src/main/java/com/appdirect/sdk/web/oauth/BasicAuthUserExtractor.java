@@ -16,11 +16,11 @@ package com.appdirect.sdk.web.oauth;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import com.appdirect.sdk.web.oauth.spring.oauth1.OAuthProviderSupport;
 import jakarta.servlet.http.HttpServletRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.oauth.provider.OAuthProviderSupport;
 
 @Slf4j
 public class BasicAuthUserExtractor {

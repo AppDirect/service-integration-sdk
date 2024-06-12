@@ -5,8 +5,9 @@ import org.springframework.security.openid.AxFetchListFactory;
 import org.springframework.security.openid.OpenID4JavaConsumer;
 import org.springframework.security.openid.OpenIDConsumerException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
+// TODO: Figure out this
 public class CustomOpenIdConsumer extends OpenID4JavaConsumer {
 
     private final String openIdProviderUrl;
@@ -16,8 +17,8 @@ public class CustomOpenIdConsumer extends OpenID4JavaConsumer {
         this.openIdProviderUrl = openIdProviderUrl;
     }
 
-    @Override
-    public String beginConsumption(HttpServletRequest httpServletRequest, String claimedIdentity, String returnToUrl, String realm) throws OpenIDConsumerException {
-        return super.beginConsumption(httpServletRequest, this.openIdProviderUrl, returnToUrl, realm);
-    }
+//    @Override
+//    public String beginConsumption(HttpServletRequest httpServletRequest, String claimedIdentity, String returnToUrl, String realm) throws OpenIDConsumerException {
+//        return super.beginConsumption(httpServletRequest, this.openIdProviderUrl, returnToUrl, realm);
+//    }
 }

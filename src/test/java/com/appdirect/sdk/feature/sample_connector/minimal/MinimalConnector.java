@@ -72,21 +72,6 @@ public class MinimalConnector {
 	}
 
 	@Bean
-	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
-		return () -> {
-			OAuth2AuthenticationProcessingFilter resourcesServerFilter = new OAuth2AuthenticationProcessingFilter();
-			OAuthProcessingFilterEntryPoint entryPoint = new OAuthProcessingFilterEntryPoint();
-			entryPoint.setRealmName("http://www.example.com");
-			resourcesServerFilter.setAuthenticationEntryPoint(entryPoint);
-
-			resourcesServerFilter.setAuthenticationManager(new OAuth2AuthenticationManager());
-			resourcesServerFilter.setTokenExtractor(new BearerTokenExtractor());
-
-			return resourcesServerFilter;
-		};
-	}
-
-	@Bean
 	public OAuth2FeatureFlagSupplier oAuth2FeatureFlagSupplier() {
 		return (partner) -> false;
 	}

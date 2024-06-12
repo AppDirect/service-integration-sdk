@@ -24,20 +24,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import jakarta.servlet.Filter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 
 import com.appdirect.sdk.appmarket.Credentials;
-import com.appdirect.sdk.appmarket.BasicAuthCredentialsSupplier;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
@@ -69,7 +69,7 @@ public class AppmarketEventServiceTest {
 		when(credentialsSupplier.getConsumerCredentials("testKey"))
 				.thenReturn(new Credentials("testKey", "testSecret"));
 
-		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(new OAuth2AuthenticationProcessingFilter());
+		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(mock(Filter.class));
 	}
 
 	@Test

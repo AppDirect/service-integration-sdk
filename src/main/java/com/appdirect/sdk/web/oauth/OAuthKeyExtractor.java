@@ -15,9 +15,9 @@ package com.appdirect.sdk.web.oauth;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import com.appdirect.sdk.web.oauth.spring.oauth1.OAuthProviderSupport;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.security.oauth.provider.OAuthProviderSupport;
 
 public class OAuthKeyExtractor {
 	private final OAuthProviderSupport oauthProviderSupport;

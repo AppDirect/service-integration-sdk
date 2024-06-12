@@ -20,6 +20,10 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.appdirect.sdk.web.oauth.spring.oauth1.CoreOAuthProviderSupport;
+import com.appdirect.sdk.web.oauth.spring.oauth1.OAuthProcessingFilterEntryPoint;
+import com.appdirect.sdk.web.oauth.spring.oauth1.OAuthProviderSupport;
+import com.appdirect.sdk.web.oauth.spring.oauth1.ProtectedResourceProcessingFilter;
 import jakarta.servlet.Filter;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +38,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
-import org.springframework.security.oauth.provider.OAuthProviderSupport;
-import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSupport;
-import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
 import org.springframework.security.web.SecurityFilterChain;
@@ -160,8 +160,8 @@ public class SecurityConfiguration {
 		.securityMatcher(createSecuredUrlPatterns())
 		.authorizeHttpRequests(auth -> auth.requestMatchers(createSecuredUrlPatterns()).authenticated())
 		.csrf(csrf -> csrf.disable())
-//		.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-//		.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
+		.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
+		.addFilterAfter(requestIdFilter(), UsernamePasswordAuthenticationFilter.class)
 		.exceptionHandling(exception -> exception
 						.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED))
 				);

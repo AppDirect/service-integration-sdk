@@ -19,6 +19,7 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplierImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -85,21 +86,6 @@ public class FullConnector {
 			authenticationEntryPoint.setRealmName("http://www.example.com");
 			BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(authenticationManager, authenticationEntryPoint);
 			return basicAuthenticationFilter;
-		};
-	}
-
-	@Bean
-	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
-		return () -> {
-			OAuth2AuthenticationProcessingFilter resourcesServerFilter = new OAuth2AuthenticationProcessingFilter();
-			OAuthProcessingFilterEntryPoint entryPoint = new OAuthProcessingFilterEntryPoint();
-			entryPoint.setRealmName("http://www.example.com");
-			resourcesServerFilter.setAuthenticationEntryPoint(entryPoint);
-
-			resourcesServerFilter.setAuthenticationManager(new OAuth2AuthenticationManager());
-			resourcesServerFilter.setTokenExtractor(new BearerTokenExtractor());
-
-			return resourcesServerFilter;
 		};
 	}
 
