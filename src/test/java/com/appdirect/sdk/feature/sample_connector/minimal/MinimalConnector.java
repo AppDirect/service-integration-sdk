@@ -15,6 +15,11 @@ package com.appdirect.sdk.feature.sample_connector.minimal;
 
 import static com.appdirect.sdk.appmarket.events.APIResult.success;
 
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +40,9 @@ import com.appdirect.sdk.appmarket.events.SubscriptionOrder;
 import com.appdirect.sdk.support.DummyRestController;
 import com.appdirect.sdk.web.oauth.BasicAuthSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 /**
  * Sample connector that only supports the mandatory events, not the
@@ -63,6 +71,19 @@ public class MinimalConnector {
 			authenticationEntryPoint.setRealmName("http://www.example.com");
 			BasicAuthenticationFilter basicAuthenticationFilter = new BasicAuthenticationFilter(authenticationManager, authenticationEntryPoint);
 			return basicAuthenticationFilter;
+		};
+	}
+
+	@Bean
+	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
+		return () -> new OncePerRequestFilter() {
+			@Override
+			protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+					throws ServletException, IOException {
+				// Your custom logic here
+				// Continue the filter chain
+				filterChain.doFilter(request, response);
+			}
 		};
 	}
 

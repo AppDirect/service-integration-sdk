@@ -1,3 +1,6 @@
 encryption:
   key: 16CharRandom_val
   initVector: 16CharRandom_val
+spring:
+  main:
+    allow-circular-references: true

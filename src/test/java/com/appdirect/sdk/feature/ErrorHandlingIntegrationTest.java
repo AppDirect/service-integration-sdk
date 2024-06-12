@@ -61,7 +61,7 @@ public class ErrorHandlingIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendSignedRequestTo(connectorEventEndpoint(), asList("eventUrl", "http://does-not.exists"));
 
 		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists; nested exception is java.net.UnknownHostException: does-not.exists\",\"errorCode\":\"UNKNOWN_ERROR\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists\",\"errorCode\":\"UNKNOWN_ERROR\"}");
 	}
 
 	@Test

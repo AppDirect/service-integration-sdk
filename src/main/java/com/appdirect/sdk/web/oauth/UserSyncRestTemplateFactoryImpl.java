@@ -45,13 +45,13 @@ public class UserSyncRestTemplateFactoryImpl implements RestTemplateFactory {
 		oauthCredentials.setSharedSecret(new SharedConsumerSecretImpl(secret));
 
 		ConnectionConfig connectionConfig = ConnectionConfig.custom()
-				.setConnectTimeout(Timeout.ofMicroseconds(DEFAULT_CONNECT_TIMEOUT))
+				.setConnectTimeout(Timeout.ofMilliseconds(DEFAULT_CONNECT_TIMEOUT))
 				.build();
 		SocketConfig socketConfig = SocketConfig.custom()
-				.setSoTimeout(Timeout.ofMicroseconds(DEFAULT_READ_TIMEOUT))
+				.setSoTimeout(Timeout.ofMilliseconds(DEFAULT_READ_TIMEOUT))
 				.build();
 		RequestConfig requestConfig = RequestConfig.custom()
-				.setConnectionRequestTimeout(Timeout.ofMicroseconds(DEFAULT_CONNECT_TIMEOUT))
+				.setConnectionRequestTimeout(Timeout.ofMilliseconds(DEFAULT_CONNECT_TIMEOUT))
 				.build();
 
 		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
