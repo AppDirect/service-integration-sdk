@@ -20,7 +20,11 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.Filter;
+import com.appdirect.sdk.web.oauth.spring.oauth1.CoreOAuthProviderSupport;
+import com.appdirect.sdk.web.oauth.spring.oauth1.OAuthProcessingFilterEntryPoint;
+import com.appdirect.sdk.web.oauth.spring.oauth1.OAuthProviderSupport;
+import com.appdirect.sdk.web.oauth.spring.oauth1.ProtectedResourceProcessingFilter;
+import jakarta.servlet.Filter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,18 +35,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth.provider.ConsumerDetailsService;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
-import org.springframework.security.oauth.provider.OAuthProviderSupport;
-import org.springframework.security.oauth.provider.filter.CoreOAuthProviderSupport;
-import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemorySelfCleaningProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
@@ -50,12 +48,13 @@ import org.springframework.security.web.header.HeaderWriterFilter;
 import com.appdirect.sdk.appmarket.DeveloperSpecificAppmarketCredentialsSupplier;
 import com.appdirect.sdk.appmarket.OAuth2CredentialsSupplier;
 import com.appdirect.sdk.web.oauth.model.OpenIdCustomUrlPattern;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
 @Order(100)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 	@Autowired
 	private DeveloperSpecificAppmarketCredentialsSupplier credentialsSupplier;
 	@Autowired(required = false)
@@ -144,39 +143,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new RequestIdFilter();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	@Order(100)
+	public SecurityFilterChain oauth2FilterChain(HttpSecurity http) throws Exception {
 		mainConfiguration(http);
 		if ("TRUE".equalsIgnoreCase(sdkOAuth2Enabled) || StringUtils.isBlank(sdkOAuth2Enabled)) {
 			oAuth2ProtectionOnApi(http);
 		}
+		return http.build();
 	}
 
 	private void mainConfiguration(HttpSecurity http) throws Exception {
-		String[] securedUrlPatterns = createSecuredUrlPatterns();
-		http
-				.authorizeRequests()
-				.antMatchers("/unsecured/**")
-				.permitAll()
-				.and()
-				.requestMatchers()
-				.antMatchers(securedUrlPatterns)
-				.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
-				.csrf().disable()
-				.authorizeRequests().anyRequest().authenticated()
-				.and()
-				.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
-				.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED));
+		http.authorizeHttpRequests(
+				auth -> auth.requestMatchers(new AntPathRequestMatcher("/unsecured/**")).permitAll()
+		)
+		.securityMatcher(createSecuredUrlPatterns())
+		.authorizeHttpRequests(auth -> auth.requestMatchers(createSecuredUrlPatterns()).authenticated())
+		.csrf(csrf -> csrf.disable())
+		.addFilterBefore(oAuthSignatureCheckingFilter(), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(requestIdFilter(), ProtectedResourceProcessingFilter.class)
+		.exceptionHandling(exception -> exception
+			.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED))
+		);
 	}
 
 	private void oAuth2ProtectionOnApi(HttpSecurity http) {
-		http
-				.requestMatchers()
-				.antMatchers("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
-				.and().addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
+		http.securityMatcher("/api/v2/integration/**", "/api/v2/domainassociation/**", "/api/v2/migration/**", "/api/v2/restrictions/**")
+			.addFilterAfter(oAuth2SignatureCheckingFilter(), HeaderWriterFilter.class);
 	}
 
 	private String[] createSecuredUrlPatterns() {
@@ -186,13 +179,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		if (!isEmpty(openIdCustomUrlPattern.getPatterns())) {
 			securedPaths.addAll(openIdCustomUrlPattern.getPatterns());
 		}
-		log.debug("Configuring the following paths as secured: {}", securedPaths);
 		return securedPaths.toArray(new String[securedPaths.size()]);
-	}
-
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
 	}
 }

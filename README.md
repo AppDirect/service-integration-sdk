@@ -9,18 +9,14 @@ Integrate your application with the AppDirect platform. Create a connector using
 For more details see [GitHub wiki](https://github.com/AppDirect/service-integration-sdk/wiki).
 
 ## Prerequisites
-* Java 8 or higher
-* Build your connector using [Spring Boot 2.0](https://projects.spring.io/spring-boot/)
+* Java 17 or higher
+* Build your connector using [Spring Boot 3.0](https://projects.spring.io/spring-boot/)
 
 ## Features
 * Automatic parsing of incoming AppDirect distribution API calls
 * Automatic OAuth authentication for all API events to and from the AppDirect platform
 * Provides handlers for your events
-* Allows you to use AppMarket as an IdP to sign in to your connector
 
-## Sample client application 
-AppDirect developed the Chatty Pie connector as an example of a connector that can be implemented with the SDK. It is a lightweight chat room application. The chatty pie connector was built to handle all AppDirect Distribution API events including creating new customers, developer accounts, assignments, and changes to a subscription. 
-To build and run your own connector based on Chatty Pie see [Chatty pie](https://github.com/AppDirect/chatty-pie-connector).
 
 ## Getting Started
 To incorporate the SDK into your application see [Getting Started](https://github.com/AppDirect/service-integration-sdk/wiki/Getting-Started).

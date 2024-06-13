@@ -1,6 +1,6 @@
 package com.appdirect.sdk.web.oauth;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -12,7 +12,7 @@
  */
 package com.appdirect.sdk.appmarket.saml;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

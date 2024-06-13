@@ -1,6 +1,6 @@
 package com.appdirect.sdk.web.oauth;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 public class OAuth2AuthorizationServiceImpl implements OAuth2AuthorizationService{
     private final OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier;

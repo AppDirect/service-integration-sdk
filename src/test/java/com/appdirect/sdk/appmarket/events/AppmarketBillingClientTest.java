@@ -15,7 +15,8 @@ package com.appdirect.sdk.appmarket.events;
 
 import static com.appdirect.sdk.support.ContentOf.resourceAsString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import jakarta.servlet.Filter;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +38,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.web.client.RestTemplate;
 
 import com.appdirect.sdk.appmarket.Credentials;
@@ -68,7 +69,7 @@ public class AppmarketBillingClientTest {
 
 		when(credentialsSupplier.getConsumerCredentials("some-key")).thenReturn(new Credentials("some-key", "some-secret"));
 
-		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(new OAuth2AuthenticationProcessingFilter());
+		when(oAuth2AuthorizationSupplier.getOAuth2Filter()).thenReturn(mock(Filter.class));
 
 		when(restTemplateFactory.getOAuthRestTemplate("some-key", "some-secret")).thenReturn(restTemplate);
 	}

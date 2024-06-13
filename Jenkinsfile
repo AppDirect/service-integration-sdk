@@ -9,16 +9,16 @@ import org.json.JSONObject
 
 def version
 pipeline {
-	
-    agent {
-            docker {
-                image "docker.appdirect.tools/appdirect/build-jdk8:latest"
-                args "-v /var/run/docker.sock:/var/run/docker.sock "
-        	reuseNode true    
-            }
-        }
 
-    options { disableConcurrentBuilds() }
+	agent {
+		docker {
+			image "docker.appdirect.tools/appdirect/build-jdk17:latest"
+			args "-v /var/run/docker.sock:/var/run/docker.sock "
+			reuseNode true
+		}
+	}
+
+	options { disableConcurrentBuilds() }
 	environment {
 		GITHUB_REPO_NAME = 'service-integration-sdk'
 		GITHUB_REPO_OWNER = 'AppDirect'
@@ -32,7 +32,7 @@ pipeline {
 		stage('PR approval') {
 		        steps {
 				script {
-					if (BRANCH_NAME != 'master' || BRANCH_NAME != 'release-v1') {	 
+					if (BRANCH_NAME != 'master' || BRANCH_NAME != 'release-v1'  || BRANCH_NAME != 'release-v3') {
 						timeout(time: 15, unit: "MINUTES") {
 						   input message: 'Do you want to approve the PR build?', ok: 'Yes'
 						}
@@ -41,8 +41,8 @@ pipeline {
 			}
 		}
 		stage('Checkout') {
-		        steps {
-			      
+			steps {
+
 				echo 'Checking out from repository...'
 				checkout scm: [
 						$class           : 'GitSCM',
@@ -54,8 +54,8 @@ pipeline {
 						]
 				]
 				script {
-					if (env.BRANCH_NAME == "release-v1") {
-						version = getSemver('release-v1', '', env.BRANCH_NAME != 'release-v1' ? '-SNAPSHOT' : '')
+					if (env.BRANCH_NAME == "release-v1" || env.BRANCH_NAME == "release-v3") {
+						version = getSemver(env.BRANCH_NAME, '', '')
 					} else {
 						version = getSemver('master', '', env.BRANCH_NAME != 'master' ? '-SNAPSHOT' : '')
 					}
@@ -64,10 +64,10 @@ pipeline {
 		}
 
 		stage('Setup') {
-                        when {
-			   expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+			when {
+			   expression { BRANCH_NAME ==~ /(release-v1|release-v3|master)/ }
 			}
-			
+
 			steps {
 				echo 'Prepare Maven properties'
 				configFileProvider(
@@ -95,20 +95,20 @@ pipeline {
 			steps {
 
 				echo 'Building project...'
-				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {		
-					
+				withCredentials([file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')]) {
+
 					withPullRequestBranch {
 						sh '''
 						   ./mvnw install source:jar-no-fork
 						   '''
 					}
 					script {
-						
-						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1') {
+
+						if (BRANCH_NAME == 'master' || BRANCH_NAME == 'release-v1' || BRANCH_NAME == 'release-v3') {
 							sh "gpg2 --batch --no-tty --import $GPG_KEY || /bin/true"
 							sh '''
 							    ./mvnw deploy source:jar-no-fork -Prelease -U -s settings.xml
-						           '''		
+						           '''
 						}
 					}
 				}
@@ -123,7 +123,7 @@ pipeline {
 
 		stage('Release scope') {
 			when {
-				expression { BRANCH_NAME ==~ /(release-v1|master)/ }
+				expression { BRANCH_NAME ==~ /(release-v1|release-v3|master)/ }
 			}
 			steps {
 				pushGitTag version

@@ -16,7 +16,7 @@ package com.appdirect.sdk.feature;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.util.SocketUtils.findAvailableTcpPort;
+import static org.springframework.test.util.TestSocketUtils.findAvailableTcpPort;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.appdirect.sdk.feature.sample_connector.full.FullConnector;
@@ -61,7 +61,7 @@ public class ErrorHandlingIntegrationTest {
 		HttpResponse response = fakeAppmarket.sendSignedRequestTo(connectorEventEndpoint(), asList("eventUrl", "http://does-not.exists"));
 
 		assertStatusCodeIs200_soAppmarketShowsProperMessageToUser(response);
-		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists; nested exception is java.net.UnknownHostException: does-not.exists\",\"errorCode\":\"UNKNOWN_ERROR\"}");
+		assertThat(EntityUtils.toString(response.getEntity())).isEqualTo("{\"success\":false,\"message\":\"Failed to process event. eventUrl=http://does-not.exists | exception=I/O error on GET request for \\\"http://does-not.exists\\\": does-not.exists\",\"errorCode\":\"UNKNOWN_ERROR\"}");
 	}
 
 	@Test

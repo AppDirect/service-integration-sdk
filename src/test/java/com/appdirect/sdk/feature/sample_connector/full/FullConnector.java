@@ -19,17 +19,18 @@ import static com.appdirect.sdk.appmarket.events.ErrorCode.OPERATION_CANCELLED;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.USER_NOT_FOUND;
 import static java.lang.String.format;
 
+import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth.provider.OAuthProcessingFilterEntryPoint;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -52,18 +53,18 @@ import com.appdirect.sdk.appmarket.events.UserAssignment;
 import com.appdirect.sdk.appmarket.events.UserUnassignment;
 import com.appdirect.sdk.exception.DeveloperServiceException;
 import com.appdirect.sdk.feature.sample_connector.full.configuration.FullConnectorDomainDnsOwnershipVerificationConfiguration;
-import com.appdirect.sdk.security.openid.configuration.OpenIdSsoConfiguration;
 import com.appdirect.sdk.web.oauth.BasicAuthSupplier;
-import com.appdirect.sdk.web.oauth.OAuth2AuthorizationSupplier;
 import com.appdirect.sdk.web.oauth.OAuth2FeatureFlagSupplier;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 /**
  * Sample connector that supports all of the supported events, both the
  * mandatory and optional ones.
  */
 @SpringBootApplication
-@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class,
-		OpenIdSsoConfiguration.class})
+@Import({ConnectorSdkConfiguration.class, FullConnectorDomainDnsOwnershipVerificationConfiguration.class})
 public class FullConnector {
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -90,16 +91,14 @@ public class FullConnector {
 
 	@Bean
 	public OAuth2AuthorizationSupplier oAuth2AuthorizationSupplier() {
-		return () -> {
-			OAuth2AuthenticationProcessingFilter resourcesServerFilter = new OAuth2AuthenticationProcessingFilter();
-			OAuthProcessingFilterEntryPoint entryPoint = new OAuthProcessingFilterEntryPoint();
-			entryPoint.setRealmName("http://www.example.com");
-			resourcesServerFilter.setAuthenticationEntryPoint(entryPoint);
-
-			resourcesServerFilter.setAuthenticationManager(new OAuth2AuthenticationManager());
-			resourcesServerFilter.setTokenExtractor(new BearerTokenExtractor());
-
-			return resourcesServerFilter;
+		return () -> new OncePerRequestFilter() {
+			@Override
+			protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+					throws ServletException, IOException {
+				// Your custom logic here
+				// Continue the filter chain
+				filterChain.doFilter(request, response);
+			}
 		};
 	}
 

@@ -14,6 +14,9 @@
 
 package com.appdirect.sdk.appmarket.restrictions;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.matches;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -23,7 +26,6 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -44,8 +46,8 @@ public class RestrictionControllerTest {
 	public void testGetRestrictions() throws Exception {
 		RestrictionInfo restrictionInfo = mock(RestrictionInfo.class);
 		RestrictionResponse restrictionResponse = mock(RestrictionResponse.class);
-		when(restrictionHandler.getRestrictions(Matchers.any(RestrictionInfo.class), Matchers.matches("appdirect"))).thenReturn(restrictionResponse);
+		when(restrictionHandler.getRestrictions(any(RestrictionInfo.class), matches("appdirect"))).thenReturn(restrictionResponse);
 		restrictionController.getRestrictions(restrictionInfo, "appdirect").call();
-		verify(restrictionHandler, times(1)).getRestrictions(Matchers.any(RestrictionInfo.class), Matchers.anyString());
+		verify(restrictionHandler, times(1)).getRestrictions(any(RestrictionInfo.class), anyString());
 	}
 }

@@ -16,7 +16,7 @@ package com.appdirect.sdk.web;
 import static com.appdirect.sdk.appmarket.events.ErrorCode.UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;

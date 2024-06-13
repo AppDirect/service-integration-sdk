@@ -18,10 +18,10 @@ import static com.appdirect.sdk.appmarket.domain.DomainOwnershipController.SERVI
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -107,8 +107,8 @@ public class DomainOwnershipControllerTest {
 		final DnsRecords records = tested.readDnsRecord(testCustomerId, testDomain, "IamNotAValidType");
 
 		//Then
-		verifyZeroInteractions(mockDnsVerificationInfoHandler);
-		verifyZeroInteractions(mockedDomainServiceConfigurationHandler);
+		verifyNoInteractions(mockDnsVerificationInfoHandler);
+		verifyNoInteractions(mockedDomainServiceConfigurationHandler);
 		assertThat(records).isNotNull();
 		assertThat(records.getMx()).isEmpty();
 		assertThat(records.getTxt()).isEmpty();

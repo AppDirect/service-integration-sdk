@@ -41,10 +41,10 @@ public class ReportUsageApiExceptionHandler implements ResponseErrorHandler {
 	@Override
 	public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
 		log.error("Response error: statusCode={} statusText={}", clientHttpResponse.getStatusCode(), clientHttpResponse.getStatusText());
-		switch (clientHttpResponse.getStatusCode()) {
-			case NOT_FOUND:
+		switch (clientHttpResponse.getStatusCode().value()) {
+			case 404:
 				throw new ReportUsageException(USER_NOT_FOUND, errorMessage(MESSAGE_NOT_FOUND));
-			case BAD_REQUEST:
+			case 400:
 				throw new ReportUsageException(CONFIGURATION_ERROR, errorMessage(MESSAGE_BAD_REQUEST));
 			default:
 				throw new ReportUsageException(UNKNOWN_ERROR, errorMessage(clientHttpResponse.getStatusText()));
